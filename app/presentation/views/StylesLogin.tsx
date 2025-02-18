@@ -4,17 +4,18 @@ const styles = StyleSheet.create({
     Container:{
       width:'100%',
       height:'100%',
-      backgroundColor:'#450579',
+
     },
     TextWelcome:{
-        fontSize:20,
-        textAlign:'center',
-        marginEnd:20
+        fontSize:40,
+        marginLeft:"auto",
+        marginRight:"auto",
+        color:'white',
     },
     TextInput:{
         fontSize:15,
-        textAlign:'center',
-        marginEnd:20
+        marginLeft:"16%",
+        color:'white',
     },
 
 });

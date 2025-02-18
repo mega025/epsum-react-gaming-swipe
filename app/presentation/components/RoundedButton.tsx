@@ -27,8 +27,8 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         margin: 10,
         padding: 10,
-        backgroundColor: AppColors.background,
-        width: '100%',
+        backgroundColor: AppColors.colorButton,
+        width: '45%',
     },
     formBotonText:{
         fontSize: 20,

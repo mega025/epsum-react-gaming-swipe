@@ -25,7 +25,11 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         paddingVertical: 6,
         paddingHorizontal: 10,
-        borderRadius:5,
+        borderRadius:10,
+        backgroundColor: 'white',
+        width:'70%',
+        marginLeft:"auto",
+        marginRight:"auto",
     }
 })
 
