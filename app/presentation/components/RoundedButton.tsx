@@ -21,6 +21,7 @@ export const RoundedButton = ({text,onPressFromInterface}: Props) => {
 }
 const styles = StyleSheet.create({
     formBoton:{
+        marginTop: "25%",
         borderWidth: 1,
         borderColor: 'black',
         borderRadius: 10,

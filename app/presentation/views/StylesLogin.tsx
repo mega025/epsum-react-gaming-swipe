@@ -1,4 +1,5 @@
 import {StyleSheet} from "react-native";
+import {AppFonts} from "../theme/AppTheme";
 
 const styles = StyleSheet.create({
     Container:{
@@ -7,16 +8,31 @@ const styles = StyleSheet.create({
 
     },
     TextWelcome:{
-        fontSize:40,
-        marginLeft:"auto",
-        marginRight:"auto",
+        fontSize:35,
         color:'white',
+        marginTop:"50%",
+        marginBottom:50,
+        fontFamily:AppFonts.light
+
     },
-    TextInput:{
+    TextEmail:{
         fontSize:15,
-        marginLeft:"16%",
         color:'white',
+        marginBottom:10,
+
     },
+    TextPassword:{
+        fontSize:15,
+        color:'white',
+        marginBottom:10,
+        marginTop:15,
+
+    },
+    View:{
+        width:'72%',
+        alignSelf:'center',
+
+    }
 
 });
 
