@@ -65,7 +65,6 @@ const registerViewModel= () => {
             console.log("RESULT "+ JSON.stringify(response))
             if(response.success){
                 alert(response.message)
-                TabViewLoginRegister.
             }
 
         }

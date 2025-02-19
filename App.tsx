@@ -5,13 +5,15 @@ import {Home} from "./app/presentation/views/home/Home";
 import {LoginScreen} from "./app/presentation/views/auth/Login";
 import {useFonts} from "expo-font";
 import TabViewLoginRegister from "./app/presentation/views/auth/TabViewLoginRegister";
+import {UserNavigation} from "./app/presentation/navigation/UserNavigation";
+
 
 const Stack = createStackNavigator<RootStackParamsList>();
 
 export type RootStackParamsList = {
-  LoginScreen: undefined;
-  TabViewLoginRegister: undefined;
-  Home: undefined;
+    UserNavigation: undefined;
+    TabViewLoginRegister: undefined;
+    Home: undefined;
 
 }
 
@@ -26,11 +28,14 @@ export default function App() {
         "zen_kaku_black": require("./assets/fonts/zen_kaku_gothic_antique_black.ttf"),
     });
 
-  return (
+
+    return (
       <NavigationContainer>
           <Stack.Navigator screenOptions={{ headerShown: false }}>
               <Stack.Screen name="TabViewLoginRegister" component={TabViewLoginRegister}/>
               <Stack.Screen name="Home" component={Home}/>
+              <Stack.Screen name={"UserNavigation"} component={UserNavigation} options={{headerShown:false}} ></Stack.Screen>
+
           </Stack.Navigator>
       </NavigationContainer>
   );
