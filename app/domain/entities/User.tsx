@@ -2,7 +2,7 @@ import {PersonalDetails} from "./PersonalDetails";
 import {Game} from "./Game";
 
 export interface UserInterface {
-    id: number;
+    userId?: number;
     email: string;
     personalDetails: PersonalDetails;
     listFavGames: Game[]

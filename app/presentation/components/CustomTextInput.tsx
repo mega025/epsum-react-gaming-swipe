@@ -1,31 +1,46 @@
 import React from "react";
-import {KeyboardType, StyleSheet, TextInput} from "react-native";
+import {KeyboardType, StyleSheet, Text, TextInput, View} from "react-native";
 
 interface Props {
-keyboardType:KeyboardType;
-secureTextEntry:boolean;
-onPressButtonFromInterface:(text:string)=>void;
+    label: string,
+    keyboardType:KeyboardType;
+    secureTextEntry:boolean;
+    onChangeText:(text:string)=>void;
 }
-export const CustomTextInput = ({keyboardType,secureTextEntry,onPressButtonFromInterface}:Props) => {
+export const CustomTextInput = ({label, keyboardType,secureTextEntry,onChangeText}:Props) => {
     return (
-        <TextInput style={styles.formInput}
-                   keyboardType={keyboardType}
-                   secureTextEntry={secureTextEntry}
-                   onChangeText={(text) => onPressButtonFromInterface(text)}
-        ></TextInput>)
+        <View>
+            <Text style={styles.formInputLabel}>{label}</Text>
+            <TextInput style={styles.formInput}
+                       keyboardType={keyboardType}
+                       secureTextEntry={secureTextEntry}
+                       onChangeText={(text) => onChangeText(text)}
+            ></TextInput>
+        </View>
+    )
 
-            }
+}
 const styles = StyleSheet.create({
+    formInputLabel: {
+        fontSize:15,
+        color:'white',
+        marginStart: 5,
+        alignSelf:"flex-start",
+        marginBottom:10,
+        fontFamily: "zen_kaku_regular"
+    },
+
     formInput: {
+        width:300,
+        height:40,
         fontSize: 15,
-        marginBottom: 10,
         borderColor: 'black',
+        backgroundColor: 'white',
         borderWidth: 1,
         paddingVertical: 5,
         paddingHorizontal: 10,
         borderRadius:10,
-        backgroundColor: 'white',
-        height:40,
+        fontFamily: "zen_kaku_regular"
 
     }
 })

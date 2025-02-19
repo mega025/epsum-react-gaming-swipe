@@ -7,34 +7,46 @@ const stylesAuthViews = StyleSheet.create({
       height:'100%',
     },
 
-    title:{
+    titleLogin:{
         fontSize:35,
         color:'white',
-        marginTop:"50%",
+        marginTop:"40%",
+        alignSelf:'flex-start',
+        marginStart: 60,
         marginBottom:50,
-        fontFamily:AppFonts.light
+        fontFamily: "zen_kaku_light"
 
     },
 
-    labelEmail:{
-        fontSize:15,
-        color:'white',
-        marginBottom:10,
 
-    },
-
-    labelPassword:{
-        fontSize:15,
+    titleRegister:{
+        fontSize:35,
         color:'white',
-        marginBottom:10,
-        marginTop:15,
+        alignSelf:'flex-start',
+        marginStart: 52,
+        marginTop:"20%",
+        marginBottom:50,
+        fontFamily: "zen_kaku_light"
 
     },
 
     formContainer:{
-        width:'72%',
-        alignSelf:'center',
+        width:'100%',
+        alignItems:'center',
+    },
 
+    formInputContainer: {
+        marginBottom:20,
+    },
+
+    formButtonContainer: {
+        marginTop:20,
+    },
+
+    formInlineInputsContainer: {
+        flexDirection: "row",
+        marginBottom:20,
+        gap: 10
     }
 
 });

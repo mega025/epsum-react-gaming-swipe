@@ -1,5 +1,5 @@
 import React from "react";
-import {StyleSheet, Text, TouchableOpacity} from "react-native";
+import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {AppColors} from "../theme/AppTheme";
 
 interface Props {
@@ -7,33 +7,35 @@ interface Props {
     onPressFromInterface: () => void,
 }
 
-export const RoundedButton = ({text,onPressFromInterface}: Props) => {
+export const RoundedButton = ({text, onPressFromInterface}: Props) => {
     return(
 
         <TouchableOpacity
-            style={styles.formBoton}
+            style={styles.formButton}
             onPress={() => onPressFromInterface()}
         >
-            <Text style={styles.formBotonText}>{text}</Text>
+            <Text style={styles.formButtonText}>{text}</Text>
         </TouchableOpacity>
 
     )
 }
 const styles = StyleSheet.create({
-    formBoton:{
-        marginTop: "25%",
+    formButton:{
+        elevation: 10,
         borderWidth: 1,
-        borderColor: 'black',
+        borderColor: AppColors.colorButton,
         borderRadius: 10,
         alignSelf: 'center',
+        justifyContent: 'center',
         margin: 10,
         padding: 10,
         backgroundColor: AppColors.colorButton,
-        width: '45%',
+        width: 200,
     },
-    formBotonText:{
+    formButtonText:{
         fontSize: 20,
         alignSelf: 'center',
+        justifyContent: 'center',
         color: AppColors.white,
     }
 })
