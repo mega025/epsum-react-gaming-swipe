@@ -1,8 +1,8 @@
 import React from "react";
 import { ImageBackground, Text, TextInput, View} from "react-native";
-import styles from "./StylesAuthViews";
-import {CustomTextInput} from "../components/CustomTextInput";
-import {RoundedButton} from "../components/RoundedButton";
+import styles from "./../StylesAuthViews";
+import {CustomTextInput} from "../../components/CustomTextInput";
+import {RoundedButton} from "../../components/RoundedButton";
 import viewModel from "./ViewModel";
 
 
