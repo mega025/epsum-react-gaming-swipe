@@ -23,6 +23,9 @@
     "react-native": "0.76.7",
     "react-native-paper": "^5.13.1",
     "react-native-reanimated-carousel": "^4.0.2",
+    "react-native-axios": "^0.17.1",
+    "react-native-gesture-handler": "^2.23.1",
+    "react-native-safe-area-context": "^5.2.0",
     "react-navigation": "^5.0.0"
   },
   "devDependencies": {
