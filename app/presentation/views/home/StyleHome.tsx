@@ -10,7 +10,7 @@ const stylesHome= StyleSheet.create({
     logo:{
         width:60,
         height:60,
-        bottom:60,
+        bottom:30,
         position:"absolute",
         alignSelf:"center",
 
