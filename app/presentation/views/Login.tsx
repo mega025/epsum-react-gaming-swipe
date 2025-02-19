@@ -1,38 +1,30 @@
 import React from "react";
 import { ImageBackground, Text, TextInput, View} from "react-native";
-import styles from "./StylesLogin";
-import {TextImput} from "../components/TextInput";
+import styles from "./StylesAuthViews";
+import {CustomTextInput} from "../components/CustomTextInput";
 import {RoundedButton} from "../components/RoundedButton";
 import viewModel from "./ViewModel";
 
 
 export function LoginScreen(){
-
-
-
-
     const{OnChange,Login} = viewModel.loginViewModel();
     return (
-        <View style={styles.Container}>
+        <View style={styles.container}>
             <ImageBackground source={require("../../../assets/background.png")}
                              style={{width: '100%', height: '100%'}}>
-                <Text>GamingSwipe</Text>
+                <View style={styles.formContainer}>
+                    <Text style={styles.title}>Welcome Back</Text>
 
-                <View style={styles.View}>
-                    <Text style={styles.TextWelcome}>Welcome Back</Text>
-
-                    <Text style={styles.TextEmail}>Email</Text>
-                    <TextImput keyboardType={"default"}
-                               secureTextEntry={false}
-                               onPressButtonFromInterface={(text) =>
-                                   OnChange('password', text)}></TextImput>
+                    <Text style={styles.labelEmail}>Email</Text>
+                    <CustomTextInput keyboardType={"default"}
+                                     secureTextEntry={false}
+                                     onPressButtonFromInterface={(text) => OnChange('password', text)}></CustomTextInput>
 
 
-                    <Text style={styles.TextPassword}>Password</Text>
-                    <TextImput keyboardType={"default"}
-                               secureTextEntry={true}
-                               onPressButtonFromInterface={(text) =>
-                                   OnChange('password', text)}></TextImput>
+                    <Text style={styles.labelPassword}>Password</Text>
+                    <CustomTextInput keyboardType={"default"}
+                                     secureTextEntry={true}
+                                     onPressButtonFromInterface={(text) => OnChange('password', text)}></CustomTextInput>
                 </View>
 
                 <RoundedButton text="Sign in" onPressFromInterface={() => Login()} />

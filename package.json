@@ -23,7 +23,10 @@
     "react-native": "0.76.7",
     "react-native-axios": "^0.17.1",
     "react-native-gesture-handler": "^2.23.1",
+    "react-native-pager-view": "6.5.1",
     "react-native-safe-area-context": "^5.2.0",
+    "react-native-swiper": "^1.6.0",
+    "react-native-tab-view": "^4.0.5",
     "react-navigation": "^5.0.0"
   },
   "devDependencies": {

@@ -6,7 +6,7 @@ keyboardType:KeyboardType;
 secureTextEntry:boolean;
 onPressButtonFromInterface:(text:string)=>void;
 }
-export const TextImput = ({keyboardType,secureTextEntry,onPressButtonFromInterface}:Props) => {
+export const CustomTextInput = ({keyboardType,secureTextEntry,onPressButtonFromInterface}:Props) => {
     return (
         <TextInput style={styles.formInput}
                    keyboardType={keyboardType}
@@ -17,15 +17,15 @@ export const TextImput = ({keyboardType,secureTextEntry,onPressButtonFromInterfa
             }
 const styles = StyleSheet.create({
     formInput: {
-        fontSize: 17,
+        fontSize: 15,
         marginBottom: 10,
         borderColor: 'black',
         borderWidth: 1,
-        paddingVertical: 2,
-        paddingHorizontal: 8,
+        paddingVertical: 5,
+        paddingHorizontal: 10,
         borderRadius:10,
         backgroundColor: 'white',
-        height:'8%',
+        height:40,
 
     }
 })
