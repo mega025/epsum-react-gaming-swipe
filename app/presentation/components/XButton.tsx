@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
       backgroundColor:AppColors.colorButton,
         position:"absolute",
         left:35,
-        bottom:120,
+        bottom:60,
         borderRadius:40,
         height:60,
         width:60,
