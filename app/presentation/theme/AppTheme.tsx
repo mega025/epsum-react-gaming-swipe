@@ -5,7 +5,8 @@ export const AppColors = {
     selectedTab:"#0583F2",
     orangeColor:"#C57503",
     colorNavigationButton:"#140000",
-    transparent:"#00000000"
+    transparent:"#00000000",
+    red:"#c50a0a",
 }
 export const AppFonts = {
     black: "zen_kaku_gothic_antique_black",
