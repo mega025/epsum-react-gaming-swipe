@@ -5,7 +5,6 @@ import TabViewLoginRegister from "./TabViewLoginRegister";
 import {UseUserLocalStorage} from "../../hooks/UseUserLocalStorage";
 import {loginAuthUseCase} from "../../../domain/usesCases/auth/LoginAuth";
 import {saveUserUserCase} from "../../../domain/usesCases/userLocal/saveUser";
-import {showAlert} from "react-native-customisable-alert";
 
 const loginViewModel= () => {
 
