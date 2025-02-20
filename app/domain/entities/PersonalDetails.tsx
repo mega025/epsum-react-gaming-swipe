@@ -1,5 +1,5 @@
 export interface PersonalDetails {
-    personalDetailsId: number;
+    personalDetailsId?: number;
     firstName: string;
     lastName: string;
     imageUrl: string;
