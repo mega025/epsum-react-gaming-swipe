@@ -4,6 +4,6 @@ import {UserInterface} from "../../entities/User";
 
 const  {register} = new AuthRepository();
 
-export const RegisterUseCase = async (user: UserInterface) => {
+export const registerUseCase = async (user: UserInterface) => {
     return await register(user);
 }

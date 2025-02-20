@@ -1,15 +1,22 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { ImageBackground, Text, TextInput, View} from "react-native";
 import styles from "./StylesAuthViews";
 import {CustomTextInput} from "../../components/CustomTextInput";
 import {RoundedButton} from "../../components/RoundedButton";
 import viewModel from "./ViewModel";
 import {useFonts} from "expo-font";
+import {PropsStackNavigation} from "../../interfaces/StackNav";
 
 
-export function LoginScreen(){
+export function LoginScreen({navigation, route}: PropsStackNavigation){
 
-    const{onChangeLogin,login} = viewModel.loginViewModel();
+    const{onChangeLogin,login, user, errorMessage} = viewModel.loginViewModel();
+
+    useEffect(() => {
+        if (user && user?.token) {
+            navigation.replace("UserNavigation")
+        }
+    })
 
     return (
         <View style={styles.container}>

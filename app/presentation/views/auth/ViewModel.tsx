@@ -1,16 +1,22 @@
 import {useState} from "react";
-import {RegisterUseCase} from "../../../domain/usesCases/auth/RegisterAuth";
-import {UserInterface} from "../../../domain/entities/User";
+import {registerUseCase} from "../../../domain/usesCases/auth/RegisterAuth";
+import {LoggedUserInterface, LoginUserInterface, UserInterface} from "../../../domain/entities/User";
 import TabViewLoginRegister from "./TabViewLoginRegister";
+import {UseUserLocalStorage} from "../../hooks/UseUserLocalStorage";
+import {loginAuthUseCase} from "../../../domain/usesCases/auth/LoginAuth";
+import {saveUserUserCase} from "../../../domain/usesCases/userLocal/saveUser";
 
 const loginViewModel= () => {
 
     const [errorMessage, setErrorMessage] = useState<string>("")
 
+    const {user, getUserSession} = UseUserLocalStorage()
+
     const[loginValues, setLoginvalue] = useState({
         email: "",
         password: "",
     })
+
 
     const onChangeLogin=(property:string, value:any)=>{
         setLoginvalue({
@@ -29,10 +35,19 @@ const loginViewModel= () => {
     }
 
     const login= async  () => {
-
+        if (validateForm()){
+            const response = await loginAuthUseCase(loginValues as LoginUserInterface);
+            if(!response.success){
+                setErrorMessage(response.message)
+            } else {
+                await saveUserUserCase(response.data as LoggedUserInterface)
+                await getUserSession()
+            }
+        }
     }
+
     return{
-        loginValues, onChangeLogin, login
+        loginValues, onChangeLogin, login, user, errorMessage
     }
 }
 
@@ -61,7 +76,7 @@ const registerViewModel= () => {
                 },
                 listFavGames: []
             }
-            const response = await RegisterUseCase(user)
+            const response = await registerUseCase(user)
             console.log("RESULT "+ JSON.stringify(response))
             if(response.success){
                 alert(response.message)
