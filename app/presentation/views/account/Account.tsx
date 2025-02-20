@@ -2,8 +2,11 @@ import {Image, ImageBackground, Text, View} from "react-native";
 import styleAccount from "./StyleAccount";
 import {RoundedButton} from "../../components/RoundedButton";
 import {ChangePhoto} from "../../components/ChangePhoto";
+import viewModel from "./ViewModel";
 
 export function Account(){
+
+    const {deleteSession} =viewModel.AccountViewModel();
     return (
         <View style={styleAccount.container}>
             <ImageBackground source={require("../../../../assets/background.png")}
@@ -45,7 +48,7 @@ export function Account(){
                     </Text>
                 </View>
                 <View style={styleAccount.containerLogOut}>
-                    <Text style={styleAccount.LogOut}> Log out</Text>
+                    <Text style={styleAccount.LogOut} onPress={deleteSession}> Log out</Text>
                 </View>
 
             </ImageBackground>
