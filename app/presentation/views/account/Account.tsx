@@ -3,8 +3,10 @@ import styleAccount from "./StyleAccount";
 import {RoundedButton} from "../../components/RoundedButton";
 import {ChangePhoto} from "../../components/ChangePhoto";
 import viewModel from "./ViewModel";
+import {useNavigation} from "@react-navigation/native";
+import {PropsStackNavigation} from "../../interfaces/StackNav";
 
-export function Account(){
+export function Account({navigation = useNavigation(), route}: PropsStackNavigation){
 
     const {deleteSession} =viewModel.AccountViewModel();
     return (
@@ -48,7 +50,7 @@ export function Account(){
                     </Text>
                 </View>
                 <View style={styleAccount.containerLogOut}>
-                    <Text style={styleAccount.LogOut} onPress={deleteSession}> Log out</Text>
+                    <Text style={styleAccount.LogOut} onPress={() => {deleteSession().then(r => navigation.navigate("TabViewLoginRegister"))}}> Log out</Text>
                 </View>
 
             </ImageBackground>

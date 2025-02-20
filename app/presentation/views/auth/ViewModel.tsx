@@ -48,7 +48,7 @@ const loginViewModel= () => {
     }
 
     return{
-        loginValues, onChangeLogin, login, user, errorMessage
+        loginValues, onChangeLogin, login, user, errorMessage, setErrorMessage
     }
 }
 
@@ -87,7 +87,6 @@ const registerViewModel= () => {
     }
 
     const onChangeRegister=(property:string, value:any)=>{
-        setErrorMessage("")
         setRegisterValue({
             ...registerValues, [property]:value
         })
@@ -113,7 +112,9 @@ const registerViewModel= () => {
         return true
     }
 
-    return {registerValues, onChangeRegister, register,errorMessage}
+    return {
+        registerValues, onChangeRegister, register, errorMessage, setErrorMessage
+    }
 }
 
 export default {loginViewModel, registerViewModel}

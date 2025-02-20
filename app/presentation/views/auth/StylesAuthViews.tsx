@@ -39,6 +39,20 @@ const stylesAuthViews = StyleSheet.create({
         marginBottom:20,
     },
 
+    formInputContainerPassword: {
+        marginBottom:20,
+        flexDirection:'row',
+        alignItems: "center",
+        justifyContent:'center',
+    },
+
+    iconPasswordToggle: {
+        width:20,
+        height:20,
+        resizeMode:'stretch',
+        backgroundColor:'white',
+    },
+
     formButtonContainer: {
         marginTop:20,
     },

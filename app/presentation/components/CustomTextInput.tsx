@@ -1,5 +1,5 @@
 import React from "react";
-import {KeyboardType, StyleSheet, Text, TextInput, View} from "react-native";
+import {Image, KeyboardType, StyleSheet, Text, TextInput, View} from "react-native";
 
 interface Props {
     label: string,

@@ -6,21 +6,27 @@ import {CustomTextInput} from "../../components/CustomTextInput";
 import {RoundedButton} from "../../components/RoundedButton";
 import viewModel from "./ViewModel";
 import {Alert, AlertContainer} from "rn-custom-alert-prompt";
+import Toast from "react-native-toast-message";
+import {CustomTextInputPassword} from "../../components/CustomTextInputPassword";
 
 export function RegisterScreen() {
 
-    const {onChangeRegister, register, errorMessage} =viewModel.registerViewModel()
+    const {onChangeRegister, register, errorMessage, setErrorMessage} =viewModel.registerViewModel()
 
     useEffect(() => {
-        if(errorMessage !== "")
-            Alert.alert('Error!', errorMessage);
-    })
+        if(errorMessage !== "") {
+            Toast.show({
+                type: 'error',
+                text1: errorMessage,
+            });
+        }
+        setErrorMessage("");
+    }, [errorMessage])
 
     return(
         <View style={styles.container}>
             <ImageBackground source={require("../../../../assets/background.png")}
                              style={{width: '100%', height: '100%'}}>
-                <AlertContainer />
                 <View style={styles.formContainer}>
                     <Text style={styles.titleRegister}>Create an account</Text>
 
@@ -42,21 +48,20 @@ export function RegisterScreen() {
                                          onChangeText={(text) => onChangeRegister("email", text)}></CustomTextInput>
                     </View>
                     <View style={styles.formInputContainer}>
-                        <CustomTextInput label={"Password"}
+                        <CustomTextInputPassword label={"Password"}
                                          keyboardType={"default"}
-                                         secureTextEntry={true}
-                                         onChangeText={(text) => onChangeRegister("password", text)}></CustomTextInput>
+                                         onChangeText={(text) => onChangeRegister("password", text)}></CustomTextInputPassword>
                     </View>
                     <View style={styles.formInputContainer}>
-                        <CustomTextInput label={"Confirm password"}
+                        <CustomTextInputPassword label={"Confirm password"}
                                          keyboardType={"default"}
-                                         secureTextEntry={true}
-                                         onChangeText={(text) => onChangeRegister("confirmPassword", text)}></CustomTextInput>
+                                         onChangeText={(text) => onChangeRegister("confirmPassword", text)}></CustomTextInputPassword>
                     </View>
                     <View style={styles.formButtonContainer}>
                         <RoundedButton text={"Sign Up"} onPressFromInterface={() => register()}/>
                     </View>
                 </View>
+                <Toast/>
             </ImageBackground>
         </View>
     )
