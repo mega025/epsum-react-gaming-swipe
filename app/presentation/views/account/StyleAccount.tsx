@@ -33,7 +33,7 @@ const styleAccount = StyleSheet.create({
     },
     containerEmail:{
         alignSelf:"center",
-        top:100,
+        top:80,
 
     },
     textEmail:{
@@ -44,14 +44,14 @@ const styleAccount = StyleSheet.create({
     },
     containerPhoto:{
         alignItems:"center",
-        top:130,
+        top:100,
     },
 
     containerEditName:{
         flexDirection: "row",
     },
     containerName:{
-        marginTop:150
+        marginTop:290
     },
     labelName:{
         marginLeft:40,
