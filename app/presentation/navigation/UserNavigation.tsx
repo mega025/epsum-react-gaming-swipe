@@ -11,6 +11,8 @@ const Tab = createBottomTabNavigator();
 export const UserNavigation=() =>{
 return (
     <Tab.Navigator  screenOptions={{
+        tabBarHideOnKeyboard: true,
+        headerShown:false,
         tabBarShowLabel: false,
         tabBarStyle: { height: 55 },
         tabBarItemStyle: { justifyContent: "center", alignItems: "center",backgroundColor:AppColors.colorButton },
@@ -21,8 +23,6 @@ return (
                 <Image
                     source={require("../../../assets/brujula2.png")}
                     style={{width:25,height:25,marginTop:15,tintColor:"grey"}}/>
-
-
             )} }
                     component={Home} />
         <Tab.Screen name="Fav" options={{title:"Fav",
@@ -30,8 +30,6 @@ return (
                 <Image
                     source={require("../../../assets/heart.png")}
                     style={{width:25,height:25,marginTop:15,tintColor:"grey"}}/>
-
-
             )} }
                     component={Fab} />
         <Tab.Screen name="Search" options={{title:"Search",
@@ -39,8 +37,6 @@ return (
                 <Image
                     source={require("../../../assets/search.png")}
                     style={{width:25,height:25,marginTop:15,tintColor:"grey"}}/>
-
-
             )} }
                     component={Search} />
         <Tab.Screen name="Account" options={{title:"Account",
@@ -48,12 +44,8 @@ return (
                 <Image
                     source={require("../../../assets/account.png")}
                     style={{width:25,height:25,marginTop:15,tintColor:"grey"}}/>
-
-
             )} }
                     component={Account} />
-
-
     </Tab.Navigator>
 )
 }

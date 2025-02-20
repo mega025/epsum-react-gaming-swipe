@@ -1,11 +1,7 @@
 import {Image, ImageBackground, Text, View} from "react-native";
-import stylesHome from "../home/StyleHome";
-import {XButton} from "../../components/XButton";
-import {HeartButton} from "../../components/heartButton";
-import styleFab from "../fab/StyleFab";
 import styleAccount from "./StyleAccount";
 import {RoundedButton} from "../../components/RoundedButton";
-import {RoundedButtonAccount} from "../../components/RoundedButtonAccount";
+import {ChangePhoto} from "../../components/ChangePhoto";
 
 export function Account(){
     return (
@@ -25,20 +21,32 @@ export function Account(){
                     <Text style={styleAccount.textEmail}> email </Text>
                 </View>
                 <View style={styleAccount.containerPhoto}>
-                    <Image source={require("../../../../assets/account.png")} style={styleAccount.photo}></Image>
-                    <RoundedButtonAccount text={"Change photo"} onPressFromInterface={alert}></RoundedButtonAccount>
+                    <ChangePhoto></ChangePhoto>
                 </View>
-                <View>
+                <View style={styleAccount.containerName}>
+                    <Text style={styleAccount.labelName}> Name</Text>
 
-
+                    <View style={styleAccount.containerEditName}>
+                        <Text style={styleAccount.Name}> 1</Text>
+                        <Image source={require("../../../../assets/edit.png")} style={styleAccount.Edit}></Image>
+                    </View>
                 </View>
+                <View style={styleAccount.containerLastName}>
+                    <Text style={styleAccount.labelLastName}> Last name</Text>
 
-
-
-
-
-
-
+                    <View style={styleAccount.containerEditName}>
+                        <Text style={styleAccount.LastName}> 2</Text>
+                        <Image source={require("../../../../assets/edit.png")} style={styleAccount.Edit}></Image>
+                    </View>
+                </View>
+                <View style={styleAccount.containerResetPassword}>
+                    <Text style={styleAccount.TextResetPassword}>
+                        Reset password
+                    </Text>
+                </View>
+                <View style={styleAccount.containerLogOut}>
+                    <Text style={styleAccount.LogOut}> Log out</Text>
+                </View>
 
             </ImageBackground>
         </View>

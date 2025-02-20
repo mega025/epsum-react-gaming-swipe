@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
         elevation: 10,
         borderWidth: 1,
         borderColor: AppColors.colorButton,
-        borderRadius: 10,
+        borderRadius: 25,
         alignSelf: 'center',
         justifyContent: 'center',
         margin: 10,
