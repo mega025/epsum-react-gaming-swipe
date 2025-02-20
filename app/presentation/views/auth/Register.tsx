@@ -1,19 +1,26 @@
-import React from "react";
+import React, {useEffect} from "react";
 import styles from "./StylesAuthViews";
 import {View, Text, ImageBackground} from "react-native";
 import {CustomTextInputInline} from "../../components/CustomTextInputInline";
 import {CustomTextInput} from "../../components/CustomTextInput";
 import {RoundedButton} from "../../components/RoundedButton";
 import viewModel from "./ViewModel";
+import {Alert, AlertContainer} from "rn-custom-alert-prompt";
 
 export function RegisterScreen() {
 
     const {onChangeRegister, register, errorMessage} =viewModel.registerViewModel()
 
+    useEffect(() => {
+        if(errorMessage !== "")
+            Alert.alert('Error!', errorMessage);
+    })
+
     return(
         <View style={styles.container}>
             <ImageBackground source={require("../../../../assets/background.png")}
                              style={{width: '100%', height: '100%'}}>
+                <AlertContainer />
                 <View style={styles.formContainer}>
                     <Text style={styles.titleRegister}>Create an account</Text>
 

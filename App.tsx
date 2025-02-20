@@ -8,8 +8,6 @@ import TabViewLoginRegister from "./app/presentation/views/auth/TabViewLoginRegi
 import {UserNavigation} from "./app/presentation/navigation/UserNavigation";
 
 
-const Stack = createStackNavigator<RootStackParamsList>();
-
 export type RootStackParamsList = {
     UserNavigation: undefined;
     TabViewLoginRegister: undefined;
@@ -17,6 +15,7 @@ export type RootStackParamsList = {
 
 }
 
+const Stack = createStackNavigator<RootStackParamsList>();
 
 export default function App() {
 

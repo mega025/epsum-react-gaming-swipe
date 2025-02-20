@@ -1,10 +1,11 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {registerUseCase} from "../../../domain/usesCases/auth/RegisterAuth";
 import {LoggedUserInterface, LoginUserInterface, UserInterface} from "../../../domain/entities/User";
 import TabViewLoginRegister from "./TabViewLoginRegister";
 import {UseUserLocalStorage} from "../../hooks/UseUserLocalStorage";
 import {loginAuthUseCase} from "../../../domain/usesCases/auth/LoginAuth";
 import {saveUserUserCase} from "../../../domain/usesCases/userLocal/saveUser";
+import {showAlert} from "react-native-customisable-alert";
 
 const loginViewModel= () => {
 
@@ -19,6 +20,7 @@ const loginViewModel= () => {
 
 
     const onChangeLogin=(property:string, value:any)=>{
+        setErrorMessage("")
         setLoginvalue({
             ...loginValues,[property]:value})
     }
@@ -86,6 +88,7 @@ const registerViewModel= () => {
     }
 
     const onChangeRegister=(property:string, value:any)=>{
+        setErrorMessage("")
         setRegisterValue({
             ...registerValues, [property]:value
         })
