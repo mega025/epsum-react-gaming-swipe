@@ -1,22 +1,28 @@
-import React, {useEffect} from "react";
-import {Button, ImageBackground, Text, TextInput, View} from "react-native";
+import React, {useEffect, useState} from "react";
+import {Button, Image, ImageBackground, Text, TextInput, View} from "react-native";
 import styles from "./StylesAuthViews";
 import {CustomTextInput} from "../../components/CustomTextInput";
 import {RoundedButton} from "../../components/RoundedButton";
 import viewModel from "./ViewModel";
-import {Alert, AlertContainer} from 'rn-custom-alert-prompt';
 import {PropsStackNavigation} from "../../interfaces/StackNav";
-import CustomisableAlert, {closeAlert, showAlert} from "react-native-customisable-alert";
 import {useNavigation} from "@react-navigation/native";
+import Toast from "react-native-toast-message";
+import {CustomTextInputPassword} from "../../components/CustomTextInputPassword";
 
 export function LoginScreen({navigation = useNavigation(), route}: PropsStackNavigation){
 
-    const{onChangeLogin,login, user, errorMessage} = viewModel.loginViewModel();
+    const{onChangeLogin,login, user, errorMessage, setErrorMessage} = viewModel.loginViewModel();
+    const [showPassword, setShowPassword] = useState(true);
 
     useEffect(() => {
-        if(errorMessage !== "")
-            Alert.alert('Error!', errorMessage);
-    })
+        if(errorMessage !== "") {
+            Toast.show({
+                type: 'error',
+                text1: errorMessage,
+            });
+            setErrorMessage("")
+        }
+    }, [errorMessage]);
 
     useEffect(() => {
         if (user && user?.token) {
@@ -28,7 +34,6 @@ export function LoginScreen({navigation = useNavigation(), route}: PropsStackNav
         <View style={styles.container}>
             <ImageBackground source={require("../../../../assets/background.png")}
                              style={{width: '100%', height: '100%'}}>
-                <AlertContainer />
                 <View style={styles.formContainer}>
                     <Text style={styles.titleLogin}>Welcome Back</Text>
 
@@ -39,17 +44,17 @@ export function LoginScreen({navigation = useNavigation(), route}: PropsStackNav
                                          onChangeText={(text) => onChangeLogin('email', text)}></CustomTextInput>
                     </View>
 
-                    <View style={styles.formInputContainer}>
-                        <CustomTextInput label={"Password"}
+                    <View style={styles.formInputContainerPassword}>
+                        <CustomTextInputPassword label={"Password"}
                                          keyboardType={"default"}
-                                         secureTextEntry={true}
-                                         onChangeText={(text) => onChangeLogin('password', text)}></CustomTextInput>
+                                         onChangeText={(text) => onChangeLogin('password', text)}></CustomTextInputPassword>
                     </View>
 
                 </View>
                 <View style={styles.formButtonContainer}>
                     <RoundedButton text="Sign in" onPressFromInterface={() => login()} />
                 </View>
+                <Toast/>
             </ImageBackground>
         </View>
     );
