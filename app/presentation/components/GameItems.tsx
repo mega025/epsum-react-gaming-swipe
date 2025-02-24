@@ -1,13 +1,10 @@
 import React from "react";
-import { View, Text, Image, StyleSheet, FlatList } from "react-native";
-import { Game } from "../../domain/entities/Game"; // Asegúrate de tener la definición correcta de Game
+import { View, Text, Image, StyleSheet } from "react-native";
+import { Game } from "../../domain/entities/Game";
 
-interface Props {
-    games: Game[];
-}
 
-const GameItems = ({ games }: Props) => {
-    const renderItem = ({ item }: { item: Game }) => (
+const GameItems = ({ item }: { item: Game }) => {
+    return (
         <View style={styles.item}>
             {item.cover && (
                 <Image source={{ uri: item.cover.url.replace("thumb", "cover_big") }} style={styles.cover} />
@@ -18,13 +15,6 @@ const GameItems = ({ games }: Props) => {
                 {item.rating && <Text style={styles.rating}>⭐ {item.rating.toFixed(1)}</Text>}
             </View>
         </View>
-    );
-    return (
-        <FlatList
-            data={games}
-            renderItem={renderItem}
-            keyExtractor={(item) => item.name} 
-        />
     );
 };
 

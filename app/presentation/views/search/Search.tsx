@@ -1,35 +1,36 @@
-import React, { useState } from "react";
-import { ActivityIndicator, Image, ImageBackground, Text, View, TouchableWithoutFeedback, Keyboard, StyleSheet } from "react-native";
+import React, {useEffect, useState} from "react";
+import {
+    Image,
+    ImageBackground,
+    Text,
+    View,
+    TouchableWithoutFeedback,
+    Keyboard, FlatList,
+
+} from "react-native";
 import { CustomTextInputSearch } from "../../components/CustomTextInputSearch";
 import styleSearch from "./StyleSearch";
-import { IgdbApiDelivery } from "../../../data/sources/remote/igdbAPI/IgdbApiDelivery";
 import GameItems from "../../components/GameItems";
+import {IgdbApiDelivery} from "../../../data/sources/remote/igdbAPI/IgdbApiDelivery";
+import {Game} from "../../../domain/entities/Game";
+
 
 export function Search() {
     const [searchText, setSearchText] = useState("");
     const [games, setGames] = useState([]);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
+    let gameList: Game[] = [];
 
     const searchGames = async (text: string) => {
         setSearchText(text);
-        if (text.length < 2) {
-            setGames([]);
-            return;
-        }
+        const condicion = "fields name,cover.url,rating,platforms.abbreviation; limit 15; search \"" + text + "\"; ";
 
-        setLoading(true);
-        try {
-            const response = await IgdbApiDelivery.post("games", `
-        search "${text}";
-        fields name,cover.url,genres.name,rating;
-        limit 10;
-      `);
-            setGames(response.data);
-        } catch (error) {
-            console.error("Error al obtener juegos:", error);
-        } finally {
-            setLoading(false);
-        }
+        setLoading(false);
+        IgdbApiDelivery.post("/games", condicion).then((res) => {
+            console.log(res.data);
+            gameList.push(res.data);
+            console.log("askdláskdásd" + gameList);
+        })
     };
 
     return (
@@ -54,19 +55,15 @@ export function Search() {
                         keyboardType="default"
                         secureTextEntry={false}
                         value={searchText}
-                        onPressButtonFromInterface={(text: string) => searchGames(text)}
-                    />
-                    <Image
-                        source={require("../../../../assets/search.png")}
-                        style={styleSearch.icon}
+                        onPressButtonFromInterface={(text: string) =>searchGames(text)}
                     />
                 </View>
+                <View style={styleSearch.containerGames}>
+                    <FlatList
+                        data={gameList} renderItem={GameItems} keyExtractor={item => item.id.toString()}>
+                    </FlatList>
+                </View>
 
-                {loading ? (
-                    <ActivityIndicator size="large" color="#0000ff" />
-                ) : (
-                    <GameItems games={games} />
-                )}
             </ImageBackground>
         </View>
     );
