@@ -5,7 +5,7 @@ import {
     Text,
     View,
     TouchableWithoutFeedback,
-    Keyboard, FlatList,
+    Keyboard, FlatList, ActivityIndicator,
 
 } from "react-native";
 import { CustomTextInputSearch } from "../../components/CustomTextInputSearch";
@@ -19,18 +19,23 @@ export function Search() {
     const [searchText, setSearchText] = useState("");
     const [games, setGames] = useState([]);
     const [loading, setLoading] = useState(true);
-    let gameList: Game[] = [];
+
 
     const searchGames = async (text: string) => {
         setSearchText(text);
-        const condicion = "fields name,cover.url,rating,platforms.abbreviation; limit 15; search \"" + text + "\"; ";
+        const condicion = `fields name,cover.url,rating,platforms.abbreviation; limit 15; search "${text}";`;
 
-        setLoading(false);
-        IgdbApiDelivery.post("/games", condicion).then((res) => {
+        setLoading(true);
+
+        try {
+            const res = await IgdbApiDelivery.post("/games", condicion);
             console.log(res.data);
-            gameList.push(res.data);
-            console.log("askdláskdásd" + gameList);
-        })
+            setGames(res.data);
+        } catch (error) {
+            console.error("Error al buscar los juegos", error);
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -60,8 +65,11 @@ export function Search() {
                 </View>
                 <View style={styleSearch.containerGames}>
                     <FlatList
-                        data={gameList} renderItem={GameItems} keyExtractor={item => item.id.toString()}>
-                    </FlatList>
+                        data={games}
+                        renderItem={GameItems}
+                        keyExtractor={item => item.id.toString()}
+                        ListFooterComponent={loading ? <ActivityIndicator size="large" /> : null}
+                    />
                 </View>
 
             </ImageBackground>

@@ -1,68 +1,66 @@
 import {StyleSheet} from "react-native";
 import {AppFonts} from "../../theme/AppTheme";
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
+import { RFPercentage } from "react-native-responsive-fontsize";
 
 const stylesAuthViews = StyleSheet.create({
-    container:{
-      width:'100%',
-      height:'100%',
+    container: {
+        width: '100%',
+        height: '100%',
     },
 
-    titleLogin:{
-        fontSize:35,
-        color:'white',
-        marginTop:"40%",
-        alignSelf:'flex-start',
-        marginStart: 60,
-        marginBottom:50,
-        fontFamily: "zen_kaku_light"
-
+    titleLogin: {
+        fontSize: RFPercentage(5),
+        color: 'white',
+        marginTop: hp("20%"),
+        alignSelf: 'flex-start',
+        marginStart: wp("15%"),
+        marginBottom: hp("5%"),
+        fontFamily: "zen_kaku_light",
     },
 
-
-    titleRegister:{
-        fontSize:35,
-        color:'white',
-        alignSelf:'flex-start',
-        marginStart: 52,
-        marginTop:"20%",
-        marginBottom:50,
-        fontFamily: "zen_kaku_light"
-
+    titleRegister: {
+        fontSize: RFPercentage(4.5),
+        color: 'white',
+        alignSelf: 'flex-start',
+        marginStart: wp("13%"),
+        marginTop: hp("15%"),
+        marginBottom: hp("5%"),
+        fontFamily: "zen_kaku_light",
     },
 
-    formContainer:{
-        width:'100%',
-        alignItems:'center',
+    formContainer: {
+        width: '100%',
+        alignItems: 'center',
     },
 
     formInputContainer: {
-        marginBottom:20,
+        marginBottom: hp("2.5%"),
     },
 
     formInputContainerPassword: {
-        marginBottom:20,
-        flexDirection:'row',
+        marginBottom: hp("2.5%"),
+        flexDirection: 'row',
         alignItems: "center",
-        justifyContent:'center',
+        justifyContent: 'center',
     },
 
     iconPasswordToggle: {
-        width:20,
-        height:20,
-        resizeMode:'stretch',
-        backgroundColor:'white',
+        width: wp("5%"),
+        height: wp("5%"),
+        resizeMode: 'stretch',
+        backgroundColor: 'white',
     },
 
     formButtonContainer: {
-        marginTop:20,
+        marginTop: hp("3%"),
     },
 
     formInlineInputsContainer: {
         flexDirection: "row",
-        marginBottom:20,
-        gap: 10
-    }
-
+        marginBottom: hp("2.5%"),
+        gap: wp("2.5%"),
+    },
 });
 
 export default stylesAuthViews;

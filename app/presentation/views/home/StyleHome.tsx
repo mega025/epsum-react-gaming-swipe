@@ -1,18 +1,18 @@
-import {StyleSheet} from "react-native";
-import {AppColors} from "../../theme/AppTheme";
+import { StyleSheet, Dimensions } from "react-native";
+import { AppColors } from "../../theme/AppTheme";
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 
-
-const stylesHome= StyleSheet.create({
-    iconButton:{
-        backgroundColor:AppColors.colorButton,
+const stylesHome = StyleSheet.create({
+    iconButton: {
+        backgroundColor: AppColors.colorButton,
     },
-    logo:{
-        width:60,
-        height:60,
-        bottom:30,
-        position:"absolute",
-        alignSelf:"center",
-    }
-})
+    logo: {
+        width: wp("15%"),
+        height: wp("15%"),
+        bottom: hp("4%"),
+        position: "absolute",
+        alignSelf: "center",
+    },
+});
 
 export default stylesHome;
