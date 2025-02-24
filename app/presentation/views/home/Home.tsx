@@ -3,21 +3,29 @@ import stylesHome from "./StyleHome";
 import { XButton} from "../../components/XButton";
 import {HeartButton} from "../../components/heartButton";
 import {Text} from "react-native"
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {TinderCard} from "rn-tinder-card";
 import styleHome from "./StyleHome";
 import {IgdbApiDelivery} from "../../../data/sources/remote/igdbAPI/IgdbApiDelivery";
+import {Game} from "../../../domain/entities/Game";
+import viewModel from "./ViewModel";
+import {styles} from "react-native-toast-message/lib/src/components/BaseToast.styles";
 
 
 export function Home(){
 
-    IgdbApiDelivery.post()
+    const {listGames, setListGames, setGames, transfromCoverUrl} = viewModel.homeViewModel()
 
-    const data = [
-        'https://images.unsplash.com/photo-1681896616404-6568bf13b022?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1335&q=80',
-        'https://images.unsplash.com/photo-1681871197336-0250ed2fe23d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1287&q=80',
-        'https://images.unsplash.com/photo-1681238091934-10fbb34b497a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1282&q=80',
-    ];
+    useEffect(()=>{
+        setGames()
+    }, [])
+
+    useEffect(()=>{
+        if (listGames.length == 1) {
+            setGames()
+        }
+    })
+
 
     const OverlayRight = () => {
         return (
@@ -56,7 +64,7 @@ export function Home(){
               </View>
 
               <View style={styleHome.wrapper}>
-                  {data.map((item, index) => {
+                  {listGames.map((item, index) => {
                       return (
                           <View
                               style={stylesHome.cardContainer}
@@ -64,29 +72,43 @@ export function Home(){
                               key={index}
                           >
                               <TinderCard
-                                  cardWidth={380}
-                                  cardHeight={730}
+                                  cardWidth={350}
+                                  cardHeight={630}
+                                  disableBottomSwipe={true}
+                                  disableTopSwipe={true}
                                   OverlayLabelRight={OverlayRight}
                                   OverlayLabelLeft={OverlayLeft}
                                   cardStyle={stylesHome.card}
                                   onSwipedRight={() => {
+                                    setListGames((listGames) => listGames.slice(1))
 
                                   }}
                                   onSwipedLeft={() => {
+                                    setListGames((listGames) => listGames.slice(1))
                                   }}
                               >
-                                  <Image source={{ uri: item }} style={stylesHome.image} />
+                                  <Image
+                                      source={{
+                                          uri: item.cover
+                                              ? transfromCoverUrl(item.cover.url)
+                                              : "https://lightwidget.com/wp-content/uploads/localhost-file-not-found.jpg"
+                                      }}
+                                      style={styleHome.image}
+                                  />
+                                  <View style={{marginHorizontal: 20, marginVertical: 15}}>
+                                      <View style={stylesHome.firstRowCardContainer}>
+                                          <Text style={stylesHome.gameNameText}> {item.name}</Text>
+                                          <Text style={stylesHome.ratingText}>{Math.round((item.rating * 100)/100).toFixed(0)}</Text>
+                                      </View>
+                                  </View>
                               </TinderCard>
                           </View>
                       );
                   })}
               </View>
 
-
-                  <XButton></XButton>
+                  <XButton onPress={()=>{}}></XButton>
                   <HeartButton></HeartButton>
-
-
 
           </ImageBackground>
       </View>

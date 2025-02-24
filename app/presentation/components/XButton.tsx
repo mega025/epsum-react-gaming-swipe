@@ -1,9 +1,13 @@
 import {Image, TouchableOpacity,StyleSheet} from "react-native";
 import {AppColors} from "../theme/AppTheme";
 
-export const XButton=()=>{
+interface Props {
+    onPress: () => void;
+}
+
+export const XButton=({onPress}:Props)=>{
     return (
-        <TouchableOpacity style={styles.cont}>
+        <TouchableOpacity style={styles.cont} onPress={onPress}>
             <Image source={require("../../../assets/x.png")} style={styles.addButton}></Image>
         </TouchableOpacity>
     )
