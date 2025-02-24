@@ -48,6 +48,37 @@ const styleSearch = StyleSheet.create({
         bottom:5,
         tintColor:"grey",
     },
+    containerGames:{
+        marginTop:30
+    },
+    item: {
+        flexDirection: "row",
+        padding: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: "#ddd",
+        alignItems: "center",
+    },
+    cover: {
+        width: 60,
+        height: 80,
+        borderRadius: 5,
+        marginRight: 10,
+    },
+    info: {
+        flex: 1,
+    },
+    name: {
+        fontSize: 18,
+        fontWeight: "bold",
+    },
+    genre: {
+        fontSize: 14,
+        color: "#666",
+    },
+    rating: {
+        fontSize: 14,
+        color: "#ff9900",
+    },
 
 })
 
