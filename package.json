@@ -36,7 +36,8 @@
     "react-native-tab-view": "^4.0.5",
     "react-native-toast-message": "^2.2.1",
     "react-navigation": "^5.0.0",
-    "rn-custom-alert-prompt": "^1.1.4"
+    "rn-custom-alert-prompt": "^1.1.4",
+    "rn-tinder-card": "^1.7.0"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
