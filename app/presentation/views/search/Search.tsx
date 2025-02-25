@@ -12,13 +12,12 @@ import { CustomTextInputSearch } from "../../components/CustomTextInputSearch";
 import styleSearch from "./StyleSearch";
 import GameItems from "../../components/GameItems";
 import {IgdbApiDelivery} from "../../../data/sources/remote/igdbAPI/IgdbApiDelivery";
-import {Game} from "../../../domain/entities/Game";
 
 
 export function Search() {
     const [searchText, setSearchText] = useState("");
     const [games, setGames] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
 
 
     const searchGames = async (text: string) => {
