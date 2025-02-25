@@ -1,3 +1,5 @@
+import Animated from 'react-native-reanimated';
+
 import {NavigationContainer} from "@react-navigation/native";
 import {createStackNavigator} from "@react-navigation/stack";
 import TabViewExample from "./app/presentation/views/auth/TabViewLoginRegister";
