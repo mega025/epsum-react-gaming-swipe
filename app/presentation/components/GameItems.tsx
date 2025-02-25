@@ -1,9 +1,11 @@
 import React from "react";
-import { View, Text, Image, StyleSheet } from "react-native";
+import {View, Text, Image, StyleSheet, FlatList} from "react-native";
 import { Game } from "../../domain/entities/Game";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { RFPercentage } from "react-native-responsive-fontsize";
 import {AppColors} from "../theme/AppTheme";
+import styleHome from "../views/home/StyleHome";
+import {GenreItem} from "./GenreItem";
 
 
 const transfromCoverUrl = (url:string) => {
@@ -30,19 +32,13 @@ const GameItems = ({ item }: { item: Game }) => {
                     <Text style={styles.rating}>N/A</Text>
                 )}
             </View>
-            <View style={styles.genre_year}>
-                {item.genres && item.genres.length > 0 && (
-                    <Text style={styles.genre}>
-                        {item.genres.map(g => g.name).join(", ")}
-                    </Text>
-                )}
-
-                {item.releaseDate && item.releaseDate.length > 0 && (
-                    <Text style={styles.year}>
-                        {item.releaseDate[0].y}
-                    </Text>
-                )}
-
+            <View style={styles.genre_year} >
+                <FlatList data={item.genres}
+                          renderItem={GenreItem}
+                          horizontal={true}
+                          scrollEnabled={true}
+                          nestedScrollEnabled={true}/>
+                <Text style={styles.year}>{item.release_dates ? item.release_dates[0].y : "N/A"}</Text>
             </View>
         </View>
     );
