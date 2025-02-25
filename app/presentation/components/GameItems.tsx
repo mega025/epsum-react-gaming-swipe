@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     title: {
-        fontSize: 18,
+        fontSize: 16,
         fontWeight: "bold",
     },
     genre: {
