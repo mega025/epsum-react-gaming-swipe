@@ -1,19 +1,19 @@
 import {StyleSheet} from "react-native";
 import {AppColors} from "../../theme/AppTheme";
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 
 
-const stylesHome = StyleSheet.create({
-    iconButton: {
-        backgroundColor: AppColors.colorButton,
+const stylesHome= StyleSheet.create({
+    iconButton:{
+        backgroundColor:AppColors.colorButton,
     },
     logo: {
-        width: 60,
-        height: 60,
-        bottom: 30,
+        width: wp("15%"),
+        height: wp("15%"),
+        bottom: hp("4%"),
         position: "absolute",
         alignSelf: "center",
     },
-
     overlayLabelContainer: {
         width: '100%',
         height: '100%',
@@ -67,7 +67,6 @@ const stylesHome = StyleSheet.create({
         alignItems:"center",
         gap: 20
     }
-
 })
 
 export default stylesHome;

@@ -1,34 +1,35 @@
-import {StyleSheet} from "react-native";
-import {AppColors} from "../../theme/AppTheme";
+import { StyleSheet } from "react-native";
+import { AppColors } from "../../theme/AppTheme";
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 
 const styleFab = StyleSheet.create({
-    container:{
-      flex: 1,
-      alignItems: "center",
+    container: {
+        flex: 1,
+        alignItems: "center",
     },
-    logo:{
-        width:50,
-        height:50,
-        top:10,
+    logo: {
+        width: wp("12%"),
+        height: wp("12%"),
+        top: hp("1.5%"),
     },
     appName: {
-        fontSize:16,
-        top:23,
-        fontFamily:"zen_kaku_light",
-        color:AppColors.white,
+        fontSize: wp("4%"),
+        top: hp("3%"),
+        fontFamily: "zen_kaku_light",
+        color: AppColors.white,
     },
     header: {
         flexDirection: "row",
         alignSelf: "center",
-        marginTop:50,
+        marginTop: hp("6%"),
     },
-    title:{
-        fontSize:30,
-        alignSelf:"center",
-        top:50,
-        color:AppColors.white,
-        fontFamily:"zen_kaku_light"
-    }
-})
+    title: {
+        fontSize: wp("7.5%"),
+        alignSelf: "center",
+        top: hp("6%"),
+        color: AppColors.white,
+        fontFamily: "zen_kaku_light",
+    },
+});
 
 export default styleFab;
