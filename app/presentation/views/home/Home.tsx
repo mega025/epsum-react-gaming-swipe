@@ -24,10 +24,19 @@ export function Home() {
 
     const {listGames, setListGames, setGames, transfromCoverUrl, showLoading} = viewModel.homeViewModel()
     const ref = useRef<CardItemHandle>();
+    const [swipesCounter, setSwipesCounter] = useState(0);
 
     useEffect(()=>{
         setGames()
     }, [])
+
+    useEffect(() => {
+        if(swipesCounter == 6){
+            setGames();
+            setSwipesCounter(0)
+        }
+
+    });
 
     const OverlayRight = () => {
         return (
@@ -81,9 +90,11 @@ export function Home() {
                                   OverlayLabelLeft={OverlayLeft}
                                   cardStyle={stylesHome.card}
                                   onSwipedRight={() => {
+                                      setSwipesCounter(swipesCounter + 1);
 
                                   }}
                                   onSwipedLeft={() => {
+                                      setSwipesCounter(swipesCounter + 1);
                                   }}
                               >
                                   <Image

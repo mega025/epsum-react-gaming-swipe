@@ -11,10 +11,10 @@ const homeViewModel = () => {
 
     const setGames = async () => {
         const randomOffset = Math.round(((Math.random()*9100)*100)/100).toFixed(0)
-        IgdbApiDelivery.post("/games", "fields name, cover.url, genres.name, platforms.abbreviation, rating, release_dates.y; limit 5; where rating > 70; offset "+randomOffset+";")
+        IgdbApiDelivery.post("/games", "fields name, cover.url, genres.name, platforms.abbreviation, rating, release_dates.y; limit 10; where rating > 70; offset "+randomOffset+";")
             .then((response) => {
                 console.log(response.data)
-                setListGames(response.data);
+                setListGames((listGames) => [...listGames, ...response.data]);
                 setShowLoading(false);
             })
             .catch((error) => {
