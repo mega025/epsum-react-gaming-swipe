@@ -33,5 +33,6 @@ const styles = StyleSheet.create({
         backgroundColor: AppColors.colorButton,
         height: 40,
         width: "75%",
+        color: AppColors.white,
     },
 });
