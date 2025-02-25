@@ -44,6 +44,7 @@
     "react-native-toast-message": "^2.2.1",
     "react-navigation": "^5.0.0",
     "rn-custom-alert-prompt": "^1.1.4",
+    "rn-swiper-list": "^2.2.0",
     "rn-tinder-card": "^1.7.0"
   },
   "devDependencies": {

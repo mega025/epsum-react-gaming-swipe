@@ -1,31 +1,33 @@
-import {ImageBackground, View, Image, Button} from "react-native";
+import {
+    ImageBackground,
+    View,
+    Image,
+    Button,
+    ActivityIndicator,
+    FlatList,
+    TouchableWithoutFeedback
+} from "react-native";
 import stylesHome from "./StyleHome";
 import { XButton} from "../../components/XButton";
 import {HeartButton} from "../../components/heartButton";
 import {Text} from "react-native"
-import React, {useEffect, useState} from "react";
-import {TinderCard} from "rn-tinder-card";
+import React, {useEffect, useState, useCallback, useRef} from "react";
+import {CardItemHandle, TinderCard} from "rn-tinder-card";
 import styleHome from "./StyleHome";
-import {IgdbApiDelivery} from "../../../data/sources/remote/igdbAPI/IgdbApiDelivery";
-import {Game} from "../../../domain/entities/Game";
 import viewModel from "./ViewModel";
-import {styles} from "react-native-toast-message/lib/src/components/BaseToast.styles";
+import {PlatformItem} from "../../components/PlatformItem";
+import {Gesture, GestureDetector, ScrollView} from "react-native-gesture-handler";
+import {GenreItem} from "../../components/GenreItem";
 
 
-export function Home(){
+export function Home() {
 
-    const {listGames, setListGames, setGames, transfromCoverUrl} = viewModel.homeViewModel()
+    const {listGames, setListGames, setGames, transfromCoverUrl, showLoading} = viewModel.homeViewModel()
+    const ref = useRef<CardItemHandle>();
 
     useEffect(()=>{
         setGames()
     }, [])
-
-    useEffect(()=>{
-        if (listGames.length == 1) {
-            setGames()
-        }
-    })
-
 
     const OverlayRight = () => {
         return (
@@ -62,7 +64,9 @@ export function Home(){
               <View style={stylesHome.logo}>
                  <Image source={require("../../../../assets/logo.png")} style={stylesHome.logo}></Image>
               </View>
-
+              <View style={stylesHome.loadingIconContainer}>
+                  <ActivityIndicator style={styleHome.loading} size="large" color="#ffffff" animating={showLoading}/>
+              </View>
               <View style={styleHome.wrapper}>
                   {listGames.map((item, index) => {
                       return (
@@ -80,11 +84,9 @@ export function Home(){
                                   OverlayLabelLeft={OverlayLeft}
                                   cardStyle={stylesHome.card}
                                   onSwipedRight={() => {
-                                    setListGames((listGames) => listGames.slice(1))
 
                                   }}
                                   onSwipedLeft={() => {
-                                    setListGames((listGames) => listGames.slice(1))
                                   }}
                               >
                                   <Image
@@ -101,16 +103,33 @@ export function Home(){
                                           <Text style={stylesHome.ratingText}>{Math.round((item.rating * 100)/100).toFixed(0)}</Text>
                                       </View>
                                   </View>
+                                  <View style={styleHome.secondRowCardContainer} >
+                                      <FlatList style={styleHome.platformsContainer}
+                                                data={item.platforms}
+                                                renderItem={PlatformItem}
+                                                horizontal={true}
+                                                scrollEnabled={true}
+                                                nestedScrollEnabled={true}/>
+                                  </View>
+                                  <View style={styleHome.thirdRowCardContainer} >
+                                      <FlatList style={styleHome.genreContainer}
+                                                data={item.genres}
+                                                renderItem={GenreItem}
+                                                horizontal={true}
+                                                scrollEnabled={true}
+                                                nestedScrollEnabled={true}/>
+                                      <Text style={{fontSize: 15}}>{item.release_dates ? item.release_dates[0].y : "N/A"}</Text>
+                                  </View>
                               </TinderCard>
                           </View>
                       );
                   })}
               </View>
-
-                  <XButton onPress={()=>{}}></XButton>
+                  <XButton onPress={() => ref.current?.swipeLeft}></XButton>
                   <HeartButton></HeartButton>
 
           </ImageBackground>
       </View>
     );
 }
+

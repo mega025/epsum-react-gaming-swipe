@@ -10,14 +10,14 @@ const stylesHome= StyleSheet.create({
     logo: {
         width: wp("15%"),
         height: wp("15%"),
-        bottom: hp("4%"),
+        bottom: hp("3.3%"),
         position: "absolute",
         alignSelf: "center",
     },
     overlayLabelContainer: {
         width: '100%',
         height: '100%',
-        borderRadius: 48,
+        borderRadius: 10,
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -32,8 +32,26 @@ const stylesHome= StyleSheet.create({
     },
     card: {
         backgroundColor: "#cecece",
-        borderRadius: 48,
+        borderRadius: 20,
         marginBottom: 80,
+    },
+
+    loadingIconContainer: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+
+    loading: {
+        position: "absolute",
+        width: 50,
+        height: 20,
+        alignSelf: "center",
+        justifyContent: "center",
     },
 
     image: {
@@ -56,6 +74,14 @@ const stylesHome= StyleSheet.create({
         padding: 10
     },
 
+    platformsContainer: {
+        width: 310,
+    },
+
+    genreContainer: {
+        width: 205,
+    },
+
     gameNameText: {
         fontSize: 18,
         width: 250
@@ -66,6 +92,20 @@ const stylesHome= StyleSheet.create({
         position:"absolute",
         alignItems:"center",
         gap: 20
+    },
+
+    secondRowCardContainer: {
+        marginHorizontal: 20,
+        marginTop: 60,
+        elevation: 5
+    },
+
+    thirdRowCardContainer: {
+        marginHorizontal: 20,
+        marginTop: 30,
+        flexDirection: "row",
+        gap: 20,
+        alignItems: "center",
     }
 })
 

@@ -6,12 +6,16 @@ import {Game} from "../../../domain/entities/Game";
 const homeViewModel = () => {
 
     const [listGames, setListGames] = useState<Game[]>([]);
+    const [showLoading, setShowLoading] = useState(true);
+
 
     const setGames = async () => {
-        IgdbApiDelivery.post("/games", "fields name, cover.url, genres.name, platforms.abbreviation, rating, release_dates.y; limit 5; where rating > 80;")
+        const randomOffset = Math.round(((Math.random()*9100)*100)/100).toFixed(0)
+        IgdbApiDelivery.post("/games", "fields name, cover.url, genres.name, platforms.abbreviation, rating, release_dates.y; limit 5; where rating > 70; offset "+randomOffset+";")
             .then((response) => {
                 console.log(response.data)
-                setListGames([...listGames, response.data]);
+                setListGames(response.data);
+                setShowLoading(false);
             })
             .catch((error) => {
                 console.log(error);
@@ -25,7 +29,7 @@ const homeViewModel = () => {
     }
 
 
-    return {listGames, setGames, setListGames, transfromCoverUrl}
+    return {listGames, setGames, setListGames, transfromCoverUrl, showLoading}
 }
 
 export default {homeViewModel}
