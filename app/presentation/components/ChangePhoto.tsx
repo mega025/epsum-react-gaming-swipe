@@ -53,7 +53,7 @@ const styles =StyleSheet.create({
         resizeMode:"center",
     },
     button:{
-        backgroundColor:AppColors.colorButton,
+        backgroundColor:AppColors.colorNavigationButton,
         width:160,
         height:35,
         borderRadius:25,

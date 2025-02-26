@@ -79,6 +79,10 @@ const styleSearch = StyleSheet.create({
         fontSize: RFPercentage(2),
         color: "#ff9900",
     },
+    containerHeader:{
+        elevation:2,
+        backgroundColor: AppColors.colorButton,
+    }
 });
 
 export default styleSearch;

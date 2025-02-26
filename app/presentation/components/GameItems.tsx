@@ -6,6 +6,7 @@ import { RFPercentage } from "react-native-responsive-fontsize";
 import {AppColors} from "../theme/AppTheme";
 import styleHome from "../views/home/StyleHome";
 import {GenreItem} from "./GenreItem";
+import {PlatformItem} from "./PlatformItem";
 
 
 const transfromCoverUrl = (url:string) => {
@@ -24,6 +25,7 @@ const GameItems = ({ item }: { item: Game }) => {
                         : "https://lightwidget.com/wp-content/uploads/localhost-file-not-found.jpg"
                 }} style={styles.cover} />
             )}
+            <View style={styles.infoContainer}>
             <View style={styles.name_rating}>
                 <Text style={styles.title}>{item.name}</Text>
                 {item.rating ? (
@@ -32,19 +34,25 @@ const GameItems = ({ item }: { item: Game }) => {
                     <Text style={styles.rating}>N/A</Text>
                 )}
             </View>
-            <View style={styles.genre_year} >
-                <FlatList data={item.genres}
-                          renderItem={GenreItem}
+            <View style={styles.platform_year}>
+                <FlatList data={item.platforms}
+                          renderItem={PlatformItem}
                           horizontal={true}
                           scrollEnabled={true}
-                          nestedScrollEnabled={true}/>
-                <Text style={styles.year}>{item.release_dates ? item.release_dates[0].y : "N/A"}</Text>
+                          nestedScrollEnabled={true}
+                            style={styles.genre}/>
+                <Text style={styles.year}>{item.release_dates?.[0]?.y ?? "N/A"}</Text>
+            </View>
             </View>
         </View>
     );
 };
 
 const styles = StyleSheet.create({
+    infoContainer: {
+        flex: 1,
+        flexDirection: "column",
+    },
     item: {
         flexDirection: "row",
         padding: 10,
@@ -59,36 +67,40 @@ const styles = StyleSheet.create({
         marginRight: 10,
     },
     name_rating: {
+        flex: 1,
         flexDirection:"row",
         alignItems: "center",
         justifyContent:"space-between",
         marginBottom: hp("10%"),
     },
     title: {
-        flex:1,
+        flex:3,
         fontSize: RFPercentage(2),
         fontWeight: "bold",
-        flexWrap: "wrap",
     },
     genre: {
+        flex:4,
         fontSize: RFPercentage(1.5),
         color: AppColors.white,
     },
     rating: {
         flex:1,
-        fontSize: RFPercentage(1.5),
-        color: "#ff9900",
+        fontSize: RFPercentage(1.7),
+        color: AppColors.white,
+        fontFamily:"zen_kaku_bold",
+
     },
-    genre_year:{
+    platform_year:{
+        flex:1,
         flexDirection:"row",
         alignItems: "center",
-        justifyContent:"space-between",
-        marginTop: hp("10%"),
     },
     year: {
         flex:1,
         fontSize: RFPercentage(1.5),
         color: AppColors.white,
+        marginLeft: hp("8%"),
+
     },
 });
 
