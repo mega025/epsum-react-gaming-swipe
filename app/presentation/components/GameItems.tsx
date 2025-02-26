@@ -26,6 +26,9 @@ const GameItems = ({ item }: { item: Game }) => {
                 }} style={styles.cover} />
             )}
             <View style={styles.infoContainer}>
+                <View style={styles.containerFab}>
+                    <Image source={require("../../../assets/heart.png")}></Image>
+                </View>
             <View style={styles.name_rating}>
                 <Text style={styles.title}>{item.name}</Text>
                 {item.rating ? (
@@ -53,6 +56,17 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: "column",
     },
+    containerFab:{
+        flex:1,
+        alignItems:'center',
+        alignSelf:"center",
+        alignContent:"center",
+        verticalAlign:"middle",
+    },
+    fab:{
+        width: wp("12%"),
+        height: hp("6%"),
+    },
     item: {
         flexDirection: "row",
         padding: 10,
@@ -67,7 +81,7 @@ const styles = StyleSheet.create({
         marginRight: 10,
     },
     name_rating: {
-        flex: 1,
+        flex: 2,
         flexDirection:"row",
         alignSelf: "center",
         alignItems: "center",
@@ -92,7 +106,7 @@ const styles = StyleSheet.create({
         fontFamily:"zen_kaku_bold",
     },
     platform_year:{
-        flex:1,
+        flex:2,
         flexDirection:"row",
         alignSelf: "center",
         alignItems: "center",
