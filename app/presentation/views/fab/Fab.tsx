@@ -1,7 +1,7 @@
 import {Image, ImageBackground, Text, View} from "react-native";
 import stylesHome from "../home/StyleHome";
 import {XButton} from "../../components/XButton";
-import {HeartButton} from "../../components/heartButton";
+import {LikeButton} from "../../components/LikeButton";
 import styleFab from "./StyleFab";
 
 export function Fab(){

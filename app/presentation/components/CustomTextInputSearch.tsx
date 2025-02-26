@@ -30,8 +30,9 @@ const styles = StyleSheet.create({
         paddingVertical: 5,
         paddingHorizontal: 10,
         borderRadius: 10,
-        backgroundColor: AppColors.colorButton,
+        backgroundColor: AppColors.colorNavigationButton,
         height: 40,
         width: "75%",
+        color: AppColors.white,
     },
 });

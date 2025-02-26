@@ -1,3 +1,5 @@
+import Animated from 'react-native-reanimated';
+
 import {NavigationContainer} from "@react-navigation/native";
 import {createStackNavigator} from "@react-navigation/stack";
 import TabViewExample from "./app/presentation/views/auth/TabViewLoginRegister";
@@ -31,7 +33,7 @@ export default function App() {
     return (
       <NavigationContainer>
           <Stack.Navigator screenOptions={{ headerShown: false }}>
-
+              {/*<Stack.Screen name="TabViewLoginRegister" component={TabViewLoginRegister}/>*/}
               <Stack.Screen name="UserNavigation" component={UserNavigation} ></Stack.Screen>
           </Stack.Navigator>
       </NavigationContainer>
