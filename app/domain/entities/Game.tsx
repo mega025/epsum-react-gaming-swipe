@@ -1,8 +1,9 @@
 export interface Game {
+    id: any;
     name: string;
     rating: number;
     platforms: Platform[];
-    releaseDate: ReleaseDate[];
+    release_dates: ReleaseDate[];
     genres: Genre[];
     cover: Cover;
 }

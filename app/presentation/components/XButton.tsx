@@ -1,9 +1,13 @@
 import {Image, TouchableOpacity,StyleSheet} from "react-native";
 import {AppColors} from "../theme/AppTheme";
 
-export const XButton=()=>{
+interface Props {
+    onPress: () => void;
+}
+
+export const XButton=({onPress}:Props)=>{
     return (
-        <TouchableOpacity style={styles.cont}>
+        <TouchableOpacity style={styles.cont} onPress={onPress}>
             <Image source={require("../../../assets/x.png")} style={styles.addButton}></Image>
         </TouchableOpacity>
     )
@@ -16,13 +20,14 @@ const styles = StyleSheet.create({
         tintColor:"red",
     },
     cont:{
-      backgroundColor:AppColors.colorButton,
+        backgroundColor:AppColors.colorButton,
         position:"absolute",
-        left:35,
-        bottom:60,
+        right:35,
+        bottom:30,
         borderRadius:40,
-        height:60,
-        width:60,
+        marginRight: 50,
+        height:70,
+        width:70,
         alignItems:"center",
         justifyContent:"center"
     }

@@ -1,0 +1,28 @@
+import {Dimensions, Text, View} from "react-native";
+import {Genre, Platform} from "../../domain/entities/Game";
+import {StyleSheet} from "react-native";
+import {AppColors} from "../theme/AppTheme";
+
+export const GenreItem = ({item}: {item: Genre}) => {
+    return (
+        <View style={styles.container}>
+            <Text style={styles.name}>{item.name}</Text>
+        </View>
+    )
+}
+
+const styles = StyleSheet.create({
+    container: {
+        backgroundColor: AppColors.orangeColor,
+        borderRadius: 4,
+        padding: 7,
+        alignSelf:'baseline',
+        alignItems: "center",
+        marginEnd: 5,
+    },
+
+    name: {
+        fontSize: 15,
+        color: "#fff",
+    }
+})

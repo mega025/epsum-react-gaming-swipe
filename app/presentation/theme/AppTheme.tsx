@@ -1,10 +1,10 @@
 export const AppColors = {
     black: "#FF000000" ,
     white:"#FFFFFFFF",
-    colorButton:"#220526",
+    colorNavigationButton:"#220526",
     selectedTab:"#0583F2",
     orangeColor:"#C57503",
-    colorNavigationButton:"#140000",
+    colorButton:"#130121",
     transparent:"#00000000",
     red:"#c50a0a",
 }
