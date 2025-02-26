@@ -10,7 +10,7 @@ const stylesHome= StyleSheet.create({
     logo: {
         width: wp("15%"),
         height: wp("15%"),
-        bottom: hp("3.3%"),
+        bottom: hp("3.6%"),
         position: "absolute",
         alignSelf: "center",
     },
@@ -34,6 +34,7 @@ const stylesHome= StyleSheet.create({
         backgroundColor: "#cecece",
         borderRadius: 20,
         marginBottom: 80,
+        elevation: 10,
     },
 
     loadingIconContainer: {
@@ -56,8 +57,7 @@ const stylesHome= StyleSheet.create({
 
     image: {
         width: '100%',
-        height: 400,
-        borderRadius: 10,
+        height: 420,
     },
 
     overlayLabelText: {
@@ -67,15 +67,15 @@ const stylesHome= StyleSheet.create({
     },
 
     ratingText: {
-        fontSize: 20,
+        fontSize: 19,
         backgroundColor: "#00da08",
         color: "#FFF",
         fontWeight: "bold",
-        padding: 10
+        padding: 10,
     },
 
     platformsContainer: {
-        width: 310,
+        width: 290,
     },
 
     genreContainer: {
@@ -83,28 +83,28 @@ const stylesHome= StyleSheet.create({
     },
 
     gameNameText: {
-        fontSize: 18,
-        width: 250
+        fontSize: 17,
+        width: 230
     },
 
     firstRowCardContainer: {
         flexDirection: "row",
         position:"absolute",
         alignItems:"center",
-        gap: 20
+        gap: 10,
     },
 
     secondRowCardContainer: {
-        marginHorizontal: 20,
-        marginTop: 60,
+        marginTop: 70,
+        position: "absolute",
         elevation: 5
     },
 
     thirdRowCardContainer: {
-        marginHorizontal: 20,
-        marginTop: 30,
+        marginTop: 120,
         flexDirection: "row",
         gap: 20,
+        position: "absolute",
         alignItems: "center",
     }
 })

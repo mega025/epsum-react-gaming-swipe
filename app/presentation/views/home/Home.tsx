@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import stylesHome from "./StyleHome";
 import { XButton} from "../../components/XButton";
-import {HeartButton} from "../../components/heartButton";
+import {LikeButton} from "../../components/LikeButton";
 import {Text} from "react-native"
 import React, {useEffect, useState, useCallback, useRef} from "react";
 import {CardItemHandle, TinderCard} from "rn-tinder-card";
@@ -24,10 +24,19 @@ export function Home() {
 
     const {listGames, setListGames, setGames, transfromCoverUrl, showLoading} = viewModel.homeViewModel()
     const ref = useRef<CardItemHandle>();
+    const [swipesCounter, setSwipesCounter] = useState(0);
 
     useEffect(()=>{
         setGames()
     }, [])
+
+    useEffect(() => {
+        if(swipesCounter == 6){
+            setGames();
+            setSwipesCounter(0)
+        }
+
+    });
 
     const OverlayRight = () => {
         return (
@@ -61,9 +70,6 @@ export function Home() {
       <View>
           <ImageBackground source={require("../../../../assets/background.png")}
                            style={{width: '100%', height: '100%'}}>
-              <View style={stylesHome.logo}>
-                 <Image source={require("../../../../assets/logo.png")} style={stylesHome.logo}></Image>
-              </View>
               <View style={stylesHome.loadingIconContainer}>
                   <ActivityIndicator style={styleHome.loading} size="large" color="#ffffff" animating={showLoading}/>
               </View>
@@ -76,7 +82,7 @@ export function Home() {
                               key={index}
                           >
                               <TinderCard
-                                  cardWidth={350}
+                                  cardWidth={330}
                                   cardHeight={630}
                                   disableBottomSwipe={true}
                                   disableTopSwipe={true}
@@ -84,9 +90,11 @@ export function Home() {
                                   OverlayLabelLeft={OverlayLeft}
                                   cardStyle={stylesHome.card}
                                   onSwipedRight={() => {
+                                      setSwipesCounter(swipesCounter + 1);
 
                                   }}
                                   onSwipedLeft={() => {
+                                      setSwipesCounter(swipesCounter + 1);
                                   }}
                               >
                                   <Image
@@ -102,31 +110,34 @@ export function Home() {
                                           <Text style={stylesHome.gameNameText}> {item.name}</Text>
                                           <Text style={stylesHome.ratingText}>{Math.round((item.rating * 100)/100).toFixed(0)}</Text>
                                       </View>
-                                  </View>
-                                  <View style={styleHome.secondRowCardContainer} >
-                                      <FlatList style={styleHome.platformsContainer}
-                                                data={item.platforms}
-                                                renderItem={PlatformItem}
-                                                horizontal={true}
-                                                scrollEnabled={true}
-                                                nestedScrollEnabled={true}/>
-                                  </View>
-                                  <View style={styleHome.thirdRowCardContainer} >
-                                      <FlatList style={styleHome.genreContainer}
-                                                data={item.genres}
-                                                renderItem={GenreItem}
-                                                horizontal={true}
-                                                scrollEnabled={true}
-                                                nestedScrollEnabled={true}/>
-                                      <Text style={{fontSize: 15}}>{item.release_dates ? item.release_dates[0].y : "N/A"}</Text>
+                                      <View style={styleHome.secondRowCardContainer} >
+                                          <FlatList style={styleHome.platformsContainer}
+                                                    data={item.platforms}
+                                                    renderItem={PlatformItem}
+                                                    horizontal={true}
+                                                    scrollEnabled={true}
+                                                    nestedScrollEnabled={true}/>
+                                      </View>
+                                      <View style={styleHome.thirdRowCardContainer} >
+                                          <FlatList style={styleHome.genreContainer}
+                                                    data={item.genres}
+                                                    renderItem={GenreItem}
+                                                    horizontal={true}
+                                                    scrollEnabled={true}
+                                                    nestedScrollEnabled={true}/>
+                                          <Text style={{fontSize: 15}}>{item.release_dates ? item.release_dates[0].y : "N/A"}</Text>
+                                      </View>
                                   </View>
                               </TinderCard>
                           </View>
                       );
                   })}
               </View>
+              <View>
+                  <Image source={require("../../../../assets/logo.png")} style={stylesHome.logo}></Image>
                   <XButton onPress={() => ref.current?.swipeLeft}></XButton>
-                  <HeartButton></HeartButton>
+                  <LikeButton></LikeButton>
+              </View>
 
           </ImageBackground>
       </View>

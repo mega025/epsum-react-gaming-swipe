@@ -15,13 +15,14 @@ const styles = StyleSheet.create({
         backgroundColor: "#19114b",
         borderRadius: 4,
         padding: 7,
+        paddingHorizontal: 10,
         alignSelf:'baseline',
         alignItems: "center",
         marginEnd: 5,
     },
 
     abbreviation: {
-        fontSize: 15,
+        fontSize: 14,
         color: "#fff",
     }
 })

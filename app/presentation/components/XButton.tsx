@@ -23,10 +23,10 @@ const styles = StyleSheet.create({
       backgroundColor:AppColors.colorButton,
         position:"absolute",
         left:35,
-        bottom:60,
+        bottom:30,
         borderRadius:40,
-        height:60,
-        width:60,
+        height:70,
+        width:70,
         alignItems:"center",
         justifyContent:"center"
     }
