@@ -9,14 +9,16 @@ const searchViewModel = () => {
     const [searchText, setSearchText] = useState("");
     const [games, setGames] =useState<Game[]>([]);
     const [loading, setLoading] = useState(false);
-    const [page, setPage] = useState(0);
+    const [page, setPage] = useState(1);
 
 
     const searchGames = async (text: string, page: number = 1) => {
         setLoading(true);
         try {
-            const res = await IgdbApiDelivery.post<Game[]>("/games",
-                `fields name, rating, platforms.abbreviation, genres.name, cover.url, release_dates.y; limit 15; search "${text}"; offset ${page  * 15};`
+            const offset = page > 1 ? `offset ${page * 15};` : "";
+            const res = await IgdbApiDelivery.post<Game[]>(
+                "/games",
+                `fields name, rating, platforms.abbreviation, genres.name, cover.url, release_dates.y; limit 15; search "${text}"; ${offset}`
             );
             if (page === 1) {
                 setGames(res.data);
