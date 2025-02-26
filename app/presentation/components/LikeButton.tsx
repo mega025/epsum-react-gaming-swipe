@@ -18,9 +18,10 @@ const styles = StyleSheet.create({
     cont:{
         backgroundColor:AppColors.colorButton,
         position:"absolute",
-        right:35,
+        left:35,
         bottom:30,
         borderRadius:40,
+        marginLeft: 50,
         height:70,
         width:70,
         alignItems:"center",

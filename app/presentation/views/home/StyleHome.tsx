@@ -24,6 +24,7 @@ const stylesHome= StyleSheet.create({
 
     wrapper: {
         flex: 1,
+        marginBottom: 50,
     },
     cardContainer: {
         ...StyleSheet.absoluteFillObject,
@@ -35,6 +36,7 @@ const stylesHome= StyleSheet.create({
         borderRadius: 20,
         marginBottom: 80,
         elevation: 10,
+        position: "absolute",
     },
 
     loadingIconContainer: {
@@ -44,7 +46,8 @@ const stylesHome= StyleSheet.create({
         top: 0,
         bottom: 0,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        opacity: 1
     },
 
     loading: {
@@ -58,6 +61,8 @@ const stylesHome= StyleSheet.create({
     image: {
         width: '100%',
         height: 420,
+        borderTopRightRadius: 20,
+        borderTopLeftRadius: 20,
     },
 
     overlayLabelText: {
@@ -106,6 +111,10 @@ const stylesHome= StyleSheet.create({
         gap: 20,
         position: "absolute",
         alignItems: "center",
+    },
+
+    buttonsContainer : {
+        marginTop: hp("101%")
     }
 })
 
