@@ -69,6 +69,7 @@ const styles = StyleSheet.create({
     name_rating: {
         flex: 1,
         flexDirection:"row",
+        alignSelf: "center",
         alignItems: "center",
         justifyContent:"space-between",
         marginBottom: hp("10%"),
@@ -79,20 +80,21 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
     },
     genre: {
-        flex:4,
+        flex:1,
         fontSize: RFPercentage(1.5),
         color: AppColors.white,
     },
     rating: {
+        height: 30,
         flex:1,
         fontSize: RFPercentage(1.7),
         color: AppColors.white,
         fontFamily:"zen_kaku_bold",
-
     },
     platform_year:{
         flex:1,
         flexDirection:"row",
+        alignSelf: "center",
         alignItems: "center",
     },
     year: {
