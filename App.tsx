@@ -8,12 +8,14 @@ import {LoginScreen} from "./app/presentation/views/auth/Login";
 import {useFonts} from "expo-font";
 import TabViewLoginRegister from "./app/presentation/views/auth/TabViewLoginRegister";
 import {UserNavigation} from "./app/presentation/navigation/UserNavigation";
+import {Account} from "./app/presentation/views/account/Account";
 
 
 export type RootStackParamsList = {
     UserNavigation: undefined;
     TabViewLoginRegister: undefined;
     Home: undefined;
+    Account: undefined;
 
 }
 
@@ -34,7 +36,8 @@ export default function App() {
       <NavigationContainer>
           <Stack.Navigator screenOptions={{ headerShown: false }}>
               {/*<Stack.Screen name="TabViewLoginRegister" component={TabViewLoginRegister}/>*/}
-              <Stack.Screen name="UserNavigation" component={UserNavigation} ></Stack.Screen>
+              {/* <Stack.Screen name="UserNavigation" component={UserNavigation} ></Stack.Screen>*/}
+              <Stack.Screen name="Account" component={Account}></Stack.Screen>
           </Stack.Navigator>
       </NavigationContainer>
   );
