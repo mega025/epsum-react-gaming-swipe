@@ -26,16 +26,9 @@ const GameItems = ({ item }: { item: Game }) => {
                 }} style={styles.cover} />
             )}
             <View style={styles.infoContainer}>
-                <View style={styles.containerFab}>
-                    <Image source={require("../../../assets/heart.png")}></Image>
-                </View>
+
             <View style={styles.name_rating}>
                 <Text style={styles.title}>{item.name}</Text>
-                {item.rating ? (
-                    <Text style={styles.rating}>⭐ {item.rating.toFixed(1)}</Text>
-                ) : (
-                    <Text style={styles.rating}>N/A</Text>
-                )}
             </View>
             <View style={styles.platform_year}>
                 <FlatList data={item.platforms}
@@ -44,8 +37,17 @@ const GameItems = ({ item }: { item: Game }) => {
                           scrollEnabled={true}
                           nestedScrollEnabled={true}
                             style={styles.genre}/>
-                <Text style={styles.year}>{item.release_dates?.[0]?.y ?? "N/A"}</Text>
             </View>
+            </View>
+            <View style={styles.containerFab}>
+                {item.rating ? (
+                    <Text style={styles.rating}>⭐ {item.rating.toFixed(1)}</Text>
+                ) : (
+                    <Text style={styles.rating}>N/A</Text>
+                )}
+                <Image source={require("../../../assets/heart.png")} style={styles.fab}></Image>
+                <Text style={styles.year}>{item.release_dates?.[0]?.y ?? "N/A"}</Text>
+
             </View>
         </View>
     );
@@ -57,15 +59,19 @@ const styles = StyleSheet.create({
         flexDirection: "column",
     },
     containerFab:{
-        flex:1,
+
         alignItems:'center',
         alignSelf:"center",
         alignContent:"center",
         verticalAlign:"middle",
     },
     fab:{
-        width: wp("12%"),
-        height: hp("6%"),
+        width:wp("6%"),
+        height:hp("3%"),
+        tintColor:"#4dc51f",
+        padding:hp("1.5%"),
+        marginTop:hp("2%"),
+        marginBottom:hp("2%")
     },
     item: {
         flexDirection: "row",
@@ -86,12 +92,14 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         alignItems: "center",
         justifyContent:"space-between",
-        marginBottom: hp("10%"),
+        marginBottom: hp("5%"),
     },
     title: {
         flex:3,
         fontSize: RFPercentage(2),
         fontWeight: "bold",
+        color:AppColors.white,
+
     },
     genre: {
         flex:1,
@@ -104,6 +112,7 @@ const styles = StyleSheet.create({
         fontSize: RFPercentage(1.7),
         color: AppColors.white,
         fontFamily:"zen_kaku_bold",
+
     },
     platform_year:{
         flex:2,
@@ -115,7 +124,6 @@ const styles = StyleSheet.create({
         flex:1,
         fontSize: RFPercentage(1.5),
         color: AppColors.white,
-        marginLeft: hp("8%"),
 
     },
 });
