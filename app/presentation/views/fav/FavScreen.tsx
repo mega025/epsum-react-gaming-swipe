@@ -31,7 +31,7 @@ export function FavScreen(){
                 <View style={stylesHome.loadingIconContainer}>
                     <ActivityIndicator style={styleHome.loading} size="large" color="#ffffff" animating={showLoading}/>
                 </View>
-                <View style={{marginTop: hp("7%"), marginBottom: hp("11%")}}>
+                <View style={{marginTop: hp("5%"), marginBottom: hp("17%")}}>
                     <FlatList data={favListGames}
                               renderItem={FavGameItem}
                     />

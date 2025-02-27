@@ -25,7 +25,7 @@ import Toast from "react-native-toast-message";
 export function Home() {
 
     const tinderCardsRef = useRef<Array<CardItemHandle | null>>([]);
-    const {listGames, setListGames, setGames, transfromCoverUrl, showLoading, setShowLoading} = viewModel.homeViewModel()
+    const {listGames, setListGames, setGames, transfromCoverUrl, imageGame, showLoading, setShowLoading} = viewModel.homeViewModel()
     let [swipesCounter, setSwipesCounter] = useState(1);
 
     const nullGenre: Genre = {
@@ -76,7 +76,8 @@ export function Home() {
     };
     return (
         <View>
-            <ImageBackground source={require("../../../../assets/background.png")}
+            <ImageBackground source={{uri: imageGame ? imageGame : require("../../../../assets/background.png")}}
+                             blurRadius={1}
                              style={{width: '100%', height: '100%'}}>
                 <View style={stylesHome.loadingIconContainer}>
                     <ActivityIndicator style={styleHome.loading} size="large" color="#ffffff" animating={showLoading}/>
