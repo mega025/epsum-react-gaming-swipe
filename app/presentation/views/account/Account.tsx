@@ -59,7 +59,7 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                                 <View style={styleAccount.modalView}>
                                     <CustomTextInputPassword label={"Password"}
                                                              keyboardType={"default"}
-                                                             onChangeText={(text) => alert()}>
+                                                             onChangeText={(text) => alert("Password")}>
                                     </CustomTextInputPassword>
 
                                     <Pressable
