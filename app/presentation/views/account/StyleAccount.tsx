@@ -93,36 +93,19 @@ const styleAccount = StyleSheet.create({
         fontSize: wp("4.5%"),
         color: AppColors.white,
         textDecorationLine: "underline",
+        fontFamily: "zen_kaku_regular",
+        height:25,
+
     },
     containerLogOut: {
         alignItems: "center",
-        marginTop: hp("10%"),
+        marginTop: hp("8%"),
     },
     LogOut: {
         fontSize: wp("7%"),
         color: AppColors.red,
         fontFamily: "zen_kaku_regular",
         fontWeight: "bold",
-    },
-    centeredView: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    modalView: {
-        margin: 20,
-        backgroundColor: 'white',
-        borderRadius: 20,
-        padding: 35,
-        alignItems: 'center',
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-        elevation: 5,
     },
     button: {
         borderRadius: 20,
@@ -135,15 +118,65 @@ const styleAccount = StyleSheet.create({
     buttonClose: {
         backgroundColor: '#2196F3',
     },
-    textStyle: {
-        color: 'white',
-        fontWeight: 'bold',
-        textAlign: 'center',
-    },
     modalText: {
         marginBottom: 15,
         textAlign: 'center',
     },
+    centeredView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "rgba(0,0,0,0.5)",
+    },
+    modalView: {
+        backgroundColor: AppColors.colorNavigationButton,
+        borderRadius: 10,
+        padding: 20,
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
+    },
+    cancelButton: {
+        alignItems: "center",
+        width: "25%",
+        marginTop: 15,
+        padding: 10,
+        backgroundColor:AppColors.red,
+        borderRadius: 10,
+    },
+    acceptButton: {
+        alignItems: "center",
+        marginTop: 15,
+        padding: 10,
+        backgroundColor:"#085e03",
+        borderRadius: 10,
+        width: "25%",
+        marginLeft: wp("22%"),
+    },
+    containerButton:{
+        flexDirection: "row",
+
+    },
+    textStyle: {
+        color: "white",
+        fontSize: 16,
+        fontWeight: "bold",
+        fontFamily: "zen_kaku_regular",
+        height:20,
+    },
+    openButtonText: {
+        color: "blue",
+        fontSize: 18,
+    },
+    textPopUp:{
+        fontSize: 16,
+        color: AppColors.white,
+        fontFamily: "zen_kaku_regular",
+        height:30,
+    }
 });
 
 export default styleAccount;

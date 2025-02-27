@@ -8,12 +8,14 @@ import {LoginScreen} from "./app/presentation/views/auth/Login";
 import {useFonts} from "expo-font";
 import TabViewLoginRegister from "./app/presentation/views/auth/TabViewLoginRegister";
 import {UserNavigation} from "./app/presentation/navigation/UserNavigation";
+import {Account} from "./app/presentation/views/account/Account";
 
 
 export type RootStackParamsList = {
     UserNavigation: undefined;
     TabViewLoginRegister: undefined;
     Home: undefined;
+    Account: undefined;
 
 }
 
