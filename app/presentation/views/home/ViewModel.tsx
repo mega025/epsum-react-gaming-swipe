@@ -7,6 +7,7 @@ const homeViewModel = () => {
 
     let [listGames, setListGames] = useState<Game[]>([]);
     let [showLoading, setShowLoading] = useState(true);
+    let [imageGame, setImageGame] = useState("");
 
 
     const setGames = async () => {
@@ -25,11 +26,12 @@ const homeViewModel = () => {
     const transfromCoverUrl = (url:string) => {
         const cutUrlFirstPart = url.substring(0, 38);
         const cutUrlSecondPart = url.substring(url.lastIndexOf("/") + 1);
+        setImageGame("https:"+cutUrlFirstPart+"cover_big/"+cutUrlSecondPart)
         return "https:"+cutUrlFirstPart+"cover_big/"+cutUrlSecondPart;
     }
 
 
-    return {listGames, setGames, setListGames, transfromCoverUrl, showLoading, setShowLoading}
+    return {listGames, setGames, setListGames, transfromCoverUrl, showLoading, setShowLoading, imageGame}
 }
 
 export default {homeViewModel}

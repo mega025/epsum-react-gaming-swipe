@@ -3,6 +3,8 @@ import {Image, View, Text, TouchableOpacity} from "react-native";
 import {StyleSheet} from 'react-native';
 import {BaseToast} from "react-native-toast-message";
 import stylesHome from "../views/home/StyleHome";
+import {Popup} from '@sekizlipenguen/react-native-popup-confirm-toast'
+
 
 
 export const FavGameItem = ({item}: {item: FavGame}) => {
@@ -10,8 +12,25 @@ export const FavGameItem = ({item}: {item: FavGame}) => {
         <View style={styles.card}>
             <View style={styles.container}>
                 <Image source={{uri : item.imageUrl}} style={styles.image}/>
-                <Text style={stylesHome.gameNameText}>{item.name}</Text>
-                <TouchableOpacity style={styles.deleteIcon}>
+                <Text style={{...stylesHome.gameNameText, width: 170}}>{item.name}</Text>
+                <TouchableOpacity style={styles.deleteIcon} onPress={() =>
+                    Popup.show({
+                        type: 'confirm',
+                        title: 'Dikkat!',
+                        textBody: 'Mutlak özgürlük, kendi başına hiçbir anlam ifade etmez. ',
+                        buttonText: 'Tamam',
+                        confirmText: 'Vazgeç',
+                        callback: () => {
+                            alert('Okey Callback && hidden');
+                            Popup.hide();
+                        },
+                        cancelCallback: () => {
+                            alert('Cancel Callback && hidden');
+                            Popup.hide();
+                        },
+                    })
+                }
+                >
                     <Image source={require("../../../assets/borrar.png")} style={styles.deleteIcon} />
                 </TouchableOpacity>
             </View>
@@ -34,12 +53,12 @@ const styles = StyleSheet.create({
     container: {
         position: "absolute",
         flexDirection: "row",
-        gap: 5,
+        gap: 15,
         alignItems: "center",
     },
 
     image : {
-        width: 120,
+        width: 130,
         height: 190,
         borderTopLeftRadius: 20,
         borderBottomLeftRadius: 20,
