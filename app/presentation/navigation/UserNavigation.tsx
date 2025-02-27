@@ -15,7 +15,7 @@ return (
         headerShown:false,
         tabBarShowLabel: false,
         tabBarStyle: { height: 55 },
-        tabBarItemStyle: { justifyContent: "center", alignItems: "center",backgroundColor:AppColors.colorNavigationButton },
+        tabBarItemStyle: { justifyContent: "center", alignItems: "center",backgroundColor:AppColors.colorButton },
     }}
     >
         <Tab.Screen name="Home" options={{title:"Home",

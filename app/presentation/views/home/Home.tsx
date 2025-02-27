@@ -20,12 +20,15 @@ import {Gesture, GestureDetector, ScrollView} from "react-native-gesture-handler
 import {GenreItem} from "../../components/GenreItem";
 import {Genre} from "../../../domain/entities/Game";
 import Toast from "react-native-toast-message";
+import {getUserUseCase} from "../../../domain/usesCases/userLocal/getUser";
+import {UseUserLocalStorage} from "../../hooks/UseUserLocalStorage";
 
 
 export function Home() {
 
     const tinderCardsRef = useRef<Array<CardItemHandle | null>>([]);
-    const {listGames, setListGames, setGames, transfromCoverUrl, imageGame, showLoading, setShowLoading} = viewModel.homeViewModel()
+    const {listGames, setListGames, setGames, transfromCoverUrl, showLoading, setShowLoading} = viewModel.homeViewModel()
+    const {user, getUserSession} = UseUserLocalStorage()
     let [swipesCounter, setSwipesCounter] = useState(1);
 
     const nullGenre: Genre = {
@@ -76,8 +79,7 @@ export function Home() {
     };
     return (
         <View>
-            <ImageBackground source={{uri: imageGame ? imageGame : require("../../../../assets/background.png")}}
-                             blurRadius={1}
+            <ImageBackground source={require("../../../../assets/definitiveBackground.jpeg")}
                              style={{width: '100%', height: '100%'}}>
                 <View style={stylesHome.loadingIconContainer}>
                     <ActivityIndicator style={styleHome.loading} size="large" color="#ffffff" animating={showLoading}/>
@@ -99,9 +101,10 @@ export function Home() {
                                     OverlayLabelRight={OverlayRight}
                                     OverlayLabelLeft={OverlayLeft}
                                     cardStyle={stylesHome.card}
-                                    onSwipedRight={() => {
+                                    onSwipedRight={async () => {
                                         setSwipesCounter(swipesCounter + 1);
-                                        console.log(swipesCounter)
+                                        await getUserSession()
+                                        console.log(swipesCounter+" "+user?.userId)
                                     }}
                                     onSwipedLeft={() => {
                                         setSwipesCounter(swipesCounter + 1);

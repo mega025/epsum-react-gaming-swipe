@@ -1,27 +1,30 @@
 import {ActivityIndicator, FlatList, Image, ImageBackground, Text, View} from "react-native";
 import stylesHome from "../home/StyleHome";
-import {XButton} from "../../components/XButton";
-import {LikeButton} from "../../components/LikeButton";
 import styleFav from "./StyleFav";
 import viewModel from "./ViewModel";
 import React, {useEffect} from "react";
 import {FavGameItem} from "../../components/FavGameItem";
 import styleHome from "../home/StyleHome";
-import styleSearch from "../search/StyleSearch";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
+import {UseUserLocalStorage} from "../../hooks/UseUserLocalStorage";
 
 
 export function FavScreen(){
 
-    const {favListGames, setFavListGames, loadFavGames, showLoading} = viewModel.FavScreenViewModel();
+    const {favListGames, setFavListGames, loadFavGames, showLoading} = viewModel.favScreenViewModel();
+    const {user, getUserSession} = UseUserLocalStorage()
+
+    getUserSession();
 
     useEffect(() => {
-        loadFavGames();
-    }, []);
+        console.log(user?.userId)
+        if(user?.userId != undefined)
+            loadFavGames(user?.userId);
+    }, [user?.userId]);
 
     return (
         <View style={styleFav.container}>
-            <ImageBackground source={require("../../../../assets/background.png")}
+            <ImageBackground source={require("../../../../assets/definitiveBackground.jpeg")}
                              style={{width: '100%', height: '100%'}}>
                 <View style={styleFav.header}>
                     <Text style={styleFav.title}>

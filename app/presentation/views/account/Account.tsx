@@ -16,7 +16,7 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
     const {deleteSession} =viewModel.AccountViewModel();
     return (
         <View style={styleAccount.container}>
-            <ImageBackground source={require("../../../../assets/background.png")}
+            <ImageBackground source={require("../../../../assets/definitiveBackground.jpeg")}
                              style={{width: '100%', height: '100%'}}>
                 <View style={styleAccount.header}>
                     <Image source={require("../../../../assets/logo.png")} style={styleAccount.logo}></Image>
