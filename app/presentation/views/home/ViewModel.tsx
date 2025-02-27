@@ -2,6 +2,7 @@ import {IgdbApiDelivery} from "../../../data/sources/remote/igdbAPI/IgdbApiDeliv
 import {useState} from "react";
 import {Game} from "../../../domain/entities/Game";
 import {ApiDelivery} from "../../../data/sources/remote/api/ApiDelivery";
+import {FavGame} from "../../../domain/entities/FavGame";
 
 
 const homeViewModel = () => {
@@ -10,7 +11,7 @@ const homeViewModel = () => {
     let [showLoading, setShowLoading] = useState(true);
 
 
-    const setGames = async () => {
+    const refillSwipeGames = async () => {
         const randomOffset = Math.round(((Math.random()*9100)*100)/100).toFixed(0)
         setListGames([])
         IgdbApiDelivery.post("/games", "fields name, cover.url, genres.name, platforms.abbreviation, rating, release_dates.y; limit 10; where rating > 70; offset "+randomOffset+";")
@@ -18,6 +19,16 @@ const homeViewModel = () => {
                 setListGames(response.data);
                 setShowLoading(false);
             })
+            .catch((error) => {
+                console.log(error);
+            })
+    }
+
+    const addGameToFav = async (game: FavGame, userId: number) => {
+        await ApiDelivery.post(`/favgames/add/${userId}`, game)
+            .then((response) => {
+                console.log(response.data?.message);
+             })
             .catch((error) => {
                 console.log(error);
             })
@@ -31,7 +42,15 @@ const homeViewModel = () => {
     }
 
 
-    return {listGames, setGames, setListGames, transfromCoverUrl, showLoading, setShowLoading}
+    return {
+        listGames,
+        refillSwipeGames,
+        setListGames,
+        transfromCoverUrl,
+        showLoading,
+        setShowLoading,
+        addGameToFav,
+    }
 }
 
 export default {homeViewModel}

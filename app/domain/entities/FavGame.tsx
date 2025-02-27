@@ -1,5 +1,4 @@
-import {Platform} from "react-native";
-import {Game} from "./Game";
+import {Game, GenreDTO, Platform} from "./Game";
 
 export interface FavGame {
     name: string;
@@ -7,5 +6,5 @@ export interface FavGame {
     releaseYear: number;
     imageUrl: string;
     listPlatforms: Platform[];
-    listGames: Game[];
+    listGenres: GenreDTO[];
 }

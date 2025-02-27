@@ -18,33 +18,40 @@ import viewModel from "./ViewModel";
 import {PlatformItem} from "../../components/PlatformItem";
 import {Gesture, GestureDetector, ScrollView} from "react-native-gesture-handler";
 import {GenreItem} from "../../components/GenreItem";
-import {Genre} from "../../../domain/entities/Game";
+import {Genre, GenreDTO} from "../../../domain/entities/Game";
 import Toast from "react-native-toast-message";
 import {getUserUseCase} from "../../../domain/usesCases/userLocal/getUser";
 import {UseUserLocalStorage} from "../../hooks/UseUserLocalStorage";
+import {FavGame} from "../../../domain/entities/FavGame";
 
 
 export function Home() {
 
     const tinderCardsRef = useRef<Array<CardItemHandle | null>>([]);
-    const {listGames, setListGames, setGames, transfromCoverUrl, showLoading, setShowLoading} = viewModel.homeViewModel()
+    const {
+        listGames,
+        setListGames,
+        refillSwipeGames,
+        transfromCoverUrl,
+        showLoading,
+        setShowLoading,
+        addGameToFav
+    } = viewModel.homeViewModel()
     const {user, getUserSession} = UseUserLocalStorage()
-    let [swipesCounter, setSwipesCounter] = useState(1);
+    let [swipesCounter, setSwipesCounter] = useState(0);
 
     const nullGenre: Genre = {
         name : "N/A"
     }
 
     useEffect(() => {
-        setGames()
+        refillSwipeGames()
     }, [])
 
     useEffect(() => {
-        if(swipesCounter >= 11) {
-            setShowLoading(true);
-            setSwipesCounter(1);
-            setGames()
-            setShowLoading(false);
+        if(swipesCounter >= 10) {
+            setSwipesCounter(0);
+            refillSwipeGames()
         }
     }, [swipesCounter]);
 
@@ -105,6 +112,25 @@ export function Home() {
                                         setSwipesCounter(swipesCounter + 1);
                                         await getUserSession()
                                         console.log(swipesCounter+" "+user?.userId)
+                                        if(user?.userId != undefined) {
+                                            const genreListDTO: GenreDTO[] = []
+                                            item.genres.forEach((genre: Genre) => {
+                                                    let genreDTO: GenreDTO = {
+                                                        genreName: genre.name,
+                                                    }
+                                                    genreListDTO.push(genreDTO)
+                                                }
+                                            )
+                                            const favGameDTO: FavGame = {
+                                                name: item.name,
+                                                ratingScore: Math.round((item.rating * 100) / 100),
+                                                releaseYear: item.release_dates ? item.release_dates[0].y : 0,
+                                                imageUrl: item.cover ? transfromCoverUrl(item.cover.url) : "",
+                                                listPlatforms: item.platforms,
+                                                listGenres: genreListDTO
+                                            }
+                                            addGameToFav(favGameDTO, user?.userId);
+                                        }
                                     }}
                                     onSwipedLeft={() => {
                                         setSwipesCounter(swipesCounter + 1);
