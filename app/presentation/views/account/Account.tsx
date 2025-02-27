@@ -1,12 +1,17 @@
-import {Image, ImageBackground, Text, View} from "react-native";
+import {Alert, Image, ImageBackground, Modal, Pressable, Text, TextInput, TouchableOpacity, View} from "react-native";
 import styleAccount from "./StyleAccount";
 import {RoundedButton} from "../../components/RoundedButton";
 import {ChangePhoto} from "../../components/ChangePhoto";
 import viewModel from "./ViewModel";
 import {useNavigation} from "@react-navigation/native";
 import {PropsStackNavigation} from "../../interfaces/StackNav";
+import React, {useState} from "react";
+import {PruebaButton} from "../../components/ModalEditProfile";
+import {CustomTextInputPassword} from "../../components/CustomTextInputPassword";
 
 export function Account({navigation = useNavigation(), route}: PropsStackNavigation){
+
+    const [modalVisible, setModalVisible] = useState(false);
 
     const {deleteSession} =viewModel.AccountViewModel();
     return (
@@ -41,7 +46,35 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
 
                     <View style={styleAccount.containerEditName}>
                         <Text style={styleAccount.LastName}> 2</Text>
-                        <Image source={require("../../../../assets/edit.png")} style={styleAccount.Edit}></Image>
+                        <View style={styleAccount.centeredView}>
+                        <Modal
+                            animationType="slide"
+                            transparent={true}
+                            visible={modalVisible}
+                            onRequestClose={() => {
+                                Alert.alert('Modal has been closed.');
+                                setModalVisible(!modalVisible);
+                            }}>
+                            <View style={styleAccount.centeredView}>
+                                <View style={styleAccount.modalView}>
+                                    <CustomTextInputPassword label={"Password"}
+                                                             keyboardType={"default"}
+                                                             onChangeText={(text) => alert()}>
+                                    </CustomTextInputPassword>
+
+                                    <Pressable
+                                        onPress={() => setModalVisible(!modalVisible)}>
+                                       <Image source={require("../../../../assets/x.png")} style={styleAccount.Edit}></Image>
+                                    </Pressable>
+                                </View>
+                            </View>
+                        </Modal>
+                        <Pressable
+                            onPress={() => setModalVisible(true)}>
+                            <Image source={require('../../../../assets/edit.png')} style={styleAccount.Edit}/>
+                        </Pressable>
+
+                        </View>
                     </View>
                 </View>
                 <View style={styleAccount.containerResetPassword}>
