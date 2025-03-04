@@ -9,15 +9,18 @@ const homeViewModel = () => {
 
     let [listGames, setListGames] = useState<Game[]>([]);
     let [showLoading, setShowLoading] = useState(true);
+    let [showMessageLoading, setMessageLoading] = useState(false);
 
 
     const refillSwipeGames = async () => {
+        setShowLoading(true)
         const randomOffset = Math.round(((Math.random()*9100)*100)/100).toFixed(0)
-        setListGames([])
+        setListGames([]);
         IgdbApiDelivery.post("/games", "fields name, cover.url, genres.name, platforms.abbreviation, rating, release_dates.y; limit 10; where rating > 70; offset "+randomOffset+";")
             .then((response) => {
                 setListGames(response.data);
                 setShowLoading(false);
+                setMessageLoading(false);
             })
             .catch((error) => {
                 console.log(error);
@@ -50,6 +53,8 @@ const homeViewModel = () => {
         showLoading,
         setShowLoading,
         addGameToFav,
+        showMessageLoading,
+        setMessageLoading
     }
 }
 

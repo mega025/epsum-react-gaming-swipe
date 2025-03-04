@@ -10,16 +10,14 @@ import {UseUserLocalStorage} from "../../hooks/UseUserLocalStorage";
 
 
 export function FavScreen(){
-
-    const {favListGames, setFavListGames, loadFavGames, showLoading} = viewModel.favScreenViewModel();
-    const {user, getUserSession} = UseUserLocalStorage()
-
-    getUserSession();
+    const {favListGames, loadFavGames, showLoading} = viewModel.favScreenViewModel();
+    const {user} = UseUserLocalStorage()
 
     useEffect(() => {
-        console.log(user?.userId)
-        if(user?.userId != undefined)
-            loadFavGames(user?.userId);
+        if(user?.userId != undefined) {
+            console.log(user?.userId)
+            loadFavGames(user?.userId)
+        }
     }, [user?.userId]);
 
     return (
@@ -39,8 +37,6 @@ export function FavScreen(){
                               renderItem={FavGameItem}
                     />
                 </View>
-
-
             </ImageBackground>
         </View>
     );

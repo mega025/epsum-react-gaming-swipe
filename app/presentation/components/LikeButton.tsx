@@ -1,9 +1,13 @@
 import {Image, TouchableOpacity,StyleSheet} from "react-native";
 import {AppColors} from "../theme/AppTheme";
 
-export const LikeButton=()=>{
+interface Props {
+    onPress: () => void;
+}
+
+export const LikeButton=({onPress}: Props)=>{
     return (
-        <TouchableOpacity style={styles.cont}>
+        <TouchableOpacity style={styles.cont} onPress={onPress}>
             <Image source={require("../../../assets/heart.png")} style={styles.HeartButton}></Image>
         </TouchableOpacity>
     )
