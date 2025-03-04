@@ -16,11 +16,8 @@ import {CardItemHandle, TinderCard} from "rn-tinder-card";
 import styleHome from "./StyleHome";
 import viewModel from "./ViewModel";
 import {PlatformItem} from "../../components/PlatformItem";
-import {Gesture, GestureDetector, ScrollView} from "react-native-gesture-handler";
 import {GenreItem} from "../../components/GenreItem";
 import {Genre, GenreDTO} from "../../../domain/entities/Game";
-import Toast from "react-native-toast-message";
-import {getUserUseCase} from "../../../domain/usesCases/userLocal/getUser";
 import {UseUserLocalStorage} from "../../hooks/UseUserLocalStorage";
 import {FavGame} from "../../../domain/entities/FavGame";
 
@@ -30,14 +27,14 @@ export function Home() {
     const tinderCardsRef = useRef<Array<CardItemHandle | null>>([]);
     const {
         listGames,
-        setListGames,
         refillSwipeGames,
         transfromCoverUrl,
         showLoading,
-        setShowLoading,
-        addGameToFav
+        addGameToFav,
+        showMessageLoading,
+        setMessageLoading
     } = viewModel.homeViewModel()
-    const {user, getUserSession} = UseUserLocalStorage()
+    const {user} = UseUserLocalStorage()
     let [swipesCounter, setSwipesCounter] = useState(0);
 
     const nullGenre: Genre = {
@@ -48,8 +45,9 @@ export function Home() {
         refillSwipeGames()
     }, [])
 
-    useEffect(() => {
+    useEffect( () => {
         if(swipesCounter >= 10) {
+            setMessageLoading(true);
             setSwipesCounter(0);
             refillSwipeGames()
         }
@@ -88,9 +86,6 @@ export function Home() {
         <View>
             <ImageBackground source={require("../../../../assets/definitiveBackground.jpeg")}
                              style={{width: '100%', height: '100%'}}>
-                <View style={stylesHome.loadingIconContainer}>
-                    <ActivityIndicator style={styleHome.loading} size="large" color="#ffffff" animating={showLoading}/>
-                </View>
                 <View style={styleHome.wrapper}>
                     {listGames.map((item, index) => {
                         return (
@@ -110,7 +105,6 @@ export function Home() {
                                     cardStyle={stylesHome.card}
                                     onSwipedRight={async () => {
                                         setSwipesCounter(swipesCounter + 1);
-                                        await getUserSession()
                                         console.log(swipesCounter+" "+user?.userId)
                                         if(user?.userId != undefined) {
                                             const genreListDTO: GenreDTO[] = []
@@ -129,12 +123,12 @@ export function Home() {
                                                 listPlatforms: item.platforms,
                                                 listGenres: genreListDTO
                                             }
-                                            addGameToFav(favGameDTO, user?.userId);
+                                            await addGameToFav(favGameDTO, user?.userId);
                                         }
                                     }}
                                     onSwipedLeft={() => {
                                         setSwipesCounter(swipesCounter + 1);
-                                        console.log(swipesCounter);
+                                        console.log(swipesCounter+" "+ index +" "+listGames.length);
                                     }}
                                 >
                                     <Image
@@ -170,17 +164,30 @@ export function Home() {
                                                 style={{fontSize: 15}}>{item.release_dates ? item.release_dates[0].y : "N/A"}</Text>
                                         </View>
                                     </View>
+                                    <View style={styleHome.buttonsContainer}>
+                                        <XButton onPress={() => tinderCardsRef.current?.[index]?.swipeLeft()}></XButton>
+                                        <Image source={require("../../../../assets/logo.png")} style={stylesHome.logo}></Image>
+                                        <LikeButton onPress={() => tinderCardsRef.current?.[index]?.swipeRight()}></LikeButton>
+                                    </View>
                                 </TinderCard>
-                                <View style={styleHome.buttonsContainer}>
-                                    <XButton onPress={() => tinderCardsRef.current?.[index]?.swipeLeft()}></XButton>
-                                    <Image source={require("../../../../assets/logo.png")} style={stylesHome.logo}></Image>
-                                    <LikeButton></LikeButton>
-                                </View>
                             </View>
                         );
                     })}
                 </View>
             </ImageBackground>
+            <Text style={{color: "#FFF",
+                fontSize:20,
+                zIndex: 99,
+                top: 400,
+                bottom: 0,
+                left: 100,
+                right: 0,
+                position: "absolute",
+                fontFamily: "zen_kaku_light",
+                display: showMessageLoading ? "flex" : "none"}}>Loading more games...</Text>
+            <View style={stylesHome.loadingIconContainer}>
+                <ActivityIndicator style={styleHome.loading} size="large" color="#ffffff" animating={showLoading}/>
+            </View>
         </View>
     );
 }
