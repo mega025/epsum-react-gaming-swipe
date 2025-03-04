@@ -15,13 +15,15 @@ export const ChangePhoto = () => {
             return;
         }
         let result = await ImagePickerExpo.launchImageLibraryAsync({
-            mediaTypes:ImagePickerExpo.MediaTypeOptions.All,
+            mediaTypes:ImagePickerExpo.MediaTypeOptions.Images,
             allowsEditing: true,
             aspect:[1,1],
-            quality:1
+            quality:0.7
         });
         console.log("result", result);
         if (!result.canceled) {
+            // onChange("iamge",result.assets[0].uri);
+            // aqui sin el uri
             setImage(result.assets[0].uri);
         }
     }

@@ -24,12 +24,10 @@ export function Search() {
                 style={{ width: "100%", height: "100%" }}
             >
                 <View style={styleSearch.containerHeader}>
-                    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
                         <View style={styleSearch.header}>
                             <Image source={require("../../../../assets/logo.png")} style={styleSearch.logo} />
                             <Text style={styleSearch.appName}>GamingSwipe</Text>
                         </View>
-                    </TouchableWithoutFeedback>
 
                     <View style={styleSearch.title}>
                         <Text style={styleSearch.title}>Search</Text>

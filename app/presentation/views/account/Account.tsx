@@ -1,15 +1,12 @@
 import {Alert, Image, ImageBackground, Modal, Pressable, Text, TextInput, TouchableOpacity, View} from "react-native";
 import styleAccount from "./StyleAccount";
-import {RoundedButton} from "../../components/RoundedButton";
 import {ChangePhoto} from "../../components/ChangePhoto";
 import viewModel from "./ViewModel";
 import {useNavigation} from "@react-navigation/native";
 import {PropsStackNavigation} from "../../interfaces/StackNav";
 import React, {useState} from "react";
-import {PruebaButton} from "../../components/ModalEditProfile";
 import {CustomTextInputPassword} from "../../components/CustomTextInputPassword";
 import {CustomTextInput} from "../../components/CustomTextInput";
-import {CustomTextInputInline} from "../../components/CustomTextInputInline";
 
 export function Account({navigation = useNavigation(), route}: PropsStackNavigation){
 

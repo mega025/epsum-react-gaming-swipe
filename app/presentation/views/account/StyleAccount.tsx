@@ -158,18 +158,13 @@ const styleAccount = StyleSheet.create({
     },
     containerButton:{
         flexDirection: "row",
-
     },
     textStyle: {
         color: "white",
         fontSize: 16,
         fontWeight: "bold",
         fontFamily: "zen_kaku_regular",
-        height:20,
-    },
-    openButtonText: {
-        color: "blue",
-        fontSize: 18,
+        height:25,
     },
     textPopUp:{
         fontSize: 16,
