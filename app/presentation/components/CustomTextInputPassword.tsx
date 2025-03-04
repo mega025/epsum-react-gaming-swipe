@@ -47,7 +47,8 @@ const styles = StyleSheet.create({
         marginStart: 5,
         alignSelf:"flex-start",
         marginBottom:10,
-        fontFamily: "zen_kaku_regular"
+        fontFamily: "zen_kaku_regular",
+        height: 20,
     },
 
     iconPasswordToggle: {

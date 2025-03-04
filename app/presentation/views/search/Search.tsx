@@ -20,7 +20,7 @@ export function Search() {
     return (
         <View style={styleSearch.container}>
             <ImageBackground
-                source={require("../../../../assets/background.png")}
+                source={require("../../../../assets/definitiveBackground.jpeg")}
                 style={{ width: "100%", height: "100%" }}
             >
                 <View style={styleSearch.containerHeader}>

@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
 
     formInput: {
         width:300,
-        height:40,
+        height:44,
         fontSize: 15,
         borderColor: 'black',
         backgroundColor: 'white',

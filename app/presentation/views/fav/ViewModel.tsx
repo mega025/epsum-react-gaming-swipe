@@ -1,15 +1,15 @@
 import {ApiDelivery} from "../../../data/sources/remote/api/ApiDelivery";
 import {getUserUseCase} from "../../../domain/usesCases/userLocal/getUser";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import {UseUserLocalStorage} from "../../hooks/UseUserLocalStorage";
 
 
-const FavScreenViewModel = () => {
+const favScreenViewModel = () => {
     const [favListGames, setFavListGames] = useState<[]>([]);
     const [showLoading, setShowLoading] = useState(true);
 
-    const loadFavGames = async () => {
-        const user = await getUserUseCase()
-        ApiDelivery.get("/favgames/user/1")
+    const loadFavGames = async (userId: number) => {
+        await ApiDelivery.get(`/favgames/user/${userId}`)
             .then((response) => {
                 setFavListGames(response.data);
                 console.log(response.data);
@@ -23,4 +23,4 @@ const FavScreenViewModel = () => {
     return{favListGames, setFavListGames, loadFavGames, showLoading}
 }
 
-export default {FavScreenViewModel}
+export default {favScreenViewModel}

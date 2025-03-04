@@ -12,12 +12,17 @@ export interface Platform {
     abbreviation: string;
 }
 
+
 export interface ReleaseDate {
     y: number;
 }
 
 export interface Genre {
     name: string;
+}
+
+export interface GenreDTO {
+    genreName: string;
 }
 
 export interface Cover {
