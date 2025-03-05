@@ -15,10 +15,10 @@ import viewModel from "./viewModel";
 
 export function Search() {
 
-    const {games, setGames, loading, LoadMoreGame, SearchTextChange,searchText} = viewModel.searchViewModel()
+    const {games, setGames, loading, LoadMoreGame, SearchTextChange,searchText,searchGamesPopular,setSearchText} = viewModel.searchViewModel()
 
     useEffect(() => {
-        SearchTextChange('');
+        searchGamesPopular(1)
     }, []);
 
     return (
@@ -37,6 +37,7 @@ export function Search() {
                         <Text style={styleSearch.title}>Search</Text>
                     </View>
 
+
                     <View style={styleSearch.containerSearchInput}>
                         <CustomTextInputSearch
                             keyboardType="default"
@@ -45,6 +46,14 @@ export function Search() {
                             onPressButtonFromInterface={(text: string) =>SearchTextChange(text)}
                         />
                     </View>
+                </View>
+
+                <View style={styleSearch.resultTextContainer}>
+                    {searchText !== "" ? (
+                        <Text style={styleSearch.resultText}>Results for "{searchText}"</Text>
+                    ) : (
+                        <Text style={styleSearch.resultText}>Top 10 popular game</Text>
+                    )}
                 </View>
                 <View style={styleSearch.containerGames}>
                     <FlatList<Game>
