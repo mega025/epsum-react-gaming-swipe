@@ -16,7 +16,7 @@ const styleSearch = StyleSheet.create({
     },
     appName: {
         fontSize: RFPercentage(2),
-        marginTop: hp("1.5%"),
+        marginTop: hp("2.5%"),
         color: AppColors.white,
         fontFamily: "zen_kaku_light",
     },
@@ -48,7 +48,8 @@ const styleSearch = StyleSheet.create({
         tintColor: "grey",
     },
     containerGames: {
-        marginTop: hp("2%"),
+        paddingTop: hp("2%"),
+        paddingBottom:hp("30%")
     },
 
     item: {
@@ -82,7 +83,17 @@ const styleSearch = StyleSheet.create({
     containerHeader:{
         elevation:2,
         backgroundColor: AppColors.colorButton,
-    }
+    },
+    resultTextContainer: {
+        marginBottom: 5,
+        marginTop: 10,
+        alignItems: "center",
+    },
+    resultText: {
+        fontSize: 20,
+        color: AppColors.white,
+        fontWeight: 'bold',
+    },
 });
 
 export default styleSearch;

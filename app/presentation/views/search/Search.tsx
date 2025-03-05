@@ -15,7 +15,11 @@ import viewModel from "./viewModel";
 
 export function Search() {
 
-    const {games, setGames, loading, LoadMoreGame, SearchTextChange,searchText} = viewModel.searchViewModel()
+    const {games, setGames, loading, LoadMoreGame, SearchTextChange,searchText,searchGamesPopular,setSearchText} = viewModel.searchViewModel()
+
+    useEffect(() => {
+        searchGamesPopular(1)
+    }, []);
 
     return (
         <View style={styleSearch.container}>
@@ -24,16 +28,15 @@ export function Search() {
                 style={{ width: "100%", height: "100%" }}
             >
                 <View style={styleSearch.containerHeader}>
-                    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
                         <View style={styleSearch.header}>
                             <Image source={require("../../../../assets/logo.png")} style={styleSearch.logo} />
                             <Text style={styleSearch.appName}>GamingSwipe</Text>
                         </View>
-                    </TouchableWithoutFeedback>
 
                     <View style={styleSearch.title}>
                         <Text style={styleSearch.title}>Search</Text>
                     </View>
+
 
                     <View style={styleSearch.containerSearchInput}>
                         <CustomTextInputSearch
@@ -43,6 +46,14 @@ export function Search() {
                             onPressButtonFromInterface={(text: string) =>SearchTextChange(text)}
                         />
                     </View>
+                </View>
+
+                <View style={styleSearch.resultTextContainer}>
+                    {searchText !== "" ? (
+                        <Text style={styleSearch.resultText}>Results for "{searchText}"</Text>
+                    ) : (
+                        <Text style={styleSearch.resultText}>Top 10 popular game</Text>
+                    )}
                 </View>
                 <View style={styleSearch.containerGames}>
                     <FlatList<Game>
