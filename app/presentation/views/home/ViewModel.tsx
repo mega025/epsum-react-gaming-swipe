@@ -3,6 +3,7 @@ import {useState} from "react";
 import {Game} from "../../../domain/entities/Game";
 import {ApiDelivery} from "../../../data/sources/remote/api/ApiDelivery";
 import {FavGame} from "../../../domain/entities/FavGame";
+import viewModel from "../fav/ViewModel";
 
 
 const homeViewModel = () => {
@@ -10,6 +11,7 @@ const homeViewModel = () => {
     let [listGames, setListGames] = useState<Game[]>([]);
     let [showLoading, setShowLoading] = useState(true);
     let [showMessageLoading, setMessageLoading] = useState(false);
+    const {favListGames} = viewModel.favScreenViewModel();
 
 
     const refillSwipeGames = async () => {
@@ -30,7 +32,7 @@ const homeViewModel = () => {
     const addGameToFav = async (game: FavGame, userId: number) => {
         await ApiDelivery.post(`/favgames/add/${userId}`, game)
             .then((response) => {
-                console.log(response.data?.message);
+                console.log(response.data?.message+" "+favListGames.length);
              })
             .catch((error) => {
                 console.log(error);

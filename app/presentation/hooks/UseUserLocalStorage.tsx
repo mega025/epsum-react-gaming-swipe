@@ -17,5 +17,6 @@ export const UseUserLocalStorage = () => {
     return {
         user,
         getUserSession,
+        setUser
     }
 }

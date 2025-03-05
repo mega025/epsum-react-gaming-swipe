@@ -1,6 +1,7 @@
 import {Game, GenreDTO, Platform} from "./Game";
 
 export interface FavGame {
+    videogameId?: number;
     name: string;
     ratingScore: number;
     releaseYear: number;

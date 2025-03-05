@@ -19,6 +19,15 @@ const styleFav = StyleSheet.create({
         color: AppColors.white,
         fontFamily: "zen_kaku_light",
     },
+
+    listHeader: {
+        alignSelf: "center",
+        color: AppColors.white,
+        fontSize: 16,
+        height: hp("3%"),
+        marginBottom: hp("2%"),
+        fontFamily: "zen_kaku_regular",
+    }
 });
 
 export default styleFav;

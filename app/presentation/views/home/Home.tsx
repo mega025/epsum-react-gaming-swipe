@@ -5,7 +5,7 @@ import {
     Button,
     ActivityIndicator,
     FlatList,
-    TouchableWithoutFeedback, Pressable, Platform
+    TouchableWithoutFeedback, Pressable
 } from "react-native";
 import stylesHome from "./StyleHome";
 import {XButton} from "../../components/XButton";
@@ -17,7 +17,7 @@ import styleHome from "./StyleHome";
 import viewModel from "./ViewModel";
 import {PlatformItem} from "../../components/PlatformItem";
 import {GenreItem} from "../../components/GenreItem";
-import {Genre, GenreDTO} from "../../../domain/entities/Game";
+import {Genre, GenreDTO, Platform} from "../../../domain/entities/Game";
 import {UseUserLocalStorage} from "../../hooks/UseUserLocalStorage";
 import {FavGame} from "../../../domain/entities/FavGame";
 
@@ -37,9 +37,8 @@ export function Home() {
     const {user} = UseUserLocalStorage()
     let [swipesCounter, setSwipesCounter] = useState(0);
 
-    const nullGenre: Genre = {
-        name : "N/A"
-    }
+    const nullGenre: Genre = {name : "N/A"}
+    const nullPlatform: Platform = {abbreviation : "N/A"}
 
     useEffect(() => {
         refillSwipeGames()
@@ -147,7 +146,7 @@ export function Home() {
                                         </View>
                                         <View style={styleHome.secondRowCardContainer}>
                                             <FlatList style={styleHome.platformsContainer}
-                                                      data={item.platforms}
+                                                      data={item.platforms ? item.platforms : [nullPlatform]}
                                                       renderItem={PlatformItem}
                                                       horizontal={true}
                                                       scrollEnabled={true}
@@ -155,7 +154,7 @@ export function Home() {
                                         </View>
                                         <View style={styleHome.thirdRowCardContainer}>
                                             <FlatList style={styleHome.genreContainer}
-                                                      data={item.genres}
+                                                      data={item.genres ? item.genres : [nullGenre]}
                                                       renderItem={GenreItem}
                                                       horizontal={true}
                                                       scrollEnabled={true}

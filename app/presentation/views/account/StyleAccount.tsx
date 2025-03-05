@@ -26,16 +26,17 @@ const styleAccount = StyleSheet.create({
     title: {
         fontSize: wp("7.5%"),
         alignSelf: "center",
-        top: hp("3%"),
+        top: hp("6%"),
         color: AppColors.white,
         fontFamily: "zen_kaku_light",
     },
     containerEmail: {
         alignSelf: "center",
-        top: hp("7%"),
+        top: hp("8%"),
     },
     textEmail: {
         fontSize: wp("4.5%"),
+        height: hp("4%"),
         color: AppColors.white,
         fontFamily: "zen_kaku_regular",
     },
@@ -48,41 +49,31 @@ const styleAccount = StyleSheet.create({
     },
     containerName: {
         marginTop: hp("30%"),
+        width: "100%",
     },
     labelName: {
         marginLeft: wp("10%"),
-        fontSize: wp("5%"),
+        fontSize: wp("4.9%"),
         color: AppColors.white,
         fontFamily: "zen_kaku_regular",
     },
     Name: {
-        fontSize: wp("6%"),
+        fontSize: wp("7.3%"),
+        marginTop: 6,
+        width: 290,
+        height: 42,
         marginLeft: wp("10%"),
         color: AppColors.white,
-        fontFamily: "zen_kaku_regular",
+        fontFamily: "zen_kaku_light",
     },
-    Edit: {
+    editButton: {
         width: wp("10%"),
         height: wp("10%"),
         alignSelf: "flex-end",
-        left: wp("65%"),
-        bottom: hp("1%"),
         tintColor: AppColors.white,
     },
     containerLastName: {
         marginTop: hp("4%"),
-    },
-    labelLastName: {
-        marginLeft: wp("10%"),
-        fontSize: wp("5%"),
-        color: AppColors.white,
-        fontFamily: "zen_kaku_regular",
-    },
-    LastName: {
-        fontSize: wp("6%"),
-        marginLeft: wp("10%"),
-        color: AppColors.white,
-        fontFamily: "zen_kaku_regular",
     },
     containerResetPassword: {
         alignItems: "center",
@@ -106,17 +97,6 @@ const styleAccount = StyleSheet.create({
         color: AppColors.red,
         fontFamily: "zen_kaku_regular",
         fontWeight: "bold",
-    },
-    button: {
-        borderRadius: 20,
-        padding: 10,
-        elevation: 2,
-    },
-    buttonOpen: {
-        backgroundColor: '#F194FF',
-    },
-    buttonClose: {
-        backgroundColor: '#2196F3',
     },
     modalText: {
         marginBottom: 15,
