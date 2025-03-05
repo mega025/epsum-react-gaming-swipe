@@ -18,13 +18,6 @@ return (
         tabBarItemStyle: { justifyContent: "center", alignItems: "center",backgroundColor:AppColors.colorButton },
     }}
     >
-        <Tab.Screen name="Search" options={{title:"Search",
-            tabBarIcon: ({color})=>(
-                <Image
-                    source={require("../../../assets/search.png")}
-                    style={{width:25,height:25,marginTop:15,tintColor:"grey"}}/>
-            )} }
-                    component={Search} />
         <Tab.Screen name="Home" options={{title:"Home",
             tabBarIcon: ({color})=>(
                 <Image
@@ -39,7 +32,13 @@ return (
                     style={{width:25,height:25,marginTop:15,tintColor:"grey"}}/>
             )} }
                     component={FavScreen} />
-
+        <Tab.Screen name="Search" options={{title:"Search",
+            tabBarIcon: ({color})=>(
+                <Image
+                    source={require("../../../assets/search.png")}
+                    style={{width:25,height:25,marginTop:15,tintColor:"grey"}}/>
+            )} }
+                    component={Search} />
         <Tab.Screen name="Account" options={{title:"Account",
             tabBarIcon: ({color})=>(
                 <Image
