@@ -1,47 +1,68 @@
-import {Alert, Image, ImageBackground, Modal, Pressable, Text, TextInput, TouchableOpacity, View} from "react-native";
+import {
+    ActivityIndicator,
+    Alert,
+    Image,
+    ImageBackground,
+    Modal,
+    Pressable,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View
+} from "react-native";
 import styleAccount from "./StyleAccount";
 import {RoundedButton} from "../../components/RoundedButton";
 import {ChangePhoto} from "../../components/ChangePhoto";
 import viewModel from "./ViewModel";
-import {useNavigation} from "@react-navigation/native";
+import {useFocusEffect, useNavigation} from "@react-navigation/native";
 import {PropsStackNavigation} from "../../interfaces/StackNav";
-import React, {useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import {PruebaButton} from "../../components/ModalEditProfile";
 import {CustomTextInputPassword} from "../../components/CustomTextInputPassword";
 import {CustomTextInput} from "../../components/CustomTextInput";
 import {CustomTextInputInline} from "../../components/CustomTextInputInline";
+import {UseUserLocalStorage} from "../../hooks/UseUserLocalStorage";
+import stylesHome from "../home/StyleHome";
+import styleHome from "../home/StyleHome";
 
 export function Account({navigation = useNavigation(), route}: PropsStackNavigation){
 
     const [modalVisibleFirst, setModalVisibleFirst] = useState(false);
     const [modalVisibleLast, setModalVisibleLast] = useState(false);
     const [modalVisiblePassword, setModalVisibleLastPassword] = useState(false);
+    const {user} = UseUserLocalStorage()
 
-    const {deleteSession} =viewModel.AccountViewModel();
+    const {deleteSession, userDB, getUserDB} =viewModel.AccountViewModel();
+
+    useFocusEffect(
+        useCallback(() => {
+            if(user?.userId != undefined){
+                getUserDB(user?.userId)
+                console.log(userDB)
+            }
+        }, [user?.userId])
+    )
+
     return (
         <View style={styleAccount.container}>
             <ImageBackground source={require("../../../../assets/definitiveBackground.jpeg")}
                              style={{width: '100%', height: '100%'}}>
-                <View style={styleAccount.header}>
-                    <Image source={require("../../../../assets/logo.png")} style={styleAccount.logo}></Image>
-                    <Text style={styleAccount.appName}> GamingSwipe</Text>
-                </View>
                 <View>
                     <Text style={styleAccount.title}>
                         Account details
                     </Text>
                 </View>
                 <View style={styleAccount.containerEmail}>
-                    <Text style={styleAccount.textEmail}> email </Text>
+                    <Text style={styleAccount.textEmail}>{userDB?.email}</Text>
                 </View>
                 <View style={styleAccount.containerPhoto}>
                     <ChangePhoto></ChangePhoto>
                 </View>
                 <View style={styleAccount.containerName}>
-                    <Text style={styleAccount.labelName}> Name</Text>
+                    <Text style={styleAccount.labelName}>Name</Text>
 
                     <View style={styleAccount.containerEditName}>
-                        <Text style={styleAccount.Name}> 1</Text>
+                        <Text style={styleAccount.Name}>{userDB?.personalDetails.firstName}</Text>
                         <View>
                             <Modal
                                 animationType="slide"
@@ -81,17 +102,17 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
 
                             <Pressable
                                 onPress={() => setModalVisibleFirst(true)}>
-                                <Image source={require('../../../../assets/edit.png')} style={styleAccount.Edit}/>
+                                <Image source={require('../../../../assets/edit.png')} style={styleAccount.editButton}/>
                             </Pressable>
 
                         </View>
                     </View>
                 </View>
                 <View style={styleAccount.containerLastName}>
-                    <Text style={styleAccount.labelLastName}> Last name</Text>
+                    <Text style={styleAccount.labelName}>Last name</Text>
 
                     <View style={styleAccount.containerEditName}>
-                        <Text style={styleAccount.LastName}> 2</Text>
+                        <Text style={styleAccount.Name}>´{userDB?.personalDetails.lastName}</Text>
                         <View>
                             <Modal
                                 animationType="slide"
@@ -104,7 +125,7 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                             >
                                 <View style={styleAccount.centeredView}>
                                     <View style={styleAccount.modalView}>
-                                        <Text style={styleAccount.textPopUp}> Change you last name </Text>
+                                        <Text style={styleAccount.textPopUp}>Change you last name</Text>
                                         <CustomTextInput
                                             label={"Last name"}
                                             keyboardType={"default"}
@@ -131,7 +152,7 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
 
                         <Pressable
                             onPress={() => setModalVisibleLast(true)}>
-                            <Image source={require('../../../../assets/edit.png')} style={styleAccount.Edit}/>
+                            <Image source={require('../../../../assets/edit.png')} style={styleAccount.editButton}/>
                         </Pressable>
 
                         </View>
@@ -150,7 +171,7 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                         >
                             <View style={styleAccount.centeredView}>
                                 <View style={styleAccount.modalView}>
-                                    <Text style={styleAccount.textPopUp}> Change you password </Text>
+                                    <Text style={styleAccount.textPopUp}>Change you password</Text>
                                     <CustomTextInputPassword
                                         label={"Password current"}
                                         keyboardType={"default"}
@@ -183,10 +204,9 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                                 </View>
                             </View>
                         </Modal>
-
                         <Pressable
                             onPress={() => setModalVisibleLastPassword(true)}>
-                            <Text style={styleAccount.TextResetPassword}> Reset Password</Text>
+                            <Text style={styleAccount.TextResetPassword}>Reset Password</Text>
                         </Pressable>
 
                     </View>

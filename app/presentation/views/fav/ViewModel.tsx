@@ -25,6 +25,8 @@ const favScreenViewModel = () => {
     const deleteGameFromFav = async (position: number, userId: number) => {
         await ApiDelivery.post(`/favgames/delete/${userId}`, position)
             .then((response) => {
+                favListGames.splice(position, 1);
+                console.log("Game w index "+position);
                 Toast.show({
                     type: 'success',
                     text1: "The game has been deleted correctly.",
@@ -35,10 +37,8 @@ const favScreenViewModel = () => {
             })
     }
 
-    const getPositionGameList = (game: FavGame) => {
-        favListGames.forEach(gameOnList => {
-            return favListGames.findIndex(game => game.name === gameOnList.name);
-        })
+    const getPositionGameList: (game: FavGame) => number = (game: FavGame) => {
+        return favListGames.findIndex(gameOnList => game.name === gameOnList.name);
     }
 
     return{
@@ -46,7 +46,8 @@ const favScreenViewModel = () => {
         setFavListGames,
         loadFavGames,
         showLoading,
-        deleteGameFromFav
+        deleteGameFromFav,
+        getPositionGameList
     }
 }
 

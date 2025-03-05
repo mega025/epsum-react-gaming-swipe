@@ -14,5 +14,11 @@ export interface LoginUserInterface {
 }
 
 export interface LoggedUserInterface extends UserInterface {
+    userId?: number;
+    email: string;
+    firstName: string;
+    lastName: string;
+    password: string;
+    imageUrl: string;
     token: string;
 }
