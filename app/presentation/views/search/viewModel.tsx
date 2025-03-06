@@ -10,6 +10,7 @@ const searchViewModel = () => {
     const [page, setPage] = useState(1);
 
 
+
     const searchGamesPopular = async (page: number = 1) => {
         setLoading(true);
         try {
@@ -52,10 +53,17 @@ const searchViewModel = () => {
     };
 
     const SearchTextChange = async (text: string) => {
-            setSearchText(text);
-            setPage(1);
-        searchGamesPersonalizado(text, 1);
-            setLoading(true);
+           if (text === "") {
+               setSearchText("");
+               searchGamesPopular(1)
+               setLoading(true);
+           }else{
+               setSearchText(text);
+               setPage(1);
+               searchGamesPersonalizado(text, 1);
+               setLoading(true);
+           }
+
     };
 
     const LoadMoreGame = () => {
