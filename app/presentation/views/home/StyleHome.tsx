@@ -75,6 +75,7 @@ const stylesHome= StyleSheet.create({
         fontSize: 19,
         backgroundColor: "#00da08",
         color: "#FFF",
+        marginStart: 12,
         fontWeight: "bold",
         padding: 10,
     },
@@ -88,8 +89,10 @@ const stylesHome= StyleSheet.create({
     },
 
     gameNameText: {
-        fontSize: 17,
-        width: 230
+        fontSize: 16,
+        width: 230,
+        height: 30,
+        fontFamily: "zen_kaku_regular",
     },
 
     firstRowCardContainer: {

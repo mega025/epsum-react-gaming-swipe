@@ -48,8 +48,7 @@ const styleSearch = StyleSheet.create({
         tintColor: "grey",
     },
     containerGames: {
-        paddingTop: hp("2%"),
-        paddingBottom:hp("30%")
+        paddingBottom:hp("35%")
     },
 
     item: {
@@ -85,14 +84,16 @@ const styleSearch = StyleSheet.create({
         backgroundColor: AppColors.colorButton,
     },
     resultTextContainer: {
-        marginBottom: 5,
-        marginTop: 10,
+        backgroundColor: AppColors.colorNavigationButton,
+        padding: 13,
+        elevation: 10,
         alignItems: "center",
     },
     resultText: {
-        fontSize: 20,
-        color: AppColors.white,
-        fontWeight: 'bold',
+        fontSize: 17,
+        color: "#fff",
+        height: 28,
+        fontFamily: "zen_kaku_regular",
     },
 });
 

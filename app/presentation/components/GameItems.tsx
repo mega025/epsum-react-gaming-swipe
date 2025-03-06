@@ -31,7 +31,7 @@ const GameItems = ({ item }: { item: Game }) => {
             <View style={styles.name_rating}>
                 <Text style={styles.title}>{item.name}</Text>
             </View>
-            <View style={styles.platform_year}>
+            <View style={styles.plaformsFlatlistContainer}>
                 <FlatList data={item.platforms}
                           renderItem={PlatformItem}
                           horizontal={true}
@@ -40,15 +40,14 @@ const GameItems = ({ item }: { item: Game }) => {
                             style={styles.genre}/>
             </View>
             </View>
-            <View style={styles.containerFab}>
+            <View style={styles.containerFav}>
                 {item.rating ? (
                     <Text style={styles.rating}>⭐ {item.rating.toFixed(1)}</Text>
                 ) : (
                     <Text style={styles.rating}>N/A</Text>
                 )}
-                <Image source={require("../../../assets/heart.png")} style={styles.fab}></Image>
+                <Image source={require("../../../assets/heart.png")} style={styles.fav}></Image>
                 <Text style={styles.year}>{item.release_dates?.[0]?.y ?? "N/A"}</Text>
-
             </View>
         </View>
     );
@@ -59,14 +58,10 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: "column",
     },
-    containerFab:{
-
+    containerFav:{
         alignItems:'center',
-        alignSelf:"center",
-        alignContent:"center",
-        verticalAlign:"middle",
     },
-    fab:{
+    fav:{
         width:wp("6%"),
         height:hp("3%"),
         tintColor:"#4dc51f",
@@ -98,8 +93,10 @@ const styles = StyleSheet.create({
     },
     title: {
         flex:3,
-        fontSize: RFPercentage(2),
-        fontWeight: "bold",
+        fontSize: 15,
+        height: 50,
+        paddingEnd: 5,
+        fontFamily: "zen_kaku_regular",
         color:AppColors.white,
 
     },
@@ -112,12 +109,15 @@ const styles = StyleSheet.create({
         height: 30,
         flex:1,
         fontSize: RFPercentage(1.7),
+        paddingEnd: 6,
         color: AppColors.white,
         fontFamily:"zen_kaku_bold",
 
     },
-    platform_year:{
+    plaformsFlatlistContainer:{
         flex:2,
+        width: 210,
+        marginEnd: 7,
         flexDirection:"row",
         alignSelf: "center",
         alignItems: "center",
@@ -126,7 +126,8 @@ const styles = StyleSheet.create({
         flex:1,
         fontSize: RFPercentage(1.5),
         color: AppColors.white,
-
+        marginTop: 14,
+        fontWeight: "bold",
     },
 });
 

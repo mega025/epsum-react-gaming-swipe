@@ -12,6 +12,7 @@ import styleSearch from "./StyleSearch";
 import GameItems from "../../components/GameItems";
 import {Game} from "../../../domain/entities/Game";
 import viewModel from "./viewModel";
+import {AppColors} from "../../theme/AppTheme";
 
 export function Search() {
 
@@ -52,7 +53,7 @@ export function Search() {
                     {searchText !== "" ? (
                         <Text style={styleSearch.resultText}>Results for "{searchText}"</Text>
                     ) : (
-                        <Text style={styleSearch.resultText}>Top 10 popular game</Text>
+                        <Text style={styleSearch.resultText}>Top 10 BEST RATED GAMES</Text>
                     )}
                 </View>
                 <View style={styleSearch.containerGames}>
@@ -61,7 +62,9 @@ export function Search() {
                         renderItem={({ item }) => <GameItems item={item} />}
                         keyExtractor={(item) => item.id.toString()}
                         ListFooterComponent={
-                            loading ? <ActivityIndicator size="large" /> : null
+                            loading ? <ActivityIndicator size="large"
+                                                         color={AppColors.white}
+                                                         style={{paddingTop: 20,}} /> : null
                         }
                         onEndReached={LoadMoreGame}
                         onEndReachedThreshold={1.5}
