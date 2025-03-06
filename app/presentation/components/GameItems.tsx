@@ -18,13 +18,14 @@ const transfromCoverUrl = (url:string) => {
 const GameItems = ({ item }: { item: Game }) => {
     return (
         <View style={styles.item}>
-            {item.cover && (
-                <Image source={{
-                    uri: item.cover
-                        ? transfromCoverUrl(item.cover.url)
-                        : "https://lightwidget.com/wp-content/uploads/localhost-file-not-found.jpg"
-                }} style={styles.cover} />
-            )}
+                <Image
+                    source={{
+                        uri: item.cover
+                            ? transfromCoverUrl(item.cover.url)
+                            : "https://lightwidget.com/wp-content/uploads/localhost-file-not-found.jpg"
+                    }}
+                    style={styles.cover}
+                />
             <View style={styles.infoContainer}>
 
             <View style={styles.name_rating}>
@@ -81,6 +82,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     cover: {
+        padding:10,
         width: wp("25%"),
         height: hp("15%"),
         borderRadius: 5,
