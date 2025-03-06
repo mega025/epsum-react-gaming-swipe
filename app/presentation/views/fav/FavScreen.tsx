@@ -11,30 +11,23 @@ import {
 import stylesHome from "../home/StyleHome";
 import styleFav from "./StyleFav";
 import viewModel from "./ViewModel";
-import React, {useCallback, useEffect, useMemo} from "react";
+import React, {useCallback, useEffect, useMemo, useState} from "react";
 import styleHome from "../home/StyleHome";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import {UseUserLocalStorage} from "../../hooks/UseUserLocalStorage";
 import {FavGame} from "../../../domain/entities/FavGame";
 import {AppColors} from "../../theme/AppTheme";
 import {useFocusEffect} from "@react-navigation/native";
+import Toast from "react-native-toast-message";
 
 
 export function FavScreen(){
-    const {favListGames, loadFavGames, showLoading, getPositionGameList, deleteGameFromFav} = viewModel.favScreenViewModel();
+    const {favListGames,
+        loadFavGames,
+        showLoading,
+        getPositionGameList,
+        deleteGameFromFav} = viewModel.favScreenViewModel();
     const {user} = UseUserLocalStorage()
-    const favGameRenderItem = useCallback(({item}: {item: FavGame}) =>
-        <View style={stylesFavGameItem.card}>
-            <View style={stylesFavGameItem.container}>
-                <Image source={{uri : item.imageUrl}} style={stylesFavGameItem.image}/>
-                <Text style={{...stylesHome.gameNameText, width: 170}}>{item.name}</Text>
-                <TouchableOpacity style={stylesFavGameItem.deleteIcon}
-                                  onPress={() => deleteGameFromFav(getPositionGameList(item), user?.userId ? user.userId : 0)}>
-                    <Image source={require("../../../../assets/borrar.png")} style={stylesFavGameItem.deleteIcon} />
-                </TouchableOpacity>
-            </View>
-        </View>
-        , [] )
 
     useFocusEffect(
         useCallback(() => {
@@ -45,6 +38,19 @@ export function FavScreen(){
             }
         }, [user?.userId])
     );
+
+    const favGameRenderItem = useCallback(({item}: {item: FavGame}) =>
+        <View style={stylesFavGameItem.card}>
+            <View style={stylesFavGameItem.container}>
+                <Image source={{uri : item.imageUrl}} style={stylesFavGameItem.image}/>
+                <Text style={{...stylesHome.gameNameText, width: 170}}>{item.name}</Text>
+                <TouchableOpacity style={stylesFavGameItem.deleteIcon}
+                                  onPress={() => deleteGameFromFav(getPositionGameList(item), user?.userId ? user?.userId : 0)}>
+                    <Image source={require("../../../../assets/borrar.png")} style={stylesFavGameItem.deleteIcon} />
+                </TouchableOpacity>
+            </View>
+        </View>
+        , [user?.userId, getPositionGameList])
 
     return (
         <View style={styleFav.container}>
@@ -67,6 +73,7 @@ export function FavScreen(){
                               ListHeaderComponent={<Text style={{...styleFav.listHeader, display: showLoading ? "none" : "flex"}}>Add more games!</Text>}
                     />
                 </View>
+                <Toast/>
             </ImageBackground>
         </View>
     );

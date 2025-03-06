@@ -76,7 +76,13 @@ const searchViewModel = () => {
         }
     };
 
-    return {games, setGames, loading, LoadMoreGame, SearchTextChange,searchText,searchGamesPersonalizado,searchGamesPopular,setSearchText}
+    return {
+        games,
+        setGames,
+        loading,
+        LoadMoreGame,
+        SearchTextChange,
+        searchText,searchGamesPersonalizado,searchGamesPopular,setSearchText}
 
 }
 export default {searchViewModel};

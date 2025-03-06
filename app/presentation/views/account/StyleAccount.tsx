@@ -112,6 +112,7 @@ const styleAccount = StyleSheet.create({
         backgroundColor: AppColors.colorNavigationButton,
         borderRadius: 10,
         padding: 20,
+        gap: 20,
         alignItems: "center",
         shadowColor: "#000",
         shadowOffset: { width: 0, height: 2 },
@@ -152,9 +153,9 @@ const styleAccount = StyleSheet.create({
         fontSize: 18,
     },
     textPopUp:{
-        fontSize: 16,
+        fontSize: 20,
         color: AppColors.white,
-        fontFamily: "zen_kaku_regular",
+        fontFamily: "zen_kaku_light",
         height:30,
     }
 });

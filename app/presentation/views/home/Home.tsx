@@ -25,6 +25,7 @@ import {FavGame} from "../../../domain/entities/FavGame";
 export function Home() {
 
     const tinderCardsRef = useRef<Array<CardItemHandle | null>>([]);
+
     const {
         listGames,
         refillSwipeGames,
@@ -150,6 +151,7 @@ export function Home() {
                                                       renderItem={PlatformItem}
                                                       horizontal={true}
                                                       scrollEnabled={true}
+                                                      showsHorizontalScrollIndicator={false}
                                                       nestedScrollEnabled={true}/>
                                         </View>
                                         <View style={styleHome.thirdRowCardContainer}>
@@ -157,14 +159,15 @@ export function Home() {
                                                       data={item.genres ? item.genres : [nullGenre]}
                                                       renderItem={GenreItem}
                                                       horizontal={true}
+                                                      showsHorizontalScrollIndicator={false}
                                                       scrollEnabled={true}
                                                       nestedScrollEnabled={true}/>
                                             <Text
-                                                style={{fontSize: 15}}>{item.release_dates ? item.release_dates[0].y : "N/A"}</Text>
+                                                style={{fontSize: 17, fontFamily: "zen_kaku_regular"}}>{item.release_dates[0].y ? item.release_dates[0].y : "N/A"}</Text>
                                         </View>
                                     </View>
                                     <View style={styleHome.buttonsContainer}>
-                                        <XButton onPress={() => tinderCardsRef.current?.[index]?.swipeLeft()}></XButton>
+                                        <XButton onPress={() =>  tinderCardsRef.current?.[index]?.swipeLeft()}></XButton>
                                         <Image source={require("../../../../assets/logo.png")} style={stylesHome.logo}></Image>
                                         <LikeButton onPress={() => tinderCardsRef.current?.[index]?.swipeRight()}></LikeButton>
                                     </View>

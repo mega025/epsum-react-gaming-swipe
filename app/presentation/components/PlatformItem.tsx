@@ -23,6 +23,8 @@ const styles = StyleSheet.create({
 
     abbreviation: {
         fontSize: 14,
+        fontFamily: "zen_kaku_regular",
+        height: 20,
         color: "#fff",
     }
 })

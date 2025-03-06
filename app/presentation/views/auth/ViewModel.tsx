@@ -5,6 +5,7 @@ import TabViewLoginRegister from "./TabViewLoginRegister";
 import {UseUserLocalStorage} from "../../hooks/UseUserLocalStorage";
 import {loginAuthUseCase} from "../../../domain/usesCases/auth/LoginAuth";
 import {saveUserUserCase} from "../../../domain/usesCases/userLocal/saveUser";
+import Toast from "react-native-toast-message";
 
 const loginViewModel= () => {
 
@@ -26,9 +27,9 @@ const loginViewModel= () => {
 
     const validateForm = () =>{
         if (loginValues.email === ""){
-        setErrorMessage("Email is required");
-        return false;
-        }if (loginValues.password === ""){
+            setErrorMessage("Email is required");
+            return false;
+        } if (loginValues.password === ""){
             setErrorMessage("Password is required");
             return false;
         }
@@ -78,9 +79,11 @@ const registerViewModel= () => {
                 listFavGames: []
             }
             const response = await registerUseCase(user)
-            console.log("RESULT "+ JSON.stringify(response))
             if(response.success){
-                alert(response.message)
+                Toast.show({
+                    type: 'success',
+                    text1: response.data.message,
+                })
             }
 
         }

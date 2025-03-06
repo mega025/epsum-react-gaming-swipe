@@ -25,7 +25,7 @@ const styleFav = StyleSheet.create({
         color: AppColors.white,
         fontSize: 16,
         height: hp("3%"),
-        marginBottom: hp("2%"),
+        marginBottom: hp("1.9%"),
         fontFamily: "zen_kaku_regular",
     }
 });

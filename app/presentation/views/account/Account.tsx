@@ -24,6 +24,9 @@ import {CustomTextInputInline} from "../../components/CustomTextInputInline";
 import {UseUserLocalStorage} from "../../hooks/UseUserLocalStorage";
 import stylesHome from "../home/StyleHome";
 import styleHome from "../home/StyleHome";
+import {UserInterface} from "../../../domain/entities/User";
+import Toast from "react-native-toast-message";
+import {PasswordsDTO} from "../../../domain/entities/UpdatePasswordDTO";
 
 export function Account({navigation = useNavigation(), route}: PropsStackNavigation){
 
@@ -31,22 +34,49 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
     const [modalVisibleLast, setModalVisibleLast] = useState(false);
     const [modalVisiblePassword, setModalVisibleLastPassword] = useState(false);
     const {user} = UseUserLocalStorage()
+    const [updatedLastName, setUpdateLastName] = useState("");
+    const [updatedFirstName, setUpdateFirstName] = useState("");
 
-    const {deleteSession, userDB, getUserDB} =viewModel.AccountViewModel();
+    const {
+        deleteSession,
+        userDB,
+        getUserDB,
+        showLoading,
+        updateUserDetails,
+        updatePasswordDTO,
+        setUpdatePasswordDTO,
+        errorMessage,
+        setErrorMessage,
+        updateUserPassword
+    } =viewModel.AccountViewModel();
 
     useFocusEffect(
         useCallback(() => {
             if(user?.userId != undefined){
                 getUserDB(user?.userId)
-                console.log(userDB)
+                if (userDB != undefined)
+                    console.log(userDB)
             }
-        }, [user?.userId])
+        }, [user?.userId, JSON.stringify(userDB)])
     )
+
+    useEffect(() => {
+        if (errorMessage != "") {
+            Toast.show({
+                type: "error",
+                text1: errorMessage,
+            })
+            setErrorMessage("")
+        }
+    }, [errorMessage]);
 
     return (
         <View style={styleAccount.container}>
             <ImageBackground source={require("../../../../assets/definitiveBackground.jpeg")}
                              style={{width: '100%', height: '100%'}}>
+                <View style={stylesHome.loadingIconContainer}>
+                    <ActivityIndicator style={styleHome.loading} size="large" color="#ffffff" animating={showLoading}/>
+                </View>
                 <View>
                     <Text style={styleAccount.title}>
                         Account details
@@ -80,7 +110,7 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                                             label={"First name"}
                                             keyboardType={"default"}
                                             secureTextEntry={false}
-                                            onChangeText={(text) => alert(text)}
+                                            onChangeText={(text) => setUpdateFirstName(text)}
                                         />
                                         <View style={styleAccount.containerButton}>
                                             <Pressable
@@ -91,7 +121,30 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                                             </Pressable>
                                             <Pressable
                                                 style={styleAccount.acceptButton}
-                                                onPress={() => setModalVisibleFirst(!modalVisibleFirst)}
+                                                onPress={() => {
+                                                    if(userDB != undefined) {
+                                                        if (updatedFirstName === "") {
+                                                            setErrorMessage("Empty fields are not allowed")
+                                                            setModalVisibleFirst(!modalVisibleFirst)
+                                                        } else {
+                                                            const updatedUser: UserInterface = {
+                                                                ...userDB,
+                                                                personalDetails: {
+                                                                    firstName: updatedFirstName,
+                                                                    lastName: userDB.personalDetails.lastName,
+                                                                    imageUrl: userDB.personalDetails.imageUrl,
+                                                                    password: userDB.personalDetails.password
+                                                                }
+                                                            }
+                                                            console.log(updatedUser)
+                                                            if (user?.userId != undefined)
+                                                                updateUserDetails(updatedUser, user?.userId)
+
+                                                            setModalVisibleFirst(!modalVisibleFirst)
+                                                            setUpdateFirstName("")
+                                                        }
+                                                    }}
+                                                }
                                             >
                                                 <Text style={styleAccount.textStyle}>Accept</Text>
                                             </Pressable>
@@ -112,7 +165,7 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                     <Text style={styleAccount.labelName}>Last name</Text>
 
                     <View style={styleAccount.containerEditName}>
-                        <Text style={styleAccount.Name}>´{userDB?.personalDetails.lastName}</Text>
+                        <Text style={styleAccount.Name}>{userDB?.personalDetails.lastName}</Text>
                         <View>
                             <Modal
                                 animationType="slide"
@@ -130,7 +183,7 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                                             label={"Last name"}
                                             keyboardType={"default"}
                                             secureTextEntry={false}
-                                            onChangeText={(text) => alert(text)}
+                                            onChangeText={(text) => setUpdateLastName(text)}
                                         />
                                         <View style={styleAccount.containerButton}>
                                             <Pressable
@@ -141,7 +194,30 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                                             </Pressable>
                                             <Pressable
                                                 style={styleAccount.acceptButton}
-                                                onPress={() => setModalVisibleLast(!modalVisibleLast)}
+                                                onPress={() => {
+                                                    if(userDB != undefined) {
+                                                        if (updatedLastName === "") {
+                                                            setErrorMessage("Empty fields are not allowed")
+                                                            setModalVisibleFirst(!modalVisibleFirst)
+                                                        } else {
+                                                            const updatedUser: UserInterface = {
+                                                                ...userDB,
+                                                                personalDetails: {
+                                                                    firstName: userDB.personalDetails.firstName,
+                                                                    lastName: updatedLastName,
+                                                                    imageUrl: userDB.personalDetails.imageUrl,
+                                                                    password: userDB.personalDetails.password
+                                                                }
+                                                            }
+                                                            console.log(updatedUser)
+                                                            if (user?.userId != undefined)
+                                                                updateUserDetails(updatedUser, user?.userId)
+
+                                                            setModalVisibleLast(!modalVisibleLast)
+                                                            setUpdateFirstName("")
+                                                        }
+                                                    }}
+                                                }
                                             >
                                                 <Text style={styleAccount.textStyle}>Accept</Text>
                                             </Pressable>
@@ -173,19 +249,28 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                                 <View style={styleAccount.modalView}>
                                     <Text style={styleAccount.textPopUp}>Change you password</Text>
                                     <CustomTextInputPassword
-                                        label={"Password current"}
+                                        label={"Current password"}
                                         keyboardType={"default"}
-                                        onChangeText={(text) => alert(text)}
+                                        onChangeText={(text) => setUpdatePasswordDTO({
+                                            ...updatePasswordDTO,
+                                            oldPassword: text,
+                                        })}
                                     />
                                     <CustomTextInputPassword
                                         label={"New password"}
                                         keyboardType={"default"}
-                                        onChangeText={(text) => alert(text)}
+                                        onChangeText={(text) => setUpdatePasswordDTO({
+                                            ...updatePasswordDTO,
+                                            newPassword: text,
+                                        })}
                                     />
                                     <CustomTextInputPassword
                                         label={"Confirm new password"}
                                         keyboardType={"default"}
-                                        onChangeText={(text) => alert(text)}
+                                        onChangeText={(text) => setUpdatePasswordDTO({
+                                            ...updatePasswordDTO,
+                                            confirmPassword: text,
+                                        })}
                                     />
                                     <View style={styleAccount.containerButton}>
                                         <Pressable
@@ -196,7 +281,18 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                                         </Pressable>
                                         <Pressable
                                             style={styleAccount.acceptButton}
-                                            onPress={() => setModalVisibleLastPassword(!modalVisiblePassword)}
+                                            onPress={() => {
+                                                if (user?.userId != undefined) {
+                                                    const passwordsDTO: PasswordsDTO = {
+                                                        oldPassword: updatePasswordDTO.oldPassword,
+                                                        newPassword: updatePasswordDTO.newPassword,
+                                                    }
+                                                    updateUserPassword(passwordsDTO, user?.userId)
+                                                    console.log(updatePasswordDTO)
+                                                }
+                                                setModalVisibleLastPassword(!modalVisiblePassword)
+
+                                            }}
                                         >
                                             <Text style={styleAccount.textStyle}>Accept</Text>
                                         </Pressable>
@@ -214,7 +310,7 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                 <View style={styleAccount.containerLogOut}>
                     <Text style={styleAccount.LogOut} onPress={() => {deleteSession().then(r => navigation.navigate("TabViewLoginRegister"))}}> Log out</Text>
                 </View>
-
+                <Toast/>
             </ImageBackground>
         </View>
     );

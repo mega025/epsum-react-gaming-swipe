@@ -22,6 +22,10 @@ const favScreenViewModel = () => {
             })
     }
 
+    const getPositionGameList: (game: FavGame) => number = (game: FavGame) => {
+        return favListGames.findIndex(gameOnList => game.name === gameOnList.name);
+    }
+
     const deleteGameFromFav = async (position: number, userId: number) => {
         await ApiDelivery.post(`/favgames/delete/${userId}`, position)
             .then((response) => {
@@ -29,7 +33,7 @@ const favScreenViewModel = () => {
                 console.log("Game w index "+position);
                 Toast.show({
                     type: 'success',
-                    text1: "The game has been deleted correctly.",
+                    text1: response.data.message,
                 });
             })
             .catch((error) => {
@@ -37,9 +41,7 @@ const favScreenViewModel = () => {
             })
     }
 
-    const getPositionGameList: (game: FavGame) => number = (game: FavGame) => {
-        return favListGames.findIndex(gameOnList => game.name === gameOnList.name);
-    }
+
 
     return{
         favListGames,
