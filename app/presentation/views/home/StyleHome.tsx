@@ -119,7 +119,7 @@ const stylesHome= StyleSheet.create({
     buttonsContainer : {
         position: "absolute",
         alignSelf: "center",
-        marginTop: hp("83%"),
+        top: hp("91%"),
 
     }
 })

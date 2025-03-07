@@ -13,9 +13,11 @@ const favScreenViewModel = () => {
     const loadFavGames = async (userId: number) => {
         ApiDelivery.get(`/favgames/user/${userId}`)
             .then((response) => {
-            setFavListGames(response.data);
-            console.log(response.data);
-            setShowLoading(false);
+                if(response.data != undefined) {
+                    setFavListGames(response.data);
+                    console.log(response.data);
+                    setShowLoading(false);
+                }
             })
             .catch((error) => {
                 console.log(error);

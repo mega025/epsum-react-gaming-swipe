@@ -19,6 +19,6 @@ export interface LoggedUserInterface extends UserInterface {
     firstName: string;
     lastName: string;
     password: string;
-    imageUrl: string;
+    image_url: string;
     token: string;
 }

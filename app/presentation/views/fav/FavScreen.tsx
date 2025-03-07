@@ -1,8 +1,8 @@
 import {
-    ActivityIndicator,
+    ActivityIndicator, Alert,
     FlatList,
     Image,
-    ImageBackground,
+    ImageBackground, Modal, Pressable,
     StyleSheet,
     Text,
     TouchableOpacity,
@@ -19,6 +19,9 @@ import {FavGame} from "../../../domain/entities/FavGame";
 import {AppColors} from "../../theme/AppTheme";
 import {useFocusEffect} from "@react-navigation/native";
 import Toast from "react-native-toast-message";
+import styleAccount from "../account/StyleAccount";
+import {CustomTextInput} from "../../components/CustomTextInput";
+import {UserInterface} from "../../../domain/entities/User";
 
 
 export function FavScreen(){
@@ -28,6 +31,8 @@ export function FavScreen(){
         getPositionGameList,
         deleteGameFromFav} = viewModel.favScreenViewModel();
     const {user} = UseUserLocalStorage()
+    const [modalVisibleDeleteGame, setModalVisibleDeleteGame] = useState(false);
+
 
     useFocusEffect(
         useCallback(() => {
@@ -45,12 +50,43 @@ export function FavScreen(){
                 <Image source={{uri : item.imageUrl}} style={stylesFavGameItem.image}/>
                 <Text style={{...stylesHome.gameNameText, width: 170}}>{item.name}</Text>
                 <TouchableOpacity style={stylesFavGameItem.deleteIcon}
-                                  onPress={() => deleteGameFromFav(getPositionGameList(item), user?.userId ? user?.userId : 0)}>
+                                  onPress={() => {setModalVisibleDeleteGame(!modalVisibleDeleteGame)}}>
                     <Image source={require("../../../../assets/borrar.png")} style={stylesFavGameItem.deleteIcon} />
                 </TouchableOpacity>
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={modalVisibleDeleteGame}
+                    onRequestClose={() => {
+                        setModalVisibleDeleteGame(!modalVisibleDeleteGame);
+                    }}
+                >
+                    <View style={styleAccount.centeredView}>
+                        <View style={styleAccount.modalView}>
+                            <Text style={styleAccount.textPopUp}>Delete `{item.name}`?</Text>
+                            <View style={styleAccount.containerButton}>
+                                <Pressable
+                                    style={styleAccount.cancelButton}
+                                    onPress={() => setModalVisibleDeleteGame(!modalVisibleDeleteGame)}
+                                >
+                                    <Text style={styleAccount.textStyle}>Cancel</Text>
+                                </Pressable>
+                                <Pressable
+                                    style={styleAccount.acceptButton}
+                                    onPress={async () => {
+                                        await deleteGameFromFav(getPositionGameList(item), user?.userId ? user?.userId : 0)
+                                        setModalVisibleDeleteGame(!modalVisibleDeleteGame)
+                                    }}
+                                >
+                                    <Text style={styleAccount.textStyle}>Accept</Text>
+                                </Pressable>
+                            </View>
+                        </View>
+                    </View>
+                </Modal>
             </View>
         </View>
-        , [user?.userId, getPositionGameList])
+        , [user?.userId, getPositionGameList, modalVisibleDeleteGame])
 
     return (
         <View style={styleFav.container}>

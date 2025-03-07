@@ -4,39 +4,37 @@ import {
     Image,
     ImageBackground,
     Modal,
-    Pressable,
+    Pressable, StyleSheet,
     Text,
     TextInput,
     TouchableOpacity,
     View
 } from "react-native";
 import styleAccount from "./StyleAccount";
-import {RoundedButton} from "../../components/RoundedButton";
-import {ChangePhoto} from "../../components/ChangePhoto";
 import viewModel from "./ViewModel";
 import {useFocusEffect, useNavigation} from "@react-navigation/native";
 import {PropsStackNavigation} from "../../interfaces/StackNav";
 import React, {useCallback, useEffect, useState} from "react";
-import {PruebaButton} from "../../components/ModalEditProfile";
 import {CustomTextInputPassword} from "../../components/CustomTextInputPassword";
 import {CustomTextInput} from "../../components/CustomTextInput";
-import {CustomTextInputInline} from "../../components/CustomTextInputInline";
 import {UseUserLocalStorage} from "../../hooks/UseUserLocalStorage";
 import stylesHome from "../home/StyleHome";
 import styleHome from "../home/StyleHome";
 import {UserInterface} from "../../../domain/entities/User";
 import Toast from "react-native-toast-message";
 import {PasswordsDTO} from "../../../domain/entities/UpdatePasswordDTO";
+import * as ImagePickerExpo from "expo-image-picker";
+import {AppColors} from "../../theme/AppTheme";
 
 export function Account({navigation = useNavigation(), route}: PropsStackNavigation){
 
     const [modalVisibleFirst, setModalVisibleFirst] = useState(false);
     const [modalVisibleLast, setModalVisibleLast] = useState(false);
     const [modalVisiblePassword, setModalVisibleLastPassword] = useState(false);
+
     const {user} = UseUserLocalStorage()
     const [updatedLastName, setUpdateLastName] = useState("");
     const [updatedFirstName, setUpdateFirstName] = useState("");
-
     const {
         deleteSession,
         userDB,
@@ -70,6 +68,38 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
         }
     }, [errorMessage]);
 
+    const selectImage =async () => {
+        const { status } = await ImagePickerExpo.requestCameraPermissionsAsync()
+
+        if (status !== "granted") {
+            alert("Permission denied")
+            return;
+        }
+        let result = await ImagePickerExpo.launchImageLibraryAsync({
+            mediaTypes:ImagePickerExpo.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect:[1,1],
+            quality:1
+        });
+        console.log("result", result);
+        if (!result.canceled) {
+            if (userDB != undefined) {
+                const updatedUser: UserInterface = {
+                    ...userDB,
+                    personalDetails: {
+                        firstName: userDB.personalDetails.firstName,
+                        lastName: userDB.personalDetails.lastName,
+                        image_url: result.assets[0].uri,
+                        password: userDB.personalDetails.password
+                    }
+                }
+                if(userDB.userId != undefined){
+                    updateUserDetails(updatedUser, userDB.userId)
+                }
+            }
+        }
+    }
+
     return (
         <View style={styleAccount.container}>
             <ImageBackground source={require("../../../../assets/definitiveBackground.jpeg")}
@@ -86,7 +116,15 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                     <Text style={styleAccount.textEmail}>{userDB?.email}</Text>
                 </View>
                 <View style={styleAccount.containerPhoto}>
-                    <ChangePhoto></ChangePhoto>
+                    <View style={stylesProfilePicture.container}>
+                        <View style={stylesProfilePicture.containerPhoto}>
+                            <Image style={stylesProfilePicture.photo}  source={userDB?.personalDetails.image_url ? {uri: userDB?.personalDetails.image_url} : require("../../../../assets/account.png")}
+                                />
+                        </View>
+                        <TouchableOpacity style={stylesProfilePicture.button} onPress={selectImage}>
+                            <Text style={stylesProfilePicture.buttonText}>Change photo</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
                 <View style={styleAccount.containerName}>
                     <Text style={styleAccount.labelName}>Name</Text>
@@ -132,7 +170,7 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                                                                 personalDetails: {
                                                                     firstName: updatedFirstName,
                                                                     lastName: userDB.personalDetails.lastName,
-                                                                    imageUrl: userDB.personalDetails.imageUrl,
+                                                                    image_url: userDB.personalDetails.image_url,
                                                                     password: userDB.personalDetails.password
                                                                 }
                                                             }
@@ -205,7 +243,7 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                                                                 personalDetails: {
                                                                     firstName: userDB.personalDetails.firstName,
                                                                     lastName: updatedLastName,
-                                                                    imageUrl: userDB.personalDetails.imageUrl,
+                                                                    image_url: userDB.personalDetails.image_url,
                                                                     password: userDB.personalDetails.password
                                                                 }
                                                             }
@@ -315,3 +353,34 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
         </View>
     );
 }
+
+const stylesProfilePicture =StyleSheet.create({
+    container:{
+        flex: 1,
+        alignItems:"center",
+    },
+    containerPhoto:{
+        alignItems:"center",
+
+    },
+    photo:{
+        width:100,
+        height:100,
+        borderRadius:50,
+        alignItems:"center",
+        resizeMode:"center",
+    },
+    button:{
+        backgroundColor:AppColors.colorNavigationButton,
+        width:160,
+        height:35,
+        borderRadius:25,
+        marginTop:110,
+
+    },
+    buttonText:{
+        alignSelf:"center",
+        color:AppColors.white,
+        paddingVertical:6
+    }
+})
