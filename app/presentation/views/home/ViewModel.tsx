@@ -32,7 +32,7 @@ const homeViewModel = () => {
     const addGameToFav = async (game: FavGame, userId: number) => {
         await ApiDelivery.post(`/favgames/add/${userId}`, game)
             .then((response) => {
-                console.log(response.data?.message+" "+favListGames.length);
+                console.log(response.data?.message);
              })
             .catch((error) => {
                 console.log(error);

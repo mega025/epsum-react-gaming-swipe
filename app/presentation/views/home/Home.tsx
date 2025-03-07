@@ -25,6 +25,7 @@ import {FavGame} from "../../../domain/entities/FavGame";
 export function Home() {
 
     const tinderCardsRef = useRef<Array<CardItemHandle | null>>([]);
+    let [activeIndex, setActiveIndex] = useState<number>(9);
 
     const {
         listGames,
@@ -49,6 +50,7 @@ export function Home() {
         if(swipesCounter >= 10) {
             setMessageLoading(true);
             setSwipesCounter(0);
+            setActiveIndex(9)
             refillSwipeGames()
         }
     }, [swipesCounter]);
@@ -105,11 +107,12 @@ export function Home() {
                                     cardStyle={stylesHome.card}
                                     onSwipedRight={async () => {
                                         setSwipesCounter(swipesCounter + 1);
+                                        setActiveIndex(activeIndex - 1)
                                         console.log(swipesCounter+" "+user?.userId)
                                         if(user?.userId != undefined) {
                                             const genreListDTO: GenreDTO[] = []
                                             item.genres.forEach((genre: Genre) => {
-                                                    let genreDTO: GenreDTO = {
+                                                    const genreDTO: GenreDTO = {
                                                         genreName: genre.name,
                                                     }
                                                     genreListDTO.push(genreDTO)
@@ -127,8 +130,9 @@ export function Home() {
                                         }
                                     }}
                                     onSwipedLeft={() => {
+                                        setActiveIndex(activeIndex - 1)
                                         setSwipesCounter(swipesCounter + 1);
-                                        console.log(swipesCounter+" "+ index +" "+listGames.length);
+                                        console.log(swipesCounter+" "+ activeIndex +" "+listGames.length);
                                     }}
                                 >
                                     <Image
@@ -166,12 +170,12 @@ export function Home() {
                                                 style={{fontSize: 17, fontFamily: "zen_kaku_regular"}}>{item.release_dates[0].y ? item.release_dates[0].y : "N/A"}</Text>
                                         </View>
                                     </View>
-                                    <View style={styleHome.buttonsContainer}>
-                                        <XButton onPress={() =>  tinderCardsRef.current?.[index]?.swipeLeft()}></XButton>
-                                        <Image source={require("../../../../assets/logo.png")} style={stylesHome.logo}></Image>
-                                        <LikeButton onPress={() => tinderCardsRef.current?.[index]?.swipeRight()}></LikeButton>
-                                    </View>
                                 </TinderCard>
+                                <View style={styleHome.buttonsContainer}>
+                                    <XButton onPress={() =>  tinderCardsRef.current[activeIndex]?.swipeLeft()}></XButton>
+                                    <Image source={require("../../../../assets/logo.png")} style={stylesHome.logo}></Image>
+                                    <LikeButton onPress={() => tinderCardsRef.current[activeIndex]?.swipeRight()}></LikeButton>
+                                </View>
                             </View>
                         );
                     })}
