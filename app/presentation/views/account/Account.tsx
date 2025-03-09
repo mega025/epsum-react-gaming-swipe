@@ -303,7 +303,7 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                                             newPassword: text,
                                         })}
                                     />
-                                    <Text style={styles.passwordHint}>Password must have at least 8 characters</Text>
+                                    <Text style={styleAccount.passwordHint}>Password must have at least 8 characters</Text>
                                     <CustomTextInputPassword
                                         label={"Confirm new password"}
                                         keyboardType={"default"}

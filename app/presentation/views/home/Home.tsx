@@ -15,6 +15,7 @@ import React, {useEffect, useState, useCallback, useRef} from "react";
 import {CardItemHandle, TinderCard} from "rn-tinder-card";
 import styleHome from "./StyleHome";
 import viewModel from "./ViewModel";
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import {PlatformItem} from "../../components/PlatformItem";
 import {GenreItem} from "../../components/GenreItem";
 import {Genre, GenreDTO, Platform} from "../../../domain/entities/Game";
@@ -99,8 +100,8 @@ export function Home() {
                             >
                                 <TinderCard
                                     ref={(el) => (tinderCardsRef.current[index] = el)}
-                                    cardWidth={330}
-                                    cardHeight={630}
+                                    cardWidth={wp("78%")}
+                                    cardHeight={hp("66%")}
                                     disableBottomSwipe={true}
                                     disableTopSwipe={true}
                                     OverlayLabelRight={OverlayRight}
@@ -128,7 +129,7 @@ export function Home() {
                                         }}
                                         style={styleHome.image}
                                     />
-                                    <View style={{marginHorizontal: 20, marginVertical: 15}}>
+                                    <View style={{marginHorizontal: 20, marginVertical: hp("0%")}}>
                                         <View style={stylesHome.firstRowCardContainer}>
                                             <Text style={stylesHome.gameNameText}> {item.name}</Text>
                                             <Text
@@ -144,6 +145,7 @@ export function Home() {
                                                       renderItem={PlatformItem}
                                                       horizontal={true}
                                                       scrollEnabled={true}
+                                                      fadingEdgeLength={80}
                                                       showsHorizontalScrollIndicator={false}
                                                       nestedScrollEnabled={true}/>
                                         </View>
@@ -152,6 +154,7 @@ export function Home() {
                                                       data={item.genres ? item.genres : [nullGenre]}
                                                       renderItem={GenreItem}
                                                       horizontal={true}
+                                                      fadingEdgeLength={80}
                                                       showsHorizontalScrollIndicator={false}
                                                       scrollEnabled={true}
                                                       nestedScrollEnabled={true}/>

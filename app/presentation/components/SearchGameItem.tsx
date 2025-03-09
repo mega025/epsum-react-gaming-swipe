@@ -67,6 +67,7 @@ const SearchGameItem = ({ item }: { item: Game }) => {
                     <FlatList data={item.platforms}
                               renderItem={PlatformItem}
                               horizontal={true}
+                              fadingEdgeLength={80}
                               showsHorizontalScrollIndicator={false}
                               scrollEnabled={true}
                               nestedScrollEnabled={true}
@@ -185,8 +186,7 @@ const styles = StyleSheet.create({
     },
     plaformsFlatlistContainer:{
         flex:2,
-        width: 220,
-        marginEnd: 7,
+        width: wp("53%"),
         flexDirection:"row",
         alignSelf: "center",
         alignItems: "center",

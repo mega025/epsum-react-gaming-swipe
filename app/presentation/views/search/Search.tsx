@@ -70,7 +70,7 @@ export function Search() {
                     <FlatList
                         data={gamesDisplayed}
                         keyExtractor={(item, index) => String(index)}
-                        fadingEdgeLength={10}
+                        fadingEdgeLength={80}
                         renderItem={({ item }) => <SearchGameItem item={item} />}
                         ListFooterComponent={
                             loading ? <ActivityIndicator size="large"
