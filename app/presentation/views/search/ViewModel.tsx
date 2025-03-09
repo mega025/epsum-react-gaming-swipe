@@ -2,27 +2,23 @@ import React, {useState} from "react";
 import {Game} from "../../../domain/entities/Game";
 import {IgdbApiDelivery} from "../../../data/sources/remote/igdbAPI/IgdbApiDelivery";
 
-
 const searchViewModel = () => {
     const [searchText, setSearchText] = useState("");
-    const [games, setGames] =useState<Game[]>([]);
+    const [gamesDisplayed, setGamesDisplayed] = useState<Game[]>([]);
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(1);
 
-
-
-    const searchGamesPopular = async (page: number = 1) => {
+    const searchPopularGames = async (page: number = 1) => {
         setLoading(true);
         try {
-            const resPopular = await IgdbApiDelivery.post<Game[]>(
+            const res = await IgdbApiDelivery.post<Game[]>(
                 "/games",
-                `fields name, rating, platforms.abbreviation, genres.name, cover.url, release_dates.y; limit 10;  sort rating desc;`
+                `fields name, rating, platforms.abbreviation, genres.name, cover.url, release_dates.y; limit 10; 
+                sort hypes desc; where total_rating_count = null & release_dates.y >= 2025;`
             );
-            if (page === 1) {
-                setGames(resPopular.data);
-            } else {
-                setGames((prevGames) => [...prevGames, ...resPopular.data]);
-            }
+
+            setGamesDisplayed(res.data);
+
         } catch (error) {
             console.error("Error al buscar juegos:", error);
         } finally {
@@ -30,9 +26,7 @@ const searchViewModel = () => {
         }
     };
 
-
-
-    const searchGamesPersonalizado = async (text: string = "", page: number = 1) => {
+    const searchGamesByUserInput = async (text: string = "", page: number = 1) => {
         setLoading(true);
         try {
             const offset = page > 1 ? `offset ${page * 15};` : "";
@@ -40,49 +34,51 @@ const searchViewModel = () => {
                 "/games",
                 `fields name, rating, platforms.abbreviation, genres.name, cover.url, release_dates.y; limit 15; search "${text}"; ${offset}`
             );
-            if (page === 1) {
-                setGames(res.data);
-            } else {
-                setGames((prevGames) => [...prevGames, ...res.data]);
-            }
+
+            if (page === 1)
+                setGamesDisplayed(res.data);
+            else if (page > 1)
+                setGamesDisplayed((prevGames) => [...prevGames, ...res.data]);
+
+            setLoading(false)
+
         } catch (error) {
             console.error("Error al buscar juegos:", error);
-        } finally {
-            setLoading(false);
         }
     };
 
-    const SearchTextChange = async (text: string) => {
+    const onSearchTextChange = async (text: string) => {
            if (text === "") {
                setSearchText("");
-               searchGamesPopular(1)
-               setLoading(true);
-           }else{
+               await searchPopularGames(1)
+           } else {
                setSearchText(text);
                setPage(1);
-               searchGamesPersonalizado(text, 1);
-               setLoading(true);
+               await searchGamesByUserInput(text, 1);
            }
 
     };
 
-    const LoadMoreGame = () => {
-        if (!loading) {
+    const loadMoreGames = () => {
+        if (!loading && gamesDisplayed.length > 14) {
             setPage((prevPage) => {
                 const nextPage = prevPage + 1;
-                searchGamesPersonalizado(searchText, nextPage);
+                searchGamesByUserInput(searchText, nextPage);
                 return nextPage;
             });
         }
     };
 
     return {
-        games,
-        setGames,
+        gamesDisplayed,
+        setGamesDisplayed,
         loading,
-        LoadMoreGame,
-        SearchTextChange,
-        searchText,searchGamesPersonalizado,searchGamesPopular,setSearchText}
-
+        loadMoreGames,
+        onSearchTextChange,
+        searchText,
+        searchGamesByUserInput,
+        searchPopularGames,
+        setSearchText
+    }
 }
 export default {searchViewModel};

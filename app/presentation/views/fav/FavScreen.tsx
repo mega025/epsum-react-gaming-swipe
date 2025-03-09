@@ -33,7 +33,6 @@ export function FavScreen(){
     const {user} = UseUserLocalStorage()
     const [modalVisibleDeleteGame, setModalVisibleDeleteGame] = useState(false);
 
-
     useFocusEffect(
         useCallback(() => {
             console.log('Fav Screen focused');
@@ -44,58 +43,65 @@ export function FavScreen(){
         }, [user?.userId])
     );
 
-    const favGameRenderItem = useCallback(({item}: {item: FavGame}) =>
+    const [selectedGameId, setSelectedGameId] = useState<number | null>(null);
+
+    const favGameRenderItem = useCallback(({ item }: { item: FavGame }) => (
         <View style={stylesFavGameItem.card}>
             <View style={stylesFavGameItem.container}>
-                <Image source={{uri : item.imageUrl}} style={stylesFavGameItem.image}/>
-                <Text style={{...stylesHome.gameNameText, width: 170}}>{item.name}</Text>
-                <TouchableOpacity style={stylesFavGameItem.deleteIcon}
-                                  onPress={() => {setModalVisibleDeleteGame(!modalVisibleDeleteGame)}}>
+                <Image source={{ uri: item.imageUrl }} style={stylesFavGameItem.image} />
+                <Text style={{ ...stylesHome.gameNameText, width: 170 }}>{item.name}</Text>
+                <TouchableOpacity
+                    style={stylesFavGameItem.deleteIcon}
+                    onPress={() => {
+                        item.videogameId
+                            ? setSelectedGameId(item.videogameId)
+                            : Toast.show({"type": "error", "text1": "Unexpected error!"})}}
+                >
                     <Image source={require("../../../../assets/borrar.png")} style={stylesFavGameItem.deleteIcon} />
                 </TouchableOpacity>
-                <Modal
-                    animationType="slide"
-                    transparent={true}
-                    visible={modalVisibleDeleteGame}
-                    onRequestClose={() => {
-                        setModalVisibleDeleteGame(!modalVisibleDeleteGame);
-                    }}
-                >
-                    <View style={styleAccount.centeredView}>
-                        <View style={styleAccount.modalView}>
-                            <Text style={styleAccount.textPopUp}>Delete `{item.name}`?</Text>
-                            <View style={styleAccount.containerButton}>
-                                <Pressable
-                                    style={styleAccount.cancelButton}
-                                    onPress={() => setModalVisibleDeleteGame(!modalVisibleDeleteGame)}
-                                >
-                                    <Text style={styleAccount.textStyle}>Cancel</Text>
-                                </Pressable>
-                                <Pressable
-                                    style={styleAccount.acceptButton}
-                                    onPress={async () => {
-                                        await deleteGameFromFav(getPositionGameList(item), user?.userId ? user?.userId : 0)
-                                        setModalVisibleDeleteGame(!modalVisibleDeleteGame)
-                                    }}
-                                >
-                                    <Text style={styleAccount.textStyle}>Accept</Text>
-                                </Pressable>
+
+                {selectedGameId === item.videogameId && (
+                    <Modal
+                        animationType="fade"
+                        transparent={true}
+                        visible={true}
+                        onRequestClose={() => setSelectedGameId(null)}
+                    >
+                        <View style={styleAccount.centeredView}>
+                            <View style={styleAccount.modalView}>
+                                <Text style={styleAccount.textPopUp}>DELETE '{item.name}'?</Text>
+                                <View style={styleAccount.containerButton}>
+                                    <Pressable
+                                        style={styleAccount.modalCancelButton}
+                                        onPress={() => setSelectedGameId(null)}
+                                    >
+                                        <Text style={styleAccount.modalButtonTextStyle}>Cancel</Text>
+                                    </Pressable>
+                                    <Pressable
+                                        style={styleAccount.modalAcceptButton}
+                                        onPress={async () => {
+                                            console.log(item.name)
+                                            await deleteGameFromFav(getPositionGameList(item.name), user?.userId || 0);
+                                            setSelectedGameId(null);
+                                        }}
+                                    >
+                                        <Text style={styleAccount.modalButtonTextStyle}>Accept</Text>
+                                    </Pressable>
+                                </View>
                             </View>
                         </View>
-                    </View>
-                </Modal>
+                    </Modal>
+                )}
             </View>
         </View>
-        , [user?.userId, getPositionGameList, modalVisibleDeleteGame])
+    ), [user?.userId, getPositionGameList, selectedGameId]);
 
     return (
         <View style={styleFav.container}>
             <ImageBackground source={require("../../../../assets/definitiveBackground.jpeg")}
                              style={{width: '100%', height: '100%'}}>
                 <View style={styleFav.header}>
-                    <Text style={styleFav.title}>
-                        Favourite games
-                    </Text>
+                    <Text style={styleFav.title}>Favourite games</Text>
                 </View>
                 <View style={stylesHome.loadingIconContainer}>
                     <ActivityIndicator style={styleHome.loading} size="large" color="#ffffff" animating={showLoading}/>
@@ -106,7 +112,7 @@ export function FavScreen(){
                               contentContainerStyle={{flexDirection: "column-reverse"}}
                               renderItem={favGameRenderItem}
                               extraData={favListGames}
-                              ListHeaderComponent={<Text style={{...styleFav.listHeader, display: showLoading ? "none" : "flex"}}>Add more games!</Text>}
+                              ListHeaderComponent={<Text style={{...styleFav.flatListFavGames, display: showLoading ? "none" : "flex"}}>Add more games!</Text>}
                     />
                 </View>
                 <Toast/>

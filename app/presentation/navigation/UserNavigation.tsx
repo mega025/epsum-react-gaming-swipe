@@ -11,7 +11,7 @@ const Tab = createBottomTabNavigator();
 export const UserNavigation=() =>{
 return (
     <Tab.Navigator  screenOptions={{
-        tabBarHideOnKeyboard: false,
+        tabBarHideOnKeyboard: true,
         headerShown:false,
         tabBarShowLabel: false,
         tabBarStyle: {height: 55},

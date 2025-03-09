@@ -14,6 +14,8 @@ export const CustomTextInputSearch = ({keyboardType, secureTextEntry, onPressBut
         <TextInput
             style={styles.formInput}
             keyboardType={keyboardType}
+            placeholder={"Type here..."}
+            placeholderTextColor={AppColors.white}
             secureTextEntry={secureTextEntry}
             onChangeText={(text) => onPressButtonFromInterface(text)}
             value={value}
@@ -25,14 +27,15 @@ const styles = StyleSheet.create({
     formInput: {
         fontSize: 15,
         marginBottom: 10,
-        borderColor: "black",
         borderWidth: 1,
+        borderColor: AppColors.white,
         paddingVertical: 5,
         paddingHorizontal: 10,
         borderRadius: 10,
         backgroundColor: AppColors.colorNavigationButton,
-        height: 40,
+        height: 45,
         width: "75%",
+        fontFamily: "zen_kaku_regular",
         color: AppColors.white,
     },
 });

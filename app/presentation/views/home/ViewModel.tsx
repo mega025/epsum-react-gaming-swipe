@@ -1,6 +1,6 @@
 import {IgdbApiDelivery} from "../../../data/sources/remote/igdbAPI/IgdbApiDelivery";
 import {useState} from "react";
-import {Game} from "../../../domain/entities/Game";
+import {Game, Genre, GenreDTO} from "../../../domain/entities/Game";
 import {ApiDelivery} from "../../../data/sources/remote/api/ApiDelivery";
 import {FavGame} from "../../../domain/entities/FavGame";
 import viewModel from "../fav/ViewModel";
@@ -18,7 +18,7 @@ const homeViewModel = () => {
         setShowLoading(true)
         const randomOffset = Math.round(((Math.random()*9100)*100)/100).toFixed(0)
         setListGames([]);
-        IgdbApiDelivery.post("/games", "fields name, cover.url, genres.name, platforms.abbreviation, rating, release_dates.y; limit 10; where rating > 70; offset "+randomOffset+";")
+        await IgdbApiDelivery.post("/games", "fields name, cover.url, genres.name, platforms.abbreviation, rating, release_dates.y; limit 10; where rating > 70; offset "+randomOffset+";")
             .then((response) => {
                 setListGames(response.data);
                 setShowLoading(false);
@@ -39,6 +39,27 @@ const homeViewModel = () => {
             })
     }
 
+    const transformGameIntoFavGameInterface =(item: Game) => {
+        const genreListDTO: GenreDTO[] = []
+        item.genres.forEach((genre: Genre) => {
+                const genreDTO: GenreDTO = {
+                    genreName: genre.name,
+                }
+                genreListDTO.push(genreDTO)
+            }
+        )
+        const favGameDTO: FavGame = {
+            name: item.name,
+            ratingScore: Math.round((item.rating * 100) / 100),
+            releaseYear: item.release_dates ? item.release_dates[0].y : 0,
+            imageUrl: item.cover ? transfromCoverUrl(item.cover.url) : "",
+            listPlatforms: item.platforms,
+            listGenres: genreListDTO
+        }
+
+        return favGameDTO;
+    }
+
 
     const transfromCoverUrl = (url:string) => {
         const cutUrlFirstPart = url.substring(0, 38);
@@ -56,7 +77,8 @@ const homeViewModel = () => {
         setShowLoading,
         addGameToFav,
         showMessageLoading,
-        setMessageLoading
+        setMessageLoading,
+        transformGameIntoFavGameInterface
     }
 }
 

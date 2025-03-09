@@ -1,5 +1,5 @@
 import {StyleSheet} from "react-native";
-import {AppFonts} from "../../theme/AppTheme";
+import {AppColors, AppFonts} from "../../theme/AppTheme";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { RFPercentage } from "react-native-responsive-fontsize";
 
@@ -10,7 +10,7 @@ const stylesAuthViews = StyleSheet.create({
     },
 
     titleLogin: {
-        fontSize: RFPercentage(5),
+        fontSize: 40,
         color: 'white',
         marginTop: hp("20%"),
         alignSelf: 'flex-start',
@@ -20,13 +20,21 @@ const stylesAuthViews = StyleSheet.create({
     },
 
     titleRegister: {
-        fontSize: RFPercentage(4.5),
+        fontSize: 34,
         color: 'white',
         alignSelf: 'flex-start',
         marginStart: wp("13%"),
-        marginTop: hp("15%"),
+        marginTop: hp("12%"),
         marginBottom: hp("5%"),
         fontFamily: "zen_kaku_light",
+    },
+
+    passwordHint: {
+        fontFamily: "zen_kaku_regular",
+        color: AppColors.white,
+        fontSize: 14,
+        margin: 5,
+        height: 30,
     },
 
     formContainer: {

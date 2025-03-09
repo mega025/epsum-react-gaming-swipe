@@ -8,7 +8,7 @@ import {UseUserLocalStorage} from "../../hooks/UseUserLocalStorage";
 import {useState} from "react";
 import {PasswordsDTO} from "../../../domain/entities/UpdatePasswordDTO";
 
-export const AccountViewModel =()=> {
+export const accountViewModel =()=> {
 
     const [userDB, setUserDB] = useState<UserInterface>()
     const [showLoading, setShowLoading] = useState(true);
@@ -63,6 +63,9 @@ export const AccountViewModel =()=> {
         if (updatePasswordDTO.oldPassword === "" || updatePasswordDTO.confirmPassword === "" || updatePasswordDTO.newPassword === "") {
             setErrorMessage("Empty fields are not allowed")
             return false
+        } if (updatePasswordDTO.newPassword.length < 8) {
+            setErrorMessage("Password must have at least 8 characters")
+            return false
         } if (updatePasswordDTO.confirmPassword !== updatePasswordDTO.newPassword) {
             setErrorMessage("Passwords do not match");
             return  false
@@ -102,4 +105,4 @@ export const AccountViewModel =()=> {
     };
 }
 
-export default { AccountViewModel };
+export default { AccountViewModel: accountViewModel };

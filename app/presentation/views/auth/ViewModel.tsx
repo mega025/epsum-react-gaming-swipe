@@ -73,7 +73,7 @@ const registerViewModel= () => {
                 personalDetails: {
                     firstName: registerValues.firstName,
                     lastName: registerValues.lastName,
-                    imageUrl: "",
+                    image_url: "",
                     password: registerValues.password
                 },
                 listFavGames: []
@@ -95,6 +95,15 @@ const registerViewModel= () => {
         })
     }
 
+    const validateEmail = (email: string) => {
+        let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+        if (!reg.test(email)) {
+            return false;
+        } else {
+            return true
+        }
+    }
+
     const validateForm = () => {
         if (registerValues.firstName === "") {
             setErrorMessage("First name is required");
@@ -105,8 +114,14 @@ const registerViewModel= () => {
         } if (registerValues.email === "") {
             setErrorMessage("Email is required")
             return false
+        } if (!validateEmail(registerValues.email)) {
+            setErrorMessage("Email is not valid")
+            return false
         } if (registerValues.password === "") {
             setErrorMessage("Password is required")
+            return false
+        } if (registerValues.password.length < 8) {
+            setErrorMessage("Password must have at least 8 characters")
             return false
         } if (registerValues.password !== registerValues.confirmPassword) {
             setErrorMessage("The passwords do not match")

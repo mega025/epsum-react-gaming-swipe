@@ -25,6 +25,7 @@ import Toast from "react-native-toast-message";
 import {PasswordsDTO} from "../../../domain/entities/UpdatePasswordDTO";
 import * as ImagePickerExpo from "expo-image-picker";
 import {AppColors} from "../../theme/AppTheme";
+import styles from "../auth/StylesAuthViews";
 
 export function Account({navigation = useNavigation(), route}: PropsStackNavigation){
 
@@ -121,8 +122,8 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                             <Image style={stylesProfilePicture.photo}  source={userDB?.personalDetails.image_url ? {uri: userDB?.personalDetails.image_url} : require("../../../../assets/account.png")}
                                 />
                         </View>
-                        <TouchableOpacity style={stylesProfilePicture.button} onPress={selectImage}>
-                            <Text style={stylesProfilePicture.buttonText}>Change photo</Text>
+                        <TouchableOpacity style={stylesProfilePicture.changePhotoButton} onPress={selectImage}>
+                            <Text style={stylesProfilePicture.changePhotoButtonText}>Change photo</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -133,7 +134,7 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                         <Text style={styleAccount.Name}>{userDB?.personalDetails.firstName}</Text>
                         <View>
                             <Modal
-                                animationType="slide"
+                                animationType="fade"
                                 transparent={true}
                                 visible={modalVisibleFirst}
                                 onRequestClose={() => {
@@ -143,7 +144,7 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                             >
                                 <View style={styleAccount.centeredView}>
                                     <View style={styleAccount.modalView}>
-                                        <Text style={styleAccount.textPopUp}> Change you first name </Text>
+                                        <Text style={styleAccount.textPopUp}> Change your first name </Text>
                                         <CustomTextInput
                                             label={"First name"}
                                             keyboardType={"default"}
@@ -152,13 +153,13 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                                         />
                                         <View style={styleAccount.containerButton}>
                                             <Pressable
-                                                style={styleAccount.cancelButton}
+                                                style={styleAccount.modalCancelButton}
                                                 onPress={() => setModalVisibleFirst(!modalVisibleFirst)}
                                             >
-                                                <Text style={styleAccount.textStyle}>Cancel</Text>
+                                                <Text style={styleAccount.modalButtonTextStyle}>Cancel</Text>
                                             </Pressable>
                                             <Pressable
-                                                style={styleAccount.acceptButton}
+                                                style={styleAccount.modalAcceptButton}
                                                 onPress={() => {
                                                     if(userDB != undefined) {
                                                         if (updatedFirstName === "") {
@@ -184,7 +185,7 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                                                     }}
                                                 }
                                             >
-                                                <Text style={styleAccount.textStyle}>Accept</Text>
+                                                <Text style={styleAccount.modalButtonTextStyle}>Accept</Text>
                                             </Pressable>
                                         </View>
                                     </View>
@@ -206,7 +207,7 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                         <Text style={styleAccount.Name}>{userDB?.personalDetails.lastName}</Text>
                         <View>
                             <Modal
-                                animationType="slide"
+                                animationType="fade"
                                 transparent={true}
                                 visible={modalVisibleLast}
                                 onRequestClose={() => {
@@ -216,7 +217,7 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                             >
                                 <View style={styleAccount.centeredView}>
                                     <View style={styleAccount.modalView}>
-                                        <Text style={styleAccount.textPopUp}>Change you last name</Text>
+                                        <Text style={styleAccount.textPopUp}>Change your last name</Text>
                                         <CustomTextInput
                                             label={"Last name"}
                                             keyboardType={"default"}
@@ -225,13 +226,13 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                                         />
                                         <View style={styleAccount.containerButton}>
                                             <Pressable
-                                                style={styleAccount.cancelButton}
+                                                style={styleAccount.modalCancelButton}
                                                 onPress={() => setModalVisibleLast(!modalVisibleLast)}
                                             >
-                                                <Text style={styleAccount.textStyle}>Cancel</Text>
+                                                <Text style={styleAccount.modalButtonTextStyle}>Cancel</Text>
                                             </Pressable>
                                             <Pressable
-                                                style={styleAccount.acceptButton}
+                                                style={styleAccount.modalAcceptButton}
                                                 onPress={() => {
                                                     if(userDB != undefined) {
                                                         if (updatedLastName === "") {
@@ -257,7 +258,7 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                                                     }}
                                                 }
                                             >
-                                                <Text style={styleAccount.textStyle}>Accept</Text>
+                                                <Text style={styleAccount.modalButtonTextStyle}>Accept</Text>
                                             </Pressable>
                                         </View>
                                     </View>
@@ -275,7 +276,7 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                 <View style={styleAccount.containerResetPassword}>
                     <View>
                         <Modal
-                            animationType="slide"
+                            animationType="fade"
                             transparent={true}
                             visible={modalVisiblePassword}
                             onRequestClose={() => {
@@ -285,7 +286,7 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                         >
                             <View style={styleAccount.centeredView}>
                                 <View style={styleAccount.modalView}>
-                                    <Text style={styleAccount.textPopUp}>Change you password</Text>
+                                    <Text style={styleAccount.textPopUp}>Change your password</Text>
                                     <CustomTextInputPassword
                                         label={"Current password"}
                                         keyboardType={"default"}
@@ -302,6 +303,7 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                                             newPassword: text,
                                         })}
                                     />
+                                    <Text style={styles.passwordHint}>Password must have at least 8 characters</Text>
                                     <CustomTextInputPassword
                                         label={"Confirm new password"}
                                         keyboardType={"default"}
@@ -312,13 +314,13 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                                     />
                                     <View style={styleAccount.containerButton}>
                                         <Pressable
-                                            style={styleAccount.cancelButton}
+                                            style={styleAccount.modalCancelButton}
                                             onPress={() => setModalVisibleLastPassword(!modalVisiblePassword)}
                                         >
-                                            <Text style={styleAccount.textStyle}>Cancel</Text>
+                                            <Text style={styleAccount.modalButtonTextStyle}>Cancel</Text>
                                         </Pressable>
                                         <Pressable
-                                            style={styleAccount.acceptButton}
+                                            style={styleAccount.modalAcceptButton}
                                             onPress={() => {
                                                 if (user?.userId != undefined) {
                                                     const passwordsDTO: PasswordsDTO = {
@@ -332,7 +334,7 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
 
                                             }}
                                         >
-                                            <Text style={styleAccount.textStyle}>Accept</Text>
+                                            <Text style={styleAccount.modalButtonTextStyle}>Accept</Text>
                                         </Pressable>
                                     </View>
                                 </View>
@@ -370,17 +372,20 @@ const stylesProfilePicture =StyleSheet.create({
         alignItems:"center",
         resizeMode:"center",
     },
-    button:{
+    changePhotoButton:{
         backgroundColor:AppColors.colorNavigationButton,
         width:160,
         height:35,
+        alignSelf:"center",
         borderRadius:25,
         marginTop:110,
 
     },
-    buttonText:{
+    changePhotoButtonText:{
         alignSelf:"center",
+        verticalAlign:"middle",
+        fontFamily:"zen_kaku_regular",
+        height: 30,
         color:AppColors.white,
-        paddingVertical:6
     }
 })

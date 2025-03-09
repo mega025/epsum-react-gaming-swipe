@@ -6,14 +6,14 @@ const stylesTabBar = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
+        paddingTop: 200,
         width: "100%",
-        paddingTop: hp("1%"),
-        paddingBottom: hp("1%"),
     },
 
     logoImage: {
-        width: wp("10%"),
-        height: wp("10%"),
+        width: wp("9%"),
+        height: wp("9%"),
+        marginTop: 5,
     },
 
     logoText: {
@@ -29,6 +29,7 @@ const stylesTabBar = StyleSheet.create({
         backgroundColor: "rgba(215, 20, 20, 0)",
         width: wp("40%"),
         alignSelf: "flex-end",
+        marginTop: 4,
         fontFamily: 'zen_kaku_regular',
         elevation: 0,
     }

@@ -11,11 +11,10 @@ const favScreenViewModel = () => {
     let [showLoading, setShowLoading] = useState(true);
 
     const loadFavGames = async (userId: number) => {
-        ApiDelivery.get(`/favgames/user/${userId}`)
+        await ApiDelivery.get(`/favgames/user/${userId}`)
             .then((response) => {
                 if(response.data != undefined) {
                     setFavListGames(response.data);
-                    console.log(response.data);
                     setShowLoading(false);
                 }
             })
@@ -24,9 +23,11 @@ const favScreenViewModel = () => {
             })
     }
 
-    const getPositionGameList: (game: FavGame) => number = (game: FavGame) => {
-        return favListGames.findIndex(gameOnList => game.name === gameOnList.name);
-    }
+    const getPositionGameList = (gameName: string) => {
+        return favListGames.findIndex(gameOnList =>
+            gameOnList.name.trim().toLowerCase() === gameName.trim().toLowerCase()
+        );
+    };
 
     const deleteGameFromFav = async (position: number, userId: number) => {
         await ApiDelivery.post(`/favgames/delete/${userId}`, position)
@@ -43,15 +44,13 @@ const favScreenViewModel = () => {
             })
     }
 
-
-
     return{
         favListGames,
         setFavListGames,
         loadFavGames,
         showLoading,
         deleteGameFromFav,
-        getPositionGameList
+        getPositionGameList,
     }
 }
 

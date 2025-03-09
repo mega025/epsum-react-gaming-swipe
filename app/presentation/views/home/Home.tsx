@@ -34,7 +34,8 @@ export function Home() {
         showLoading,
         addGameToFav,
         showMessageLoading,
-        setMessageLoading
+        setMessageLoading,
+        transformGameIntoFavGameInterface
     } = viewModel.homeViewModel()
     const {user} = UseUserLocalStorage()
     let [swipesCounter, setSwipesCounter] = useState(0);
@@ -110,23 +111,7 @@ export function Home() {
                                         setActiveIndex(activeIndex - 1)
                                         console.log(swipesCounter+" "+user?.userId)
                                         if(user?.userId != undefined) {
-                                            const genreListDTO: GenreDTO[] = []
-                                            item.genres.forEach((genre: Genre) => {
-                                                    const genreDTO: GenreDTO = {
-                                                        genreName: genre.name,
-                                                    }
-                                                    genreListDTO.push(genreDTO)
-                                                }
-                                            )
-                                            const favGameDTO: FavGame = {
-                                                name: item.name,
-                                                ratingScore: Math.round((item.rating * 100) / 100),
-                                                releaseYear: item.release_dates ? item.release_dates[0].y : 0,
-                                                imageUrl: item.cover ? transfromCoverUrl(item.cover.url) : "",
-                                                listPlatforms: item.platforms,
-                                                listGenres: genreListDTO
-                                            }
-                                            await addGameToFav(favGameDTO, user?.userId);
+                                            await addGameToFav(transformGameIntoFavGameInterface(item), user?.userId);
                                         }
                                     }}
                                     onSwipedLeft={() => {
@@ -147,7 +132,11 @@ export function Home() {
                                         <View style={stylesHome.firstRowCardContainer}>
                                             <Text style={stylesHome.gameNameText}> {item.name}</Text>
                                             <Text
-                                                style={stylesHome.ratingText}>{Math.round((item.rating * 100) / 100).toFixed(0)}</Text>
+                                                style={stylesHome.ratingText}>{
+                                                item.rating
+                                                    ? Math.round((item.rating * 100) / 100).toFixed(0)
+                                                    : "N/A"
+                                            }</Text>
                                         </View>
                                         <View style={styleHome.secondRowCardContainer}>
                                             <FlatList style={styleHome.platformsContainer}
@@ -167,7 +156,7 @@ export function Home() {
                                                       scrollEnabled={true}
                                                       nestedScrollEnabled={true}/>
                                             <Text
-                                                style={{fontSize: 17, fontFamily: "zen_kaku_regular"}}>{item.release_dates[0].y ? item.release_dates[0].y : "N/A"}</Text>
+                                                style={{fontSize: 17, fontFamily: "zen_kaku_regular"}}>{item.release_dates ? item.release_dates[0].y : "N/A"}</Text>
                                         </View>
                                     </View>
                                 </TinderCard>

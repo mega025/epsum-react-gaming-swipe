@@ -3,7 +3,7 @@ import {
     Animated, LayoutChangeEvent, PressableAndroidRippleConfig, StyleProp,
     View,
     ViewStyle,
-    useWindowDimensions, Text, ImageBackground, Image, SafeAreaView
+    useWindowDimensions, Text, ImageBackground, Image, SafeAreaView, KeyboardAvoidingView
 } from 'react-native';
 import {
     TabView,
@@ -28,9 +28,9 @@ const renderScene = SceneMap({
 });
 
 const renderTabBar = (props: React.JSX.IntrinsicAttributes & SceneRendererProps & { navigationState: NavigationState<Route>; scrollEnabled?: boolean; bounces?: boolean; activeColor?: string; inactiveColor?: string; pressColor?: string; pressOpacity?: number; options?: Record<string, TabDescriptor<Route>> | undefined; renderIndicator?: ((props: TabBarIndicatorProps<Route>) => React.ReactNode) | undefined; renderTabBarItem?: ((props: TabDescriptor<Route> & { position: Animated.AnimatedInterpolation<number>; route: Route; navigationState: NavigationState<Route>; activeColor?: string; inactiveColor?: string; pressColor?: string; pressOpacity?: number; onLayout?: (event: LayoutChangeEvent) => void; onPress: () => void; onLongPress: () => void; defaultTabWidth?: number; style: StyleProp<ViewStyle>; android_ripple?: PressableAndroidRippleConfig; } & { key: string; }) => React.ReactElement) | undefined; onTabPress?: ((scene: Scene<Route> & Event) => void) | undefined; onTabLongPress?: ((scene: Scene<Route>) => void) | undefined; tabStyle?: StyleProp<ViewStyle>; indicatorStyle?: StyleProp<ViewStyle>; indicatorContainerStyle?: StyleProp<ViewStyle>; contentContainerStyle?: StyleProp<ViewStyle>; style?: StyleProp<ViewStyle>; direction?: LocaleDirection; gap?: number; testID?: string; android_ripple?: PressableAndroidRippleConfig; }) => (
-    <SafeAreaView>
         <View>
-            <ImageBackground source={require("../../../../assets/background-tab.png")} style={{...StylesTabBar.container, paddingTop:20}}>
+            <ImageBackground source={require("../../../../assets/background-tab.png")}
+                             style={{...StylesTabBar.container, paddingTop:45}}>
                 <View style={{flexDirection: "row", flexWrap: "wrap"}}>
                     <Image source={require("../../../../assets/logo.png")} style={stylesTabBar.logoImage}/>
                     <Text style={StylesTabBar.logoText}>GamingSwipe</Text>
@@ -42,7 +42,6 @@ const renderTabBar = (props: React.JSX.IntrinsicAttributes & SceneRendererProps 
                 />
             </ImageBackground>
         </View>
-    </SafeAreaView>
 );
 
 export default function TabViewLoginRegister({}) {

@@ -91,7 +91,8 @@ const stylesHome= StyleSheet.create({
     gameNameText: {
         fontSize: 16,
         width: 230,
-        height: 30,
+        height: 70,
+        verticalAlign: "middle",
         fontFamily: "zen_kaku_regular",
     },
 
