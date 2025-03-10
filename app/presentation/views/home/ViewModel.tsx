@@ -50,7 +50,7 @@ const homeViewModel = () => {
         )
         const favGameDTO: FavGame = {
             name: item.name,
-            ratingScore: Math.round((item.rating * 100) / 100),
+            ratingScore: item.rating ? Math.round((item.rating * 100) / 100) : 0,
             releaseYear: item.release_dates ? item.release_dates[0].y : 0,
             imageUrl: item.cover ? transfromCoverUrl(item.cover.url) : "",
             listPlatforms: item.platforms,
