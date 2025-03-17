@@ -348,7 +348,9 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                     </View>
                 </View>
                 <View style={styleAccount.containerLogOut}>
-                    <Text style={styleAccount.LogOut} onPress={() => {deleteSession().then(r => navigation.navigate("TabViewLoginRegister"))}}> Log out</Text>
+                    <Text style={styleAccount.LogOut} onPress={() => {
+                        deleteSession().then(r => navigation.replace("TabViewLoginRegister"))}
+                    }> Log out</Text>
                 </View>
                 <Toast/>
             </ImageBackground>
