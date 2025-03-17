@@ -31,7 +31,7 @@ export function Home() {
     const {
         listGames,
         refillSwipeGames,
-        transfromCoverUrl,
+        transformCoverUrl,
         showLoading,
         addGameToFav,
         showMessageLoading,
@@ -124,7 +124,7 @@ export function Home() {
                                     <Image
                                         source={{
                                             uri: item.cover
-                                                ? transfromCoverUrl(item.cover.url)
+                                                ? transformCoverUrl(item.cover.url)
                                                 : "https://lightwidget.com/wp-content/uploads/localhost-file-not-found.jpg"
                                         }}
                                         style={styleHome.image}
