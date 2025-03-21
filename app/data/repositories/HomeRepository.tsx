@@ -4,6 +4,8 @@ import {ApiDelivery} from "../sources/remote/api/ApiDelivery";
 import {IgdbApiDelivery} from "../sources/remote/igdbAPI/IgdbApiDelivery";
 import {AxiosError} from "axios";
 import {Game} from "../../domain/entities/Game";
+import {FavGame} from "../../domain/entities/FavGame";
+import Toast from "react-native-toast-message";
 
 export class HomeRepository implements HomeRepositoryInterface {
     async refillGamesFromSwiper(): Promise<Game[]> {
@@ -22,6 +24,20 @@ export class HomeRepository implements HomeRepositoryInterface {
             let e = error as AxiosError;
             console.log(e.message);
             return Promise.reject(e);
+        }
+    }
+
+    async addGameToFavorite(userId: number, videogame: FavGame): Promise<ApiDeliveryResponse> {
+        try {
+            const response = await ApiDelivery.post(`/favgames/add/${userId}`, videogame);
+            return Promise.resolve(response.data)
+        }  catch (error)  {
+            const e = error as AxiosError;
+            Toast.show({
+                type: 'error',
+                text1: e.message,
+            })
+            return Promise.resolve(JSON.parse(JSON.stringify(e.response?.data)) as ApiDeliveryResponse);
         }
     }
 

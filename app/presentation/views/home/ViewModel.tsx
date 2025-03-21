@@ -5,6 +5,7 @@ import {ApiDelivery} from "../../../data/sources/remote/api/ApiDelivery";
 import {FavGame} from "../../../domain/entities/FavGame";
 import viewModel from "../fav/ViewModel";
 import {refillGamesFromSwiperUseCase} from "../../../domain/usesCases/home/RefillGamesFromSwiper";
+import {addGameToFavoriteUseCase} from "../../../domain/usesCases/home/AddGameToFavorite";
 
 
 const homeViewModel = () => {
@@ -24,13 +25,7 @@ const homeViewModel = () => {
     }
 
     const addGameToFav = async (game: FavGame, userId: number) => {
-        await ApiDelivery.post(`/favgames/add/${userId}`, game)
-            .then((response) => {
-                console.log(response.data?.message);
-             })
-            .catch((error) => {
-                console.log(error);
-            })
+        await addGameToFavoriteUseCase(userId, game);
     }
 
     const transformGameIntoFavGameInterface =(item: Game) => {
