@@ -1,15 +1,31 @@
-import {Alert, Image, ImageBackground, Modal, Pressable, Text, TextInput, TouchableOpacity, View} from "react-native";
+import {
+    ActivityIndicator,
+    Alert,
+    Image,
+    ImageBackground,
+    Modal,
+    Pressable, StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View
+} from "react-native";
 import styleAccount from "./StyleAccount";
-import {RoundedButton} from "../../components/RoundedButton";
-import {ChangePhoto} from "../../components/ChangePhoto";
 import viewModel from "./ViewModel";
-import {useNavigation} from "@react-navigation/native";
+import {useFocusEffect, useNavigation} from "@react-navigation/native";
 import {PropsStackNavigation} from "../../interfaces/StackNav";
-import React, {useState} from "react";
-import {PruebaButton} from "../../components/ModalEditProfile";
+import React, {useCallback, useEffect, useState} from "react";
 import {CustomTextInputPassword} from "../../components/CustomTextInputPassword";
 import {CustomTextInput} from "../../components/CustomTextInput";
-import {CustomTextInputInline} from "../../components/CustomTextInputInline";
+import {UseUserLocalStorage} from "../../hooks/UseUserLocalStorage";
+import stylesHome from "../home/StyleHome";
+import styleHome from "../home/StyleHome";
+import {UserInterface} from "../../../domain/entities/User";
+import Toast from "react-native-toast-message";
+import {PasswordsDTO} from "../../../domain/entities/UpdatePasswordDTO";
+import * as ImagePickerExpo from "expo-image-picker";
+import {AppColors} from "../../theme/AppTheme";
+import styles from "../auth/StylesAuthViews";
 
 export function Account({navigation = useNavigation(), route}: PropsStackNavigation){
 
@@ -17,14 +33,80 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
     const [modalVisibleLast, setModalVisibleLast] = useState(false);
     const [modalVisiblePassword, setModalVisibleLastPassword] = useState(false);
 
-    const {deleteSession} =viewModel.AccountViewModel();
+    const {user} = UseUserLocalStorage()
+    const [updatedLastName, setUpdateLastName] = useState("");
+    const [updatedFirstName, setUpdateFirstName] = useState("");
+    const {
+        deleteSession,
+        userDB,
+        getUserDB,
+        showLoading,
+        updateUserDetails,
+        updatePasswordDTO,
+        setUpdatePasswordDTO,
+        errorMessage,
+        setErrorMessage,
+        updateUserPassword
+    } =viewModel.AccountViewModel();
+
+    useFocusEffect(
+        useCallback(() => {
+            if(user?.userId != undefined){
+                getUserDB(user?.userId)
+                if (userDB != undefined)
+                    console.log(userDB)
+            }
+        }, [user?.userId, JSON.stringify(userDB)])
+    )
+
+    useEffect(() => {
+        if (errorMessage != "") {
+            Toast.show({
+                type: "error",
+                text1: errorMessage,
+            })
+            setErrorMessage("")
+        }
+    }, [errorMessage]);
+
+    const selectImage =async () => {
+        const { status } = await ImagePickerExpo.requestCameraPermissionsAsync()
+
+        if (status !== "granted") {
+            alert("Permission denied")
+            return;
+        }
+        let result = await ImagePickerExpo.launchImageLibraryAsync({
+            mediaTypes:ImagePickerExpo.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect:[1,1],
+            quality:1
+        });
+        console.log("result", result);
+        if (!result.canceled) {
+            if (userDB != undefined) {
+                const updatedUser: UserInterface = {
+                    ...userDB,
+                    personalDetails: {
+                        firstName: userDB.personalDetails.firstName,
+                        lastName: userDB.personalDetails.lastName,
+                        image_url: result.assets[0].uri,
+                        password: userDB.personalDetails.password
+                    }
+                }
+                if(userDB.userId != undefined){
+                    updateUserDetails(updatedUser, userDB.userId)
+                }
+            }
+        }
+    }
+
     return (
         <View style={styleAccount.container}>
             <ImageBackground source={require("../../../../assets/definitiveBackground.jpeg")}
                              style={{width: '100%', height: '100%'}}>
-                <View style={styleAccount.header}>
-                    <Image source={require("../../../../assets/logo.png")} style={styleAccount.logo}></Image>
-                    <Text style={styleAccount.appName}> GamingSwipe</Text>
+                <View style={stylesHome.loadingIconContainer}>
+                    <ActivityIndicator style={styleHome.loading} size="large" color="#ffffff" animating={showLoading}/>
                 </View>
                 <View>
                     <Text style={styleAccount.title}>
@@ -32,19 +114,27 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                     </Text>
                 </View>
                 <View style={styleAccount.containerEmail}>
-                    <Text style={styleAccount.textEmail}> email </Text>
+                    <Text style={styleAccount.textEmail}>{userDB?.email}</Text>
                 </View>
                 <View style={styleAccount.containerPhoto}>
-                    <ChangePhoto></ChangePhoto>
+                    <View style={stylesProfilePicture.container}>
+                        <View style={stylesProfilePicture.containerPhoto}>
+                            <Image style={stylesProfilePicture.photo}  source={userDB?.personalDetails.image_url ? {uri: userDB?.personalDetails.image_url} : require("../../../../assets/account.png")}
+                                />
+                        </View>
+                        <TouchableOpacity style={stylesProfilePicture.changePhotoButton} onPress={selectImage}>
+                            <Text style={stylesProfilePicture.changePhotoButtonText}>Change photo</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
                 <View style={styleAccount.containerName}>
-                    <Text style={styleAccount.labelName}> Name</Text>
+                    <Text style={styleAccount.labelName}>Name</Text>
 
                     <View style={styleAccount.containerEditName}>
-                        <Text style={styleAccount.Name}> 1</Text>
+                        <Text style={styleAccount.Name}>{userDB?.personalDetails.firstName}</Text>
                         <View>
                             <Modal
-                                animationType="slide"
+                                animationType="fade"
                                 transparent={true}
                                 visible={modalVisibleFirst}
                                 onRequestClose={() => {
@@ -54,25 +144,48 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                             >
                                 <View style={styleAccount.centeredView}>
                                     <View style={styleAccount.modalView}>
-                                        <Text style={styleAccount.textPopUp}> Change you first name </Text>
+                                        <Text style={styleAccount.textPopUp}> Change your first name </Text>
                                         <CustomTextInput
                                             label={"First name"}
                                             keyboardType={"default"}
                                             secureTextEntry={false}
-                                            onChangeText={(text) => alert(text)}
+                                            onChangeText={(text) => setUpdateFirstName(text)}
                                         />
                                         <View style={styleAccount.containerButton}>
                                             <Pressable
-                                                style={styleAccount.cancelButton}
+                                                style={styleAccount.modalCancelButton}
                                                 onPress={() => setModalVisibleFirst(!modalVisibleFirst)}
                                             >
-                                                <Text style={styleAccount.textStyle}>Cancel</Text>
+                                                <Text style={styleAccount.modalButtonTextStyle}>Cancel</Text>
                                             </Pressable>
                                             <Pressable
-                                                style={styleAccount.acceptButton}
-                                                onPress={() => setModalVisibleFirst(!modalVisibleFirst)}
+                                                style={styleAccount.modalAcceptButton}
+                                                onPress={() => {
+                                                    if(userDB != undefined) {
+                                                        if (updatedFirstName === "") {
+                                                            setErrorMessage("Empty fields are not allowed")
+                                                            setModalVisibleFirst(!modalVisibleFirst)
+                                                        } else {
+                                                            const updatedUser: UserInterface = {
+                                                                ...userDB,
+                                                                personalDetails: {
+                                                                    firstName: updatedFirstName,
+                                                                    lastName: userDB.personalDetails.lastName,
+                                                                    image_url: userDB.personalDetails.image_url,
+                                                                    password: userDB.personalDetails.password
+                                                                }
+                                                            }
+                                                            console.log(updatedUser)
+                                                            if (user?.userId != undefined)
+                                                                updateUserDetails(updatedUser, user?.userId)
+
+                                                            setModalVisibleFirst(!modalVisibleFirst)
+                                                            setUpdateFirstName("")
+                                                        }
+                                                    }}
+                                                }
                                             >
-                                                <Text style={styleAccount.textStyle}>Accept</Text>
+                                                <Text style={styleAccount.modalButtonTextStyle}>Accept</Text>
                                             </Pressable>
                                         </View>
                                     </View>
@@ -81,20 +194,20 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
 
                             <Pressable
                                 onPress={() => setModalVisibleFirst(true)}>
-                                <Image source={require('../../../../assets/edit.png')} style={styleAccount.Edit}/>
+                                <Image source={require('../../../../assets/edit.png')} style={styleAccount.editButton}/>
                             </Pressable>
 
                         </View>
                     </View>
                 </View>
                 <View style={styleAccount.containerLastName}>
-                    <Text style={styleAccount.labelLastName}> Last name</Text>
+                    <Text style={styleAccount.labelName}>Last name</Text>
 
                     <View style={styleAccount.containerEditName}>
-                        <Text style={styleAccount.LastName}> 2</Text>
+                        <Text style={styleAccount.Name}>{userDB?.personalDetails.lastName}</Text>
                         <View>
                             <Modal
-                                animationType="slide"
+                                animationType="fade"
                                 transparent={true}
                                 visible={modalVisibleLast}
                                 onRequestClose={() => {
@@ -104,25 +217,48 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                             >
                                 <View style={styleAccount.centeredView}>
                                     <View style={styleAccount.modalView}>
-                                        <Text style={styleAccount.textPopUp}> Change you last name </Text>
+                                        <Text style={styleAccount.textPopUp}>Change your last name</Text>
                                         <CustomTextInput
                                             label={"Last name"}
                                             keyboardType={"default"}
                                             secureTextEntry={false}
-                                            onChangeText={(text) => alert(text)}
+                                            onChangeText={(text) => setUpdateLastName(text)}
                                         />
                                         <View style={styleAccount.containerButton}>
                                             <Pressable
-                                                style={styleAccount.cancelButton}
+                                                style={styleAccount.modalCancelButton}
                                                 onPress={() => setModalVisibleLast(!modalVisibleLast)}
                                             >
-                                                <Text style={styleAccount.textStyle}>Cancel</Text>
+                                                <Text style={styleAccount.modalButtonTextStyle}>Cancel</Text>
                                             </Pressable>
                                             <Pressable
-                                                style={styleAccount.acceptButton}
-                                                onPress={() => setModalVisibleLast(!modalVisibleLast)}
+                                                style={styleAccount.modalAcceptButton}
+                                                onPress={() => {
+                                                    if(userDB != undefined) {
+                                                        if (updatedLastName === "") {
+                                                            setErrorMessage("Empty fields are not allowed")
+                                                            setModalVisibleFirst(!modalVisibleFirst)
+                                                        } else {
+                                                            const updatedUser: UserInterface = {
+                                                                ...userDB,
+                                                                personalDetails: {
+                                                                    firstName: userDB.personalDetails.firstName,
+                                                                    lastName: updatedLastName,
+                                                                    image_url: userDB.personalDetails.image_url,
+                                                                    password: userDB.personalDetails.password
+                                                                }
+                                                            }
+                                                            console.log(updatedUser)
+                                                            if (user?.userId != undefined)
+                                                                updateUserDetails(updatedUser, user?.userId)
+
+                                                            setModalVisibleLast(!modalVisibleLast)
+                                                            setUpdateFirstName("")
+                                                        }
+                                                    }}
+                                                }
                                             >
-                                                <Text style={styleAccount.textStyle}>Accept</Text>
+                                                <Text style={styleAccount.modalButtonTextStyle}>Accept</Text>
                                             </Pressable>
                                         </View>
                                     </View>
@@ -131,7 +267,7 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
 
                         <Pressable
                             onPress={() => setModalVisibleLast(true)}>
-                            <Image source={require('../../../../assets/edit.png')} style={styleAccount.Edit}/>
+                            <Image source={require('../../../../assets/edit.png')} style={styleAccount.editButton}/>
                         </Pressable>
 
                         </View>
@@ -140,7 +276,7 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                 <View style={styleAccount.containerResetPassword}>
                     <View>
                         <Modal
-                            animationType="slide"
+                            animationType="fade"
                             transparent={true}
                             visible={modalVisiblePassword}
                             onRequestClose={() => {
@@ -150,52 +286,108 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                         >
                             <View style={styleAccount.centeredView}>
                                 <View style={styleAccount.modalView}>
-                                    <Text style={styleAccount.textPopUp}> Change you password </Text>
+                                    <Text style={styleAccount.textPopUp}>Change your password</Text>
                                     <CustomTextInputPassword
-                                        label={"Password current"}
+                                        label={"Current password"}
                                         keyboardType={"default"}
-                                        onChangeText={(text) => alert(text)}
+                                        onChangeText={(text) => setUpdatePasswordDTO({
+                                            ...updatePasswordDTO,
+                                            oldPassword: text,
+                                        })}
                                     />
                                     <CustomTextInputPassword
                                         label={"New password"}
                                         keyboardType={"default"}
-                                        onChangeText={(text) => alert(text)}
+                                        onChangeText={(text) => setUpdatePasswordDTO({
+                                            ...updatePasswordDTO,
+                                            newPassword: text,
+                                        })}
                                     />
+                                    <Text style={styleAccount.passwordHint}>Password must have at least 8 characters</Text>
                                     <CustomTextInputPassword
                                         label={"Confirm new password"}
                                         keyboardType={"default"}
-                                        onChangeText={(text) => alert(text)}
+                                        onChangeText={(text) => setUpdatePasswordDTO({
+                                            ...updatePasswordDTO,
+                                            confirmPassword: text,
+                                        })}
                                     />
                                     <View style={styleAccount.containerButton}>
                                         <Pressable
-                                            style={styleAccount.cancelButton}
+                                            style={styleAccount.modalCancelButton}
                                             onPress={() => setModalVisibleLastPassword(!modalVisiblePassword)}
                                         >
-                                            <Text style={styleAccount.textStyle}>Cancel</Text>
+                                            <Text style={styleAccount.modalButtonTextStyle}>Cancel</Text>
                                         </Pressable>
                                         <Pressable
-                                            style={styleAccount.acceptButton}
-                                            onPress={() => setModalVisibleLastPassword(!modalVisiblePassword)}
+                                            style={styleAccount.modalAcceptButton}
+                                            onPress={() => {
+                                                if (user?.userId != undefined) {
+                                                    const passwordsDTO: PasswordsDTO = {
+                                                        oldPassword: updatePasswordDTO.oldPassword,
+                                                        newPassword: updatePasswordDTO.newPassword,
+                                                    }
+                                                    updateUserPassword(passwordsDTO, user?.userId)
+                                                    console.log(updatePasswordDTO)
+                                                }
+                                                setModalVisibleLastPassword(!modalVisiblePassword)
+
+                                            }}
                                         >
-                                            <Text style={styleAccount.textStyle}>Accept</Text>
+                                            <Text style={styleAccount.modalButtonTextStyle}>Accept</Text>
                                         </Pressable>
                                     </View>
                                 </View>
                             </View>
                         </Modal>
-
                         <Pressable
                             onPress={() => setModalVisibleLastPassword(true)}>
-                            <Text style={styleAccount.TextResetPassword}> Reset Password</Text>
+                            <Text style={styleAccount.TextResetPassword}>Reset Password</Text>
                         </Pressable>
 
                     </View>
                 </View>
                 <View style={styleAccount.containerLogOut}>
-                    <Text style={styleAccount.LogOut} onPress={() => {deleteSession().then(r => navigation.navigate("TabViewLoginRegister"))}}> Log out</Text>
+                    <Text style={styleAccount.LogOut} onPress={() => {
+                        deleteSession().then(r => navigation.replace("TabViewLoginRegister"))}
+                    }> Log out</Text>
                 </View>
-
+                <Toast/>
             </ImageBackground>
         </View>
     );
 }
+
+const stylesProfilePicture =StyleSheet.create({
+    container:{
+        flex: 1,
+        alignItems:"center",
+    },
+    containerPhoto:{
+        alignItems:"center",
+
+    },
+    photo:{
+        width:100,
+        height:100,
+        borderRadius:50,
+        alignItems:"center",
+        resizeMode:"center",
+    },
+    changePhotoButton:{
+        backgroundColor:AppColors.colorNavigationButton,
+        width:160,
+        height:35,
+        alignSelf:"center",
+        borderRadius:25,
+        marginTop:110,
+
+    },
+    changePhotoButtonText:{
+        alignSelf:"center",
+        verticalAlign:"middle",
+        fontFamily:"zen_kaku_regular",
+        height: 30,
+        color:AppColors.white,
+    }
+})

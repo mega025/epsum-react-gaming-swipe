@@ -22,7 +22,9 @@ const styles = StyleSheet.create({
     },
 
     name: {
-        fontSize: 15,
+        fontSize: 12,
+        height: 17,
+        fontFamily: "zen_kaku_regular",
         color: "#fff",
     }
 })

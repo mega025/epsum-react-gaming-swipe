@@ -5,6 +5,7 @@ import TabViewLoginRegister from "./TabViewLoginRegister";
 import {UseUserLocalStorage} from "../../hooks/UseUserLocalStorage";
 import {loginAuthUseCase} from "../../../domain/usesCases/auth/LoginAuth";
 import {saveUserUserCase} from "../../../domain/usesCases/userLocal/saveUser";
+import Toast from "react-native-toast-message";
 
 const loginViewModel= () => {
 
@@ -26,9 +27,9 @@ const loginViewModel= () => {
 
     const validateForm = () =>{
         if (loginValues.email === ""){
-        setErrorMessage("Email is required");
-        return false;
-        }if (loginValues.password === ""){
+            setErrorMessage("Email is required");
+            return false;
+        } if (loginValues.password === ""){
             setErrorMessage("Password is required");
             return false;
         }
@@ -72,15 +73,17 @@ const registerViewModel= () => {
                 personalDetails: {
                     firstName: registerValues.firstName,
                     lastName: registerValues.lastName,
-                    imageUrl: "",
+                    image_url: "",
                     password: registerValues.password
                 },
                 listFavGames: []
             }
             const response = await registerUseCase(user)
-            console.log("RESULT "+ JSON.stringify(response))
             if(response.success){
-                alert(response.message)
+                Toast.show({
+                    type: 'success',
+                    text1: response.message,
+                })
             }
 
         }
@@ -90,6 +93,15 @@ const registerViewModel= () => {
         setRegisterValue({
             ...registerValues, [property]:value
         })
+    }
+
+    const validateEmail = (email: string) => {
+        let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+        if (!reg.test(email)) {
+            return false;
+        } else {
+            return true
+        }
     }
 
     const validateForm = () => {
@@ -102,8 +114,14 @@ const registerViewModel= () => {
         } if (registerValues.email === "") {
             setErrorMessage("Email is required")
             return false
+        } if (!validateEmail(registerValues.email)) {
+            setErrorMessage("Email is not valid")
+            return false
         } if (registerValues.password === "") {
             setErrorMessage("Password is required")
+            return false
+        } if (registerValues.password.length < 8) {
+            setErrorMessage("Password must have at least 8 characters")
             return false
         } if (registerValues.password !== registerValues.confirmPassword) {
             setErrorMessage("The passwords do not match")

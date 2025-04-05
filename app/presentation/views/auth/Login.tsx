@@ -1,13 +1,14 @@
 import React, {useEffect, useState} from "react";
-import {Button, Image, ImageBackground, Text, TextInput, View} from "react-native";
+import {Button, Image, ImageBackground, KeyboardAvoidingView, SafeAreaView, Text, TextInput, View} from "react-native";
 import styles from "./StylesAuthViews";
 import {CustomTextInput} from "../../components/CustomTextInput";
 import {RoundedButton} from "../../components/RoundedButton";
 import viewModel from "./ViewModel";
 import {PropsStackNavigation} from "../../interfaces/StackNav";
-import {useNavigation} from "@react-navigation/native";
 import Toast from "react-native-toast-message";
 import {CustomTextInputPassword} from "../../components/CustomTextInputPassword";
+import stylesAuthViews from "./StylesAuthViews";
+import {useNavigation} from "@react-navigation/native";
 
 export function LoginScreen({navigation = useNavigation(), route}: PropsStackNavigation){
 
@@ -31,7 +32,7 @@ export function LoginScreen({navigation = useNavigation(), route}: PropsStackNav
     })
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={stylesAuthViews.container}>
             <ImageBackground source={require("../../../../assets/background.png")}
                              style={{width: '100%', height: '100%'}}>
                 <View style={styles.formContainer}>
@@ -56,6 +57,6 @@ export function LoginScreen({navigation = useNavigation(), route}: PropsStackNav
                 </View>
                 <Toast/>
             </ImageBackground>
-        </View>
+        </SafeAreaView >
     );
 }

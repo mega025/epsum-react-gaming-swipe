@@ -7,6 +7,17 @@ const styleAccount = StyleSheet.create({
         flex: 1,
         alignItems: "center",
     },
+
+    passwordHint: {
+        fontFamily: "zen_kaku_regular",
+        color: AppColors.white,
+        fontSize: 14,
+        height: 20,
+        marginTop: wp("-3"),
+        marginStart: wp("2%"),
+        alignSelf: "flex-start",
+    },
+
     logo: {
         width: wp("12%"),
         height: wp("12%"),
@@ -26,16 +37,17 @@ const styleAccount = StyleSheet.create({
     title: {
         fontSize: wp("7.5%"),
         alignSelf: "center",
-        top: hp("3%"),
+        top: hp("6%"),
         color: AppColors.white,
         fontFamily: "zen_kaku_light",
     },
     containerEmail: {
         alignSelf: "center",
-        top: hp("7%"),
+        top: hp("8%"),
     },
     textEmail: {
         fontSize: wp("4.5%"),
+        height: hp("4%"),
         color: AppColors.white,
         fontFamily: "zen_kaku_regular",
     },
@@ -48,41 +60,31 @@ const styleAccount = StyleSheet.create({
     },
     containerName: {
         marginTop: hp("30%"),
+        width: "100%",
     },
     labelName: {
         marginLeft: wp("10%"),
-        fontSize: wp("5%"),
+        fontSize: wp("4.9%"),
         color: AppColors.white,
         fontFamily: "zen_kaku_regular",
     },
     Name: {
-        fontSize: wp("6%"),
+        fontSize: wp("7.3%"),
+        marginTop: 6,
+        width: 290,
+        height: 42,
         marginLeft: wp("10%"),
         color: AppColors.white,
-        fontFamily: "zen_kaku_regular",
+        fontFamily: "zen_kaku_light",
     },
-    Edit: {
+    editButton: {
         width: wp("10%"),
         height: wp("10%"),
         alignSelf: "flex-end",
-        left: wp("65%"),
-        bottom: hp("1%"),
         tintColor: AppColors.white,
     },
     containerLastName: {
         marginTop: hp("4%"),
-    },
-    labelLastName: {
-        marginLeft: wp("10%"),
-        fontSize: wp("5%"),
-        color: AppColors.white,
-        fontFamily: "zen_kaku_regular",
-    },
-    LastName: {
-        fontSize: wp("6%"),
-        marginLeft: wp("10%"),
-        color: AppColors.white,
-        fontFamily: "zen_kaku_regular",
     },
     containerResetPassword: {
         alignItems: "center",
@@ -107,17 +109,6 @@ const styleAccount = StyleSheet.create({
         fontFamily: "zen_kaku_regular",
         fontWeight: "bold",
     },
-    button: {
-        borderRadius: 20,
-        padding: 10,
-        elevation: 2,
-    },
-    buttonOpen: {
-        backgroundColor: '#F194FF',
-    },
-    buttonClose: {
-        backgroundColor: '#2196F3',
-    },
     modalText: {
         marginBottom: 15,
         textAlign: 'center',
@@ -126,12 +117,14 @@ const styleAccount = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "rgba(0,0,0,0.5)",
+        backgroundColor: "rgba(0,0,0,0.75)",
     },
     modalView: {
         backgroundColor: AppColors.colorNavigationButton,
         borderRadius: 10,
         padding: 20,
+        gap: 20,
+        width: 350,
         alignItems: "center",
         shadowColor: "#000",
         shadowOffset: { width: 0, height: 2 },
@@ -139,43 +132,41 @@ const styleAccount = StyleSheet.create({
         shadowRadius: 4,
         elevation: 5,
     },
-    cancelButton: {
+    modalAcceptButton: {
         alignItems: "center",
         width: "25%",
         marginTop: 15,
         padding: 10,
-        backgroundColor:AppColors.red,
+        backgroundColor: "#0d5700",
         borderRadius: 10,
     },
-    acceptButton: {
+
+    modalCancelButton: {
         alignItems: "center",
+        width: "25%",
         marginTop: 15,
         padding: 10,
-        backgroundColor:"#085e03",
+        backgroundColor: "#5b0000",
         borderRadius: 10,
-        width: "25%",
-        marginLeft: wp("22%"),
     },
     containerButton:{
         flexDirection: "row",
-
+        gap: 120
     },
-    textStyle: {
+    modalButtonTextStyle: {
         color: "white",
         fontSize: 16,
         fontWeight: "bold",
         fontFamily: "zen_kaku_regular",
         height:20,
     },
-    openButtonText: {
-        color: "blue",
-        fontSize: 18,
-    },
     textPopUp:{
-        fontSize: 16,
+        fontSize: 20,
         color: AppColors.white,
+        textAlign: "center",
         fontFamily: "zen_kaku_regular",
-        height:30,
+        height:60,
+        verticalAlign: "middle"
     }
 });
 

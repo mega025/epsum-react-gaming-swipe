@@ -5,7 +5,7 @@ import {
     Button,
     ActivityIndicator,
     FlatList,
-    TouchableWithoutFeedback, Pressable, Platform
+    TouchableWithoutFeedback, Pressable
 } from "react-native";
 import stylesHome from "./StyleHome";
 import {XButton} from "../../components/XButton";
@@ -15,9 +15,10 @@ import React, {useEffect, useState, useCallback, useRef} from "react";
 import {CardItemHandle, TinderCard} from "rn-tinder-card";
 import styleHome from "./StyleHome";
 import viewModel from "./ViewModel";
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import {PlatformItem} from "../../components/PlatformItem";
 import {GenreItem} from "../../components/GenreItem";
-import {Genre, GenreDTO} from "../../../domain/entities/Game";
+import {Genre, GenreDTO, Platform} from "../../../domain/entities/Game";
 import {UseUserLocalStorage} from "../../hooks/UseUserLocalStorage";
 import {FavGame} from "../../../domain/entities/FavGame";
 
@@ -25,21 +26,23 @@ import {FavGame} from "../../../domain/entities/FavGame";
 export function Home() {
 
     const tinderCardsRef = useRef<Array<CardItemHandle | null>>([]);
+    let [activeIndex, setActiveIndex] = useState<number>(9);
+
     const {
         listGames,
         refillSwipeGames,
-        transfromCoverUrl,
+        transformCoverUrl,
         showLoading,
         addGameToFav,
         showMessageLoading,
-        setMessageLoading
+        setMessageLoading,
+        transformGameIntoFavGameInterface
     } = viewModel.homeViewModel()
     const {user} = UseUserLocalStorage()
     let [swipesCounter, setSwipesCounter] = useState(0);
 
-    const nullGenre: Genre = {
-        name : "N/A"
-    }
+    const nullGenre: Genre = {name : "N/A"}
+    const nullPlatform: Platform = {abbreviation : "N/A"}
 
     useEffect(() => {
         refillSwipeGames()
@@ -49,6 +52,7 @@ export function Home() {
         if(swipesCounter >= 10) {
             setMessageLoading(true);
             setSwipesCounter(0);
+            setActiveIndex(9)
             refillSwipeGames()
         }
     }, [swipesCounter]);
@@ -96,8 +100,8 @@ export function Home() {
                             >
                                 <TinderCard
                                     ref={(el) => (tinderCardsRef.current[index] = el)}
-                                    cardWidth={330}
-                                    cardHeight={630}
+                                    cardWidth={wp("78%")}
+                                    cardHeight={hp("66%")}
                                     disableBottomSwipe={true}
                                     disableTopSwipe={true}
                                     OverlayLabelRight={OverlayRight}
@@ -105,71 +109,65 @@ export function Home() {
                                     cardStyle={stylesHome.card}
                                     onSwipedRight={async () => {
                                         setSwipesCounter(swipesCounter + 1);
+                                        setActiveIndex(activeIndex - 1)
                                         console.log(swipesCounter+" "+user?.userId)
                                         if(user?.userId != undefined) {
-                                            const genreListDTO: GenreDTO[] = []
-                                            item.genres.forEach((genre: Genre) => {
-                                                    let genreDTO: GenreDTO = {
-                                                        genreName: genre.name,
-                                                    }
-                                                    genreListDTO.push(genreDTO)
-                                                }
-                                            )
-                                            const favGameDTO: FavGame = {
-                                                name: item.name,
-                                                ratingScore: Math.round((item.rating * 100) / 100),
-                                                releaseYear: item.release_dates ? item.release_dates[0].y : 0,
-                                                imageUrl: item.cover ? transfromCoverUrl(item.cover.url) : "",
-                                                listPlatforms: item.platforms,
-                                                listGenres: genreListDTO
-                                            }
-                                            await addGameToFav(favGameDTO, user?.userId);
+                                            await addGameToFav(transformGameIntoFavGameInterface(item), user?.userId);
                                         }
                                     }}
                                     onSwipedLeft={() => {
+                                        setActiveIndex(activeIndex - 1)
                                         setSwipesCounter(swipesCounter + 1);
-                                        console.log(swipesCounter+" "+ index +" "+listGames.length);
+                                        console.log(swipesCounter+" "+ activeIndex +" "+listGames.length);
                                     }}
                                 >
                                     <Image
                                         source={{
                                             uri: item.cover
-                                                ? transfromCoverUrl(item.cover.url)
+                                                ? transformCoverUrl(item.cover.url)
                                                 : "https://lightwidget.com/wp-content/uploads/localhost-file-not-found.jpg"
                                         }}
                                         style={styleHome.image}
                                     />
-                                    <View style={{marginHorizontal: 20, marginVertical: 15}}>
+                                    <View style={{marginHorizontal: 20, marginVertical: hp("0%")}}>
                                         <View style={stylesHome.firstRowCardContainer}>
                                             <Text style={stylesHome.gameNameText}> {item.name}</Text>
                                             <Text
-                                                style={stylesHome.ratingText}>{Math.round((item.rating * 100) / 100).toFixed(0)}</Text>
+                                                style={stylesHome.ratingText}>{
+                                                item.rating
+                                                    ? Math.round((item.rating * 100) / 100).toFixed(0)
+                                                    : "N/A"
+                                            }</Text>
                                         </View>
                                         <View style={styleHome.secondRowCardContainer}>
                                             <FlatList style={styleHome.platformsContainer}
-                                                      data={item.platforms}
+                                                      data={item.platforms ? item.platforms : [nullPlatform]}
                                                       renderItem={PlatformItem}
                                                       horizontal={true}
                                                       scrollEnabled={true}
+                                                      fadingEdgeLength={80}
+                                                      showsHorizontalScrollIndicator={false}
                                                       nestedScrollEnabled={true}/>
                                         </View>
                                         <View style={styleHome.thirdRowCardContainer}>
                                             <FlatList style={styleHome.genreContainer}
-                                                      data={item.genres}
+                                                      data={item.genres ? item.genres : [nullGenre]}
                                                       renderItem={GenreItem}
                                                       horizontal={true}
+                                                      fadingEdgeLength={80}
+                                                      showsHorizontalScrollIndicator={false}
                                                       scrollEnabled={true}
                                                       nestedScrollEnabled={true}/>
                                             <Text
-                                                style={{fontSize: 15}}>{item.release_dates ? item.release_dates[0].y : "N/A"}</Text>
+                                                style={{fontSize: 17, fontFamily: "zen_kaku_regular"}}>{item.release_dates ? item.release_dates[0].y : "N/A"}</Text>
                                         </View>
                                     </View>
-                                    <View style={styleHome.buttonsContainer}>
-                                        <XButton onPress={() => tinderCardsRef.current?.[index]?.swipeLeft()}></XButton>
-                                        <Image source={require("../../../../assets/logo.png")} style={stylesHome.logo}></Image>
-                                        <LikeButton onPress={() => tinderCardsRef.current?.[index]?.swipeRight()}></LikeButton>
-                                    </View>
                                 </TinderCard>
+                                <View style={styleHome.buttonsContainer}>
+                                    <XButton onPress={() =>  tinderCardsRef.current[activeIndex]?.swipeLeft()}></XButton>
+                                    <Image source={require("../../../../assets/logo.png")} style={stylesHome.logo}></Image>
+                                    <LikeButton onPress={() => tinderCardsRef.current[activeIndex]?.swipeRight()}></LikeButton>
+                                </View>
                             </View>
                         );
                     })}

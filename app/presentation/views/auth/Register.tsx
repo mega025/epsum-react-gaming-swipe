@@ -34,28 +34,29 @@ export function RegisterScreen() {
                         <CustomTextInputInline label={"Name"}
                                          keyboardType={"default"}
                                          secureTextEntry={false}
-                                         onChangeText={(text) => onChangeRegister("firstName", text)}></CustomTextInputInline>
+                                         onChangeText={(text) => onChangeRegister("firstName", text)}/>
 
                         <CustomTextInputInline label={"Last name"}
                                          keyboardType={"default"}
                                          secureTextEntry={false}
-                                         onChangeText={(text) => onChangeRegister("lastName", text)}></CustomTextInputInline>
+                                         onChangeText={(text) => onChangeRegister("lastName", text)}/>
                     </View>
                     <View style={styles.formInputContainer}>
                         <CustomTextInput label={"Email"}
                                          keyboardType={"default"}
                                          secureTextEntry={false}
-                                         onChangeText={(text) => onChangeRegister("email", text)}></CustomTextInput>
+                                         onChangeText={(text) => onChangeRegister("email", text)}/>
                     </View>
                     <View style={styles.formInputContainer}>
                         <CustomTextInputPassword label={"Password"}
                                          keyboardType={"default"}
-                                         onChangeText={(text) => onChangeRegister("password", text)}></CustomTextInputPassword>
+                                         onChangeText={(text) => onChangeRegister("password", text)}/>
+                        <Text style={styles.passwordHint}>Password must have at least 8 characters</Text>
                     </View>
                     <View style={styles.formInputContainer}>
                         <CustomTextInputPassword label={"Confirm password"}
                                          keyboardType={"default"}
-                                         onChangeText={(text) => onChangeRegister("confirmPassword", text)}></CustomTextInputPassword>
+                                         onChangeText={(text) => onChangeRegister("confirmPassword", text)}/>
                     </View>
                     <View style={styles.formButtonContainer}>
                         <RoundedButton text={"Sign Up"} onPressFromInterface={() => register()}/>

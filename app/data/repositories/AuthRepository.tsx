@@ -4,6 +4,7 @@ import {LoginUserInterface, UserInterface} from "../../domain/entities/User";
 import {ApiDeliveryResponse} from "../sources/remote/models/ApiDeliveryResponse";
 import {Axios, AxiosError} from "axios";
 import {ApiDelivery} from "../sources/remote/api/ApiDelivery";
+import Toast from "react-native-toast-message";
 
 export class AuthRepository implements AuthRepositoryInterface {
     async register(user: UserInterface): Promise<ApiDeliveryResponse> {
@@ -13,6 +14,10 @@ export class AuthRepository implements AuthRepositoryInterface {
         } catch (error) {
             let e = (error as AxiosError)
             console.log("Error: "+ JSON.stringify(e.response?.data));
+            Toast.show({
+                type: 'error',
+                text1: e.response?.status === 401 ? "This email has already an account" : "Server error",
+            })
             return Promise.resolve(JSON.parse(JSON.stringify(e.response?.data)) as ApiDeliveryResponse);
         }
     }

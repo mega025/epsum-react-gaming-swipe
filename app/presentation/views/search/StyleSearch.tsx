@@ -6,8 +6,8 @@ import { RFPercentage } from "react-native-responsive-fontsize";
 
 const styleSearch = StyleSheet.create({
     logo: {
-        width: wp("12%"),
-        height: hp("6%"),
+        width: 35,
+        height: 35,
         marginTop: hp("1%"),
     },
     container: {
@@ -16,16 +16,22 @@ const styleSearch = StyleSheet.create({
     },
     appName: {
         fontSize: RFPercentage(2),
-        marginTop: hp("2.5%"),
         color: AppColors.white,
+        alignSelf: "center",
+        marginTop: 2,
+        height: 23,
         fontFamily: "zen_kaku_light",
     },
-    header: {
+
+    logoContainer: {
         flexDirection: "row",
         alignSelf: "center",
-        marginTop: hp("4%"),
+        gap: 6,
+        justifyContent: "center",
+        marginTop: hp("5%"),
     },
-    title: {
+
+    headerTitle: {
         fontSize: RFPercentage(4),
         alignSelf: "center",
         color: AppColors.white,
@@ -35,65 +41,52 @@ const styleSearch = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "center",
-        borderRadius: 10,
         paddingHorizontal: wp("3%"),
         paddingVertical: hp("1%"),
         alignSelf: "center",
         marginTop: hp("4%"),
     },
-    icon: {
-        width: wp("6%"),
-        height: wp("6%"),
-        marginLeft: wp("2%"),
-        tintColor: "grey",
-    },
-    containerGames: {
-        paddingTop: hp("2%"),
-        paddingBottom:hp("30%")
+
+    gameCardsContainer: {
+        paddingBottom:hp("33%")
     },
 
-    item: {
-        flexDirection: "row",
-        padding: hp("1.5%"),
-        borderBottomWidth: 1,
-        borderBottomColor: "#ddd",
-        alignItems: "center",
-    },
-    cover: {
+    gameCover: {
         width: wp("15%"),
         height: hp("10%"),
         borderRadius: 5,
         marginRight: wp("2%"),
     },
-    info: {
-        flex: 1,
-    },
-    name: {
-        fontSize: RFPercentage(2.5),
-        fontWeight: "bold",
-    },
-    genre: {
-        fontSize: RFPercentage(2),
-        color: "#666",
-    },
-    rating: {
-        fontSize: RFPercentage(2),
-        color: "#ff9900",
-    },
+
     containerHeader:{
         elevation:2,
         backgroundColor: AppColors.colorButton,
     },
+
     resultTextContainer: {
-        marginBottom: 5,
-        marginTop: 10,
+        backgroundColor: AppColors.colorNavigationButton,
+        padding: 13,
+        borderWidth: 1,
+        borderColor: AppColors.white,
+        borderEndWidth: 0,
+        borderStartWidth: 0,
+        elevation: 10,
         alignItems: "center",
     },
+
     resultText: {
-        fontSize: 20,
-        color: AppColors.white,
-        fontWeight: 'bold',
+        fontSize: 17,
+        color: "#fff",
+        height: 28,
+        fontFamily: "zen_kaku_regular",
     },
+
+    emptyFlatListText : {
+        fontSize: 20,
+        color: "#ad2c2c",
+        height: 28,
+        fontFamily: "zen_kaku_regular",
+    }
 });
 
 export default styleSearch;
