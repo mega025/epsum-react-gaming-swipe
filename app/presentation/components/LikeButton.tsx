@@ -1,5 +1,6 @@
 import {Image, TouchableOpacity,StyleSheet} from "react-native";
 import {AppColors} from "../theme/AppTheme";
+import {heightPercentageToDP as hp} from "react-native-responsive-screen";
 
 interface Props {
     onPress: () => void;
@@ -15,19 +16,15 @@ export const LikeButton=({onPress}: Props)=>{
 
 const styles = StyleSheet.create({
     HeartButton:{
-        height:32,
-        width:32,
+        height:hp("4%"),
+        width:hp("4%"),
         tintColor:"green",
     },
     cont:{
         backgroundColor:AppColors.colorButton,
-        position:"absolute",
-        left:35,
-        bottom:30,
         borderRadius:40,
-        marginLeft: 50,
-        height:70,
-        width:70,
+        height:hp("8%"),
+        width:hp("8%"),
         alignItems:"center",
         justifyContent:"center"
     }

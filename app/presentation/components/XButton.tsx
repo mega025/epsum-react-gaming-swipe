@@ -1,5 +1,7 @@
 import {Image, TouchableOpacity,StyleSheet} from "react-native";
 import {AppColors} from "../theme/AppTheme";
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
+
 
 interface Props {
     onPress: () => void;
@@ -15,19 +17,15 @@ export const XButton=({onPress}:Props)=>{
 
 const styles = StyleSheet.create({
     addButton:{
-        height:25,
-        width:25,
+        height:hp("3%"),
+        width:hp("3%"),
         tintColor:"red",
     },
     cont:{
         backgroundColor:AppColors.colorButton,
-        position:"absolute",
-        right:35,
-        bottom:30,
         borderRadius:40,
-        marginRight: 50,
-        height:70,
-        width:70,
+        height:hp("8%"),
+        width:hp("8%"),
         alignItems:"center",
         justifyContent:"center"
     }

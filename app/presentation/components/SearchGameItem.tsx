@@ -20,6 +20,7 @@ const SearchGameItem = ({ item }: { item: Game }) => {
     const {
         addGameToFav,
         transformGameIntoFavGameInterface,
+        transformCoverUrl
     } = viewModelHome.homeViewModel()
 
     const {
@@ -43,18 +44,12 @@ const SearchGameItem = ({ item }: { item: Game }) => {
         return favListGames.some(game => game.name === item.name);
     }
 
-    const transfromCoverUrl = (url:string) => {
-        const cutUrlFirstPart = url.substring(0, 38);
-        const cutUrlSecondPart = url.substring(url.lastIndexOf("/") + 1);
-        return "https:"+cutUrlFirstPart+"cover_big/"+cutUrlSecondPart;
-    }
-
     return (
         <View style={styles.gameCard}>
                 <Image
                     source={{
                         uri: item.cover
-                            ? transfromCoverUrl(item.cover.url)
+                            ? transformCoverUrl(item.cover.url)
                             : "https://lightwidget.com/wp-content/uploads/localhost-file-not-found.jpg"
                     }}
                     style={styles.gameCover}
@@ -67,6 +62,7 @@ const SearchGameItem = ({ item }: { item: Game }) => {
                     <FlatList data={item.platforms}
                               renderItem={PlatformItem}
                               horizontal={true}
+                              fadingEdgeLength={80}
                               showsHorizontalScrollIndicator={false}
                               scrollEnabled={true}
                               nestedScrollEnabled={true}
@@ -185,8 +181,7 @@ const styles = StyleSheet.create({
     },
     plaformsFlatlistContainer:{
         flex:2,
-        width: 220,
-        marginEnd: 7,
+        width: wp("53%"),
         flexDirection:"row",
         alignSelf: "center",
         alignItems: "center",

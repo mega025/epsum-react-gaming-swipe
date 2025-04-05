@@ -82,7 +82,7 @@ const registerViewModel= () => {
             if(response.success){
                 Toast.show({
                     type: 'success',
-                    text1: response.data.message,
+                    text1: response.message,
                 })
             }
 

@@ -7,6 +7,17 @@ const styleAccount = StyleSheet.create({
         flex: 1,
         alignItems: "center",
     },
+
+    passwordHint: {
+        fontFamily: "zen_kaku_regular",
+        color: AppColors.white,
+        fontSize: 14,
+        height: 20,
+        marginTop: wp("-3"),
+        marginStart: wp("2%"),
+        alignSelf: "flex-start",
+    },
+
     logo: {
         width: wp("12%"),
         height: wp("12%"),
