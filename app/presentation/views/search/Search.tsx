@@ -15,6 +15,7 @@ import viewModel from "./ViewModel";
 import {AppColors} from "../../theme/AppTheme";
 import styleFav from "../fav/StyleFav";
 import {FavScreen} from "../fav/FavScreen";
+import FiltroComponent from "../../components/FilterButton";
 
 export function Search() {
 
@@ -57,6 +58,7 @@ export function Search() {
                             onPressButtonFromInterface={(text: string) => onSearchTextChange(text)}
                         />
                     </View>
+                    <FiltroComponent/>
                 </View>
 
                 <View style={styleSearch.resultTextContainer}>
