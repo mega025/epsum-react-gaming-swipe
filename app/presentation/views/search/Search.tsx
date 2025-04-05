@@ -25,12 +25,12 @@ export function Search() {
         loadMoreGames,
         onSearchTextChange,
         searchText,
-        searchPopularGames,
+        searchMostAnticipatedGames,
         setSearchText
     } = viewModel.searchViewModel()
 
     useEffect(() => {
-        searchPopularGames(1)
+        searchMostAnticipatedGames()
     }, []);
 
     return (

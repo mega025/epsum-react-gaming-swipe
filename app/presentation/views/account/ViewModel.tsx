@@ -59,20 +59,6 @@ export const accountViewModel =()=> {
             })
     }
 
-    const validateUpdatePasswordForm = () => {
-        if (updatePasswordDTO.oldPassword === "" || updatePasswordDTO.confirmPassword === "" || updatePasswordDTO.newPassword === "") {
-            setErrorMessage("Empty fields are not allowed")
-            return false
-        } if (updatePasswordDTO.newPassword.length < 8) {
-            setErrorMessage("Password must have at least 8 characters")
-            return false
-        } if (updatePasswordDTO.confirmPassword !== updatePasswordDTO.newPassword) {
-            setErrorMessage("Passwords do not match");
-            return  false
-        }
-        return true;
-    }
-
     const updateUserPassword = async (passwordDTO: PasswordsDTO, userId: number) => {
         if (validateUpdatePasswordForm()) {
             await ApiDelivery.post(`/users/updatepassword/${userId}`, passwordDTO)
@@ -89,6 +75,21 @@ export const accountViewModel =()=> {
                     })
                 })
         }
+    }
+
+
+    const validateUpdatePasswordForm = () => {
+        if (updatePasswordDTO.oldPassword === "" || updatePasswordDTO.confirmPassword === "" || updatePasswordDTO.newPassword === "") {
+            setErrorMessage("Empty fields are not allowed")
+            return false
+        } if (updatePasswordDTO.newPassword.length < 8) {
+            setErrorMessage("Password must have at least 8 characters")
+            return false
+        } if (updatePasswordDTO.confirmPassword !== updatePasswordDTO.newPassword) {
+            setErrorMessage("Passwords do not match");
+            return  false
+        }
+        return true;
     }
 
     return {

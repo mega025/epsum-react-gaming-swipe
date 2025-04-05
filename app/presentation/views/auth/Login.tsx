@@ -5,10 +5,10 @@ import {CustomTextInput} from "../../components/CustomTextInput";
 import {RoundedButton} from "../../components/RoundedButton";
 import viewModel from "./ViewModel";
 import {PropsStackNavigation} from "../../interfaces/StackNav";
-import {useNavigation} from "@react-navigation/native";
 import Toast from "react-native-toast-message";
 import {CustomTextInputPassword} from "../../components/CustomTextInputPassword";
 import stylesAuthViews from "./StylesAuthViews";
+import {useNavigation} from "@react-navigation/native";
 
 export function LoginScreen({navigation = useNavigation(), route}: PropsStackNavigation){
 
