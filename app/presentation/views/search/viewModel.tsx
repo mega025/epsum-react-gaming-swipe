@@ -11,6 +11,7 @@ const searchViewModel = () => {
 
 
 
+
     const searchGamesPopular = async (page: number = 1) => {
         setLoading(true);
         try {
