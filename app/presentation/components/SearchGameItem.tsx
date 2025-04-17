@@ -34,10 +34,10 @@ const SearchGameItem = ({ item }: { item: Game }) => {
 
     useFocusEffect(
         useCallback(() => {
-            if(user?.userId != undefined) {
-                loadFavGames(user?.userId)
+            if(user?.slug != undefined) {
+                loadFavGames(user?.slug)
             }
-        }, [user?.userId])
+        }, [user?.slug])
     );
 
     const checkIfGameFromApiIsLiked = (item: Game) => {
@@ -79,8 +79,8 @@ const SearchGameItem = ({ item }: { item: Game }) => {
                     if (!gameLiked && !checkIfGameFromApiIsLiked(item)) {
                         setGameLiked(true);
                         try {
-                            await addGameToFav(transformGameIntoFavGameInterface(item), user?.userId ? user?.userId : 0);
-                            await loadFavGames(user?.userId ? user?.userId : 0)
+                            await addGameToFav(transformGameIntoFavGameInterface(item), user?.slug ? user?.slug : "");
+                            await loadFavGames(user?.slug ? user?.slug : "")
 
                         } catch (error) {
                             Toast.show({
@@ -93,9 +93,9 @@ const SearchGameItem = ({ item }: { item: Game }) => {
                         try {
                             await deleteGameFromFav(
                                 getPositionGameList(item.name),
-                                user?.userId ? user?.userId : 0
+                                user?.slug ? user?.slug : ""
                             );
-                            await loadFavGames(user?.userId ? user?.userId : 0)
+                            await loadFavGames(user?.slug ? user?.slug : "")
 
                         } catch (error) {
                             Toast.show({

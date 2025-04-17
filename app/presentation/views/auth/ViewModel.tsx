@@ -39,12 +39,9 @@ const loginViewModel= () => {
     const login= async  () => {
         if (validateForm()){
             const response = await loginAuthUseCase(loginValues as LoginUserInterface);
-            if(!response.success){
-                setErrorMessage(response.message)
-            } else {
-                await saveUserUserCase(response.data as LoggedUserInterface)
-                await getUserSession()
-            }
+            await saveUserUserCase(response as LoggedUserInterface)
+            console.log(response)
+            await getUserSession()
         }
     }
 
@@ -59,7 +56,7 @@ const registerViewModel= () => {
     const [errorMessage, setErrorMessage] = useState<string>("")
 
     const [registerValues, setRegisterValue] = useState({
-        firstName: "",
+        name: "",
         lastName: "",
         email: "",
         password: "",
@@ -70,22 +67,15 @@ const registerViewModel= () => {
         if(validateForm()){
             const user: UserInterface = {
                 email: registerValues.email,
-                personalDetails: {
-                    firstName: registerValues.firstName,
-                    lastName: registerValues.lastName,
-                    image_url: "",
-                    password: registerValues.password
-                },
-                listFavGames: []
+                name: registerValues.name,
+                last_name: registerValues.lastName,
+                password: registerValues.password,
             }
             const response = await registerUseCase(user)
-            if(response.success){
-                Toast.show({
-                    type: 'success',
-                    text1: response.message,
-                })
-            }
-
+            Toast.show({
+                type: 'success',
+                text1: response.message,
+            })
         }
     }
 
@@ -105,7 +95,7 @@ const registerViewModel= () => {
     }
 
     const validateForm = () => {
-        if (registerValues.firstName === "") {
+        if (registerValues.name === "") {
             setErrorMessage("First name is required");
             return false
         } if (registerValues.lastName === "") {

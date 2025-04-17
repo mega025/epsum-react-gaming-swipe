@@ -1,6 +1,6 @@
 
 import {AuthRepositoryInterface} from "../../domain/repositories/AuthRepositoryInterface";
-import {LoginUserInterface, UserInterface} from "../../domain/entities/User";
+import {LoggedUserInterface, LoginUserInterface, UserInterface} from "../../domain/entities/User";
 import {ApiDeliveryResponse} from "../sources/remote/models/ApiDeliveryResponse";
 import {Axios, AxiosError} from "axios";
 import {ApiDelivery} from "../sources/remote/api/ApiDelivery";
@@ -12,24 +12,28 @@ export class AuthRepository implements AuthRepositoryInterface {
             const response = await ApiDelivery.post("users/create", user);
             return Promise.resolve(response.data);
         } catch (error) {
-            let e = (error as AxiosError)
-            console.log("Error: "+ JSON.stringify(e.response?.data));
+            let e = (error as AxiosError <{error: string}>)
+            console.log(e.response?.data.error);
             Toast.show({
                 type: 'error',
-                text1: e.response?.status === 401 ? "This email has already an account" : "Server error",
+                text1: e.response?.data.error,
             })
-            return Promise.resolve(JSON.parse(JSON.stringify(e.response?.data)) as ApiDeliveryResponse);
+            return Promise.reject(e.response?.data.error);
         }
     }
 
-    async login(user: LoginUserInterface): Promise<ApiDeliveryResponse> {
+    async login(user: LoginUserInterface): Promise<LoggedUserInterface> {
         try {
             const response = await ApiDelivery.post("users/login", user);
             return Promise.resolve(response.data);
         } catch (error) {
-            let e = (error as AxiosError)
-            console.log("Error: "+ JSON.stringify(e.response?.data));
-            return Promise.resolve(JSON.parse(JSON.stringify(e.response?.data)) as ApiDeliveryResponse);
+            let e = (error as AxiosError <{error:string}>)
+            console.log(e.response?.data.error);
+            Toast.show({
+                type: 'error',
+                text1: e.response?.data.error,
+            })
+            return Promise.reject(e.response?.data.error);
         }
     }
 

@@ -3,6 +3,6 @@ import {ApiDeliveryResponse} from "../../data/sources/remote/models/ApiDeliveryR
 
 
 export interface FavGamesRepositoryInterface {
-    loadFavGames(userId: number): Promise<FavGame[]>;
-    deleteFavGame(userId: number, position: number): Promise<ApiDeliveryResponse>;
+    loadFavGames(slug: string): Promise<FavGame[]>;
+    deleteFavGame(slug: string, position: number): Promise<ApiDeliveryResponse>;
 }

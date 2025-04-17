@@ -7,9 +7,9 @@ import Toast from "react-native-toast-message";
 
 
 export class FavGamesRepository implements FavGamesRepositoryInterface {
-    async loadFavGames(userId: number): Promise<FavGame[]> {
+    async loadFavGames(slug: string): Promise<FavGame[]> {
         try {
-            const response = await ApiDelivery.get(`/favgames/user/${userId}`)
+            const response = await ApiDelivery.get(`/favgames/user/${slug}`)
             return Promise.resolve(response.data);
         } catch (error) {
             let e = (error as AxiosError);
@@ -18,9 +18,9 @@ export class FavGamesRepository implements FavGamesRepositoryInterface {
         }
     }
 
-    async deleteFavGame(userId: number, position: number): Promise<ApiDeliveryResponse> {
+    async deleteFavGame(slug: string, position: number): Promise<ApiDeliveryResponse> {
         try {
-            const response = await ApiDelivery.post(`/favgames/delete/${userId}`, position);
+            const response = await ApiDelivery.delete(`/favgames/delete/${slug}/${position}`);
             Toast.show({
                 type: 'success',
                 text1: response.data.message,

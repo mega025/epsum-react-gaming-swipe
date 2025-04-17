@@ -12,14 +12,14 @@ const favScreenViewModel = () => {
     let [favListGames, setFavListGames] = useState<FavGame[]>([]);
     let [showLoading, setShowLoading] = useState(true);
 
-    const loadFavGames = async (userId: number) => {
-        const response = await loadFavGamesUseCase(userId);
+    const loadFavGames = async (slug: string) => {
+        const response = await loadFavGamesUseCase(slug);
         setFavListGames(response);
         setShowLoading(false);
     }
 
-    const deleteGameFromFav = async (position: number, userId: number) => {
-        await deleteFavGameUseCase(userId, position)
+    const deleteGameFromFav = async (position: number, slug: string) => {
+        await deleteFavGameUseCase(slug, position)
         favListGames.splice(position, 1);
         console.log("Delete game w index "+position);
     }

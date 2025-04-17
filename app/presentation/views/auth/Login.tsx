@@ -26,7 +26,7 @@ export function LoginScreen({navigation = useNavigation(), route}: PropsStackNav
     }, [errorMessage]);
 
     useEffect(() => {
-        if (user && user?.token) {
+        if (user && user?.access_token) {
             navigation.replace("UserNavigation")
         }
     })

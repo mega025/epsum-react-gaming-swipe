@@ -1,11 +1,11 @@
-import {Game, GenreDTO, Platform} from "./Game";
+import {Game, Genre, GenreDTO, Platform} from "./Game";
 
 export interface FavGame {
-    videogameId?: number;
+    id?: number;
     name: string;
-    ratingScore: number;
-    releaseYear: number;
-    imageUrl: string;
-    listPlatforms: Platform[];
-    listGenres: GenreDTO[];
+    rating_score: number;
+    release_year: number;
+    image_url: string;
+    platforms: Platform[];
+    genres: Genre[];
 }

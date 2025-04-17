@@ -110,9 +110,9 @@ export function Home() {
                                     onSwipedRight={async () => {
                                         setSwipesCounter(swipesCounter + 1);
                                         setActiveIndex(activeIndex - 1)
-                                        console.log(swipesCounter+" "+user?.userId)
-                                        if(user?.userId != undefined) {
-                                            await addGameToFav(transformGameIntoFavGameInterface(item), user?.userId);
+                                        console.log(swipesCounter+" "+user?.slug)
+                                        if(user?.slug != undefined) {
+                                            await addGameToFav(transformGameIntoFavGameInterface(item), user?.slug);
                                         }
                                     }}
                                     onSwipedLeft={() => {

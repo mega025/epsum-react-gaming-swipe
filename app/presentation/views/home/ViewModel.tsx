@@ -24,28 +24,19 @@ const homeViewModel = () => {
         setMessageLoading(false);
     }
 
-    const addGameToFav = async (game: FavGame, userId: number) => {
-        await addGameToFavoriteUseCase(userId, game);
+    const addGameToFav = async (game: FavGame, slug: string) => {
+        await addGameToFavoriteUseCase(slug, game);
     }
 
     const transformGameIntoFavGameInterface =(item: Game) => {
-        const genreListDTO: GenreDTO[] = []
-        item.genres.forEach((genre: Genre) => {
-                const genreDTO: GenreDTO = {
-                    genreName: genre.name,
-                }
-                genreListDTO.push(genreDTO)
-            }
-        )
         const favGameDTO: FavGame = {
             name: item.name,
-            ratingScore: item.rating ? Math.round((item.rating * 100) / 100) : 0,
-            releaseYear: item.release_dates ? item.release_dates[0].y : 0,
-            imageUrl: item.cover ? transformCoverUrl(item.cover.url) : "",
-            listPlatforms: item.platforms,
-            listGenres: genreListDTO
+            rating_score: item.rating ? Math.round((item.rating * 100) / 100) : 0,
+            release_year: item.release_dates ? item.release_dates[0].y : 0,
+            image_url: item.cover ? transformCoverUrl(item.cover.url) : "",
+            platforms: item.platforms,
+            genres: item.genres
         }
-
         return favGameDTO;
     }
 

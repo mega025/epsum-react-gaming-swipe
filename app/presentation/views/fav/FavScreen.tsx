@@ -36,11 +36,11 @@ export function FavScreen(){
     useFocusEffect(
         useCallback(() => {
             console.log('Fav Screen focused');
-            if(user?.userId != undefined) {
-                console.log(user?.userId)
-                loadFavGames(user?.userId)
+            if(user?.slug != undefined) {
+                console.log(user?.slug)
+                loadFavGames(user?.slug)
             }
-        }, [user?.userId])
+        }, [user?.slug])
     );
 
     const [selectedGameId, setSelectedGameId] = useState<number | null>(null);
@@ -48,19 +48,19 @@ export function FavScreen(){
     const favGameRenderItem = useCallback(({ item }: { item: FavGame }) => (
         <View style={stylesFavGameItem.card}>
             <View style={stylesFavGameItem.container}>
-                <Image source={{ uri: item.imageUrl }} style={stylesFavGameItem.image} />
+                <Image source={{ uri: item.image_url }} style={stylesFavGameItem.image} />
                 <Text style={{ ...stylesHome.gameNameText, width: 170 }}>{item.name}</Text>
                 <TouchableOpacity
                     style={stylesFavGameItem.deleteIcon}
                     onPress={() => {
-                        item.videogameId
-                            ? setSelectedGameId(item.videogameId)
+                        item.id
+                            ? setSelectedGameId(item.id)
                             : Toast.show({"type": "error", "text1": "Unexpected error!"})}}
                 >
                     <Image source={require("../../../../assets/borrar.png")} style={stylesFavGameItem.deleteIcon} />
                 </TouchableOpacity>
 
-                {selectedGameId === item.videogameId && (
+                {selectedGameId === item.id && (
                     <Modal
                         animationType="fade"
                         transparent={true}
@@ -81,7 +81,7 @@ export function FavScreen(){
                                         style={styleAccount.modalAcceptButton}
                                         onPress={async () => {
                                             console.log(item.name)
-                                            await deleteGameFromFav(getPositionGameList(item.name), user?.userId || 0);
+                                            await deleteGameFromFav(getPositionGameList(item.name), user?.slug || "");
                                             setSelectedGameId(null);
                                         }}
                                     >
@@ -94,7 +94,7 @@ export function FavScreen(){
                 )}
             </View>
         </View>
-    ), [user?.userId, getPositionGameList, selectedGameId]);
+    ), [user?.slug, getPositionGameList, selectedGameId]);
 
     return (
         <View style={styleFav.container}>
