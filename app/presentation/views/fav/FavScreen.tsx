@@ -22,6 +22,7 @@ import Toast from "react-native-toast-message";
 import styleAccount from "../account/StyleAccount";
 import {CustomTextInput} from "../../components/CustomTextInput";
 import {UserInterface} from "../../../domain/entities/User";
+import App from "../../../../App";
 
 
 export function FavScreen(){
@@ -49,7 +50,7 @@ export function FavScreen(){
         <View style={stylesFavGameItem.card}>
             <View style={stylesFavGameItem.container}>
                 <Image source={{ uri: item.image_url }} style={stylesFavGameItem.image} />
-                <Text style={{ ...stylesHome.gameNameText, width: 170 }}>{item.name}</Text>
+                <Text style={{ ...stylesHome.gameNameText, width: wp("53%"), fontSize: wp("3.5%"), color:"white"}}>{item.name}</Text>
                 <TouchableOpacity
                     style={stylesFavGameItem.deleteIcon}
                     onPress={() => {
@@ -106,13 +107,12 @@ export function FavScreen(){
                 <View style={stylesHome.loadingIconContainer}>
                     <ActivityIndicator style={styleHome.loading} size="large" color="#ffffff" animating={showLoading}/>
                 </View>
-                <View style={{marginTop: hp("1%"), marginBottom: hp("17%"), borderTopColor: "#ffffff", borderTopWidth: 1, paddingTop: 10}}>
+                <View style={{ marginBottom: hp("17%"), borderTopColor: "#ffffff", borderTopWidth: 1}}>
                     <FlatList data={favListGames}
                               removeClippedSubviews={true}
-                              contentContainerStyle={{flexDirection: "column-reverse"}}
                               renderItem={favGameRenderItem}
                               extraData={favListGames}
-                              ListHeaderComponent={<Text style={{...styleFav.flatListFavGames, display: showLoading ? "none" : "flex"}}>Add more games!</Text>}
+                              ListFooterComponent={<Text style={{...styleFav.flatListFavGames, display: showLoading ? "none" : "flex"}}>Add more games!</Text>}
                     />
                 </View>
                 <Toast/>
@@ -125,12 +125,10 @@ const stylesFavGameItem = StyleSheet.create({
     card: {
         alignSelf: "center",
         justifyContent: "center",
-        width: "90%",
-        height: 190,
-        backgroundColor: "#cecece",
-        borderRadius: 20,
-        elevation: 5,
-        marginBottom: 20,
+        width: "100%",
+        height: hp("18%"),
+        borderBottomWidth: 1,
+        borderBottomColor: "#ddd",
     },
 
     container: {
@@ -141,14 +139,15 @@ const stylesFavGameItem = StyleSheet.create({
     },
 
     image : {
-        width: 130,
-        height: 190,
-        borderTopLeftRadius: 20,
-        borderBottomLeftRadius: 20,
+        width: wp("27%"),
+        height: hp("16%"),
+        marginStart: wp("2.5%"),
+        borderRadius: wp("1.5%"),
     },
 
     deleteIcon: {
         width: 20,
         height: 20,
+        tintColor: AppColors.white,
     }
 })

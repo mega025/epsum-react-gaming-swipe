@@ -22,28 +22,28 @@ return (
             tabBarIcon: ({color})=>(
                 <Image
                     source={require("../../../assets/brujula2.png")}
-                    style={{width:25,height:25,marginTop:15,tintColor:"grey"}}/>
+                    style={{width:25,height:25,marginTop:15,tintColor:"white"}}/>
             )}}
                     component={Home} />
         <Tab.Screen name="Fav" options={{title:"Fav",
             tabBarIcon: ({color})=>(
                 <Image
                     source={require("../../../assets/heart.png")}
-                    style={{width:25,height:25,marginTop:15,tintColor:"grey"}}/>
+                    style={{width:25,height:25,marginTop:15,tintColor:"white"}}/>
             )}}
                     component={FavScreen} />
         <Tab.Screen name="Search" options={{title:"Search",
             tabBarIcon: ({color})=>(
                 <Image
                     source={require("../../../assets/search.png")}
-                    style={{width:25,height:25,marginTop:15,tintColor:"grey"}}/>
+                    style={{width:25,height:25,marginTop:15,tintColor:"white"}}/>
             )}}
                     component={Search} />
         <Tab.Screen name="Account" options={{title:"Account",
             tabBarIcon: ({color})=>(
                 <Image
                     source={require("../../../assets/account.png")}
-                    style={{width:25,height:25,marginTop:15,tintColor:"grey"}}/>
+                    style={{width:25,height:25,marginTop:15,tintColor:"white"}}/>
             )}}
                     component={Account} />
     </Tab.Navigator>

@@ -9,14 +9,16 @@ const styleFav = StyleSheet.create({
     },
 
     header: {
-        marginTop: hp("9%"),
+        paddingTop: hp("9%"),
+        elevation:2,
+        backgroundColor: AppColors.colorButton,
     },
     title: {
         height: 70,
         fontSize: wp("7.5%"),
         alignSelf: "center",
-        marginBottom: 20,
-        verticalAlign: "bottom",
+        paddingBottom: 20,
+        verticalAlign: "middle",
         color: AppColors.white,
         fontFamily: "zen_kaku_light",
     },
@@ -24,9 +26,12 @@ const styleFav = StyleSheet.create({
     flatListFavGames: {
         alignSelf: "center",
         color: AppColors.white,
-        fontSize: 16,
-        height: hp("3%"),
-        marginBottom: hp("3%"),
+        backgroundColor: AppColors.colorButton,
+        width: "100%",
+        textAlign: "center",
+        fontSize: wp("4%"),
+        height: hp("5.3%"),
+        paddingVertical: hp("1.4%"),
         fontFamily: "zen_kaku_regular",
     }
 });

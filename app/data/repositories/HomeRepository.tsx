@@ -33,7 +33,7 @@ export class HomeRepository implements HomeRepositoryInterface {
             return Promise.resolve(response.data)
         }  catch (error)  {
             const e = (error as AxiosError<{error:string}>);
-            console.log(e.response?.data.error);
+            console.log(e.response);
             Toast.show({
                 type: 'error',
                 text1: e.response?.data.error,

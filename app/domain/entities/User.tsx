@@ -8,6 +8,15 @@ export interface UserInterface {
     password: string
 }
 
+export interface GetUserInterface {
+    name: string
+    last_name: string
+    email: string
+    image: FormData | string
+}
+
+export type UpdateUserDTO = Partial<Pick<GetUserInterface, "name" | "last_name" | "image">>
+
 export interface LoginUserInterface {
     email: string;
     password: string;

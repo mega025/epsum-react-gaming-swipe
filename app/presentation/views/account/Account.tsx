@@ -20,7 +20,7 @@ import {CustomTextInput} from "../../components/CustomTextInput";
 import {UseUserLocalStorage} from "../../hooks/UseUserLocalStorage";
 import stylesHome from "../home/StyleHome";
 import styleHome from "../home/StyleHome";
-import {UserInterface} from "../../../domain/entities/User";
+import {UpdateUserDTO, UserInterface} from "../../../domain/entities/User";
 import Toast from "react-native-toast-message";
 import {PasswordsDTO} from "../../../domain/entities/UpdatePasswordDTO";
 import * as ImagePickerExpo from "expo-image-picker";
@@ -46,17 +46,17 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
         setUpdatePasswordDTO,
         errorMessage,
         setErrorMessage,
-        updateUserPassword
+        // updateUserPassword
     } =viewModel.AccountViewModel();
 
     useFocusEffect(
         useCallback(() => {
-            if(user?.userId != undefined){
-                getUserDB(user?.userId)
+            if(user?.slug != undefined){
+                getUserDB(user?.slug)
                 if (userDB != undefined)
                     console.log(userDB)
             }
-        }, [user?.userId, JSON.stringify(userDB)])
+        }, [user?.slug, JSON.stringify(userDB)])
     )
 
     useEffect(() => {
@@ -85,17 +85,18 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
         console.log("result", result);
         if (!result.canceled) {
             if (userDB != undefined) {
-                const updatedUser: UserInterface = {
-                    ...userDB,
-                    personalDetails: {
-                        firstName: userDB.personalDetails.firstName,
-                        lastName: userDB.personalDetails.lastName,
-                        image_url: result.assets[0].uri,
-                        password: userDB.personalDetails.password
-                    }
+                const formData = new FormData();
+                formData.append('image', {
+                    uri: result.assets[0].uri,
+                    name: 'profile.jpg',
+                    type: 'image/jpeg',
+                } as any);
+
+                const data: UpdateUserDTO = {
+                    image: formData
                 }
-                if(userDB.userId != undefined){
-                    updateUserDetails(updatedUser, userDB.userId)
+                if(user?.slug != undefined){
+                    updateUserDetails(user?.slug, data)
                 }
             }
         }
@@ -119,7 +120,7 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                 <View style={styleAccount.containerPhoto}>
                     <View style={stylesProfilePicture.container}>
                         <View style={stylesProfilePicture.containerPhoto}>
-                            <Image style={stylesProfilePicture.photo}  source={userDB?.personalDetails.image_url ? {uri: userDB?.personalDetails.image_url} : require("../../../../assets/account.png")}
+                            <Image style={stylesProfilePicture.photo}  source={userDB?.image ? {uri: userDB?.image} : require("../../../../assets/account.png")}
                                 />
                         </View>
                         <TouchableOpacity style={stylesProfilePicture.changePhotoButton} onPress={selectImage}>
@@ -131,7 +132,7 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                     <Text style={styleAccount.labelName}>Name</Text>
 
                     <View style={styleAccount.containerEditName}>
-                        <Text style={styleAccount.Name}>{userDB?.personalDetails.firstName}</Text>
+                        <Text style={styleAccount.Name}>{userDB?.name}</Text>
                         <View>
                             <Modal
                                 animationType="fade"
@@ -166,19 +167,14 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                                                             setErrorMessage("Empty fields are not allowed")
                                                             setModalVisibleFirst(!modalVisibleFirst)
                                                         } else {
-                                                            const updatedUser: UserInterface = {
-                                                                ...userDB,
-                                                                personalDetails: {
-                                                                    firstName: updatedFirstName,
-                                                                    lastName: userDB.personalDetails.lastName,
-                                                                    image_url: userDB.personalDetails.image_url,
-                                                                    password: userDB.personalDetails.password
-                                                                }
+                                                            const data: UpdateUserDTO = {
+                                                                name: updatedFirstName
                                                             }
-                                                            console.log(updatedUser)
-                                                            if (user?.userId != undefined)
-                                                                updateUserDetails(updatedUser, user?.userId)
+                                                            console.log(data)
+                                                            if (user?.slug != undefined)
+                                                                updateUserDetails(user?.slug, data)
 
+                                                            userDB.name = updatedFirstName
                                                             setModalVisibleFirst(!modalVisibleFirst)
                                                             setUpdateFirstName("")
                                                         }
@@ -204,7 +200,7 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                     <Text style={styleAccount.labelName}>Last name</Text>
 
                     <View style={styleAccount.containerEditName}>
-                        <Text style={styleAccount.Name}>{userDB?.personalDetails.lastName}</Text>
+                        <Text style={styleAccount.Name}>{userDB?.last_name}</Text>
                         <View>
                             <Modal
                                 animationType="fade"
@@ -237,23 +233,18 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                                                     if(userDB != undefined) {
                                                         if (updatedLastName === "") {
                                                             setErrorMessage("Empty fields are not allowed")
-                                                            setModalVisibleFirst(!modalVisibleFirst)
+                                                            setModalVisibleFirst(!modalVisibleLast)
                                                         } else {
-                                                            const updatedUser: UserInterface = {
-                                                                ...userDB,
-                                                                personalDetails: {
-                                                                    firstName: userDB.personalDetails.firstName,
-                                                                    lastName: updatedLastName,
-                                                                    image_url: userDB.personalDetails.image_url,
-                                                                    password: userDB.personalDetails.password
-                                                                }
+                                                            const data: UpdateUserDTO = {
+                                                                last_name: updatedLastName
                                                             }
-                                                            console.log(updatedUser)
-                                                            if (user?.userId != undefined)
-                                                                updateUserDetails(updatedUser, user?.userId)
+                                                            console.log(data)
+                                                            if (user?.slug != undefined)
+                                                                updateUserDetails(user?.slug, data)
 
+                                                            userDB.last_name = updatedLastName
                                                             setModalVisibleLast(!modalVisibleLast)
-                                                            setUpdateFirstName("")
+                                                            setUpdateLastName("")
                                                         }
                                                     }}
                                                 }
@@ -322,14 +313,14 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                                         <Pressable
                                             style={styleAccount.modalAcceptButton}
                                             onPress={() => {
-                                                if (user?.userId != undefined) {
-                                                    const passwordsDTO: PasswordsDTO = {
-                                                        oldPassword: updatePasswordDTO.oldPassword,
-                                                        newPassword: updatePasswordDTO.newPassword,
-                                                    }
-                                                    updateUserPassword(passwordsDTO, user?.userId)
-                                                    console.log(updatePasswordDTO)
-                                                }
+                                                // if (user?.userId != undefined) {
+                                                //     const passwordsDTO: PasswordsDTO = {
+                                                //         oldPassword: updatePasswordDTO.oldPassword,
+                                                //         newPassword: updatePasswordDTO.newPassword,
+                                                //     }
+                                                //     updateUserPassword(passwordsDTO, user?.userId)
+                                                //     console.log(updatePasswordDTO)
+                                                // }
                                                 setModalVisibleLastPassword(!modalVisiblePassword)
 
                                             }}

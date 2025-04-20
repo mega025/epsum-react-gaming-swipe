@@ -76,8 +76,7 @@ const SearchGameItem = ({ item }: { item: Game }) => {
                     <Text style={styles.rating}>N/A</Text>
                 )}
                 <TouchableOpacity onPress={async () => {
-                    if (!gameLiked && !checkIfGameFromApiIsLiked(item)) {
-                        setGameLiked(true);
+                    if (!checkIfGameFromApiIsLiked(item)) {
                         try {
                             await addGameToFav(transformGameIntoFavGameInterface(item), user?.slug ? user?.slug : "");
                             await loadFavGames(user?.slug ? user?.slug : "")
@@ -89,7 +88,6 @@ const SearchGameItem = ({ item }: { item: Game }) => {
                             })
                         }
                     } else {
-                        setGameLiked(false);
                         try {
                             await deleteGameFromFav(
                                 getPositionGameList(item.name),
@@ -106,7 +104,7 @@ const SearchGameItem = ({ item }: { item: Game }) => {
                     }
                 }}>
                     <Image style={styles.fav} source={
-                        gameLiked || checkIfGameFromApiIsLiked(item)
+                        checkIfGameFromApiIsLiked(item)
                         ? require("../../../assets/filled-heart.png")
                         : require("../../../assets/heart.png")}/>
                 </TouchableOpacity>

@@ -14,6 +14,7 @@ const searchViewModel = () => {
         setLoading(true);
         const response = await searchMostAnticipatedGamesUseCase()
         setGamesDisplayed(response);
+        setLoading(false)
     };
 
     const searchGamesByUserInput = async (input: string, page: number = 1) => {
