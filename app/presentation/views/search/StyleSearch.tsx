@@ -64,7 +64,7 @@ const styleSearch = StyleSheet.create({
     },
 
     resultTextContainer: {
-        backgroundColor: AppColors.colorNavigationButton,
+        backgroundColor: AppColors.colorBottomNavigator,
         padding: 13,
         borderWidth: 1,
         borderColor: AppColors.white,

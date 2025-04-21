@@ -5,7 +5,7 @@ import {
     Button,
     ActivityIndicator,
     FlatList,
-    TouchableWithoutFeedback, Pressable
+    TouchableWithoutFeedback, Pressable, SafeAreaView
 } from "react-native";
 import stylesHome from "./StyleHome";
 import {XButton} from "../../components/XButton";
@@ -87,7 +87,7 @@ export function Home() {
         );
     };
     return (
-        <View>
+        <SafeAreaView>
             <ImageBackground source={require("../../../../assets/definitiveBackground.jpeg")}
                              style={{width: '100%', height: '100%'}}>
                 <View style={styleHome.wrapper}>
@@ -186,7 +186,7 @@ export function Home() {
             <View style={stylesHome.loadingIconContainer}>
                 <ActivityIndicator style={styleHome.loading} size="large" color="#ffffff" animating={showLoading}/>
             </View>
-        </View>
+        </SafeAreaView>
     );
 }
 

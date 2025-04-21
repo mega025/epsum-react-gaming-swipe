@@ -4,7 +4,7 @@ import {
     Image,
     ImageBackground,
     Modal,
-    Pressable, StyleSheet,
+    Pressable, SafeAreaView, StyleSheet,
     Text,
     TextInput,
     TouchableOpacity,
@@ -70,45 +70,43 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
     }, [errorMessage]);
 
     const selectImage =async () => {
-        const { status } = await ImagePickerExpo.requestCameraPermissionsAsync()
+        const { status } = await ImagePickerExpo.requestMediaLibraryPermissionsAsync()
 
         if (status !== "granted") {
             alert("Permission denied")
             return;
         }
+
         let result = await ImagePickerExpo.launchImageLibraryAsync({
             mediaTypes:ImagePickerExpo.MediaTypeOptions.All,
             allowsEditing: true,
             aspect:[1,1],
             quality:1
         });
+
         console.log("result", result);
         if (!result.canceled) {
             if (userDB != undefined) {
+                const selectedAsset = result.assets[0]
                 const formData = new FormData();
                 formData.append('image', {
-                    uri: result.assets[0].uri,
-                    name: 'profile.jpg',
-                    type: 'image/jpeg',
+                    uri: selectedAsset.uri,
+                    name: selectedAsset.fileName,
+                    type: selectedAsset.mimeType,
                 } as any);
+                console.log(formData);
 
-                const data: UpdateUserDTO = {
-                    image: formData
-                }
                 if(user?.slug != undefined){
-                    updateUserDetails(user?.slug, data)
+                    updateUserDetails(user?.slug, formData)
                 }
             }
         }
     }
 
     return (
-        <View style={styleAccount.container}>
+        <SafeAreaView style={styleAccount.container}>
             <ImageBackground source={require("../../../../assets/definitiveBackground.jpeg")}
                              style={{width: '100%', height: '100%'}}>
-                <View style={stylesHome.loadingIconContainer}>
-                    <ActivityIndicator style={styleHome.loading} size="large" color="#ffffff" animating={showLoading}/>
-                </View>
                 <View>
                     <Text style={styleAccount.title}>
                         Account details
@@ -120,7 +118,7 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                 <View style={styleAccount.containerPhoto}>
                     <View style={stylesProfilePicture.container}>
                         <View style={stylesProfilePicture.containerPhoto}>
-                            <Image style={stylesProfilePicture.photo}  source={userDB?.image ? {uri: userDB?.image} : require("../../../../assets/account.png")}
+                            <Image style={stylesProfilePicture.photo}  source={userDB?.image ? {uri: `http://10.0.2.2:8000${userDB?.image}`} : require("../../../../assets/account.png")}
                                 />
                         </View>
                         <TouchableOpacity style={stylesProfilePicture.changePhotoButton} onPress={selectImage}>
@@ -345,7 +343,10 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                 </View>
                 <Toast/>
             </ImageBackground>
-        </View>
+            <View style={stylesHome.loadingIconContainer}>
+                <ActivityIndicator style={styleHome.loading} size="large" color="#ffffff" animating={showLoading}/>
+            </View>
+        </SafeAreaView>
     );
 }
 
@@ -366,7 +367,7 @@ const stylesProfilePicture =StyleSheet.create({
         resizeMode:"center",
     },
     changePhotoButton:{
-        backgroundColor:AppColors.colorNavigationButton,
+        backgroundColor:AppColors.colorBottomNavigator,
         width:160,
         height:35,
         alignSelf:"center",

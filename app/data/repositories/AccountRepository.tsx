@@ -17,13 +17,21 @@ export class AccountRepository implements AccountRepositoryInterface {
         }
     }
 
-    async updateUser(slug: string, data: UpdateUserDTO): Promise<ApiDeliveryResponse> {
+    async updateUser(slug: string, data: UpdateUserDTO | FormData | undefined): Promise<ApiDeliveryResponse> {
         try {
-            const response = await ApiDelivery.post(`users/update/${slug}`, data);
+            const isFormData = data instanceof FormData;
+            console.log(isFormData);
+            const response = await ApiDelivery.post(`users/update/${slug}`, data,
+                {
+                    headers: {
+                        ...(isFormData ? {"Content-Type": " multipart/form-data"} : { 'Content-Type': 'application/json' }),
+
+                    },
+                });
             return Promise.resolve(response.data);
         } catch (error) {
             let e = (error as AxiosError<{error: string}>);
-            console.error(e.response?.data.error);
+            console.error(e.response);
             return Promise.reject(e.response);
         }
     }

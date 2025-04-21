@@ -112,7 +112,8 @@ export function FavScreen(){
                               removeClippedSubviews={true}
                               renderItem={favGameRenderItem}
                               extraData={favListGames}
-                              ListFooterComponent={<Text style={{...styleFav.flatListFavGames, display: showLoading ? "none" : "flex"}}>Add more games!</Text>}
+                              fadingEdgeLength={80}
+                              ListFooterComponent={<Text style={{...styleFav.footerFavGames, display: showLoading ? "none" : "flex"}}>Add more games!</Text>}
                     />
                 </View>
                 <Toast/>

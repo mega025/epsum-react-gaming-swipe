@@ -1,7 +1,7 @@
 export const AppColors = {
     black: "#FF000000" ,
     white:"#FFFFFFFF",
-    colorNavigationButton:"#220526",
+    colorBottomNavigator:"#220526",
     selectedTab:"#0583F2",
     orangeColor:"#C57503",
     colorButton:"#130121",

@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
         paddingVertical: 5,
         paddingHorizontal: 10,
         borderRadius: 10,
-        backgroundColor: AppColors.colorNavigationButton,
+        backgroundColor: AppColors.colorBottomNavigator,
         height: 45,
         width: "75%",
         fontFamily: "zen_kaku_regular",

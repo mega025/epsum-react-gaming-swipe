@@ -4,6 +4,6 @@ import {UpdateUserDTO} from "../../entities/User";
 
 const {updateUser} = new AccountRepository()
 
-export const updateUserUseCase = async (slug: string, data: UpdateUserDTO) => {
+export const updateUserUseCase = async (slug: string, data: UpdateUserDTO | FormData | undefined) => {
     return await updateUser(slug ,data)
 }

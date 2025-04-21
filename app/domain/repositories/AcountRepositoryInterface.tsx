@@ -4,5 +4,5 @@ import {GetUserInterface, UpdateUserDTO, UserInterface} from "../entities/User";
 
 export interface AccountRepositoryInterface {
     getUser: (slug: string) => Promise<GetUserInterface>;
-    updateUser: (slug: string, data: UpdateUserDTO) => Promise<ApiDeliveryResponse>
+    updateUser: (slug: string, data?: UpdateUserDTO | FormData) => Promise<ApiDeliveryResponse>
 }

@@ -31,7 +31,7 @@ export const accountViewModel =()=> {
         setShowLoading(false)
     }
 
-    const updateUserDetails = async (slug: string, data: UpdateUserDTO) => {
+    const updateUserDetails = async (slug: string, data: UpdateUserDTO | FormData | undefined) => {
         const response = await updateUserUseCase(slug, data)
         Toast.show({
             type:"success",

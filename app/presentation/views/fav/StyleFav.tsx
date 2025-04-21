@@ -23,10 +23,10 @@ const styleFav = StyleSheet.create({
         fontFamily: "zen_kaku_light",
     },
 
-    flatListFavGames: {
+    footerFavGames: {
         alignSelf: "center",
         color: AppColors.white,
-        backgroundColor: AppColors.colorButton,
+        backgroundColor: AppColors.colorBottomNavigator,
         width: "100%",
         textAlign: "center",
         fontSize: wp("4%"),
