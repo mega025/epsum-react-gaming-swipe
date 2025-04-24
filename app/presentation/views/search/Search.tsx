@@ -15,6 +15,7 @@ import viewModel from "./ViewModel";
 import {AppColors} from "../../theme/AppTheme";
 import styleFav from "../fav/StyleFav";
 import {FavScreen} from "../fav/FavScreen";
+import FiltroComponent from "../../components/FilterButton";
 
 export function Search() {
 
@@ -26,7 +27,10 @@ export function Search() {
         onSearchTextChange,
         searchText,
         searchMostAnticipatedGames,
-        setSearchText
+        setSearchText,
+        onApplyFilters,
+        filtersApplied,
+        appliedFilters
     } = viewModel.searchViewModel()
 
     useEffect(() => {
@@ -49,6 +53,7 @@ export function Search() {
                         <Text style={styleSearch.headerTitle}>Search</Text>
                     </View>
 
+
                     <View style={styleSearch.containerSearchInput}>
                         <CustomTextInputSearch
                             keyboardType="default"
@@ -56,12 +61,22 @@ export function Search() {
                             value={searchText}
                             onPressButtonFromInterface={(text: string) => onSearchTextChange(text)}
                         />
+                        <FiltroComponent onApply={onApplyFilters}/>
                     </View>
+
+
                 </View>
 
                 <View style={styleSearch.resultTextContainer}>
                     {searchText !== "" ? (
                         <Text style={styleSearch.resultText}>Results for "{searchText}"</Text>
+                    ) : filtersApplied ? (
+                        <Text style={styleSearch.resultTextFilter}>
+                            Filter:{" "}
+                            {appliedFilters.category ? `${appliedFilters.category}` : ""}
+                            {appliedFilters.category && appliedFilters.platform ? " and " : ""}
+                            {appliedFilters.platform ? `${appliedFilters.platform}` : ""}
+                        </Text>
                     ) : (
                         <Text style={styleSearch.resultText}>-  TOP 10  -  MOST ANTICIPATED GAMES</Text>
                     )}

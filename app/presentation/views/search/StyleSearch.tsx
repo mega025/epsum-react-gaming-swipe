@@ -44,7 +44,7 @@ const styleSearch = StyleSheet.create({
         paddingHorizontal: wp("3%"),
         paddingVertical: hp("1%"),
         alignSelf: "center",
-        marginTop: hp("4%"),
+        marginTop: hp("3%"),
     },
 
     gameCardsContainer: {
@@ -80,13 +80,20 @@ const styleSearch = StyleSheet.create({
         height: 28,
         fontFamily: "zen_kaku_regular",
     },
+    resultTextFilter: {
+        fontSize: 15,
+        color: "#fff",
+        height: 28,
+        fontFamily: "zen_kaku_regular",
+    },
 
     emptyFlatListText : {
         fontSize: 20,
         color: "#ad2c2c",
         height: 28,
         fontFamily: "zen_kaku_regular",
-    }
+    },
+
 });
 
 export default styleSearch;
