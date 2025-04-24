@@ -48,7 +48,8 @@ const styleSearch = StyleSheet.create({
     },
 
     gameCardsContainer: {
-        paddingBottom:hp("33%")
+        paddingBottom:hp("33%"),
+
     },
 
     gameCover: {
@@ -92,6 +93,23 @@ const styleSearch = StyleSheet.create({
         color: "#ad2c2c",
         height: 28,
         fontFamily: "zen_kaku_regular",
+    },
+    clearFilterButton: {
+        marginLeft: 10,
+        padding: 5,
+        borderRadius: 15,
+        backgroundColor: 'red',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    filterTextContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+
+    clearFilterText: {
+        fontSize: 18,
+        color: 'white',
     },
 
 });

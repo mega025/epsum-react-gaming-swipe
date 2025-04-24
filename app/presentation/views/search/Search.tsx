@@ -5,8 +5,9 @@ import {
     Text,
     View,
     TouchableWithoutFeedback,
-    Keyboard, FlatList, ActivityIndicator,}
-from "react-native";
+    Keyboard, FlatList, ActivityIndicator, TouchableOpacity,
+}
+    from "react-native";
 import { CustomTextInputSearch } from "../../components/CustomTextInputSearch";
 import styleSearch from "./StyleSearch";
 import SearchGameItem from "../../components/SearchGameItem";
@@ -30,7 +31,11 @@ export function Search() {
         setSearchText,
         onApplyFilters,
         filtersApplied,
-        appliedFilters
+        appliedFilters,
+        setAppliedFilters,
+        setFiltersApplied,
+        setSelectedCategory,
+        setSelectedPlatform
     } = viewModel.searchViewModel()
 
     useEffect(() => {
@@ -71,12 +76,27 @@ export function Search() {
                     {searchText !== "" ? (
                         <Text style={styleSearch.resultText}>Results for "{searchText}"</Text>
                     ) : filtersApplied ? (
-                        <Text style={styleSearch.resultTextFilter}>
-                            Filter:{" "}
-                            {appliedFilters.category ? `${appliedFilters.category}` : ""}
-                            {appliedFilters.category && appliedFilters.platform ? " and " : ""}
-                            {appliedFilters.platform ? `${appliedFilters.platform}` : ""}
-                        </Text>
+                        <View style={styleSearch.filterTextContainer}>
+                            <Text style={styleSearch.resultTextFilter}>
+                                Filter:{" "}
+                                {appliedFilters.category ? `${appliedFilters.category}` : ""}
+                                {appliedFilters.category && appliedFilters.platform ? " and " : ""}
+                                {appliedFilters.platform ? `${appliedFilters.platform}` : ""}
+                            </Text>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    setAppliedFilters({ category: null, platform: null });
+                                    setFiltersApplied(false);
+                                    setSelectedCategory(null);
+                                    setSelectedPlatform(null);
+                                    setSearchText("");
+                                    searchMostAnticipatedGames();
+                                }}
+                                style={styleSearch.clearFilterButton}
+                            >
+                                <Text style={styleSearch.clearFilterText}>✕</Text>
+                            </TouchableOpacity>
+                        </View>
                     ) : (
                         <Text style={styleSearch.resultText}>-  TOP 10  -  MOST ANTICIPATED GAMES</Text>
                     )}

@@ -138,9 +138,12 @@ const searchViewModel = () => {
         searchMostAnticipatedGames,
         setSearchText,
         onApplyFilters,
-        setAppliedFilters,
         filtersApplied,
-        appliedFilters
+        appliedFilters,
+        setAppliedFilters,
+        setFiltersApplied,
+        setSelectedCategory,
+        setSelectedPlatform
     }
 }
 export default {searchViewModel}
