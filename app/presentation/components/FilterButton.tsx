@@ -113,14 +113,17 @@ function FilterModal({ onApply}: FilterModalProps) {
                             <Text style={styles.closeButtonText}>✕</Text>
                         </TouchableOpacity>
                         <Text style={styles.title}>Filter</Text>
+
                         {loading ? (
                             <ActivityIndicator size="large" />
                         ) : (
                             <ScrollView>
                                 <Text style={styles.label}>Categories</Text>
+                                <View style={styles.divider} />
                                 {renderOptions(categories, selectedCategory, setSelectedCategory)}
-
+                                <View style={styles.divider} />
                                 <Text style={styles.label}>Platforms</Text>
+                                <View style={styles.divider} />
                                 {renderOptions(platforms, selectedPlatform, setSelectedPlatform)}
                             </ScrollView>
                         )}
@@ -140,11 +143,16 @@ function FilterModal({ onApply}: FilterModalProps) {
 export default FilterModal;
 
 const styles = StyleSheet.create({
+    divider: {
+        height: 1,
+        backgroundColor: '#ccc',
+        marginVertical: 10,
+    },
     container: {
         padding: 20,
     },
     button: {
-        backgroundColor: '#007BFF',
+        backgroundColor: '#19114b',
         padding: 12,
         borderRadius: 8,
         alignItems: 'center',
@@ -154,10 +162,11 @@ const styles = StyleSheet.create({
     buttonText: {
         color: '#fff',
         fontWeight: '600',
+        fontFamily: "zen_kaku_light",
     },
     modalOverlay: {
         flex: 1,
-        backgroundColor: 'rgba(21,20,20,0.3)',
+        backgroundColor: 'rgba(246,237,237,0.3)',
         justifyContent: 'center',
         padding: 20,
     },
@@ -172,7 +181,8 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginBottom: 15,
         textAlign: 'center',
-        color: AppColors.white
+        color: AppColors.white,
+        fontFamily: "zen_kaku_medium",
     },
     label: {
         fontWeight: '600',
@@ -181,7 +191,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: AppColors.white,
         fontFamily: "zen_kaku_light",
-        height: 40,
+        height: 25,
     },
     optionsContainer: {
         flexDirection: 'row',
