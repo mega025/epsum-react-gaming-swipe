@@ -80,6 +80,12 @@ const styleSearch = StyleSheet.create({
         height: 28,
         fontFamily: "zen_kaku_regular",
     },
+    resultTextFilter: {
+        fontSize: 15,
+        color: "#fff",
+        height: 28,
+        fontFamily: "zen_kaku_regular",
+    },
 
     emptyFlatListText : {
         fontSize: 20,

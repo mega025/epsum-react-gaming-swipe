@@ -9,72 +9,6 @@ const searchViewModel = () => {
     const [gamesDisplayed, setGamesDisplayed] = useState<Game[]>([]);
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(1);
-    const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-    const [selectedPlatform, setSelectedPlatform] = useState<string | null>(null);
-    const [appliedFilters, setAppliedFilters] = useState<{ category: string | null; platform: string | null }>({
-        category: null,
-        platform: null,
-    });
-
-    const onApplyFilters = async (filters: { category: string | null; platform: string | null }) => {
-        setSelectedCategory(filters.category);
-        setSelectedPlatform(filters.platform);
-        setAppliedFilters(filters);
-        console.log("Filtros aplicados:", appliedFilters);
-
-        await searchGames(filters.category, filters.platform);
-    };
-    const searchGames = async (category: string | null, platform: string | null) => {
-        setLoading(true);
-        try {
-            const filteredGames = await fetchFilteredGames(category, platform);
-            setGamesDisplayed(filteredGames);
-        } catch (err) {
-            console.error('Error fetching filtered games:', err);
-        } finally {
-            setLoading(false);
-        }
-    };
-    const fetchFilteredGames = async (
-        category: string | null,
-        platform: string | null,
-        page: number = 0
-    ): Promise<Game[]> => {
-        try {
-            const filters: string[] = [];
-
-            if (category) {
-                filters.push(`genres.name ~ *"${category}"*`);
-            }
-
-            if (platform) {
-                filters.push(`platforms.name ~ *"${platform}"*`);
-            }
-
-            const whereClause = filters.length > 0 ? `where ${filters.join(" & ")};` : "";
-            const offset = `offset ${page * 15};`;
-
-            const query = `
-            fields name, 
-            rating, 
-            platforms.abbreviation,
-            genres.name, 
-            cover.url, 
-            release_dates.y;
-            ${whereClause}
-            sort popularity desc;
-            ${offset}
-            limit 15;
-        `;
-
-            const response = await IgdbApiDelivery.post("/games", query);
-
-            return response.data;
-        } catch (error) {
-            console.error("Error fetching filtered games:", error);
-            return [];
-        }
-    };
 
     const searchMostAnticipatedGames = async () => {
         setLoading(true);
@@ -107,16 +41,7 @@ const searchViewModel = () => {
         if (!loading && gamesDisplayed.length >= 13) {
             setPage((prevPage) => {
                 const nextPage = prevPage + 1;
-
-                if (searchText !== "") {
-                    searchGamesByUserInput(searchText, nextPage);
-                } else if (appliedFilters.category || appliedFilters.platform) {
-                    fetchFilteredGames(appliedFilters.category, appliedFilters.platform, nextPage)
-                        .then((moreGames) => {
-                            setGamesDisplayed((prevGames) => [...prevGames, ...moreGames]);
-                        });
-                }
-
+                searchGamesByUserInput(searchText, nextPage);
                 return nextPage;
             });
         }
@@ -131,8 +56,7 @@ const searchViewModel = () => {
         searchText,
         searchGamesByUserInput,
         searchMostAnticipatedGames,
-        setSearchText,
-        onApplyFilters
+        setSearchText
     }
 }
 export default {searchViewModel};

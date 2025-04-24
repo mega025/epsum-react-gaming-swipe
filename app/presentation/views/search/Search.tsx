@@ -28,13 +28,10 @@ export function Search() {
         searchText,
         searchMostAnticipatedGames,
         setSearchText,
-        onApplyFilters
+        onApplyFilters,
+        filtersApplied,
+        appliedFilters
     } = viewModel.searchViewModel()
-
-    const [appliedFilters, setAppliedFilters] = useState<{ category: string | null; platform: string | null }>({
-        category: null,
-        platform: null,
-    });
 
     useEffect(() => {
         searchMostAnticipatedGames()
@@ -73,6 +70,13 @@ export function Search() {
                 <View style={styleSearch.resultTextContainer}>
                     {searchText !== "" ? (
                         <Text style={styleSearch.resultText}>Results for "{searchText}"</Text>
+                    ) : filtersApplied ? (
+                        <Text style={styleSearch.resultTextFilter}>
+                            Filter:{" "}
+                            {appliedFilters.category ? `${appliedFilters.category}` : ""}
+                            {appliedFilters.category && appliedFilters.platform ? " and " : ""}
+                            {appliedFilters.platform ? `${appliedFilters.platform}` : ""}
+                        </Text>
                     ) : (
                         <Text style={styleSearch.resultText}>-  TOP 10  -  MOST ANTICIPATED GAMES</Text>
                     )}

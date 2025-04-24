@@ -88,8 +88,11 @@ function FilterModal({ onApply}: FilterModalProps) {
             category: selectedCategory,
             platform: selectedPlatform,
         });
+        setSelectedCategory(null);
+        setSelectedPlatform(null);
 
         setModalVisible(false);
+
     };
 
     return (
@@ -163,6 +166,7 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontWeight: '600',
         fontFamily: "zen_kaku_light",
+        height:25,
     },
     modalOverlay: {
         flex: 1,
