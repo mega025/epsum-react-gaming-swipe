@@ -27,8 +27,14 @@ export function Search() {
         onSearchTextChange,
         searchText,
         searchMostAnticipatedGames,
-        setSearchText
+        setSearchText,
+        onApplyFilters
     } = viewModel.searchViewModel()
+
+    const [appliedFilters, setAppliedFilters] = useState<{ category: string | null; platform: string | null }>({
+        category: null,
+        platform: null,
+    });
 
     useEffect(() => {
         searchMostAnticipatedGames()
@@ -50,6 +56,7 @@ export function Search() {
                         <Text style={styleSearch.headerTitle}>Search</Text>
                     </View>
 
+
                     <View style={styleSearch.containerSearchInput}>
                         <CustomTextInputSearch
                             keyboardType="default"
@@ -57,8 +64,10 @@ export function Search() {
                             value={searchText}
                             onPressButtonFromInterface={(text: string) => onSearchTextChange(text)}
                         />
+                        <FiltroComponent onApply={onApplyFilters}/>
                     </View>
-                    <FiltroComponent/>
+
+
                 </View>
 
                 <View style={styleSearch.resultTextContainer}>

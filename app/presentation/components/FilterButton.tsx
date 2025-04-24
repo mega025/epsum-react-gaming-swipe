@@ -9,8 +9,13 @@ import {
     ScrollView,
 } from 'react-native';
 import { IgdbApiDelivery } from '../../data/sources/remote/igdbAPI/IgdbApiDelivery';
+import {AppColors} from "../theme/AppTheme";
 
-const FilterModal = () => {
+interface FilterModalProps {
+    onApply: (filters: { category: string | null; platform: string | null }) => void;
+}
+
+function FilterModal({ onApply}: FilterModalProps) {
     const [modalVisible, setModalVisible] = useState(false);
     const [categories, setCategories] = useState<string[]>([]);
     const [platforms, setPlatforms] = useState<string[]>([]);
@@ -44,14 +49,12 @@ const FilterModal = () => {
                     'Android',
                 ];
 
-                // Filtramos las plataformas para solo mostrar las más populares
                 const filteredPlatforms = platRes.data.filter((platform: any) =>
                     popularPlatforms.some(popularPlatform =>
                         platform.name.toLowerCase() === popularPlatform.toLowerCase()
                     )
                 );
 
-                // Actualizamos los estados con los nombres de las categorías y plataformas
                 setCategories(genreRes.data.map((c: { name: string }) => c.name));
                 setPlatforms(filteredPlatforms.map((p: { name: string }) => p.name));
 
@@ -64,13 +67,13 @@ const FilterModal = () => {
         fetchFilters();
     }, []);
 
-    const renderOptions = (data: string[], selected: string | null, setSelected: (val: string) => void) => (
+    const renderOptions = (data: string[], selected: string | null, setSelected: (val: string | null) => void) => (
         <View style={styles.optionsContainer}>
             {data.map((item) => (
                 <TouchableOpacity
                     key={item}
                     style={[styles.optionButton, selected === item && styles.selectedOption]}
-                    onPress={() => setSelected(item)}
+                    onPress={() => setSelected(selected === item ? null : item)}
                 >
                     <Text style={selected === item ? styles.selectedText : styles.optionText}>
                         {item}
@@ -80,13 +83,11 @@ const FilterModal = () => {
         </View>
     );
 
-    // Función para aplicar los filtros seleccionados
     const applyFilters = () => {
-        // Mostrar los filtros aplicados en la consola (puedes usar estos valores para hacer una consulta a la API)
-        console.log('Filtros aplicados:', selectedCategory, selectedPlatform);
-
-        // Aquí es donde aplicarías la lógica para usar los filtros en tu app, por ejemplo:
-        // - Hacer una nueva llamada API para obtener juegos filtrados por categoría y plataforma.
+        onApply({
+            category: selectedCategory,
+            platform: selectedPlatform,
+        });
 
         setModalVisible(false);
     };
@@ -105,6 +106,12 @@ const FilterModal = () => {
             >
                 <View style={styles.modalOverlay}>
                     <View style={styles.modalContent}>
+                        <TouchableOpacity
+                            style={styles.closeButton}
+                            onPress={() => setModalVisible(false)}
+                        >
+                            <Text style={styles.closeButtonText}>✕</Text>
+                        </TouchableOpacity>
                         <Text style={styles.title}>Filter</Text>
                         {loading ? (
                             <ActivityIndicator size="large" />
@@ -141,6 +148,8 @@ const styles = StyleSheet.create({
         padding: 12,
         borderRadius: 8,
         alignItems: 'center',
+        minWidth:"auto",
+        marginBottom: 12,
     },
     buttonText: {
         color: '#fff',
@@ -148,12 +157,12 @@ const styles = StyleSheet.create({
     },
     modalOverlay: {
         flex: 1,
-        backgroundColor: 'rgba(0,0,0,0.3)',
+        backgroundColor: 'rgba(21,20,20,0.3)',
         justifyContent: 'center',
         padding: 20,
     },
     modalContent: {
-        backgroundColor: '#fff',
+        backgroundColor: AppColors.colorButton,
         padding: 20,
         borderRadius: 12,
         maxHeight: '80%',
@@ -163,12 +172,16 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginBottom: 15,
         textAlign: 'center',
+        color: AppColors.white
     },
     label: {
         fontWeight: '600',
         marginTop: 10,
         marginBottom: 6,
         fontSize: 16,
+        color: AppColors.white,
+        fontFamily: "zen_kaku_light",
+        height: 40,
     },
     optionsContainer: {
         flexDirection: 'row',
@@ -191,5 +204,16 @@ const styles = StyleSheet.create({
     selectedText: {
         color: '#fff',
         fontWeight: '600',
+    },
+    closeButton: {
+        position: 'absolute',
+        top: 10,
+        right: 10,
+        zIndex: 1,
+        padding: 8,
+    },
+    closeButtonText: {
+        fontSize: 22,
+        color: '#ff0000',
     },
 });
