@@ -5,7 +5,7 @@ import {
     Button,
     ActivityIndicator,
     FlatList,
-    TouchableWithoutFeedback, Pressable, SafeAreaView
+    TouchableWithoutFeedback, Pressable, SafeAreaView, TouchableOpacity
 } from "react-native";
 import stylesHome from "./StyleHome";
 import {XButton} from "../../components/XButton";
@@ -21,9 +21,11 @@ import {GenreItem} from "../../components/GenreItem";
 import {Genre, GenreDTO, Platform} from "../../../domain/entities/Game";
 import {UseUserLocalStorage} from "../../hooks/UseUserLocalStorage";
 import {FavGame} from "../../../domain/entities/FavGame";
+import {PropsStackNavigation} from "../../interfaces/StackNav";
+import {useNavigation} from "@react-navigation/native";
 
 
-export function Home() {
+export function Home({navigation = useNavigation()}: PropsStackNavigation) {
 
     const tinderCardsRef = useRef<Array<CardItemHandle | null>>([]);
     let [activeIndex, setActiveIndex] = useState<number>(9);
@@ -121,14 +123,16 @@ export function Home() {
                                         console.log(swipesCounter+" "+ activeIndex +" "+listGames.length);
                                     }}
                                 >
-                                    <Image
-                                        source={{
-                                            uri: item.cover
-                                                ? transformCoverUrl(item.cover.url)
-                                                : "https://lightwidget.com/wp-content/uploads/localhost-file-not-found.jpg"
-                                        }}
-                                        style={styleHome.image}
-                                    />
+                                    <TouchableOpacity onPress={() => navigation.navigate("GameDetails", {game : item})}>
+                                        <Image
+                                            source={{
+                                                uri: item.cover
+                                                    ? transformCoverUrl(item.cover.url)
+                                                    : "https://lightwidget.com/wp-content/uploads/localhost-file-not-found.jpg"
+                                            }}
+                                            style={styleHome.image}
+                                        />
+                                    </TouchableOpacity>
                                     <View style={{marginHorizontal: 20, marginVertical: hp("0%")}}>
                                         <View style={stylesHome.firstRowCardContainer}>
                                             <Text style={stylesHome.gameNameText}> {item.name}</Text>

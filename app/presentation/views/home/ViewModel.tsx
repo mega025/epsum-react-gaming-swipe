@@ -8,7 +8,7 @@ import {refillGamesFromSwiperUseCase} from "../../../domain/usesCases/home/Refil
 import {addGameToFavoriteUseCase} from "../../../domain/usesCases/home/AddGameToFavorite";
 
 
-const homeViewModel = () => {
+export const homeViewModel = () => {
 
     let [listGames, setListGames] = useState<Game[]>([]);
     let [showLoading, setShowLoading] = useState(true);

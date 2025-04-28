@@ -1,5 +1,5 @@
 export interface Game {
-    id: any;
+    id: number;
     name: string;
     rating: number;
     platforms: Platform[];

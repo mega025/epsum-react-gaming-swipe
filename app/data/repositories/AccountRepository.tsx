@@ -3,6 +3,8 @@ import {AccountRepositoryInterface} from "../../domain/repositories/AcountReposi
 import {AxiosError} from "axios";
 import {ApiDelivery} from "../sources/remote/api/ApiDelivery";
 import {ApiDeliveryResponse} from "../sources/remote/models/ApiDeliveryResponse";
+import {PasswordsDTO} from "../../domain/entities/UpdatePasswordDTO";
+import Toast from "react-native-toast-message";
 
 
 export class AccountRepository implements AccountRepositoryInterface {
@@ -32,6 +34,21 @@ export class AccountRepository implements AccountRepositoryInterface {
         } catch (error) {
             let e = (error as AxiosError<{error: string}>);
             console.error(e.response);
+            return Promise.reject(e.response);
+        }
+    }
+
+    async updateUserPassword(slug: string, data: PasswordsDTO): Promise<ApiDeliveryResponse> {
+        try {
+            const response = await ApiDelivery.post(`users/update-password/${slug}`, data)
+            return Promise.resolve(response.data);
+        } catch (error) {
+            let e = (error as AxiosError<{error: string}>);
+            console.error(e.response?.data.error);
+            Toast.show({
+                type: "error",
+                text1: e.response?.data.error,
+            })
             return Promise.reject(e.response);
         }
     }

@@ -46,7 +46,7 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
         setUpdatePasswordDTO,
         errorMessage,
         setErrorMessage,
-        // updateUserPassword
+        updateUserPassword
     } =viewModel.AccountViewModel();
 
     useFocusEffect(
@@ -311,14 +311,14 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                                         <Pressable
                                             style={styleAccount.modalAcceptButton}
                                             onPress={() => {
-                                                // if (user?.userId != undefined) {
-                                                //     const passwordsDTO: PasswordsDTO = {
-                                                //         oldPassword: updatePasswordDTO.oldPassword,
-                                                //         newPassword: updatePasswordDTO.newPassword,
-                                                //     }
-                                                //     updateUserPassword(passwordsDTO, user?.userId)
-                                                //     console.log(updatePasswordDTO)
-                                                // }
+                                                if (user?.slug != undefined) {
+                                                    const passwordsDTO: PasswordsDTO = {
+                                                        oldPassword: updatePasswordDTO.oldPassword,
+                                                        newPassword: updatePasswordDTO.newPassword,
+                                                    }
+                                                    updateUserPassword(user?.slug, passwordsDTO)
+                                                    console.log(updatePasswordDTO)
+                                                }
                                                 setModalVisibleLastPassword(!modalVisiblePassword)
 
                                             }}

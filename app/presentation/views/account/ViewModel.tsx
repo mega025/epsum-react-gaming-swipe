@@ -9,6 +9,7 @@ import {useState} from "react";
 import {PasswordsDTO} from "../../../domain/entities/UpdatePasswordDTO";
 import {getUserDBUseCase} from "../../../domain/usesCases/account/GetUser";
 import {updateUserUseCase} from "../../../domain/usesCases/account/UpdateUser";
+import {updatePasswordUseCase} from "../../../domain/usesCases/account/UpdatePassword";
 
 export const accountViewModel =()=> {
 
@@ -38,24 +39,16 @@ export const accountViewModel =()=> {
             text1: response.message,
         })
     }
-    //
-    // const updateUserPassword = async (passwordDTO: PasswordsDTO, userId: number) => {
-    //     if (validateUpdatePasswordForm()) {
-    //         await ApiDelivery.post(`/users/updatepassword/${userId}`, passwordDTO)
-    //             .then((response) => {
-    //                 Toast.show({
-    //                     type: 'success',
-    //                     text1: response.data.message,
-    //                 })
-    //             })
-    //             .catch(error => {
-    //                 Toast.show({
-    //                     type: 'error',
-    //                     text1: "Incorrect password",
-    //                 })
-    //             })
-    //     }
-    // }
+
+    const updateUserPassword = async (slug: string, passwordDTO: PasswordsDTO) => {
+        if (validateUpdatePasswordForm()) {
+            const response = await updatePasswordUseCase(slug, passwordDTO)
+            Toast.show({
+                type:"success",
+                text1: response.message,
+            })
+        }
+    }
 
 
     const validateUpdatePasswordForm = () => {
@@ -67,7 +60,7 @@ export const accountViewModel =()=> {
             return false
         } if (updatePasswordDTO.confirmPassword !== updatePasswordDTO.newPassword) {
             setErrorMessage("Passwords do not match");
-            return  false
+            return false
         }
         return true;
     }
@@ -82,7 +75,7 @@ export const accountViewModel =()=> {
         setUpdatePasswordDTO,
         errorMessage,
         setErrorMessage,
-        // updateUserPassword
+        updateUserPassword
     };
 }
 
