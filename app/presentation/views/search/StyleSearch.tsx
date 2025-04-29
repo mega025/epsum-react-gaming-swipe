@@ -44,7 +44,7 @@ const styleSearch = StyleSheet.create({
         paddingHorizontal: wp("3%"),
         paddingVertical: hp("1%"),
         alignSelf: "center",
-        marginTop: hp("3%"),
+        marginTop: hp("2%"),
     },
 
     gameCardsContainer: {
@@ -77,22 +77,64 @@ const styleSearch = StyleSheet.create({
     resultText: {
         fontSize: 17,
         color: "#fff",
-        height: 28,
+        height: 25,
         fontFamily: "zen_kaku_regular",
     },
     resultTextFilter: {
         fontSize: 15,
         color: "#fff",
-        height: 28,
+        height: 25,
         fontFamily: "zen_kaku_regular",
     },
 
     emptyFlatListText : {
         fontSize: 20,
         color: "#ad2c2c",
-        height: 28,
+        height: 25,
         fontFamily: "zen_kaku_regular",
     },
+    tabsContainer: {
+        flexDirection: "row",
+        justifyContent: "center",
+        marginTop: 10,
+    },
+    tabButton: {
+        paddingVertical: 8,
+        paddingHorizontal: 20,
+        marginHorizontal: 5,
+        borderBottomWidth: 2,
+        borderBottomColor: "transparent",
+    },
+    tabButtonSelected: {
+        borderBottomColor: "white",
+    },
+    tabText: {
+        color: "gray",
+        fontSize: 16,
+    },
+    tabTextSelected: {
+        color: "white",
+        fontWeight: "bold",
+    },
+    clearFilterText: {
+        fontSize: 18,
+        color: 'white',
+
+    },
+    filterTextContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    clearFilterButton: {
+        marginLeft:15,
+        padding: 5,
+        borderRadius: 15,
+        backgroundColor: AppColors.colorButton,
+        justifyContent: 'center',
+        alignItems: 'center',
+        left:70,
+    },
+
 
 });
 

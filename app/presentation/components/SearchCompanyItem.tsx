@@ -1,6 +1,6 @@
 import React, {useCallback, useState} from "react";
 import {View, Text, Image, StyleSheet, FlatList, TouchableOpacity} from "react-native";
-import { Game } from "../../domain/entities/Game";
+import { Company } from "../../domain/entities/Company";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { RFPercentage } from "react-native-responsive-fontsize";
 import {AppColors} from "../theme/AppTheme";
@@ -11,7 +11,7 @@ import {UseUserLocalStorage} from "../hooks/UseUserLocalStorage";
 import Toast from "react-native-toast-message";
 import {useFocusEffect} from "@react-navigation/native";
 
-const SearchGameItem = ({ item }: { item: Game }) => {
+const SearchCompanyItem = ({ item }: { item: Company }) => {
 
     const {user} = UseUserLocalStorage()
 
@@ -28,7 +28,7 @@ const SearchGameItem = ({ item }: { item: Game }) => {
         favListGames,
     } = viewModelFav.favScreenViewModel()
 
-    const [gameLiked, setGameLiked] = useState(false);
+    const [companyLiked, setCompanyLiked] = useState(false);
 
     useFocusEffect(
         useCallback(() => {
@@ -38,44 +38,33 @@ const SearchGameItem = ({ item }: { item: Game }) => {
         }, [user?.userId])
     );
 
-    const checkIfGameFromApiIsLiked = (item: Game) => {
+    const checkIfGameFromApiIsLiked = (item: Company) => {
         return favListGames.some(game => game.name === item.name);
     }
 
     return (
-        <View style={styles.gameCard}>
+        <View style={styles.companyCard}>
                 <Image
                     source={{
-                        uri: item.cover
-                            ? transformCoverUrl(item.cover.url)
+                        uri: item.logo?.image_id
+                            ? item.logo?.image_id
                             : "https://lightwidget.com/wp-content/uploads/localhost-file-not-found.jpg"
                     }}
-                    style={styles.gameCover}
+                    style={styles.companyCover}
                 />
             <View style={styles.infoContainer}>
-                <View style={styles.name_rating}>
-                    <Text style={styles.gameName}>{item.name}</Text>
+                <View style={styles.name_des}>
+                    <Text style={styles.companyName}>{item.name}</Text>
                 </View>
-                <View style={styles.plaformsFlatlistContainer}>
-                    <FlatList data={item.platforms}
-                              renderItem={PlatformItem}
-                              horizontal={true}
-                              fadingEdgeLength={80}
-                              showsHorizontalScrollIndicator={false}
-                              scrollEnabled={true}
-                              nestedScrollEnabled={true}
-                    />
+                <View style={styles.descriptionContainer}>
+                    <Text>{item.description}</Text>
+
                 </View>
             </View>
             <View style={styles.thirdColumnContainer}>
-                {item.rating ? (
-                    <Text style={styles.rating}>⭐ {item.rating.toFixed(1)}</Text>
-                ) : (
-                    <Text style={styles.rating}>N/A</Text>
-                )}
-                <TouchableOpacity onPress={async () => {
-                    if (!gameLiked && !checkIfGameFromApiIsLiked(item)) {
-                        setGameLiked(true);
+                {/*<TouchableOpacity onPress={async () => {
+                    if (!companyLiked && !checkIfGameFromApiIsLiked(item)) {
+                        setCompanyLiked(true);
                         try {
                             await addGameToFav(transformGameIntoFavGameInterface(item), user?.userId ? user?.userId : 0);
                             await loadFavGames(user?.userId ? user?.userId : 0)
@@ -87,7 +76,7 @@ const SearchGameItem = ({ item }: { item: Game }) => {
                             })
                         }
                     } else {
-                        setGameLiked(false);
+                        setCompanyLiked(false);
                         try {
                             await deleteGameFromFav(
                                 getPositionGameList(item.name),
@@ -104,11 +93,11 @@ const SearchGameItem = ({ item }: { item: Game }) => {
                     }
                 }}>
                     <Image style={styles.fav} source={
-                        gameLiked || checkIfGameFromApiIsLiked(item)
+                        companyLiked || checkIfGameFromApiIsLiked(item)
                         ? require("../../../assets/filled-heart.png")
                         : require("../../../assets/heart.png")}/>
-                </TouchableOpacity>
-                <Text style={styles.gameReleaseYear}>{item.release_dates?.[0]?.y ?? "N/A"}</Text>
+                </TouchableOpacity>]*/}
+                <Text style={styles.companyCountry}>{item.country}</Text>
             </View>
         </View>
     );
@@ -129,16 +118,7 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         padding:hp("1.5%"),
     },
-    rating: {
-        height: 30,
-        fontSize: RFPercentage(1.7),
-        width: 60,
-        textAlign: "center",
-        color: AppColors.white,
-        fontFamily:"zen_kaku_bold",
-
-    },
-    gameReleaseYear: {
+    companyCountry: {
         fontSize: RFPercentage(1.5),
         color: AppColors.white,
         width: 60,
@@ -146,21 +126,21 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
     },
 
-    gameCard: {
+    companyCard: {
         flexDirection: "row",
         padding: 10,
         borderBottomWidth: 1,
         borderBottomColor: "#ddd",
         alignItems: "center",
     },
-    gameCover: {
+    companyCover: {
         padding:10,
         width: wp("25%"),
         height: hp("15%"),
         borderRadius: 5,
         marginRight: 10,
     },
-    name_rating: {
+    name_des: {
         flex: 2,
         flexDirection:"row",
         alignSelf: "center",
@@ -169,7 +149,7 @@ const styles = StyleSheet.create({
         marginBottom: hp("5%"),
     },
 
-    gameName: {
+    companyName: {
         flex:3,
         fontSize: 15,
         height: 50,
@@ -177,7 +157,7 @@ const styles = StyleSheet.create({
         fontFamily: "zen_kaku_regular",
         color:AppColors.white,
     },
-    plaformsFlatlistContainer:{
+    descriptionContainer:{
         flex:2,
         width: wp("53%"),
         flexDirection:"row",
@@ -186,4 +166,4 @@ const styles = StyleSheet.create({
     },
 });
 
-    export default SearchGameItem;
+    export default SearchCompanyItem;

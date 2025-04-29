@@ -3,10 +3,13 @@ import {Game} from "../../../domain/entities/Game";
 import {IgdbApiDelivery} from "../../../data/sources/remote/igdbAPI/IgdbApiDelivery";
 import {searchMostAnticipatedGamesUseCase} from "../../../domain/usesCases/search/SearchMostAnticipatedGames";
 import {searchGamesByUserInputUseCase} from "../../../domain/usesCases/search/SearchGamesByUserInput";
+import {searchCompanyByUserInputUseCase} from "../../../domain/usesCases/search/SearchCompanyByUserInput";
+import {Company} from "../../../domain/entities/Company";
 
 const searchViewModel = () => {
     const [searchText, setSearchText] = useState("");
     const [gamesDisplayed, setGamesDisplayed] = useState<Game[]>([]);
+    const [companyDisplayed, setCompanyDisplayed] = useState<Company[]>([]);
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(1);
     const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -80,6 +83,25 @@ const searchViewModel = () => {
             return [];
         }
     };
+    const searchCompanyByUserInput = async (input: string, page: number = 1) => {
+        setLoading(true);
+        const response = await searchCompanyByUserInputUseCase(input, page);
+        if (page === 1)
+            setCompanyDisplayed(response);
+        else if (page > 1)
+            setCompanyDisplayed((prevCompany) => [...prevCompany, ...response]);
+        setLoading(false)
+    };
+    const onSearchTextChangeCompany = async (text: string) => {
+            setSearchText(text);
+            setPage(1);
+            await searchCompanyByUserInput(text, 1);
+    };
+
+
+
+
+
 
     const searchMostAnticipatedGames = async () => {
         setLoading(true);
@@ -140,7 +162,14 @@ const searchViewModel = () => {
         onApplyFilters,
         setAppliedFilters,
         filtersApplied,
-        appliedFilters
+        appliedFilters,
+        searchCompanyByUserInput,
+        companyDisplayed,
+        setCompanyDisplayed,
+        onSearchTextChangeCompany,
+        setFiltersApplied,
+        setSelectedCategory,
+        setSelectedPlatform
     }
 }
 export default {searchViewModel};
