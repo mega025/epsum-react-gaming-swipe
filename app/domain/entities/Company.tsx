@@ -3,7 +3,11 @@ export interface Company {
     name: string;
     description?: string;
     country?: number;
-    logo?: {
-        image_id: string;
-    };
+    logo: CompanyLogo;
+}
+
+
+export interface CompanyLogo {
+    id?: number;
+    url: string;
 }

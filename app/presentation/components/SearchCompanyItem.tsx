@@ -13,94 +13,32 @@ import {useFocusEffect} from "@react-navigation/native";
 
 const SearchCompanyItem = ({ item }: { item: Company }) => {
 
-    const {user} = UseUserLocalStorage()
-
-    const {
-        addGameToFav,
-        transformGameIntoFavGameInterface,
-        transformCoverUrl
-    } = viewModelHome.homeViewModel()
-
-    const {
-        deleteGameFromFav,
-        getPositionGameList,
-        loadFavGames,
-        favListGames,
-    } = viewModelFav.favScreenViewModel()
-
-    const [companyLiked, setCompanyLiked] = useState(false);
-
-    useFocusEffect(
-        useCallback(() => {
-            if(user?.userId != undefined) {
-                loadFavGames(user?.userId)
-            }
-        }, [user?.userId])
-    );
-
-    const checkIfGameFromApiIsLiked = (item: Company) => {
-        return favListGames.some(game => game.name === item.name);
-    }
-
     return (
         <View style={styles.companyCard}>
-                <Image
-                    source={{
-                        uri: item.logo?.image_id
-                            ? item.logo?.image_id
-                            : "https://lightwidget.com/wp-content/uploads/localhost-file-not-found.jpg"
-                    }}
-                    style={styles.companyCover}
-                />
+            <Image
+                source={{
+                    uri: item.logo?.url
+                        ? item.logo.url
+                        : "https://lightwidget.com/wp-content/uploads/localhost-file-not-found.jpg"
+                }}
+                style={styles.companyCover}
+            />
             <View style={styles.infoContainer}>
                 <View style={styles.name_des}>
                     <Text style={styles.companyName}>{item.name}</Text>
                 </View>
                 <View style={styles.descriptionContainer}>
-                    <Text>{item.description}</Text>
-
+                    <Text>{item.description || "No description available."}</Text>
                 </View>
             </View>
             <View style={styles.thirdColumnContainer}>
-                {/*<TouchableOpacity onPress={async () => {
-                    if (!companyLiked && !checkIfGameFromApiIsLiked(item)) {
-                        setCompanyLiked(true);
-                        try {
-                            await addGameToFav(transformGameIntoFavGameInterface(item), user?.userId ? user?.userId : 0);
-                            await loadFavGames(user?.userId ? user?.userId : 0)
-
-                        } catch (error) {
-                            Toast.show({
-                                "type": "error",
-                                "text1": "Error while trying to save the game",
-                            })
-                        }
-                    } else {
-                        setCompanyLiked(false);
-                        try {
-                            await deleteGameFromFav(
-                                getPositionGameList(item.name),
-                                user?.userId ? user?.userId : 0
-                            );
-                            await loadFavGames(user?.userId ? user?.userId : 0)
-
-                        } catch (error) {
-                            Toast.show({
-                                "type": "error",
-                                "text1": "Error while trying to delete game",
-                            })
-                        }
-                    }
-                }}>
-                    <Image style={styles.fav} source={
-                        companyLiked || checkIfGameFromApiIsLiked(item)
-                        ? require("../../../assets/filled-heart.png")
-                        : require("../../../assets/heart.png")}/>
-                </TouchableOpacity>]*/}
-                <Text style={styles.companyCountry}>{item.country}</Text>
+                <Text style={styles.companyCountry}>
+                    {item.country !== undefined ? `Country code: ${item.country}` : "Country unknown"}
+                </Text>
             </View>
         </View>
     );
+
 };
 
 const styles = StyleSheet.create({

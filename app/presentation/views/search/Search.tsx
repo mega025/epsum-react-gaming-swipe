@@ -49,6 +49,7 @@ export function Search() {
         searchMostAnticipatedGames()
     }, []);
 
+
     return (
         <View style={styleSearch.container}>
             <ImageBackground
