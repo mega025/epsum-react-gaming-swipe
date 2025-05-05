@@ -35,8 +35,10 @@ export const homeViewModel = () => {
             release_year: item.release_dates ? item.release_dates[0].y : 0,
             image_url: item.cover ? transformCoverUrl(item.cover.url) : "",
             platforms: item.platforms,
-            genres: item.genres ? item.genres : []
+            genres: item.genres ? item.genres : [],
+            id_api: item.id
         }
+        console.log(favGameDTO)
         return favGameDTO;
     }
 

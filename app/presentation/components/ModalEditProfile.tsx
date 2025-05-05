@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
         tintColor:"red",
     },
     cont:{
-        backgroundColor:AppColors.colorButton,
+        backgroundColor:AppColors.darkPurple,
         position:"absolute",
         right:35,
         bottom:30,

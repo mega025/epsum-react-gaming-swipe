@@ -120,7 +120,7 @@ const styleAccount = StyleSheet.create({
         backgroundColor: "rgba(0,0,0,0.75)",
     },
     modalView: {
-        backgroundColor: AppColors.colorBottomNavigator,
+        backgroundColor: AppColors.darkPink,
         borderRadius: 10,
         padding: 20,
         gap: 20,

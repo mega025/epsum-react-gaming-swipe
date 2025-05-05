@@ -4,7 +4,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-nat
 
 const stylesHome = StyleSheet.create({
     iconButton: {
-        backgroundColor: AppColors.colorButton,
+        backgroundColor: AppColors.darkPurple,
     },
     logo: {
         width: wp("15%"),

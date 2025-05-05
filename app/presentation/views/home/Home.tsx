@@ -123,7 +123,7 @@ export function Home({navigation = useNavigation()}: PropsStackNavigation) {
                                         console.log(swipesCounter+" "+ activeIndex +" "+listGames.length);
                                     }}
                                 >
-                                    <TouchableOpacity onPress={() => navigation.navigate("GameDetails", {game : item})}>
+                                    <TouchableOpacity onPress={() => navigation.navigate("GameDetails", {gameId : item.id})}>
                                         <Image
                                             source={{
                                                 uri: item.cover

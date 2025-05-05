@@ -60,11 +60,11 @@ const styleSearch = StyleSheet.create({
 
     containerHeader:{
         elevation:2,
-        backgroundColor: AppColors.colorButton,
+        backgroundColor: AppColors.darkPurple,
     },
 
     resultTextContainer: {
-        backgroundColor: AppColors.colorBottomNavigator,
+        backgroundColor: AppColors.darkPink,
         padding: 13,
         borderWidth: 1,
         borderColor: AppColors.white,

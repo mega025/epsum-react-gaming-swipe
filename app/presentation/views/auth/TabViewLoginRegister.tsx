@@ -37,7 +37,7 @@ const renderTabBar = (props: React.JSX.IntrinsicAttributes & SceneRendererProps 
                 </View>
                 <TabBar
                     {...props}
-                    indicatorStyle={{ backgroundColor: AppColors.selectedTab }}
+                    indicatorStyle={{ backgroundColor: AppColors.blue }}
                     style={stylesTabBar.tabLabels}
                 />
             </ImageBackground>

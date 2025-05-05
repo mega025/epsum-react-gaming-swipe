@@ -23,13 +23,13 @@ const styles = StyleSheet.create({
     formButton:{
         elevation: 10,
         borderWidth: 1,
-        borderColor: AppColors.colorButton,
+        borderColor: AppColors.darkPurple,
         borderRadius: 25,
         alignSelf: 'center',
         justifyContent: 'center',
         margin: 10,
         padding: 10,
-        backgroundColor: AppColors.colorButton,
+        backgroundColor: AppColors.darkPurple,
         width: 200,
     },
     formButtonText:{

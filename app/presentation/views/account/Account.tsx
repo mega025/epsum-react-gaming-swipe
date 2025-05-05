@@ -367,7 +367,7 @@ const stylesProfilePicture =StyleSheet.create({
         resizeMode:"center",
     },
     changePhotoButton:{
-        backgroundColor:AppColors.colorBottomNavigator,
+        backgroundColor:AppColors.darkPink,
         width:160,
         height:35,
         alignSelf:"center",

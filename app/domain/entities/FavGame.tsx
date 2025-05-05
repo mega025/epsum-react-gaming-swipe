@@ -8,4 +8,5 @@ export interface FavGame {
     image_url: string;
     platforms: Platform[];
     genres: Genre[];
+    id_api: number;
 }

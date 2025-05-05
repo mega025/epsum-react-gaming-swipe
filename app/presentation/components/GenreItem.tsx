@@ -22,8 +22,9 @@ const styles = StyleSheet.create({
     },
 
     name: {
-        fontSize: 12,
-        height: 17,
+        fontSize: 13,
+        height: 19,
+        verticalAlign: "middle",
         fontFamily: "zen_kaku_regular",
         color: "#fff",
     }
