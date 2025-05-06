@@ -10,7 +10,7 @@ export const gameDetailsViewModel = () => {
     const loadGameDetails = async (gameId: number) => {
         const response = await loadGameDetailsUseCase(gameId);
         setGameDetails(response[0]);
-        console.log(response);
+        console.log(response[0].similar_games);
         setShowLoading(false);
     }
 

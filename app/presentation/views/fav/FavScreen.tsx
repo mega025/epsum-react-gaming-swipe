@@ -17,15 +17,16 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-nat
 import {UseUserLocalStorage} from "../../hooks/UseUserLocalStorage";
 import {FavGame} from "../../../domain/entities/FavGame";
 import {AppColors} from "../../theme/AppTheme";
-import {useFocusEffect} from "@react-navigation/native";
+import {useFocusEffect, useNavigation} from "@react-navigation/native";
 import Toast from "react-native-toast-message";
 import styleAccount from "../account/StyleAccount";
 import {CustomTextInput} from "../../components/CustomTextInput";
 import {UserInterface} from "../../../domain/entities/User";
 import App from "../../../../App";
+import {PropsStackNavigation} from "../../interfaces/StackNav";
 
 
-export function FavScreen(){
+export function FavScreen({navigation = useNavigation()}: PropsStackNavigation) {
     const {favListGames,
         loadFavGames,
         showLoading,
@@ -49,7 +50,9 @@ export function FavScreen(){
     const favGameRenderItem = useCallback(({ item }: { item: FavGame }) => (
         <View style={stylesFavGameItem.card}>
             <View style={stylesFavGameItem.container}>
-                <Image source={{ uri: item.image_url }} style={stylesFavGameItem.image} />
+                <TouchableOpacity onPress={() => navigation.navigate("GameDetails", {gameId : item.id_api})}>
+                    <Image source={{ uri: item.image_url }} style={stylesFavGameItem.image} />
+                </TouchableOpacity>
                 <Text style={{ ...stylesHome.gameNameText, width: wp("53%"), fontSize: wp("3.5%"), color:"white"}}>{item.name}</Text>
                 <TouchableOpacity
                     style={stylesFavGameItem.deleteIcon}
@@ -95,7 +98,7 @@ export function FavScreen(){
                 )}
             </View>
         </View>
-    ), [user?.slug, getPositionGameList, selectedGameId]);
+    ), [user?.slug, getPositionGameList, selectedGameId, navigation]);
 
     return (
         <View style={styleFav.container}>

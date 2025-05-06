@@ -11,19 +11,19 @@ import {
 import {RouteProp, useNavigation, useRoute} from "@react-navigation/native";
 import {RootStackParamsList} from "../../../../App";
 import styleHome from "../home/StyleHome";
-import React, {useEffect} from "react";
+import React, {useCallback, useEffect} from "react";
 import {homeViewModel} from "../home/ViewModel"
-import styleGameDetails from "./StyleGameDetails";
 import gameDetailsViewModel from "./ViewModel";
 import stylesHome from "../home/StyleHome";
 import {styles} from "react-native-toast-message/lib/src/components/BaseToast.styles";
 import {PropsStackNavigation} from "../../interfaces/StackNav";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import {PlatformItem} from "../../components/PlatformItem";
-import {Genre, Platform} from "../../../domain/entities/Game";
+import {Genre, Platform, SimilarGame} from "../../../domain/entities/Game";
 import {GenreItem} from "../../components/GenreItem";
 type GameDetailsRouteProp = RouteProp<RootStackParamsList, "GameDetails">;
 import YoutubePlayer from "react-native-youtube-iframe";
+import {styleGameDetails, styleSimilarGame} from "./StyleGameDetails";
 
 
 export function GameDetails({navigation = useNavigation()}: PropsStackNavigation) {
@@ -41,8 +41,24 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
         loadGameDetails(gameId)
     }, []);
 
-    const nullGenre: Genre = {name : "N/A"}
-    const nullPlatform: Platform = {abbreviation : "N/A"}
+    const nullGenre: Genre = {name : "No genres registered"}
+    const nullPlatform: Platform = {abbreviation : "No platforms registered"}
+
+    const similarGameItem = useCallback(({item} : {item:SimilarGame}) => (
+        <View style={styleSimilarGame.card}>
+            <TouchableOpacity onPress={() => {navigation.replace("GameDetails", {gameId : item.id})}}>
+                <Image
+                    source={{
+                        uri: item.cover
+                            ? transformCoverUrl(item.cover.url)
+                            : "https://lightwidget.com/wp-content/uploads/localhost-file-not-found.jpg"
+                    }}
+                    style={styleSimilarGame.image}
+                />
+            </TouchableOpacity>
+            <Text style={styleSimilarGame.name}>{item.name}</Text>
+        </View>
+        ), [navigation])
 
     return(
         <SafeAreaView>
@@ -70,7 +86,7 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
                                     {gameDetails?.rating ? (
                                         <Text style={styleGameDetails.rating}>⭐ {gameDetails?.rating.toFixed(1)}</Text>
                                     ) : (
-                                        <Text style={styleGameDetails.rating}>N/A</Text>
+                                        <Text style={styleGameDetails.rating}>⭐ N/A</Text>
                                     )}
                                     <Text style={styleGameDetails.rating}>{gameDetails?.release_dates[0] ? gameDetails?.release_dates[0].y : "N/A"}</Text>
                                 </View>
@@ -119,17 +135,26 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
                             )}
 
                             {gameDetails?.videos && (
-                                <View>
-                                    <Text style={styleGameDetails.infoTitles}>Videos</Text>
+                                <View style={{marginTop: hp("4%"), marginBottom: hp("-3%")}}>
                                     <YoutubePlayer
-                                        height={200}
+                                        height={250}
                                         videoId={gameDetails?.videos[0].video_id}
                                     />
                                 </View>
                             )}
 
-                            <Text style={styleGameDetails.infoTitles}>Related games</Text>
-
+                            {gameDetails?.similar_games && (
+                                <View>
+                                    <Text style={styleGameDetails.infoTitles}>Similar games</Text>
+                                    <FlatList
+                                        data={gameDetails?.similar_games}
+                                        renderItem={similarGameItem}
+                                        fadingEdgeLength={50}
+                                        showsHorizontalScrollIndicator={false}
+                                        horizontal={true}
+                                    />
+                                </View>
+                            )}
                         </View>
                     </ScrollView>
                     </>

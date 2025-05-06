@@ -68,4 +68,36 @@ const styleGameDetails = StyleSheet.create({
     }
 })
 
-export default styleGameDetails;
+const styleSimilarGame = StyleSheet.create({
+    card: {
+        width: wp("37%"),
+        height: hp("31%"),
+        marginRight: wp("2.5%"),
+        marginBottom: hp("5%"),
+        marginTop: hp("2%"),
+        borderRadius: 10,
+        backgroundColor: AppColors.darkPurple,
+        elevation: 10,
+    },
+
+    image: {
+        width: wp("37%"),
+        height: hp("20%"),
+        borderTopRightRadius: 10,
+        borderTopLeftRadius: 10,
+    },
+
+    name: {
+        fontSize: wp("3.3%"),
+        padding: wp("2.5%"),
+        textAlign: "center",
+        fontFamily: "zen_kaku_regular",
+        color: AppColors.white,
+        verticalAlign: "middle",
+        lineHeight: 20,
+    }
+})
+
+export { styleGameDetails, styleSimilarGame };
+
+

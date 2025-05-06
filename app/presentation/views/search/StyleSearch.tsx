@@ -48,8 +48,7 @@ const styleSearch = StyleSheet.create({
     },
 
     gameCardsContainer: {
-        paddingBottom:hp("33%"),
-
+        paddingBottom:hp("36.6%"),
     },
 
     gameCover: {
@@ -114,4 +113,77 @@ const styleSearch = StyleSheet.create({
 
 });
 
-export default styleSearch;
+const styleSearchGameItem = StyleSheet.create({
+    infoContainer: {
+        flex: 1,
+        flexDirection: "column",
+    },
+    thirdColumnContainer:{
+        gap: 28
+    },
+    fav:{
+        width:wp("6%"),
+        height:hp("3%"),
+        tintColor:"#4dc51f",
+        alignSelf: "center",
+        padding:hp("1.5%"),
+    },
+    rating: {
+        height: 30,
+        fontSize: wp("3.6%"),
+        width: 60,
+        textAlign: "center",
+        color: AppColors.white,
+        fontFamily:"zen_kaku_bold",
+
+    },
+    gameReleaseYear: {
+        fontSize: RFPercentage(1.5),
+        color: AppColors.white,
+        width: 60,
+        textAlign: "center",
+        fontWeight: "bold",
+    },
+
+    gameCard: {
+        flexDirection: "row",
+        padding: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: "#ddd",
+        alignItems: "center",
+    },
+    gameCover: {
+        padding:10,
+        width: wp("25%"),
+        height: hp("15%"),
+        borderRadius: 5,
+        marginRight: 10,
+    },
+    name_rating: {
+        flex: 2,
+        flexDirection:"row",
+        alignSelf: "center",
+        alignItems: "center",
+        justifyContent:"space-between",
+        marginBottom: hp("5%"),
+    },
+
+    gameName: {
+        flex:3,
+        fontSize: 15,
+        height: 50,
+        paddingEnd: 5,
+        fontFamily: "zen_kaku_regular",
+        color:AppColors.white,
+    },
+    plaformsFlatlistContainer:{
+        flex:2,
+        width: wp("53%"),
+        flexDirection:"row",
+        alignSelf: "center",
+        alignItems: "center",
+    },
+});
+
+
+export {styleSearch, styleSearchGameItem};

@@ -7,6 +7,7 @@ export const AppColors = {
     darkPurple:"#130121",
     transparent:"#00000000",
     red:"#c50a0a",
+    gray: "#cecece",
 }
 export const AppFonts = {
     black: "zen_kaku_gothic_antique_black",

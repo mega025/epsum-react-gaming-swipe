@@ -28,7 +28,7 @@ const stylesHome = StyleSheet.create({
         alignItems: "center",
     },
     card: {
-        backgroundColor: "#cecece",
+        backgroundColor: AppColors.gray,
         borderRadius: 20,
         elevation: 10,
         position: "absolute",

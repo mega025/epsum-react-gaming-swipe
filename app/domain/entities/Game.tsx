@@ -14,16 +14,14 @@ export interface GameDetails extends Game {
     storyline: string
     summary: string
     videos: Video[]
-    similar_games: PreviewGames[]
+    similar_games: SimilarGame[]
     involved_companies: InvolvedCompany []
 }
 
+export type SimilarGame = Pick<Game, "id" | "name" | "cover">
+
 export interface InvolvedCompany {
     company: Company;
-}
-
-export interface PreviewGames {
-    name: string;
 }
 
 export interface Company {
