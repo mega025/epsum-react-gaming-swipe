@@ -14,7 +14,7 @@ import {Game} from "../../../domain/entities/Game";
 import viewModel from "./ViewModel";
 import {AppColors} from "../../theme/AppTheme";
 import styleFav from "../fav/StyleFav";
-import {FavScreen} from "../fav/FavScreen";
+import {FavGamesScreen} from "../fav/FavGamesScreen";
 import FiltroComponent from "../../components/FilterButton";
 import {useFocusEffect, useNavigation} from "@react-navigation/native";
 import {PropsStackNavigation} from "../../interfaces/StackNav";

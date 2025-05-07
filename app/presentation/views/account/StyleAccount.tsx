@@ -161,11 +161,21 @@ const styleAccount = StyleSheet.create({
         height:20,
     },
     textPopUp:{
-        fontSize: 20,
+        fontSize: wp("4.5%"),
         color: AppColors.white,
         textAlign: "center",
-        fontFamily: "zen_kaku_regular",
-        height:60,
+        fontFamily: "zen_kaku_medium",
+        height:hp("3%"),
+        verticalAlign: "middle"
+    },
+
+    gameNamePopUp:{
+        fontSize: wp("5%"),
+        color: AppColors.white,
+        textAlign: "center",
+        fontFamily: "zen_kaku_medium",
+        height: "auto",
+        lineHeight: hp("3%"),
         verticalAlign: "middle"
     }
 });

@@ -26,10 +26,11 @@ import App from "../../../../App";
 import {PropsStackNavigation} from "../../interfaces/StackNav";
 
 
-export function FavScreen({navigation = useNavigation()}: PropsStackNavigation) {
-    const {favListGames,
-        loadFavGames,
+export function PlayedGamesScreen({navigation = useNavigation()}: PropsStackNavigation) {
+    const {playedListGames,
+        loadPlayedGames,
         showLoading,
+        deletePlayedGame,
         getPositionGameList,
         deleteGameFromFav} = viewModel.favScreenViewModel();
     const {user} = UseUserLocalStorage()
@@ -37,13 +38,17 @@ export function FavScreen({navigation = useNavigation()}: PropsStackNavigation) 
 
     useFocusEffect(
         useCallback(() => {
-            console.log('Fav Screen focused');
             if(user?.slug != undefined) {
-                console.log(user?.slug)
-                loadFavGames(user?.slug)
+                loadPlayedGames(user?.slug)
             }
         }, [user?.slug])
     );
+
+    useCallback(() => {
+        if(user?.slug != undefined) {
+            loadPlayedGames(user?.slug)
+        }
+    }, [JSON.stringify(playedListGames)])
 
     const [selectedGameId, setSelectedGameId] = useState<number | null>(null);
 
@@ -73,7 +78,8 @@ export function FavScreen({navigation = useNavigation()}: PropsStackNavigation) 
                     >
                         <View style={styleAccount.centeredView}>
                             <View style={styleAccount.modalView}>
-                                <Text style={styleAccount.textPopUp}>DELETE '{item.name}'?</Text>
+                                <Text style={{...styleAccount.textPopUp, color: AppColors.red}}>Delete this game?</Text>
+                                <Text style={styleAccount.gameNamePopUp}>{item.name}</Text>
                                 <View style={styleAccount.containerButton}>
                                     <Pressable
                                         style={styleAccount.modalCancelButton}
@@ -85,7 +91,7 @@ export function FavScreen({navigation = useNavigation()}: PropsStackNavigation) 
                                         style={styleAccount.modalAcceptButton}
                                         onPress={async () => {
                                             console.log(item.name)
-                                            await deleteGameFromFav(getPositionGameList(item.name), user?.slug || "");
+                                            await deletePlayedGame(getPositionGameList(item.name, playedListGames), user?.slug || "");
                                             setSelectedGameId(null);
                                         }}
                                     >
@@ -104,17 +110,14 @@ export function FavScreen({navigation = useNavigation()}: PropsStackNavigation) 
         <View style={styleFav.container}>
             <ImageBackground source={require("../../../../assets/definitiveBackground.jpeg")}
                              style={{width: '100%', height: '100%'}}>
-                <View style={styleFav.header}>
-                    <Text style={styleFav.title}>Favourite games</Text>
-                </View>
                 <View style={stylesHome.loadingIconContainer}>
                     <ActivityIndicator style={styleHome.loading} size="large" color="#ffffff" animating={showLoading}/>
                 </View>
-                <View style={{ marginBottom: hp("17%"), borderTopColor: "#ffffff", borderTopWidth: 1}}>
-                    <FlatList data={favListGames}
+                <View style={{borderTopColor: "#ffffff", borderTopWidth: 1}}>
+                    <FlatList data={playedListGames}
                               removeClippedSubviews={true}
                               renderItem={favGameRenderItem}
-                              extraData={favListGames}
+                              extraData={playedListGames}
                               fadingEdgeLength={80}
                               ListFooterComponent={<Text style={{...styleFav.footerFavGames, display: showLoading ? "none" : "flex"}}>Add more games!</Text>}
                     />

@@ -32,4 +32,45 @@ export class FavGamesRepository implements FavGamesRepositoryInterface {
             return Promise.reject(JSON.parse(JSON.stringify(e.response?.data)) as ApiDeliveryResponse);
         }
     }
+
+    async addPlayedGame(slug: string, favgame: FavGame): Promise<ApiDeliveryResponse> {
+        try {
+            const response = await ApiDelivery.post(`/favgames-played/add/${slug}`, favgame);
+            Toast.show({
+                type: 'success',
+                text1: response.data.message,
+            });
+            return Promise.resolve(response.data);
+        } catch (error) {
+            let e = (error as AxiosError<{error:string}>);
+            console.log("Error: "+JSON.stringify(e.response?.data));
+            return Promise.reject(e.response?.data);
+        }
+    }
+
+    async deletePlayedGame(slug: string, position: number): Promise<ApiDeliveryResponse> {
+        try {
+            const response = await ApiDelivery.delete(`/favgames-played/delete/${slug}/${position}`);
+            Toast.show({
+                type: 'success',
+                text1: response.data.message,
+            });
+            return Promise.resolve(response.data);
+        } catch (error) {
+            let e = (error as AxiosError<{error:string}>);
+            console.log("Error: "+ JSON.stringify(e.response?.data));
+            return Promise.reject(e.response?.data);
+        }
+    }
+
+    async loadPlayedGames(slug: string): Promise<FavGame[]> {
+        try {
+            const response = await ApiDelivery.get(`/favgames-played/user/${slug}`)
+            return Promise.resolve(response.data);
+        } catch (error) {
+            let e = (error as AxiosError<{error:string}>);
+            console.log("Error: "+ JSON.stringify(e.response?.data));
+            return Promise.reject(e.response?.data);
+        }
+    }
 }

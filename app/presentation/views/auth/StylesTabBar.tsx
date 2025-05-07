@@ -32,6 +32,15 @@ const stylesTabBar = StyleSheet.create({
         marginTop: 4,
         fontFamily: 'zen_kaku_regular',
         elevation: 0,
+    },
+
+    favScreenTabLabels: {
+        backgroundColor: "rgba(215, 20, 20, 0)",
+        width: wp("70%"),
+        alignSelf: "center",
+        marginTop: 4,
+        fontFamily: 'zen_kaku_regular',
+        elevation: 0,
     }
 });
 
