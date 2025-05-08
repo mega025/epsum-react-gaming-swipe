@@ -83,22 +83,19 @@ const searchViewModel = () => {
             return [];
         }
     };
-    const searchCompanyByUserInput = async (input: string, page: number = 1) => {
-        setLoading(true);
-        const response = await searchCompanyByUserInputUseCase(input, page);
-        if (page === 1)
+    const searchCompanyByUserInput = async () => {
+        try {
+            setLoading(true);
+
+            const response = await searchCompanyByUserInputUseCase();
+
             setCompanyDisplayed(response);
-        else if (page > 1)
-            setCompanyDisplayed((prevCompany) => [...prevCompany, ...response]);
-        setLoading(false)
+        } catch (error) {
+            console.error("Error fetching companies:", error);
+        } finally {
+            setLoading(false);
+        }
     };
-    const onSearchTextChangeCompany = async (text: string) => {
-            setSearchText(text);
-            setPage(1);
-            await searchCompanyByUserInput(text, 1);
-    };
-
-
 
 
 
@@ -166,7 +163,6 @@ const searchViewModel = () => {
         searchCompanyByUserInput,
         companyDisplayed,
         setCompanyDisplayed,
-        onSearchTextChangeCompany,
         setFiltersApplied,
         setSelectedCategory,
         setSelectedPlatform

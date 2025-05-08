@@ -134,6 +134,22 @@ const styleSearch = StyleSheet.create({
         alignItems: 'center',
         left:70,
     },
+    title: {
+        fontSize: 20,
+        fontWeight: "bold",
+        color: AppColors.white,
+        marginBottom: 10,
+    },
+    emptyContainer: {
+        alignItems: "center",
+        justifyContent: "center",
+        marginTop: 30,
+    },
+    emptyText: {
+        color: "#888",
+        fontSize: 16,
+        fontStyle: "italic",
+    },
 
 
 });

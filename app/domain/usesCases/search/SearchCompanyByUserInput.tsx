@@ -1,8 +1,8 @@
 import {SearchRepository} from "../../../data/repositories/SearchRepository";
 
 
-const {searchCompanyByUserInput} = new SearchRepository()
+const {getFirst15Companies} = new SearchRepository()
 
-export const searchCompanyByUserInputUseCase = async (input: string, page: number) => {
-    return await searchCompanyByUserInput(input, page);
+export const searchCompanyByUserInputUseCase = async () => {
+    return await getFirst15Companies();
 }

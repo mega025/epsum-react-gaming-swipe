@@ -36,7 +36,6 @@ export function Search() {
         searchCompanyByUserInput,
         companyDisplayed,
         setCompanyDisplayed,
-        onSearchTextChangeCompany,
         setAppliedFilters,
         setFiltersApplied,
         setSelectedCategory,
@@ -47,6 +46,9 @@ export function Search() {
 
     useEffect(() => {
         searchMostAnticipatedGames()
+    }, []);
+    useEffect(() => {
+        searchCompanyByUserInput()
     }, []);
 
 
@@ -155,60 +157,33 @@ export function Search() {
                 )}
 
                 {selectedTab === "company" && (
-                    <>
-                        <View style={styleSearch.containerHeader}>
-                            <View style={styleSearch.containerSearchInput}>
-                                <CustomTextInputSearch
-                                    keyboardType="default"
-                                    secureTextEntry={false}
-                                    value={searchText}
-                                    onPressButtonFromInterface={(text: string) => onSearchTextChangeCompany(text)}
-                                />
-                                <FiltroComponent onApply={onApplyFilters} />
-                            </View>
-                        </View>
-                        {/*<View style={styleSearch.resultTextContainer}>
-                            {searchText !== "" ? (
-                                <Text style={styleSearch.resultText}>Results for "{searchText}"</Text>
-                            ) : filtersApplied ? (
-                                <Text style={styleSearch.resultTextFilter}>
-                                    Filter:{" "}
-                                    {appliedFilters.category ? `${appliedFilters.category}` : ""}
-                                    {appliedFilters.category && appliedFilters.platform ? " and " : ""}
-                                    {appliedFilters.platform ? `${appliedFilters.platform}` : ""}
-                                </Text>
-                            ) : (
-                                <Text style={styleSearch.resultText}>-  TOP 10  -  MOST ANTICIPATED GAMES</Text>
-                            )}
-                        </View>*/}
+                    <View style={styleSearch.container}>
+                        <Text style={styleSearch.title}>Top 15 Game Companies</Text>
 
-                        <View style={styleSearch.gameCardsContainer}>
-                            <FlatList
-                                data={companyDisplayed}
-                                keyExtractor={(item, index) => String(index)}
-                                fadingEdgeLength={80}
-                                renderItem={({ item }) => <SearchCompanyItem item={item} />}
-                                ListFooterComponent={
-                                    loading ? (
-                                        <ActivityIndicator
-                                            size="large"
-                                            color={AppColors.white}
-                                            style={{ paddingTop: 20 }}
-                                        />
-                                    ) : null
-                                }
-                                /*onEndReached={loadMoreGames} */
-                                onEndReachedThreshold={1.5}
-                                ListEmptyComponent={
-                                    <View style={{ alignItems: "center", width: "100%", marginTop: 20 }}>
-                                        <Text style={{ ...styleSearch.emptyFlatListText, display: loading ? "none" : "flex" }}>
-                                            No results
-                                        </Text>
+                        <FlatList
+                            data={companyDisplayed}
+                            keyExtractor={(item, index) => String(index)}
+                            renderItem={({ item }) => <SearchCompanyItem item={item} />}
+                            contentContainerStyle={{ paddingBottom: 20 }}
+                            ListFooterComponent={
+                                loading ? (
+                                    <ActivityIndicator
+                                        size="large"
+                                        color={AppColors.white}
+                                        style={{ marginTop: 20 }}
+                                    />
+                                ) : null
+                            }
+                            ListEmptyComponent={() => {
+                                if (loading) return null;
+                                return (
+                                    <View style={styleSearch.emptyContainer}>
+                                        <Text style={styleSearch.emptyText}>No companies found.</Text>
                                     </View>
-                                }
-                            />
-                        </View>
-                    </>
+                                );
+                            }}
+                        />
+                    </View>
                 )}
             </ImageBackground>
         </View>

@@ -2,7 +2,7 @@ import {SearchRepositoryInterface} from "../../domain/repositories/SearchReposit
 import {Game} from "../../domain/entities/Game";
 import {Company} from "../../domain/entities/Company";
 import {IgdbApiDelivery} from "../sources/remote/igdbAPI/IgdbApiDelivery";
-import {AxiosError} from "axios";
+import axios, {AxiosError} from "axios";
 import {ApiDeliveryResponse} from "../sources/remote/models/ApiDeliveryResponse";
 
 
@@ -39,31 +39,50 @@ export class SearchRepository implements SearchRepositoryInterface {
             return Promise.reject(e.message);
         }
     }
-    async mostPopularCompany(): Promise<Company[]> {
+    async getFirst15Companies(): Promise<Company[]> {
         try {
-            const response = await IgdbApiDelivery.post(
-                "/games",
-                `fields name, rating, platforms.abbreviation, genres.name, cover.url, release_dates.y; limit 10; 
-                sort hypes desc; where total_rating_count = null & release_dates.y >= 2025;`)
-            return Promise.resolve(response.data)
-        } catch (error) {
-            let e = (error as AxiosError);
-            console.error("Error: ", e.message);
-            return Promise.reject(e.message);
-        }
-    }
-    async searchCompanyByUserInput(input: string, page: number): Promise<Company[]> {
-        try {
-            const offset = page > 1 ? `offset ${(page - 1) * 15};` : "";
-            const response = await IgdbApiDelivery.post(
-                "/companies",
-                `fields id, name, description, country, logo.image_id; limit 15; search "${input}"; ${offset}`
+            const gamesResponse = await IgdbApiDelivery.post(
+                '/games',
+                `fields name; limit 15; 
+                sort hypes desc;`
             );
-            return Promise.resolve(response.data);
+
+            const gameIds: number[] = gamesResponse.data.map((game: any) => game.id);
+
+            const involvedCompaniesResponse = await IgdbApiDelivery.post(
+                '/involved_companies',
+                `fields company; where game = (${gameIds.join(',')}) & developer = true; limit 20 ;`
+            );
+
+            const companyIds: number[] = involvedCompaniesResponse.data.map((item: any) => item.company);
+
+            const companiesResponse = await IgdbApiDelivery.post(
+                '/companies',
+                `fields id,name,description,country,logo.image_id; where id = (${companyIds.join(',')}); limit 20;`
+            );
+
+            const companies: Company[] = companiesResponse.data.map((company: any) => ({
+                id: company.id,
+                name: company.name,
+                description: company.description,
+                country: company.country,
+                logo: {
+                    id: company.logo?.id,
+                    url: company.logo?.image_id
+                        ? `https://images.igdb.com/igdb/image/upload/t_logo_med/${company.logo.image_id}.png`
+                        : '',
+                },
+            }));
+
+            const uniqueCompanies: Company[] = Array.from(
+                new Map(companies.map((company) => [company.id, company])).values()
+            ).slice(0, 20);
+
+            return uniqueCompanies;
         } catch (error) {
-            const e = error as AxiosError;
-            console.error("Error: ", e.message);
-            return Promise.reject(e.message);
+            console.error('Error fetching top companies:', error);
+            throw error;
         }
     }
+
 }

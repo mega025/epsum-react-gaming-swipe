@@ -6,5 +6,5 @@ import {Company} from "../entities/Company";
 export interface SearchRepositoryInterface {
     searchMostAnticipatedGames: () => Promise<Game[]>;
     searchGamesByUserInput: (input: string, page: number) => Promise<Game[]>;
-    searchCompanyByUserInput: (input: string, page: number) => Promise<Company[]>;
+    getFirst15Companies: () => Promise<any[]>;
 }
