@@ -5,7 +5,7 @@ import {ApiDeliveryResponse} from "../../data/sources/remote/models/ApiDeliveryR
 export interface FavGamesRepositoryInterface {
     loadFavGames(slug: string): Promise<FavGame[]>;
     loadPlayedGames(slug: string): Promise<FavGame[]>;
-    deleteFavGame(slug: string, position: number): Promise<ApiDeliveryResponse>;
-    deletePlayedGame(slug: string, position: number): Promise<ApiDeliveryResponse>;
+    deleteFavGame(slug: string, id_api: number): Promise<ApiDeliveryResponse>;
+    deletePlayedGame(slug: string, id_api: number): Promise<ApiDeliveryResponse>;
     addPlayedGame(slug: string, favgame: FavGame): Promise<ApiDeliveryResponse>;
 }

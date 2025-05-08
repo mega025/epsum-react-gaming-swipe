@@ -31,31 +31,28 @@ export function PlayedGamesScreen({navigation = useNavigation()}: PropsStackNavi
         loadPlayedGames,
         showLoading,
         deletePlayedGame,
-        getPositionGameList,
         deleteGameFromFav} = viewModel.favScreenViewModel();
     const {user} = UseUserLocalStorage()
     const [modalVisibleDeleteGame, setModalVisibleDeleteGame] = useState(false);
 
     useFocusEffect(
         useCallback(() => {
-            if(user?.slug != undefined) {
+            if(user?.slug != undefined)
                 loadPlayedGames(user?.slug)
-            }
         }, [user?.slug])
     );
 
-    useCallback(() => {
-        if(user?.slug != undefined) {
+    useEffect(() => {
+        if (user?.slug !== undefined)
             loadPlayedGames(user?.slug)
-        }
-    }, [JSON.stringify(playedListGames)])
+    }, [JSON.stringify(playedListGames)]);
 
     const [selectedGameId, setSelectedGameId] = useState<number | null>(null);
 
     const favGameRenderItem = useCallback(({ item }: { item: FavGame }) => (
         <View style={stylesFavGameItem.card}>
             <View style={stylesFavGameItem.container}>
-                <TouchableOpacity onPress={() => navigation.navigate("GameDetails", {gameId : item.id_api})}>
+                <TouchableOpacity onPress={() => navigation.navigate("GameDetails", {gameId : item.id_api, likeButton: false})}>
                     <Image source={{ uri: item.image_url }} style={stylesFavGameItem.image} />
                 </TouchableOpacity>
                 <Text style={{ ...stylesHome.gameNameText, width: wp("53%"), fontSize: wp("3.5%"), color:"white"}}>{item.name}</Text>
@@ -91,7 +88,7 @@ export function PlayedGamesScreen({navigation = useNavigation()}: PropsStackNavi
                                         style={styleAccount.modalAcceptButton}
                                         onPress={async () => {
                                             console.log(item.name)
-                                            await deletePlayedGame(getPositionGameList(item.name, playedListGames), user?.slug || "");
+                                            await deletePlayedGame(item.id_api, user?.slug || "");
                                             setSelectedGameId(null);
                                         }}
                                     >
@@ -104,7 +101,7 @@ export function PlayedGamesScreen({navigation = useNavigation()}: PropsStackNavi
                 )}
             </View>
         </View>
-    ), [user?.slug, getPositionGameList, selectedGameId, navigation]);
+    ), [user?.slug, selectedGameId, navigation]);
 
     return (
         <View style={styleFav.container}>
@@ -119,7 +116,7 @@ export function PlayedGamesScreen({navigation = useNavigation()}: PropsStackNavi
                               renderItem={favGameRenderItem}
                               extraData={playedListGames}
                               fadingEdgeLength={80}
-                              ListFooterComponent={<Text style={{...styleFav.footerFavGames, display: showLoading ? "none" : "flex"}}>Add more games!</Text>}
+                              ListFooterComponent={<Text style={{...styleFav.footerFavGames, display: showLoading ? "none" : "flex"}}>Play more games!</Text>}
                     />
                 </View>
                 <Toast/>

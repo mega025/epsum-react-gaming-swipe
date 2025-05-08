@@ -78,9 +78,10 @@ const styleAccount = StyleSheet.create({
         fontFamily: "zen_kaku_light",
     },
     editButton: {
-        width: wp("10%"),
-        height: wp("10%"),
+        width: wp("8%"),
+        height: wp("8%"),
         alignSelf: "flex-end",
+        marginTop: wp("1%"),
         tintColor: AppColors.white,
     },
     containerLastName: {

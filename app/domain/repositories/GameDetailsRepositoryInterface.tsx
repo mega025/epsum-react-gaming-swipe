@@ -1,6 +1,6 @@
-import {GameDetails} from "../entities/Game";
+import {GameDetailsInterface} from "../entities/Game";
 
 
 export interface GameDetailsRepositoryInterface {
-    loadGameDetails: (gameId: number) => Promise<GameDetails[]>
+    loadGameDetails: (gameId: number) => Promise<GameDetailsInterface[]>
 }

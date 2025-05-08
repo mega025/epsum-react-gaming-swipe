@@ -31,7 +31,6 @@ export function FavGamesScreen({navigation = useNavigation()}: PropsStackNavigat
     const {favListGames,
         loadFavGames,
         showLoading,
-        getPositionGameList,
         addPlayedGame,
         deleteGameFromFav} = viewModel.favScreenViewModel();
     const {user} = UseUserLocalStorage()
@@ -51,7 +50,7 @@ export function FavGamesScreen({navigation = useNavigation()}: PropsStackNavigat
     const favGameRenderItem = useCallback(({ item }: { item: FavGame }) => (
         <View style={stylesFavGameItem.card}>
             <View style={stylesFavGameItem.container}>
-                <TouchableOpacity onPress={() => navigation.navigate("GameDetails", {gameId : item.id_api})}>
+                <TouchableOpacity onPress={() => navigation.navigate("GameDetails", {gameId : item.id_api, likeButton: true})}>
                     <Image source={{ uri: item.image_url }} style={stylesFavGameItem.image} />
                 </TouchableOpacity>
                 <Text style={{ ...stylesHome.gameNameText, width: wp("46%"), fontSize: wp("3.5%"), color:"white"}}>{item.name}</Text>
@@ -96,7 +95,7 @@ export function FavGamesScreen({navigation = useNavigation()}: PropsStackNavigat
                                         style={styleAccount.modalAcceptButton}
                                         onPress={async () => {
                                             console.log(item.name)
-                                            await deleteGameFromFav(getPositionGameList(item.name, favListGames), user?.slug || "");
+                                            await deleteGameFromFav(item.id_api, user?.slug || "");
                                             setSelectedDeleteGameId(null);
                                         }}
                                     >
@@ -142,7 +141,7 @@ export function FavGamesScreen({navigation = useNavigation()}: PropsStackNavigat
                 )}
             </View>
         </View>
-    ), [user?.slug, getPositionGameList, selectedDeleteGameId, selectedPlayedGameId, navigation]);
+    ), [user?.slug, selectedDeleteGameId, selectedPlayedGameId, navigation]);
 
     return (
         <View style={styleFav.container}>

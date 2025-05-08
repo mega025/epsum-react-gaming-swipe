@@ -18,13 +18,9 @@ export class FavGamesRepository implements FavGamesRepositoryInterface {
         }
     }
 
-    async deleteFavGame(slug: string, position: number): Promise<ApiDeliveryResponse> {
+    async deleteFavGame(slug: string, id_api: number): Promise<ApiDeliveryResponse> {
         try {
-            const response = await ApiDelivery.delete(`/favgames/delete/${slug}/${position}`);
-            Toast.show({
-                type: 'success',
-                text1: response.data.message,
-            });
+            const response = await ApiDelivery.delete(`/favgames/delete/${slug}/${id_api}`);
             return Promise.resolve(response.data);
         } catch (error) {
             let e = (error as AxiosError);
@@ -36,10 +32,6 @@ export class FavGamesRepository implements FavGamesRepositoryInterface {
     async addPlayedGame(slug: string, favgame: FavGame): Promise<ApiDeliveryResponse> {
         try {
             const response = await ApiDelivery.post(`/favgames-played/add/${slug}`, favgame);
-            Toast.show({
-                type: 'success',
-                text1: response.data.message,
-            });
             return Promise.resolve(response.data);
         } catch (error) {
             let e = (error as AxiosError<{error:string}>);
@@ -48,13 +40,9 @@ export class FavGamesRepository implements FavGamesRepositoryInterface {
         }
     }
 
-    async deletePlayedGame(slug: string, position: number): Promise<ApiDeliveryResponse> {
+    async deletePlayedGame(slug: string, id_api: number): Promise<ApiDeliveryResponse> {
         try {
-            const response = await ApiDelivery.delete(`/favgames-played/delete/${slug}/${position}`);
-            Toast.show({
-                type: 'success',
-                text1: response.data.message,
-            });
+            const response = await ApiDelivery.delete(`/favgames-played/delete/${slug}/${id_api}`);
             return Promise.resolve(response.data);
         } catch (error) {
             let e = (error as AxiosError<{error:string}>);

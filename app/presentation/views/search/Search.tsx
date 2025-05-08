@@ -57,7 +57,6 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
 
     const {
         deleteGameFromFav,
-        getPositionGameList,
         loadFavGames,
         favListGames,
     } = viewModelFav.favScreenViewModel()
@@ -72,13 +71,13 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
         }, [user?.slug])
     );
 
-    const checkIfGameFromApiIsLiked = (item: Game) => {
-        return favListGames.some(game => game.name === item.name);
+    const checkIfGameFromApiIsLiked = (gameName: string) => {
+        return favListGames.some(game => game.name === gameName);
     }
 
     const searchGameItem = useCallback(({item} : {item:Game}) => (
         <View style={styleSearchGameItem.gameCard}>
-            <TouchableOpacity onPress={() => navigation.navigate("GameDetails", {gameId : item.id})}>
+            <TouchableOpacity onPress={() => navigation.navigate("GameDetails", {gameId : item.id, likeButton: true})}>
                 <Image
                     source={{
                         uri: item.cover
@@ -110,7 +109,7 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
                     <Text style={styleSearchGameItem.rating}>⭐ N/A</Text>
                 )}
                 <TouchableOpacity onPress={async () => {
-                    if (!checkIfGameFromApiIsLiked(item)) {
+                    if (!checkIfGameFromApiIsLiked(item.name)) {
                         try {
                             await addGameToFav(transformGameIntoFavGameInterface(item), user?.slug ? user?.slug : "");
                             await loadFavGames(user?.slug ? user?.slug : "")
@@ -124,7 +123,7 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
                     } else {
                         try {
                             await deleteGameFromFav(
-                                getPositionGameList(item.name),
+                                item.id,
                                 user?.slug ? user?.slug : ""
                             );
                             await loadFavGames(user?.slug ? user?.slug : "")
@@ -138,14 +137,14 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
                     }
                 }}>
                     <Image style={styleSearchGameItem.fav} source={
-                        checkIfGameFromApiIsLiked(item)
+                        checkIfGameFromApiIsLiked(item.name)
                             ? require("../../../../assets/filled-heart.png")
                             : require("../../../../assets/heart.png")}/>
                 </TouchableOpacity>
                 <Text style={styleSearchGameItem.gameReleaseYear}>{item.release_dates?.[0]?.y ?? "N/A"}</Text>
             </View>
         </View>
-    ), [addGameToFav, checkIfGameFromApiIsLiked, getPositionGameList, loadFavGames, deleteGameFromFav, transformCoverUrl, navigation])
+    ), [addGameToFav, checkIfGameFromApiIsLiked, loadFavGames, deleteGameFromFav, transformCoverUrl, navigation])
 
     return (
         <View style={styleSearch.container}>

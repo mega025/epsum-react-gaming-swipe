@@ -11,7 +11,7 @@ import {Game} from "./app/domain/entities/Game";
 export type RootStackParamsList = {
     UserNavigation: undefined;
     TabViewLoginRegister: undefined;
-    GameDetails: {gameId: number};
+    GameDetails: {gameId: number, likeButton: boolean};
 }
 
 const Stack = createStackNavigator<RootStackParamsList>();

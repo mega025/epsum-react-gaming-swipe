@@ -1,10 +1,10 @@
 import {loadFavGamesUseCase} from "../../../domain/usesCases/favGames/LoadFavGames";
 import {useState} from "react";
-import {GameDetails} from "../../../domain/entities/Game";
+import {GameDetailsInterface} from "../../../domain/entities/Game";
 import {loadGameDetailsUseCase} from "../../../domain/usesCases/gameDetails/LoadGameDetails";
 
 export const gameDetailsViewModel = () => {
-    const [gameDetails, setGameDetails] = useState<GameDetails>();
+    const [gameDetails, setGameDetails] = useState<GameDetailsInterface>();
     const [showLoading, setShowLoading] = useState(true);
 
     const loadGameDetails = async (gameId: number) => {

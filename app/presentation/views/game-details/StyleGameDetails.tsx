@@ -65,7 +65,15 @@ const styleGameDetails = StyleSheet.create({
         color: AppColors.white,
         lineHeight: 30,
         fontSize: wp("4%"),
-    }
+    },
+
+    fav:{
+        width:wp("6.4%"),
+        height:hp("3.3%"),
+        tintColor:"#4dc51f",
+        marginTop: hp("2.9%"),
+        paddingHorizontal: hp("1.8%"),
+    },
 })
 
 const styleSimilarGame = StyleSheet.create({
@@ -95,7 +103,7 @@ const styleSimilarGame = StyleSheet.create({
         color: AppColors.white,
         verticalAlign: "middle",
         lineHeight: 20,
-    }
+    },
 })
 
 export { styleGameDetails, styleSimilarGame };

@@ -11,7 +11,7 @@ import {addPlayedGameUseCase} from "../../../domain/usesCases/favGames/AddPlayed
 import {deletePlayedGameUseCase} from "../../../domain/usesCases/favGames/DeletePlayedGame";
 
 
-const favScreenViewModel = () => {
+export const favScreenViewModel = () => {
     let [favListGames, setFavListGames] = useState<FavGame[]>([]);
     let [playedListGames, setPlayedListGames] = useState<FavGame[]>([]);
     let [showLoading, setShowLoading] = useState(true);
@@ -30,25 +30,19 @@ const favScreenViewModel = () => {
 
     const addPlayedGame = async (slug: string, favgame: FavGame) => {
         const response = await addPlayedGameUseCase(slug, favgame);
-        favListGames.splice(getPositionGameList(favgame.name, favListGames), 1)
-        playedListGames.push(favgame);
+        await loadFavGames(slug);
+        await loadPlayedGames(slug);
     }
 
-    const deleteGameFromFav = async (position: number, slug: string) => {
-        await deleteFavGameUseCase(slug, position)
-        favListGames.splice(position, 1);
+    const deleteGameFromFav = async (id_api: number, slug: string) => {
+        await deleteFavGameUseCase(slug, id_api)
+        await loadFavGames(slug)
     }
 
-    const deletePlayedGame = async (position: number, slug: string) => {
-        await deletePlayedGameUseCase(slug, position)
-        playedListGames.splice(position, 1);
+    const deletePlayedGame = async (id_api: number, slug: string) => {
+        await deletePlayedGameUseCase(slug, id_api)
+        await loadPlayedGames(slug)
     }
-
-    const getPositionGameList = (gameName: string, gameList: FavGame[]) => {
-        return gameList.findIndex(gameOnList =>
-            gameOnList.name.trim().toLowerCase() === gameName.trim().toLowerCase()
-        );
-    };
 
     return{
         favListGames,
@@ -60,7 +54,6 @@ const favScreenViewModel = () => {
         showLoading,
         deleteGameFromFav,
         deletePlayedGame,
-        getPositionGameList,
     }
 }
 

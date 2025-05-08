@@ -10,7 +10,7 @@ export interface Game {
     cover: Cover;
 }
 
-export interface GameDetails extends Game {
+export interface GameDetailsInterface extends Game {
     storyline: string
     summary: string
     videos: Video[]

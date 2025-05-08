@@ -1,11 +1,11 @@
 import {GameDetailsRepositoryInterface} from "../../domain/repositories/GameDetailsRepositoryInterface";
-import {GameDetails} from "../../domain/entities/Game";
+import {GameDetailsInterface} from "../../domain/entities/Game";
 import {AxiosError} from "axios";
 import {IgdbApiDelivery} from "../sources/remote/igdbAPI/IgdbApiDelivery";
 
 
 export class GameDetailsRepository implements GameDetailsRepositoryInterface {
-    async loadGameDetails(gameId: number): Promise<GameDetails[]> {
+    async loadGameDetails(gameId: number): Promise<GameDetailsInterface[]> {
         try {
             const response = await IgdbApiDelivery.post(
                 "/games",

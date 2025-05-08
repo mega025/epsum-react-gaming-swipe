@@ -8,34 +8,64 @@ import {
     TouchableOpacity,
     View
 } from "react-native";
-import {RouteProp, useNavigation, useRoute} from "@react-navigation/native";
+import {RouteProp, useFocusEffect, useNavigation, useRoute} from "@react-navigation/native";
 import {RootStackParamsList} from "../../../../App";
 import styleHome from "../home/StyleHome";
 import React, {useCallback, useEffect} from "react";
-import {homeViewModel} from "../home/ViewModel"
+import viewModelHome, {homeViewModel} from "../home/ViewModel"
 import gameDetailsViewModel from "./ViewModel";
 import stylesHome from "../home/StyleHome";
 import {styles} from "react-native-toast-message/lib/src/components/BaseToast.styles";
 import {PropsStackNavigation} from "../../interfaces/StackNav";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import {PlatformItem} from "../../components/PlatformItem";
-import {Genre, Platform, SimilarGame} from "../../../domain/entities/Game";
+import {Game, GameDetailsInterface, Genre, Platform, SimilarGame} from "../../../domain/entities/Game";
 import {GenreItem} from "../../components/GenreItem";
 type GameDetailsRouteProp = RouteProp<RootStackParamsList, "GameDetails">;
 import YoutubePlayer from "react-native-youtube-iframe";
 import {styleGameDetails, styleSimilarGame} from "./StyleGameDetails";
+import Toast from "react-native-toast-message";
+import viewModelFav from "../fav/ViewModel";
+import {styleSearchGameItem} from "../search/StyleSearch";
+import {UseUserLocalStorage} from "../../hooks/UseUserLocalStorage";
 
 
 export function GameDetails({navigation = useNavigation()}: PropsStackNavigation) {
-    const {transformCoverUrl} = homeViewModel()
+    const {user} = UseUserLocalStorage()
+
     const {
         gameDetails,
         loadGameDetails,
         showLoading
     } = gameDetailsViewModel()
 
+    const {
+        addGameToFav,
+        transformGameIntoFavGameInterface,
+        transformCoverUrl
+    } = viewModelHome.homeViewModel()
+
+    const {
+        deleteGameFromFav,
+        loadFavGames,
+        favListGames,
+    } = viewModelFav.favScreenViewModel()
+
+    useFocusEffect(
+        useCallback(() => {
+            if(user?.slug != undefined) {
+                loadFavGames(user?.slug)
+            }
+        }, [user?.slug])
+    );
+
+    const checkIfGameFromApiIsLiked = (gameName: string) => {
+        return favListGames.some(game => game.name === gameName);
+    }
+
     const route = useRoute<GameDetailsRouteProp>()
     const {gameId} = route.params
+    const {likeButton} = route.params
 
     useEffect(() => {
         loadGameDetails(gameId)
@@ -46,7 +76,7 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
 
     const similarGameItem = useCallback(({item} : {item:SimilarGame}) => (
         <View style={styleSimilarGame.card}>
-            <TouchableOpacity onPress={() => {navigation.replace("GameDetails", {gameId : item.id})}}>
+            <TouchableOpacity onPress={() => {navigation.push("GameDetails", {gameId : item.id, likeButton: true})}}>
                 <Image
                     source={{
                         uri: item.cover
@@ -93,7 +123,44 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
                             </View>
                         </View>
                         <View style={{paddingHorizontal: wp("4%")}}>
-                            <Text style={styleGameDetails.infoTitles}>Involved companies</Text>
+                            <View style={{flexDirection: "row", gap:wp("36%")}}>
+                                <Text style={styleGameDetails.infoTitles}>Involved companies</Text>
+                                {likeButton && (
+                                <TouchableOpacity onPress={async () => {
+                                    if (!checkIfGameFromApiIsLiked(gameDetails ? gameDetails.name : "")) {
+                                        try {
+                                            await addGameToFav(transformGameIntoFavGameInterface(gameDetails), user?.slug ? user?.slug : "");
+                                            await loadFavGames(user?.slug ? user?.slug : "")
+
+                                        } catch (error) {
+                                            Toast.show({
+                                                "type": "error",
+                                                "text1": "Error while trying to save the game",
+                                            })
+                                        }
+                                    } else {
+                                        try {
+                                            await deleteGameFromFav(
+                                                gameDetails ? gameDetails?.id : 0,
+                                                user?.slug ? user?.slug : ""
+                                            );
+                                            await loadFavGames(user?.slug ? user?.slug : "")
+
+                                        } catch (error) {
+                                            Toast.show({
+                                                "type": "error",
+                                                "text1": "Error while trying to delete game",
+                                            })
+                                        }
+                                    }
+                                }}>
+                                    <Image style={styleGameDetails.fav} source={
+                                        checkIfGameFromApiIsLiked(gameDetails ? gameDetails.name : "")
+                                            ? require("../../../../assets/filled-heart.png")
+                                            : require("../../../../assets/heart.png")}/>
+                                </TouchableOpacity>
+                            )}
+                            </View>
                             <FlatList
                                 data={gameDetails?.involved_companies}
                                 scrollEnabled={false}
