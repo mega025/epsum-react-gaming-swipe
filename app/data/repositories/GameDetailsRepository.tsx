@@ -33,7 +33,7 @@ export class GameDetailsRepository implements GameDetailsRepositoryInterface {
                 "fields name, " +
                 "logo.url, " +
                 "description, " +
-                "start_date, " +
+                "start_date, published.name, published.cover.url, " +
                 "country, developed.name, developed.cover.url; " +
                 `where id = ${companyId};`)
             return Promise.resolve(response.data);

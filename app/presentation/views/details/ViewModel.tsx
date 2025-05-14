@@ -1,9 +1,11 @@
 import {loadFavGamesUseCase} from "../../../domain/usesCases/favGames/LoadFavGames";
 import {useState} from "react";
-import {GameDetailsInterface} from "../../../domain/entities/Game";
+import {GameDetailsInterface, SimilarGame} from "../../../domain/entities/Game";
 import {loadGameDetailsUseCase} from "../../../domain/usesCases/gameDetails/LoadGameDetails";
 import {loadCompanyDetailsUseCase} from "../../../domain/usesCases/gameDetails/loadCompanyDetails";
 import {CompanyDetailsInterface} from "../../../domain/entities/Company";
+import countries from "i18n-iso-countries";
+import enLocale from "i18n-iso-countries/langs/en.json";
 
 export const gameDetailsViewModel = () => {
     const [gameDetails, setGameDetails] = useState<GameDetailsInterface>();
@@ -26,6 +28,8 @@ export const companyDetailsViewModel = () => {
     const [showLoading, setShowLoading] = useState(true);
     const [companyDetails, setCompanyDetails] = useState<CompanyDetailsInterface>();
 
+
+
     const loadCompanyDetails = async (companyId: number) => {
         const response = await loadCompanyDetailsUseCase(companyId);
         setCompanyDetails(response[0]);
@@ -38,16 +42,51 @@ export const companyDetailsViewModel = () => {
         const match = url.match(/\/([^\/]+)\.\w+$/);
         if (match) {
             const code = match[1];
-            console.log(code)
             return "https:"+cutUrlFirstPart+"logo_med/"+code+".png";
         }
+        return
+    }
+
+    const formatUnixDate = (unixTimestamp: number) => {
+        if (unixTimestamp < 10000000000) {
+            unixTimestamp *= 1000;
+        }
+
+        const date = new Date(unixTimestamp);
+        const options: Intl.DateTimeFormatOptions = {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+        };
+
+        return date.toLocaleDateString('en-US', options);
+    }
+
+    countries.registerLocale(enLocale);
+
+    const getCountryNameFromNumericCode = (numericCode: string | number, locale: string = 'en') => {
+        const code = String(numericCode).padStart(3, '0');
+
+        const entry = Object.entries(countries.getAlpha2Codes()).find(([alpha2]) => {
+            const num = countries.alpha2ToNumeric(alpha2);
+            return num === code;
+        });
+
+        if (entry) {
+            const [alpha2] = entry;
+            return countries.getName(alpha2, locale) || `Unknown (${numericCode})`;
+        }
+
+        return `Unknown code: ${numericCode}`;
     }
 
     return {
         showLoading,
         loadCompanyDetails,
         companyDetails,
-        transformLogoUrlCompany
+        transformLogoUrlCompany,
+        formatUnixDate,
+        getCountryNameFromNumericCode,
     }
 }
 

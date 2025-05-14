@@ -4,7 +4,8 @@ export interface CompanyDetailsInterface {
     name: string
     description: string
     logo: Logo
-    developed: SimilarGame
+    developed: SimilarGame[]
+    published: SimilarGame[]
     country: number
     start_date: number
 }

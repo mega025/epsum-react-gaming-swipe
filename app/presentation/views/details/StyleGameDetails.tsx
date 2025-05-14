@@ -49,7 +49,7 @@ const styleGameDetails = StyleSheet.create({
         fontFamily: "zen_kaku_medium",
         height: 40,
         color: AppColors.white,
-        fontSize: wp("5%"),
+        fontSize: wp("4.7%"),
         marginTop: hp("2.5%"),
     },
 
@@ -57,14 +57,17 @@ const styleGameDetails = StyleSheet.create({
         fontFamily: "zen_kaku_regular",
         color: AppColors.white,
         fontSize: wp("4%"),
+        lineHeight: 27,
         textAlign: "justify",
     },
 
     involvedCompany: {
         fontFamily: "zen_kaku_regular",
         color: AppColors.white,
-        lineHeight: 30,
-        fontSize: wp("4%"),
+        lineHeight: 50,
+        borderBottomWidth: 2,
+        borderBottomColor: AppColors.orangeColor,
+        fontSize: wp("4.4%"),
     },
 
     fav:{
