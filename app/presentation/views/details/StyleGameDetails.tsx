@@ -31,7 +31,7 @@ const styleGameDetails = StyleSheet.create({
     },
 
     name: {
-        fontSize: wp("6%"),
+        fontSize: wp("5.7%"),
         color: AppColors.white,
         height: hp("22%"),
         width: "85%",

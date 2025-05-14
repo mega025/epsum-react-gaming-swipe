@@ -128,7 +128,7 @@ export function Home({navigation = useNavigation()}: PropsStackNavigation) {
                                             source={{
                                                 uri: item.cover
                                                     ? transformCoverUrl(item.cover.url)
-                                                    : "https://lightwidget.com/wp-content/uploads/localhost-file-not-found.jpg"
+                                                    : "https://www.igdb.com/assets/no_cover_show-ef1e36c00e101c2fb23d15bb80edd9667bbf604a12fc0267a66033afea320c65.png"
                                             }}
                                             style={styleHome.image}
                                         />

@@ -13,7 +13,7 @@ import {RootStackParamsList} from "../../../../App";
 import styleHome from "../home/StyleHome";
 import React, {useCallback, useEffect} from "react";
 import viewModelHome, {homeViewModel} from "../home/ViewModel"
-import gameDetailsViewModel from "./ViewModel";
+import {gameDetailsViewModel} from "./ViewModel";
 import stylesHome from "../home/StyleHome";
 import {styles} from "react-native-toast-message/lib/src/components/BaseToast.styles";
 import {PropsStackNavigation} from "../../interfaces/StackNav";
@@ -21,7 +21,6 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-nat
 import {PlatformItem} from "../../components/PlatformItem";
 import {Game, GameDetailsInterface, Genre, Platform, SimilarGame} from "../../../domain/entities/Game";
 import {GenreItem} from "../../components/GenreItem";
-type GameDetailsRouteProp = RouteProp<RootStackParamsList, "GameDetails">;
 import YoutubePlayer from "react-native-youtube-iframe";
 import {styleGameDetails, styleSimilarGame} from "./StyleGameDetails";
 import Toast from "react-native-toast-message";
@@ -29,6 +28,8 @@ import viewModelFav from "../fav/ViewModel";
 import {styleSearchGameItem} from "../search/StyleSearch";
 import {UseUserLocalStorage} from "../../hooks/UseUserLocalStorage";
 
+
+type GameDetailsRouteProp = RouteProp<RootStackParamsList, "GameDetails">;
 
 export function GameDetails({navigation = useNavigation()}: PropsStackNavigation) {
     const {user} = UseUserLocalStorage()
@@ -81,7 +82,7 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
                     source={{
                         uri: item.cover
                             ? transformCoverUrl(item.cover.url)
-                            : "https://lightwidget.com/wp-content/uploads/localhost-file-not-found.jpg"
+                            : "https://www.igdb.com/assets/no_cover_show-ef1e36c00e101c2fb23d15bb80edd9667bbf604a12fc0267a66033afea320c65.png"
                     }}
                     style={styleSimilarGame.image}
                 />
@@ -164,7 +165,11 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
                             <FlatList
                                 data={gameDetails?.involved_companies}
                                 scrollEnabled={false}
-                                renderItem={({ item }) => (<Text style={styleGameDetails.involvedCompany}>{item.company.name}</Text>)}/>
+                                renderItem={({ item }) => (
+                                    <TouchableOpacity onPress={() => navigation.push("CompanyDetails", {companyId: item.company.id})}>
+                                        <Text style={styleGameDetails.involvedCompany}>{item.company.name}</Text>
+                                    </TouchableOpacity>
+                                )}/>
 
                             <Text style={styleGameDetails.infoTitles}>Platforms</Text>
                             <FlatList style={{...styleHome.platformsContainer, width: wp("90%")}}

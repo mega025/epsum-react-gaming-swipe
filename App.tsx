@@ -4,14 +4,16 @@ import {useFonts} from "expo-font";
 import TabViewLoginRegister from "./app/presentation/views/auth/TabViewLoginRegister";
 import {UserNavigation} from "./app/presentation/navigation/UserNavigation";
 import {Account} from "./app/presentation/views/account/Account";
-import {GameDetails} from "./app/presentation/views/game-details/GameDetails";
+import {GameDetails} from "./app/presentation/views/details/GameDetails";
 import {Game} from "./app/domain/entities/Game";
+import {CompanyDetails} from "./app/presentation/views/details/CompanyDetails";
 
 
 export type RootStackParamsList = {
     UserNavigation: undefined;
     TabViewLoginRegister: undefined;
     GameDetails: {gameId: number, likeButton: boolean};
+    CompanyDetails: {companyId: number}
 }
 
 const Stack = createStackNavigator<RootStackParamsList>();
@@ -33,6 +35,7 @@ export default function App() {
               <Stack.Screen name="TabViewLoginRegister" component={TabViewLoginRegister}/>
               <Stack.Screen name="UserNavigation" component={UserNavigation} ></Stack.Screen>
               <Stack.Screen name="GameDetails" component={GameDetails} ></Stack.Screen>
+              <Stack.Screen name="CompanyDetails" component={CompanyDetails} ></Stack.Screen>
           </Stack.Navigator>
       </NavigationContainer>
   );
