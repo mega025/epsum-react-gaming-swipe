@@ -4,7 +4,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-nat
 
 const stylesHome = StyleSheet.create({
     iconButton: {
-        backgroundColor: AppColors.colorButton,
+        backgroundColor: AppColors.darkPurple,
     },
     logo: {
         width: wp("15%"),
@@ -28,7 +28,7 @@ const stylesHome = StyleSheet.create({
         alignItems: "center",
     },
     card: {
-        backgroundColor: "#cecece",
+        backgroundColor: AppColors.gray,
         borderRadius: 20,
         elevation: 10,
         position: "absolute",

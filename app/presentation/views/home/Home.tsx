@@ -5,7 +5,7 @@ import {
     Button,
     ActivityIndicator,
     FlatList,
-    TouchableWithoutFeedback, Pressable
+    TouchableWithoutFeedback, Pressable, SafeAreaView, TouchableOpacity
 } from "react-native";
 import stylesHome from "./StyleHome";
 import {XButton} from "../../components/XButton";
@@ -21,9 +21,11 @@ import {GenreItem} from "../../components/GenreItem";
 import {Genre, GenreDTO, Platform} from "../../../domain/entities/Game";
 import {UseUserLocalStorage} from "../../hooks/UseUserLocalStorage";
 import {FavGame} from "../../../domain/entities/FavGame";
+import {PropsStackNavigation} from "../../interfaces/StackNav";
+import {useNavigation} from "@react-navigation/native";
 
 
-export function Home() {
+export function Home({navigation = useNavigation()}: PropsStackNavigation) {
 
     const tinderCardsRef = useRef<Array<CardItemHandle | null>>([]);
     let [activeIndex, setActiveIndex] = useState<number>(9);
@@ -87,7 +89,7 @@ export function Home() {
         );
     };
     return (
-        <View>
+        <SafeAreaView>
             <ImageBackground source={require("../../../../assets/definitiveBackground.jpeg")}
                              style={{width: '100%', height: '100%'}}>
                 <View style={styleHome.wrapper}>
@@ -110,9 +112,9 @@ export function Home() {
                                     onSwipedRight={async () => {
                                         setSwipesCounter(swipesCounter + 1);
                                         setActiveIndex(activeIndex - 1)
-                                        console.log(swipesCounter+" "+user?.userId)
-                                        if(user?.userId != undefined) {
-                                            await addGameToFav(transformGameIntoFavGameInterface(item), user?.userId);
+                                        console.log(swipesCounter+" "+user?.slug)
+                                        if(user?.slug != undefined) {
+                                            await addGameToFav(transformGameIntoFavGameInterface(item), user?.slug);
                                         }
                                     }}
                                     onSwipedLeft={() => {
@@ -121,14 +123,16 @@ export function Home() {
                                         console.log(swipesCounter+" "+ activeIndex +" "+listGames.length);
                                     }}
                                 >
-                                    <Image
-                                        source={{
-                                            uri: item.cover
-                                                ? transformCoverUrl(item.cover.url)
-                                                : "https://lightwidget.com/wp-content/uploads/localhost-file-not-found.jpg"
-                                        }}
-                                        style={styleHome.image}
-                                    />
+                                    <TouchableOpacity onPress={() => navigation.navigate("GameDetails", {gameId : item.id, likeButton: false})}>
+                                        <Image
+                                            source={{
+                                                uri: item.cover
+                                                    ? transformCoverUrl(item.cover.url)
+                                                    : "https://www.igdb.com/assets/no_cover_show-ef1e36c00e101c2fb23d15bb80edd9667bbf604a12fc0267a66033afea320c65.png"
+                                            }}
+                                            style={styleHome.image}
+                                        />
+                                    </TouchableOpacity>
                                     <View style={{marginHorizontal: 20, marginVertical: hp("0%")}}>
                                         <View style={stylesHome.firstRowCardContainer}>
                                             <Text style={stylesHome.gameNameText}> {item.name}</Text>
@@ -186,7 +190,7 @@ export function Home() {
             <View style={stylesHome.loadingIconContainer}>
                 <ActivityIndicator style={styleHome.loading} size="large" color="#ffffff" animating={showLoading}/>
             </View>
-        </View>
+        </SafeAreaView>
     );
 }
 

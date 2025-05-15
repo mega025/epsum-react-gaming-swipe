@@ -1,7 +1,4 @@
 export interface ApiDeliveryResponse {
-    message: string;
-    success: boolean;
-    status: number;
-    data?: any;
+    message?: string;
     error?: any;
 }

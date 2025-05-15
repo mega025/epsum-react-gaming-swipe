@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
         tintColor:"red",
     },
     cont:{
-        backgroundColor:AppColors.colorButton,
+        backgroundColor:AppColors.darkPurple,
         borderRadius:40,
         height:hp("8%"),
         width:hp("8%"),

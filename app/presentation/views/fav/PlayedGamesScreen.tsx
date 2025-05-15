@@ -17,50 +17,56 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-nat
 import {UseUserLocalStorage} from "../../hooks/UseUserLocalStorage";
 import {FavGame} from "../../../domain/entities/FavGame";
 import {AppColors} from "../../theme/AppTheme";
-import {useFocusEffect} from "@react-navigation/native";
+import {useFocusEffect, useNavigation} from "@react-navigation/native";
 import Toast from "react-native-toast-message";
 import styleAccount from "../account/StyleAccount";
 import {CustomTextInput} from "../../components/CustomTextInput";
 import {UserInterface} from "../../../domain/entities/User";
+import App from "../../../../App";
+import {PropsStackNavigation} from "../../interfaces/StackNav";
 
 
-export function FavScreen(){
-    const {favListGames,
-        loadFavGames,
+export function PlayedGamesScreen({navigation = useNavigation()}: PropsStackNavigation) {
+    const {playedListGames,
+        loadPlayedGames,
         showLoading,
-        getPositionGameList,
+        deletePlayedGame,
         deleteGameFromFav} = viewModel.favScreenViewModel();
     const {user} = UseUserLocalStorage()
     const [modalVisibleDeleteGame, setModalVisibleDeleteGame] = useState(false);
 
     useFocusEffect(
         useCallback(() => {
-            console.log('Fav Screen focused');
-            if(user?.userId != undefined) {
-                console.log(user?.userId)
-                loadFavGames(user?.userId)
-            }
-        }, [user?.userId])
+            if(user?.slug != undefined)
+                loadPlayedGames(user?.slug)
+        }, [user?.slug])
     );
+
+    useEffect(() => {
+        if (user?.slug !== undefined)
+            loadPlayedGames(user?.slug)
+    }, [JSON.stringify(playedListGames)]);
 
     const [selectedGameId, setSelectedGameId] = useState<number | null>(null);
 
     const favGameRenderItem = useCallback(({ item }: { item: FavGame }) => (
         <View style={stylesFavGameItem.card}>
             <View style={stylesFavGameItem.container}>
-                <Image source={{ uri: item.imageUrl }} style={stylesFavGameItem.image} />
-                <Text style={{ ...stylesHome.gameNameText, width: 170 }}>{item.name}</Text>
+                <TouchableOpacity onPress={() => navigation.navigate("GameDetails", {gameId : item.id_api, likeButton: false})}>
+                    <Image source={{ uri: item.image_url }} style={stylesFavGameItem.image} />
+                </TouchableOpacity>
+                <Text style={{ ...stylesHome.gameNameText, width: wp("53%"), fontSize: wp("3.5%"), color:"white"}}>{item.name}</Text>
                 <TouchableOpacity
                     style={stylesFavGameItem.deleteIcon}
                     onPress={() => {
-                        item.videogameId
-                            ? setSelectedGameId(item.videogameId)
+                        item.id
+                            ? setSelectedGameId(item.id)
                             : Toast.show({"type": "error", "text1": "Unexpected error!"})}}
                 >
                     <Image source={require("../../../../assets/borrar.png")} style={stylesFavGameItem.deleteIcon} />
                 </TouchableOpacity>
 
-                {selectedGameId === item.videogameId && (
+                {selectedGameId === item.id && (
                     <Modal
                         animationType="fade"
                         transparent={true}
@@ -69,7 +75,8 @@ export function FavScreen(){
                     >
                         <View style={styleAccount.centeredView}>
                             <View style={styleAccount.modalView}>
-                                <Text style={styleAccount.textPopUp}>DELETE '{item.name}'?</Text>
+                                <Text style={{...styleAccount.textPopUp, color: AppColors.red}}>Delete this game?</Text>
+                                <Text style={styleAccount.gameNamePopUp}>{item.name}</Text>
                                 <View style={styleAccount.containerButton}>
                                     <Pressable
                                         style={styleAccount.modalCancelButton}
@@ -81,7 +88,7 @@ export function FavScreen(){
                                         style={styleAccount.modalAcceptButton}
                                         onPress={async () => {
                                             console.log(item.name)
-                                            await deleteGameFromFav(getPositionGameList(item.name), user?.userId || 0);
+                                            await deletePlayedGame(item.id_api, user?.slug || "");
                                             setSelectedGameId(null);
                                         }}
                                     >
@@ -94,25 +101,22 @@ export function FavScreen(){
                 )}
             </View>
         </View>
-    ), [user?.userId, getPositionGameList, selectedGameId]);
+    ), [user?.slug, selectedGameId, navigation]);
 
     return (
         <View style={styleFav.container}>
             <ImageBackground source={require("../../../../assets/definitiveBackground.jpeg")}
                              style={{width: '100%', height: '100%'}}>
-                <View style={styleFav.header}>
-                    <Text style={styleFav.title}>Favourite games</Text>
-                </View>
                 <View style={stylesHome.loadingIconContainer}>
                     <ActivityIndicator style={styleHome.loading} size="large" color="#ffffff" animating={showLoading}/>
                 </View>
-                <View style={{marginTop: hp("1%"), marginBottom: hp("17%"), borderTopColor: "#ffffff", borderTopWidth: 1, paddingTop: 10}}>
-                    <FlatList data={favListGames}
+                <View style={{borderTopColor: "#ffffff", borderTopWidth: 1}}>
+                    <FlatList data={playedListGames}
                               removeClippedSubviews={true}
-                              contentContainerStyle={{flexDirection: "column-reverse"}}
                               renderItem={favGameRenderItem}
-                              extraData={favListGames}
-                              ListHeaderComponent={<Text style={{...styleFav.flatListFavGames, display: showLoading ? "none" : "flex"}}>Add more games!</Text>}
+                              extraData={playedListGames}
+                              fadingEdgeLength={80}
+                              ListFooterComponent={<Text style={{...styleFav.footerFavGames, display: showLoading ? "none" : "flex"}}>Play more games!</Text>}
                     />
                 </View>
                 <Toast/>
@@ -125,12 +129,10 @@ const stylesFavGameItem = StyleSheet.create({
     card: {
         alignSelf: "center",
         justifyContent: "center",
-        width: "90%",
-        height: 190,
-        backgroundColor: "#cecece",
-        borderRadius: 20,
-        elevation: 5,
-        marginBottom: 20,
+        width: "100%",
+        height: hp("18%"),
+        borderBottomWidth: 1,
+        borderBottomColor: "#ddd",
     },
 
     container: {
@@ -141,14 +143,15 @@ const stylesFavGameItem = StyleSheet.create({
     },
 
     image : {
-        width: 130,
-        height: 190,
-        borderTopLeftRadius: 20,
-        borderBottomLeftRadius: 20,
+        width: wp("27%"),
+        height: hp("16%"),
+        marginStart: wp("2.5%"),
+        borderRadius: wp("1.5%"),
     },
 
     deleteIcon: {
         width: 20,
         height: 20,
+        tintColor: AppColors.white,
     }
 })

@@ -4,5 +4,5 @@ import {FavGame} from "../entities/FavGame";
 
 export interface HomeRepositoryInterface {
     refillGamesFromSwiper: () => Promise<Game[]>;
-    addGameToFavorite: (userId: number, videogame: FavGame) => Promise<ApiDeliveryResponse>;
+    addGameToFavorite: (slug: string, videogame: FavGame) => Promise<ApiDeliveryResponse>;
 }

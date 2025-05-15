@@ -1,11 +1,36 @@
+import {GameDetailsRepositoryInterface} from "../repositories/GameDetailsRepositoryInterface";
+
 export interface Game {
-    id: any;
+    id: number;
     name: string;
     rating: number;
     platforms: Platform[];
     release_dates: ReleaseDate[];
     genres: Genre[];
     cover: Cover;
+}
+
+export interface GameDetailsInterface extends Game {
+    storyline: string
+    summary: string
+    videos: Video[]
+    similar_games: SimilarGame[]
+    involved_companies: InvolvedCompany []
+}
+
+export type SimilarGame = Pick<Game, "id" | "name" | "cover">
+
+export interface InvolvedCompany {
+    company: Company;
+}
+
+export interface Company {
+    id: number;
+    name: string
+}
+
+export interface Video{
+    video_id: string;
 }
 
 export interface Platform {
@@ -15,6 +40,7 @@ export interface Platform {
 
 export interface ReleaseDate {
     y: number;
+    human?: string;
 }
 
 export interface Genre {

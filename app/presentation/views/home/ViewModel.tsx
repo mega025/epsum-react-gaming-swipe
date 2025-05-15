@@ -1,6 +1,6 @@
 import {IgdbApiDelivery} from "../../../data/sources/remote/igdbAPI/IgdbApiDelivery";
 import {useState} from "react";
-import {Game, Genre, GenreDTO} from "../../../domain/entities/Game";
+import {Game, GameDetailsInterface, Genre, GenreDTO} from "../../../domain/entities/Game";
 import {ApiDelivery} from "../../../data/sources/remote/api/ApiDelivery";
 import {FavGame} from "../../../domain/entities/FavGame";
 import viewModel from "../fav/ViewModel";
@@ -8,7 +8,7 @@ import {refillGamesFromSwiperUseCase} from "../../../domain/usesCases/home/Refil
 import {addGameToFavoriteUseCase} from "../../../domain/usesCases/home/AddGameToFavorite";
 
 
-const homeViewModel = () => {
+export const homeViewModel = () => {
 
     let [listGames, setListGames] = useState<Game[]>([]);
     let [showLoading, setShowLoading] = useState(true);
@@ -24,29 +24,25 @@ const homeViewModel = () => {
         setMessageLoading(false);
     }
 
-    const addGameToFav = async (game: FavGame, userId: number) => {
-        await addGameToFavoriteUseCase(userId, game);
+    const addGameToFav = async (game: FavGame | undefined, slug: string) => {
+        if (game !== undefined)
+            await addGameToFavoriteUseCase(slug, game);
     }
 
-    const transformGameIntoFavGameInterface =(item: Game) => {
-        const genreListDTO: GenreDTO[] = []
-        item.genres.forEach((genre: Genre) => {
-                const genreDTO: GenreDTO = {
-                    genreName: genre.name,
-                }
-                genreListDTO.push(genreDTO)
+    const transformGameIntoFavGameInterface =(item: Game | GameDetailsInterface | undefined) => {
+        if (item !== undefined) {
+            const favGameDTO: FavGame = {
+                name: item.name,
+                rating_score: item.rating ? Math.round((item.rating * 100) / 100) : 0,
+                release_year: item.release_dates ? item.release_dates[0].y : 0,
+                image_url: item.cover ? transformCoverUrl(item.cover.url) : "",
+                platforms: item.platforms,
+                genres: item.genres ? item.genres : [],
+                id_api: item.id
             }
-        )
-        const favGameDTO: FavGame = {
-            name: item.name,
-            ratingScore: item.rating ? Math.round((item.rating * 100) / 100) : 0,
-            releaseYear: item.release_dates ? item.release_dates[0].y : 0,
-            imageUrl: item.cover ? transformCoverUrl(item.cover.url) : "",
-            listPlatforms: item.platforms,
-            listGenres: genreListDTO
+            console.log(favGameDTO)
+            return favGameDTO;
         }
-
-        return favGameDTO;
     }
 
 

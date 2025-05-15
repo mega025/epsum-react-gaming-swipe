@@ -6,37 +6,54 @@ import Toast from "react-native-toast-message";
 import {Game} from "../../../domain/entities/Game";
 import {loadFavGamesUseCase} from "../../../domain/usesCases/favGames/LoadFavGames";
 import {deleteFavGameUseCase} from "../../../domain/usesCases/favGames/DeleteFavGame";
+import {loadPlayedGamesUseCase} from "../../../domain/usesCases/favGames/LoadPlayedGames";
+import {addPlayedGameUseCase} from "../../../domain/usesCases/favGames/AddPlayedGame";
+import {deletePlayedGameUseCase} from "../../../domain/usesCases/favGames/DeletePlayedGame";
 
 
-const favScreenViewModel = () => {
+export const favScreenViewModel = () => {
     let [favListGames, setFavListGames] = useState<FavGame[]>([]);
+    let [playedListGames, setPlayedListGames] = useState<FavGame[]>([]);
     let [showLoading, setShowLoading] = useState(true);
 
-    const loadFavGames = async (userId: number) => {
-        const response = await loadFavGamesUseCase(userId);
+    const loadFavGames = async (slug: string) => {
+        const response = await loadFavGamesUseCase(slug);
         setFavListGames(response);
         setShowLoading(false);
     }
 
-    const deleteGameFromFav = async (position: number, userId: number) => {
-        await deleteFavGameUseCase(userId, position)
-        favListGames.splice(position, 1);
-        console.log("Delete game w index "+position);
+    const loadPlayedGames = async (slug: string) => {
+        const response = await loadPlayedGamesUseCase(slug);
+        setPlayedListGames(response);
+        setShowLoading(false);
     }
 
-    const getPositionGameList = (gameName: string) => {
-        return favListGames.findIndex(gameOnList =>
-            gameOnList.name.trim().toLowerCase() === gameName.trim().toLowerCase()
-        );
-    };
+    const addPlayedGame = async (slug: string, favgame: FavGame) => {
+        const response = await addPlayedGameUseCase(slug, favgame);
+        await loadFavGames(slug);
+        await loadPlayedGames(slug);
+    }
+
+    const deleteGameFromFav = async (id_api: number, slug: string) => {
+        await deleteFavGameUseCase(slug, id_api)
+        await loadFavGames(slug)
+    }
+
+    const deletePlayedGame = async (id_api: number, slug: string) => {
+        await deletePlayedGameUseCase(slug, id_api)
+        await loadPlayedGames(slug)
+    }
 
     return{
         favListGames,
+        playedListGames,
         setFavListGames,
         loadFavGames,
+        loadPlayedGames,
+        addPlayedGame,
         showLoading,
         deleteGameFromFav,
-        getPositionGameList,
+        deletePlayedGame,
     }
 }
 

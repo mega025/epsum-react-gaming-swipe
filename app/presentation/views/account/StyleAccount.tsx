@@ -78,9 +78,10 @@ const styleAccount = StyleSheet.create({
         fontFamily: "zen_kaku_light",
     },
     editButton: {
-        width: wp("10%"),
-        height: wp("10%"),
+        width: wp("8%"),
+        height: wp("8%"),
         alignSelf: "flex-end",
+        marginTop: wp("1%"),
         tintColor: AppColors.white,
     },
     containerLastName: {
@@ -120,7 +121,7 @@ const styleAccount = StyleSheet.create({
         backgroundColor: "rgba(0,0,0,0.75)",
     },
     modalView: {
-        backgroundColor: AppColors.colorNavigationButton,
+        backgroundColor: AppColors.darkPink,
         borderRadius: 10,
         padding: 20,
         gap: 20,
@@ -161,11 +162,21 @@ const styleAccount = StyleSheet.create({
         height:20,
     },
     textPopUp:{
-        fontSize: 20,
+        fontSize: wp("4.5%"),
         color: AppColors.white,
         textAlign: "center",
-        fontFamily: "zen_kaku_regular",
-        height:60,
+        fontFamily: "zen_kaku_medium",
+        height:hp("3%"),
+        verticalAlign: "middle"
+    },
+
+    gameNamePopUp:{
+        fontSize: wp("5%"),
+        color: AppColors.white,
+        textAlign: "center",
+        fontFamily: "zen_kaku_medium",
+        height: "auto",
+        lineHeight: hp("3%"),
         verticalAlign: "middle"
     }
 });

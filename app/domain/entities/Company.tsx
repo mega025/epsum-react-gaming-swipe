@@ -1,13 +1,15 @@
-export interface Company {
-    id: number;
-    name: string;
-    description?: string;
-    country?: number;
-    logo: CompanyLogo;
+import {SimilarGame} from "./Game";
+
+export interface CompanyDetailsInterface {
+    name: string
+    description: string
+    logo: Logo
+    developed: SimilarGame[]
+    published: SimilarGame[]
+    country: number
+    start_date: number
 }
 
-
-export interface CompanyLogo {
-    id?: number;
-    url: string;
+export interface Logo {
+    url: string
 }
