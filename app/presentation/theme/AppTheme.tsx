@@ -9,6 +9,7 @@ export const AppColors = {
     red:"#c50a0a",
     green:"#4bc00f",
     gray: "#cecece",
+    lightPink: "rgba(107,91,136,0.75)"
 }
 export const AppFonts = {
     black: "zen_kaku_gothic_antique_black",

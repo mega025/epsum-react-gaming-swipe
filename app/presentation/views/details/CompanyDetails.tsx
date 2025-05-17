@@ -60,43 +60,45 @@ export function CompanyDetails ({navigation = useNavigation()}: PropsStackNaviga
     const [loadingMorePublishedGames, setLoadingMorePublishedGames] = useState(false);
 
     const loadMoreDevelopedGames = () => {
-        if (loadingMoreDevelopedGames) return;
-        setLoadingMoreDevelopedGames(true);
+        if (!loadingMoreDevelopedGames) {
+            setLoadingMoreDevelopedGames(true);
 
-        const start = (pageDevelopedGames - 1) * ITEMS_PER_PAGE;
-        const end = start + ITEMS_PER_PAGE;
-        const newItems = companyDetails?.developed.slice(start, end);
+            const start = (pageDevelopedGames - 1) * ITEMS_PER_PAGE;
+            const end = start + ITEMS_PER_PAGE;
+            const newItems = companyDetails?.developed.slice(start, end);
 
-        if (newItems != undefined && newItems.length > 0) {
-            setTimeout(() => {
-                if (newItems != undefined)
-                    setDevelopedGames((prev) => [...prev, ...newItems]);
-                setPageDevelopedGames((prev) => prev + 1);
-                setLoadingMoreDevelopedGames(false);
-            }, 500);
+            if (newItems != undefined && newItems.length > 0) {
+                setTimeout(() => {
+                    if (newItems != undefined)
+                        setDevelopedGames((prev) => [...prev, ...newItems]);
+                    setPageDevelopedGames((prev) => prev + 1);
+                    setLoadingMoreDevelopedGames(false);
+                }, 500);
+            }
+            setLoadingMoreDevelopedGames(false);
+            return;
         }
-        setLoadingMoreDevelopedGames(false);
-        return;
     };
 
     const loadMorePublishedGames = () => {
-        if (loadingMorePublishedGames) return;
-        setLoadingMorePublishedGames(true);
+        if (!loadingMorePublishedGames) {
+            setLoadingMorePublishedGames(true);
 
-        const start = (pagePublishedGames - 1) * ITEMS_PER_PAGE;
-        const end = start + ITEMS_PER_PAGE;
-        const newItems = companyDetails?.published.slice(start, end);
+            const start = (pagePublishedGames - 1) * ITEMS_PER_PAGE;
+            const end = start + ITEMS_PER_PAGE;
+            const newItems = companyDetails?.published.slice(start, end);
 
-        if (newItems != undefined && newItems.length > 0) {
-            setTimeout(() => {
-                if (newItems != undefined)
-                    setPublishedGames((prev) => [...prev, ...newItems]);
-                setPagePublishedGames((prev) => prev + 1);
-                setLoadingMorePublishedGames(false);
-            }, 500);
+            if (newItems != undefined && newItems.length > 0) {
+                setTimeout(() => {
+                    if (newItems != undefined)
+                        setPublishedGames((prev) => [...prev, ...newItems]);
+                    setPagePublishedGames((prev) => prev + 1);
+                    setLoadingMorePublishedGames(false);
+                }, 500);
+            }
+            setLoadingMorePublishedGames(false);
+            return;
         }
-        setLoadingMorePublishedGames(false);
-        return;
     };
 
     useEffect(() => {
@@ -172,7 +174,7 @@ export function CompanyDetails ({navigation = useNavigation()}: PropsStackNaviga
                                             fadingEdgeLength={50}
                                             keyExtractor={(item) => item.id.toString()}
                                             onEndReached={loadMoreDevelopedGames}
-                                            onEndReachedThreshold={0.5}
+                                            onEndReachedThreshold={1.5}
                                             showsHorizontalScrollIndicator={false}
                                             ListFooterComponent={loadingMoreDevelopedGames ? <ActivityIndicator size="large" color={AppColors.white} style={{marginTop: hp("2%")}} /> : null}
                                             horizontal={true}
@@ -189,9 +191,9 @@ export function CompanyDetails ({navigation = useNavigation()}: PropsStackNaviga
                                             fadingEdgeLength={50}
                                             keyExtractor={(item) => item.id.toString()}
                                             onEndReached={loadMorePublishedGames}
-                                            onEndReachedThreshold={0.5}
+                                            onEndReachedThreshold={1.5}
                                             showsHorizontalScrollIndicator={false}
-                                            ListFooterComponent={loadingMorePublishedGames ? <ActivityIndicator size="large" color={AppColors.white} style={{marginTop: hp("5%")}} /> : null}
+                                            ListFooterComponent={loadingMorePublishedGames ? <ActivityIndicator size="large" color={AppColors.white} /> : null}
                                             horizontal={true}
                                         />
                                     </View>

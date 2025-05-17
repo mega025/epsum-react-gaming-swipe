@@ -15,11 +15,11 @@ const styleSearch = StyleSheet.create({
         alignItems: "center",
     },
     appName: {
-        fontSize: RFPercentage(2),
+        fontSize: wp("4%"),
         color: AppColors.white,
         alignSelf: "center",
-        marginTop: 2,
-        height: 23,
+        lineHeight: 23,
+        marginTop: hp("0.7%"),
         fontFamily: "zen_kaku_light",
     },
 
@@ -32,8 +32,9 @@ const styleSearch = StyleSheet.create({
     },
 
     headerTitle: {
-        fontSize: RFPercentage(4),
+        fontSize: wp("7%"),
         alignSelf: "center",
+        marginBottom: hp("1%"),
         color: AppColors.white,
         fontFamily: "zen_kaku_light",
     },
@@ -44,11 +45,10 @@ const styleSearch = StyleSheet.create({
         paddingHorizontal: wp("3%"),
         paddingVertical: hp("1%"),
         alignSelf: "center",
-        marginTop: hp("3%"),
     },
 
     gameCardsContainer: {
-        paddingBottom:hp("36.6%"),
+        paddingBottom:hp("39.8%"),
     },
 
     gameCover: {
@@ -83,7 +83,7 @@ const styleSearch = StyleSheet.create({
     resultTextFilter: {
         fontSize: 15,
         color: "#fff",
-        height: 28,
+        lineHeight: 28,
         fontFamily: "zen_kaku_regular",
     },
 
@@ -94,12 +94,8 @@ const styleSearch = StyleSheet.create({
         fontFamily: "zen_kaku_regular",
     },
     clearFilterButton: {
-        marginLeft: 10,
-        padding: 5,
+        marginLeft: wp("4%"),
         borderRadius: 15,
-        backgroundColor: 'red',
-        justifyContent: 'center',
-        alignItems: 'center',
     },
     filterTextContainer: {
         flexDirection: 'row',
@@ -107,8 +103,8 @@ const styleSearch = StyleSheet.create({
     },
 
     clearFilterText: {
-        fontSize: 18,
-        color: 'white',
+        fontSize: wp("3%"),
+        color: AppColors.red,
     },
     title: {
         fontSize: 20,
@@ -129,7 +125,7 @@ const styleSearch = StyleSheet.create({
     tabsContainer: {
         flexDirection: "row",
         justifyContent: "center",
-        marginTop: 10,
+        marginVertical: 10,
     },
     tabButton: {
         paddingVertical: 8,
@@ -144,6 +140,8 @@ const styleSearch = StyleSheet.create({
     tabText: {
         color: "gray",
         fontSize: 16,
+        lineHeight: 16,
+        fontFamily: "zen_kaku_regular",
     },
     tabTextSelected: {
         color: "white",
@@ -224,5 +222,43 @@ const styleSearchGameItem = StyleSheet.create({
     },
 });
 
+const styleSearchCompanyItem = StyleSheet.create({
+    companyCard: {
+        flexDirection: "row",
+        paddingVertical: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: "#ddd",
+        alignItems: "center",
+    },
+    companyCover: {
+        margin: wp("3%"),
+        width: wp("25%"),
+        height: hp("15%"),
+        borderRadius: 5,
+        marginRight: 10,
+    },
+    infoContainer: {
+        marginLeft:10,
+        flexDirection: "column",
+    },
+    name: {
 
-export {styleSearch, styleSearchGameItem};
+        marginBottom: hp("2%"),
+    },
+    companyName: {
+        fontSize: 15,
+        lineHeight: 20,
+        marginStart: wp("3%"),
+        fontFamily: "zen_kaku_regular",
+        color:AppColors.white,
+    },
+    description:{
+        width: wp("60%"),
+        fontFamily: "zen_kaku_regular",
+        color:AppColors.white,
+    },
+
+});
+
+
+export {styleSearch, styleSearchGameItem, styleSearchCompanyItem };

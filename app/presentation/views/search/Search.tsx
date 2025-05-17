@@ -9,11 +9,12 @@ import {
 }
     from "react-native";
 import { CustomTextInputSearch } from "../../components/CustomTextInputSearch";
-import {styleSearch, styleSearchGameItem} from "./StyleSearch";
+import {styleSearch, styleSearchCompanyItem, styleSearchGameItem} from "./StyleSearch";
 import {Game} from "../../../domain/entities/Game";
 import viewModel from "./ViewModel";
 import {AppColors} from "../../theme/AppTheme";
 import styleFav from "../fav/StyleFav";
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import {FavGamesScreen} from "../fav/FavGamesScreen";
 import FiltroComponent from "../../components/FilterButton";
 import {useFocusEffect, useNavigation} from "@react-navigation/native";
@@ -23,7 +24,7 @@ import viewModelHome from "../home/ViewModel";
 import viewModelFav from "../fav/ViewModel";
 import {PlatformItem} from "../../components/PlatformItem";
 import Toast from "react-native-toast-message";
-import SearchCompanyItem from "../../components/SearchCompanyItem";
+import {CompanyDetailsInterface} from "../../../domain/entities/Company";
 
 export function Search({navigation = useNavigation()}: PropsStackNavigation) {
     const {
@@ -46,7 +47,6 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
         companyDisplayed
     } = viewModel.searchViewModel()
     const [selectedTab, setSelectedTab] = useState<"games" | "company">("games");
-
 
     useEffect(() => {
         searchMostAnticipatedGames()
@@ -154,6 +154,24 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
         </View>
     ), [addGameToFav, checkIfGameFromApiIsLiked, loadFavGames, deleteGameFromFav, transformCoverUrl, navigation])
 
+    const searchCompanyItem = useCallback(({item} : {item:CompanyDetailsInterface}) =>(
+        <View style={styleSearchCompanyItem.companyCard}>
+            <TouchableOpacity
+                style={{backgroundColor: AppColors.lightPink, borderRadius: 10, marginStart: wp("3%")}}
+                onPress={() => navigation.push("CompanyDetails", {companyId:item.id})}>
+                <Image
+                    source={{
+                        uri: item.logo?.url
+                            ? item.logo.url
+                            : "https://lightwidget.com/wp-content/uploads/localhost-file-not-found.jpg",
+                    }}
+                    style={styleSearchCompanyItem.companyCover}  resizeMode="contain"
+                />
+            </TouchableOpacity>
+            <Text style={styleSearchCompanyItem.companyName}>{item.name}</Text>
+        </View>
+    ), [])
+
     return (
         <View style={styleSearch.container}>
             <ImageBackground
@@ -163,13 +181,11 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
                 <View style={styleSearch.containerHeader}>
                     <View style={styleSearch.logoContainer}>
                         <Image source={require("../../../../assets/logo.png")} style={styleSearch.logo} />
-                        <Text style={styleSearch.appName}>GamingSwipe</Text>
                     </View>
 
                     <View>
                         <Text style={styleSearch.headerTitle}>Search</Text>
                     </View>
-
                     <View style={styleSearch.tabsContainer}>
                         <TouchableOpacity
                             style={[styleSearch.tabButton, selectedTab === "games" && styleSearch.tabButtonSelected]}
@@ -182,7 +198,7 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
                             style={[styleSearch.tabButton, selectedTab === "company" && styleSearch.tabButtonSelected]}
                             onPress={() => setSelectedTab("company")}
                         >
-                            <Text style={[styleSearch.tabText, selectedTab === "company" && styleSearch.tabTextSelected]}>Company</Text>
+                            <Text style={[styleSearch.tabText, selectedTab === "company" && styleSearch.tabTextSelected]}>Companies</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -240,7 +256,7 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
                                         <ActivityIndicator
                                             size="large"
                                             color={AppColors.white}
-                                            style={{ paddingTop: 20 }}
+                                            style={{ paddingVertical: 15 }}
                                         />
                                     ) : null
                                 }
@@ -261,15 +277,12 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
                 {selectedTab === "company" && (
                 <>
                     <View style={styleSearch.resultTextContainer}>
-                        <Text style={styleSearch.resultText}>Top 20 Game Companies</Text>
+                        <Text style={styleSearch.resultText}>- TOP 20 - GAME DEVELOPERS</Text>
                     </View>
-
-                    <View style={styleSearch.container}>
-
                         <FlatList
                             data={companyDisplayed}
                             keyExtractor={(item, index) => String(index)}
-                            renderItem={({ item }) => <SearchCompanyItem item={item} />}
+                            renderItem={searchCompanyItem}
                             ListFooterComponent={
                                 loading ? (
                                     <ActivityIndicator
@@ -288,7 +301,6 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
                                 );
                             }}
                         />
-                    </View>
                 </>
                 )}
             </ImageBackground>

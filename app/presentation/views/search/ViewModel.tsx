@@ -4,11 +4,12 @@ import {IgdbApiDelivery} from "../../../data/sources/remote/igdbAPI/IgdbApiDeliv
 import {searchMostAnticipatedGamesUseCase} from "../../../domain/usesCases/search/SearchMostAnticipatedGames";
 import {searchGamesByUserInputUseCase} from "../../../domain/usesCases/search/SearchGamesByUserInput";
 import {searchCompanyByUserInputUseCase} from "../../../domain/usesCases/search/SearchCompanyByUserInput";
+import {CompanyDetailsInterface} from "../../../domain/entities/Company";
 
 const searchViewModel = () => {
     const [searchText, setSearchText] = useState("");
     const [gamesDisplayed, setGamesDisplayed] = useState<Game[]>([]);
-    const [companyDisplayed, setCompanyDisplayed] = useState<Company[]>([]);
+    const [companyDisplayed, setCompanyDisplayed] = useState<CompanyDetailsInterface[]>([]);
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(1);
     const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -126,6 +127,7 @@ const searchViewModel = () => {
 
     const loadMoreGames = () => {
         if (!loading && gamesDisplayed.length >= 13) {
+            setLoading(true)
             setPage((prevPage) => {
                 const nextPage = prevPage + 1;
 
@@ -135,6 +137,7 @@ const searchViewModel = () => {
                     fetchFilteredGames(appliedFilters.category, appliedFilters.platform, nextPage)
                         .then((moreGames) => {
                             setGamesDisplayed((prevGames) => [...prevGames, ...moreGames]);
+                            setLoading(false)
                         });
                 }
 
