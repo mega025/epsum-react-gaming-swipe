@@ -270,7 +270,6 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
                             data={companyDisplayed}
                             keyExtractor={(item, index) => String(index)}
                             renderItem={({ item }) => <SearchCompanyItem item={item} />}
-                            contentContainerStyle={{ paddingBottom: 20 }}
                             ListFooterComponent={
                                 loading ? (
                                     <ActivityIndicator
