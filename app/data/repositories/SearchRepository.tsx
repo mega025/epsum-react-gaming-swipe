@@ -1,6 +1,6 @@
 import {SearchRepositoryInterface} from "../../domain/repositories/SearchRepositoryInterface";
 import {Game} from "../../domain/entities/Game";
-import {Company} from "../../domain/entities/Company";
+import {CompanyDetailsInterface} from "../../domain/entities/Company";
 import {IgdbApiDelivery} from "../sources/remote/igdbAPI/IgdbApiDelivery";
 import axios, {AxiosError} from "axios";
 import {ApiDeliveryResponse} from "../sources/remote/models/ApiDeliveryResponse";
@@ -39,19 +39,19 @@ export class SearchRepository implements SearchRepositoryInterface {
             return Promise.reject(e.message);
         }
     }
-    async getFirst15Companies(): Promise<Company[]> {
+    async getFirst15Companies(): Promise<CompanyDetailsInterface[]> {
         try {
             const gamesResponse = await IgdbApiDelivery.post(
                 '/games',
-                `fields name; limit 15; 
-                sort hypes desc;`
+                `fields name; limit 100; sort hypes desc;
+                 where rating != null & total_rating_count > 900 & hypes > 20;`
             );
 
             const gameIds: number[] = gamesResponse.data.map((game: any) => game.id);
 
             const involvedCompaniesResponse = await IgdbApiDelivery.post(
                 '/involved_companies',
-                `fields company; where game = (${gameIds.join(',')}) & developer = true; limit 20 ;`
+                `fields company; where game = (${gameIds.join(',')}) & developer = true; limit 100 ;`
             );
 
             const companyIds: number[] = involvedCompaniesResponse.data.map((item: any) => item.company);
@@ -61,7 +61,7 @@ export class SearchRepository implements SearchRepositoryInterface {
                 `fields id,name,description,country,logo.image_id; where id = (${companyIds.join(',')}); limit 20;`
             );
 
-            const companies: Company[] = companiesResponse.data.map((company: any) => ({
+            const companies: CompanyDetailsInterface[] = companiesResponse.data.map((company: any) => ({
                 id: company.id,
                 name: company.name,
                 description: company.description,
@@ -74,7 +74,7 @@ export class SearchRepository implements SearchRepositoryInterface {
                 },
             }));
 
-            const uniqueCompanies: Company[] = Array.from(
+            const uniqueCompanies: CompanyDetailsInterface[] = Array.from(
                 new Map(companies.map((company) => [company.id, company])).values()
             ).slice(0, 20);
 

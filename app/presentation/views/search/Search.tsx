@@ -23,6 +23,7 @@ import viewModelHome from "../home/ViewModel";
 import viewModelFav from "../fav/ViewModel";
 import {PlatformItem} from "../../components/PlatformItem";
 import Toast from "react-native-toast-message";
+import SearchCompanyItem from "../../components/SearchCompanyItem";
 
 export function Search({navigation = useNavigation()}: PropsStackNavigation) {
     const {
@@ -40,11 +41,18 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
         setAppliedFilters,
         setFiltersApplied,
         setSelectedCategory,
-        setSelectedPlatform
+        setSelectedPlatform,
+        searchTopCompany,
+        companyDisplayed
     } = viewModel.searchViewModel()
+    const [selectedTab, setSelectedTab] = useState<"games" | "company">("games");
+
 
     useEffect(() => {
         searchMostAnticipatedGames()
+    }, []);
+    useEffect(() => {
+        searchTopCompany()
     }, []);
 
     const {user} = UseUserLocalStorage()
@@ -162,71 +170,128 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
                         <Text style={styleSearch.headerTitle}>Search</Text>
                     </View>
 
+                    <View style={styleSearch.tabsContainer}>
+                        <TouchableOpacity
+                            style={[styleSearch.tabButton, selectedTab === "games" && styleSearch.tabButtonSelected]}
+                            onPress={() => setSelectedTab("games")}
+                        >
+                            <Text style={[styleSearch.tabText, selectedTab === "games" && styleSearch.tabTextSelected]}>Games</Text>
+                        </TouchableOpacity>
 
-                    <View style={styleSearch.containerSearchInput}>
-                        <CustomTextInputSearch
-                            keyboardType="default"
-                            secureTextEntry={false}
-                            value={searchText}
-                            onPressButtonFromInterface={(text: string) => onSearchTextChange(text)}
-                        />
-                        <FiltroComponent onApply={onApplyFilters}/>
+                        <TouchableOpacity
+                            style={[styleSearch.tabButton, selectedTab === "company" && styleSearch.tabButtonSelected]}
+                            onPress={() => setSelectedTab("company")}
+                        >
+                            <Text style={[styleSearch.tabText, selectedTab === "company" && styleSearch.tabTextSelected]}>Company</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+                {selectedTab === "games" && (
+                    <>
+                        <View style={styleSearch.containerHeader}>
+                            <View style={styleSearch.containerSearchInput}>
+                                <CustomTextInputSearch
+                                    keyboardType="default"
+                                    secureTextEntry={false}
+                                    value={searchText}
+                                    onPressButtonFromInterface={(text: string) => onSearchTextChange(text)}
+                                />
+                                <FiltroComponent onApply={onApplyFilters} />
+                            </View>
+                        </View>
+                        <View style={styleSearch.resultTextContainer}>
+                            {searchText !== "" ? (
+                                <Text style={styleSearch.resultText}>Results for "{searchText}"</Text>
+                            ) : filtersApplied ? (
+                                <View style={styleSearch.filterTextContainer}>
+                                    <Text style={styleSearch.resultTextFilter}>
+                                        Filter:{" "}
+                                        {appliedFilters.category ? `${appliedFilters.category}` : ""}
+                                        {appliedFilters.category && appliedFilters.platform ? " and " : ""}
+                                        {appliedFilters.platform ? `${appliedFilters.platform}` : ""}
+                                    </Text>
+                                    <TouchableOpacity
+                                        onPress={() => {
+                                            setAppliedFilters({ category: null, platform: null });
+                                            setFiltersApplied(false);
+                                            setSelectedCategory(null);
+                                            setSelectedPlatform(null);
+                                            setSearchText("");
+                                            searchMostAnticipatedGames();
+                                        }}
+                                        style={styleSearch.clearFilterButton}
+                                    >
+                                        <Text style={styleSearch.clearFilterText}>✕</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            ) : (
+                                <Text style={styleSearch.resultText}>-  TOP 10  -  MOST ANTICIPATED GAMES</Text>
+                            )}
+                        </View>
+
+                        <View style={styleSearch.gameCardsContainer}>
+                            <FlatList
+                                data={gamesDisplayed}
+                                keyExtractor={(item, index) => String(index)}
+                                fadingEdgeLength={80}
+                                renderItem={searchGameItem}
+                                ListFooterComponent={
+                                    loading ? (
+                                        <ActivityIndicator
+                                            size="large"
+                                            color={AppColors.white}
+                                            style={{ paddingTop: 20 }}
+                                        />
+                                    ) : null
+                                }
+                                onEndReached={loadMoreGames}
+                                onEndReachedThreshold={1.5}
+                                ListEmptyComponent={
+                                    <View style={{ alignItems: "center", width: "100%", marginTop: 20 }}>
+                                        <Text style={{ ...styleSearch.emptyFlatListText, display: loading ? "none" : "flex" }}>
+                                            No results
+                                        </Text>
+                                    </View>
+                                }
+                            />
+                        </View>
+                    </>
+                )}
+
+                {selectedTab === "company" && (
+                <>
+                    <View style={styleSearch.resultTextContainer}>
+                        <Text style={styleSearch.resultText}>Top 20 Game Companies</Text>
                     </View>
 
+                    <View style={styleSearch.container}>
 
-                </View>
-
-                <View style={styleSearch.resultTextContainer}>
-                    {searchText !== "" ? (
-                        <Text style={styleSearch.resultText}>Results for "{searchText}"</Text>
-                    ) : filtersApplied ? (
-                        <View style={styleSearch.filterTextContainer}>
-                            <Text style={styleSearch.resultTextFilter}>
-                                Filter:{" "}
-                                {appliedFilters.category ? `${appliedFilters.category}` : ""}
-                                {appliedFilters.category && appliedFilters.platform ? " and " : ""}
-                                {appliedFilters.platform ? `${appliedFilters.platform}` : ""}
-                            </Text>
-                            <TouchableOpacity
-                                onPress={() => {
-                                    setAppliedFilters({ category: null, platform: null });
-                                    setFiltersApplied(false);
-                                    setSelectedCategory(null);
-                                    setSelectedPlatform(null);
-                                    setSearchText("");
-                                    searchMostAnticipatedGames();
-                                }}
-                                style={styleSearch.clearFilterButton}
-                            >
-                                <Text style={styleSearch.clearFilterText}>✕</Text>
-                            </TouchableOpacity>
-                        </View>
-                    ) : (
-                        <Text style={styleSearch.resultText}>-  TOP 10  -  MOST ANTICIPATED GAMES</Text>
-                    )}
-                </View>
-                <View style={styleSearch.gameCardsContainer}>
-                    <FlatList
-                        data={gamesDisplayed}
-                        keyExtractor={(item, index) => String(index)}
-                        fadingEdgeLength={80}
-                        renderItem={searchGameItem}
-                        ListFooterComponent={
-                            loading ? <ActivityIndicator size="large"
-                                                         color={AppColors.white}
-                                                         style={{paddingTop: 20,}} /> : null
-                        }
-                        onEndReached={loadMoreGames}
-                        onEndReachedThreshold={1.5}
-                        ListEmptyComponent={
-                            <View style={{alignItems: "center", width: "100%", marginTop: 20,}}>
-                                <Text style={{...styleSearch.emptyFlatListText, display: loading ? "none" : "flex"}}>
-                                    No results
-                                </Text>
-                            </View>
-                        }
-                    />
-                </View>
+                        <FlatList
+                            data={companyDisplayed}
+                            keyExtractor={(item, index) => String(index)}
+                            renderItem={({ item }) => <SearchCompanyItem item={item} />}
+                            contentContainerStyle={{ paddingBottom: 20 }}
+                            ListFooterComponent={
+                                loading ? (
+                                    <ActivityIndicator
+                                        size="large"
+                                        color={AppColors.white}
+                                        style={{ marginTop: 20 }}
+                                    />
+                                ) : null
+                            }
+                            ListEmptyComponent={() => {
+                                if (loading) return null;
+                                return (
+                                    <View style={styleSearch.emptyContainer}>
+                                        <Text style={styleSearch.emptyText}>No companies found.</Text>
+                                    </View>
+                                );
+                            }}
+                        />
+                    </View>
+                </>
+                )}
             </ImageBackground>
         </View>
     );

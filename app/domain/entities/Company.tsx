@@ -1,6 +1,7 @@
 import {SimilarGame} from "./Game";
 
 export interface CompanyDetailsInterface {
+    id: number
     name: string
     description: string
     logo: Logo

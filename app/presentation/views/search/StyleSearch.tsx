@@ -110,6 +110,45 @@ const styleSearch = StyleSheet.create({
         fontSize: 18,
         color: 'white',
     },
+    title: {
+        fontSize: 20,
+        fontWeight: "bold",
+        color: AppColors.white,
+        marginBottom: 10,
+    },
+    emptyContainer: {
+        alignItems: "center",
+        justifyContent: "center",
+        marginTop: 30,
+    },
+    emptyText: {
+        color: "#888",
+        fontSize: 16,
+        fontStyle: "italic",
+    },
+    tabsContainer: {
+        flexDirection: "row",
+        justifyContent: "center",
+        marginTop: 10,
+    },
+    tabButton: {
+        paddingVertical: 8,
+        paddingHorizontal: 20,
+        marginHorizontal: 5,
+        borderBottomWidth: 2,
+        borderBottomColor: "transparent",
+    },
+    tabButtonSelected: {
+        borderBottomColor: "white",
+    },
+    tabText: {
+        color: "gray",
+        fontSize: 16,
+    },
+    tabTextSelected: {
+        color: "white",
+        fontWeight: "bold",
+    },
 
 });
 

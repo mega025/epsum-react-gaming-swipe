@@ -1,12 +1,14 @@
 import  {useState} from "react";
-import {Game} from "../../../domain/entities/Game";
+import {Company, Game} from "../../../domain/entities/Game";
 import {IgdbApiDelivery} from "../../../data/sources/remote/igdbAPI/IgdbApiDelivery";
 import {searchMostAnticipatedGamesUseCase} from "../../../domain/usesCases/search/SearchMostAnticipatedGames";
 import {searchGamesByUserInputUseCase} from "../../../domain/usesCases/search/SearchGamesByUserInput";
+import {searchCompanyByUserInputUseCase} from "../../../domain/usesCases/search/SearchCompanyByUserInput";
 
 const searchViewModel = () => {
     const [searchText, setSearchText] = useState("");
     const [gamesDisplayed, setGamesDisplayed] = useState<Game[]>([]);
+    const [companyDisplayed, setCompanyDisplayed] = useState<Company[]>([]);
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(1);
     const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -80,6 +82,19 @@ const searchViewModel = () => {
             return [];
         }
     };
+    const searchTopCompany = async () => {
+        try {
+            setLoading(true);
+
+            const response = await searchCompanyByUserInputUseCase();
+
+            setCompanyDisplayed(response);
+        } catch (error) {
+            console.error("Error fetching companies:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const searchMostAnticipatedGames = async () => {
         setLoading(true);
@@ -144,7 +159,9 @@ const searchViewModel = () => {
         setAppliedFilters,
         setFiltersApplied,
         setSelectedCategory,
-        setSelectedPlatform
+        setSelectedPlatform,
+        searchTopCompany,
+        companyDisplayed
     }
 }
 export default {searchViewModel}
