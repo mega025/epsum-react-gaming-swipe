@@ -137,7 +137,7 @@ export function CompanyDetails ({navigation = useNavigation()}: PropsStackNaviga
                                     <Image source={require("../../../../assets/go-back-icon.png")}
                                            style={{...styleGameDetails.goBackIcon, bottom: hp("3"), end: wp("40%")}} />
                                 </TouchableOpacity>
-                                <View style={{width: wp("100%"), alignItems: "center", backgroundColor: "rgba(107,91,136,0.75)"}}>
+                                <View style={{width: wp("100%"), alignItems: "center", backgroundColor: AppColors.softWhite}}>
                                     <Image
                                         source={{
                                             uri: companyDetails?.logo

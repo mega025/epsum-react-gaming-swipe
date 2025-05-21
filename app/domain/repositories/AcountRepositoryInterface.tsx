@@ -4,7 +4,7 @@ import {PasswordsDTO} from "../entities/UpdatePasswordDTO";
 
 
 export interface AccountRepositoryInterface {
-    getUser: (slug: string) => Promise<GetUserInterface>;
-    updateUser: (slug: string, data?: UpdateUserDTO | FormData) => Promise<ApiDeliveryResponse>
-    updateUserPassword: (slug: string, data: PasswordsDTO) => Promise<ApiDeliveryResponse>
+    getUser: (slug: string, token: string) => Promise<GetUserInterface>;
+    updateUser: (slug: string, token: string, data: UpdateUserDTO | FormData) => Promise<ApiDeliveryResponse>
+    updateUserPassword: (slug: string, token: string, data: PasswordsDTO) => Promise<ApiDeliveryResponse>
 }

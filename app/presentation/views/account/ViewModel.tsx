@@ -26,23 +26,23 @@ export const accountViewModel =()=> {
         await removeUserUseCase()
     }
 
-    const getUserDB = async (slug: string) => {
-        const response = await getUserDBUseCase(slug)
+    const getUserDB = async (slug: string, token: string) => {
+        const response = await getUserDBUseCase(slug, token)
         setUserDB(response)
         setShowLoading(false)
     }
 
-    const updateUserDetails = async (slug: string, data: UpdateUserDTO | FormData | undefined) => {
-        const response = await updateUserUseCase(slug, data)
+    const updateUserDetails = async (slug: string, token: string, data: UpdateUserDTO | FormData | undefined) => {
+        const response = await updateUserUseCase(slug, token, data)
         Toast.show({
             type:"success",
             text1: response.message,
         })
     }
 
-    const updateUserPassword = async (slug: string, passwordDTO: PasswordsDTO) => {
+    const updateUserPassword = async (slug: string, token: string, passwordDTO: PasswordsDTO) => {
         if (validateUpdatePasswordForm()) {
-            const response = await updatePasswordUseCase(slug, passwordDTO)
+            const response = await updatePasswordUseCase(slug, token, passwordDTO)
             Toast.show({
                 type:"success",
                 text1: response.message,

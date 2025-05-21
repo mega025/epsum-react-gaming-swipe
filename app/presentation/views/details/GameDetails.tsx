@@ -55,7 +55,7 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
     useFocusEffect(
         useCallback(() => {
             if(user?.slug != undefined) {
-                loadFavGames(user?.slug)
+                loadFavGames(user?.slug, user?.access_token)
             }
         }, [user?.slug])
     );
@@ -131,7 +131,7 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
                                     if (!checkIfGameFromApiIsLiked(gameDetails ? gameDetails.name : "")) {
                                         try {
                                             await addGameToFav(transformGameIntoFavGameInterface(gameDetails), user?.slug ? user?.slug : "");
-                                            await loadFavGames(user?.slug ? user?.slug : "")
+                                            await loadFavGames(user?.slug ? user?.slug : "", user?.access_token ? user?.access_token : "")
 
                                         } catch (error) {
                                             Toast.show({
@@ -143,9 +143,10 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
                                         try {
                                             await deleteGameFromFav(
                                                 gameDetails ? gameDetails?.id : 0,
-                                                user?.slug ? user?.slug : ""
+                                                user?.slug ? user?.slug : "",
+                                                user?.access_token ? user?.access_token : ""
                                             );
-                                            await loadFavGames(user?.slug ? user?.slug : "")
+                                            await loadFavGames(user?.slug ? user?.slug : "", user?.access_token ? user?.access_token : "")
 
                                         } catch (error) {
                                             Toast.show({

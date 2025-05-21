@@ -16,32 +16,32 @@ export const favScreenViewModel = () => {
     let [playedListGames, setPlayedListGames] = useState<FavGame[]>([]);
     let [showLoading, setShowLoading] = useState(true);
 
-    const loadFavGames = async (slug: string) => {
-        const response = await loadFavGamesUseCase(slug);
+    const loadFavGames = async (slug: string, token: string) => {
+        const response = await loadFavGamesUseCase(slug, token);
         setFavListGames(response);
         setShowLoading(false);
     }
 
-    const loadPlayedGames = async (slug: string) => {
-        const response = await loadPlayedGamesUseCase(slug);
+    const loadPlayedGames = async (slug: string, token: string) => {
+        const response = await loadPlayedGamesUseCase(slug, token);
         setPlayedListGames(response);
         setShowLoading(false);
     }
 
-    const addPlayedGame = async (slug: string, favgame: FavGame) => {
-        const response = await addPlayedGameUseCase(slug, favgame);
-        await loadFavGames(slug);
-        await loadPlayedGames(slug);
+    const addPlayedGame = async (slug: string, favgame: FavGame, token: string) => {
+        const response = await addPlayedGameUseCase(slug, favgame, token);
+        await loadFavGames(slug, token);
+        await loadPlayedGames(slug, token);
     }
 
-    const deleteGameFromFav = async (id_api: number, slug: string) => {
-        await deleteFavGameUseCase(slug, id_api)
-        await loadFavGames(slug)
+    const deleteGameFromFav = async (id_api: number, slug: string, token: string) => {
+        await deleteFavGameUseCase(slug, id_api, token)
+        await loadFavGames(slug, token)
     }
 
-    const deletePlayedGame = async (id_api: number, slug: string) => {
-        await deletePlayedGameUseCase(slug, id_api)
-        await loadPlayedGames(slug)
+    const deletePlayedGame = async (id_api: number, slug: string, token: string) => {
+        await deletePlayedGameUseCase(slug, id_api, token)
+        await loadPlayedGames(slug, token)
     }
 
     return{

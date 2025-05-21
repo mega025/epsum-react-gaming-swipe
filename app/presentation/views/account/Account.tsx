@@ -52,7 +52,7 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
     useFocusEffect(
         useCallback(() => {
             if(user?.slug != undefined){
-                getUserDB(user?.slug)
+                getUserDB(user?.slug, user?.access_token)
                 if (userDB != undefined)
                     console.log(userDB)
             }
@@ -97,7 +97,9 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                 console.log(formData);
 
                 if(user?.slug != undefined){
-                    updateUserDetails(user?.slug, formData)
+                    await updateUserDetails(user?.slug, user?.access_token, formData)
+                    await getUserDB(user?.slug, user?.access_token)
+                    console.log("aaaa")
                 }
             }
         }
@@ -170,7 +172,7 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                                                             }
                                                             console.log(data)
                                                             if (user?.slug != undefined)
-                                                                updateUserDetails(user?.slug, data)
+                                                                updateUserDetails(user?.slug, user?.access_token, data)
 
                                                             userDB.name = updatedFirstName
                                                             setModalVisibleFirst(!modalVisibleFirst)
@@ -238,7 +240,7 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                                                             }
                                                             console.log(data)
                                                             if (user?.slug != undefined)
-                                                                updateUserDetails(user?.slug, data)
+                                                                updateUserDetails(user?.slug, user?.access_token, data)
 
                                                             userDB.last_name = updatedLastName
                                                             setModalVisibleLast(!modalVisibleLast)
@@ -316,7 +318,7 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                                                         oldPassword: updatePasswordDTO.oldPassword,
                                                         newPassword: updatePasswordDTO.newPassword,
                                                     }
-                                                    updateUserPassword(user?.slug, passwordsDTO)
+                                                    updateUserPassword(user?.slug, user?.access_token, passwordsDTO)
                                                     console.log(updatePasswordDTO)
                                                 }
                                                 setModalVisibleLastPassword(!modalVisiblePassword)

@@ -39,7 +39,7 @@ export function FavGamesScreen({navigation = useNavigation()}: PropsStackNavigat
     useFocusEffect(
         useCallback(() => {
             if(user?.slug != undefined) {
-                loadFavGames(user?.slug)
+                loadFavGames(user?.slug, user?.access_token);
             }
         }, [user?.slug])
     );
@@ -95,7 +95,7 @@ export function FavGamesScreen({navigation = useNavigation()}: PropsStackNavigat
                                         style={styleAccount.modalAcceptButton}
                                         onPress={async () => {
                                             console.log(item.name)
-                                            await deleteGameFromFav(item.id_api, user?.slug || "");
+                                            await deleteGameFromFav(item.id_api, user?.slug || "", user?.access_token ? user?.access_token : "");
                                             setSelectedDeleteGameId(null);
                                         }}
                                     >
@@ -128,7 +128,7 @@ export function FavGamesScreen({navigation = useNavigation()}: PropsStackNavigat
                                         style={styleAccount.modalAcceptButton}
                                         onPress={async () => {
                                             console.log(item.name)
-                                            await addPlayedGame(user?.slug ? user?.slug : "", item);
+                                            await addPlayedGame(user?.slug ? user?.slug : "", item, user?.access_token ? user?.access_token : "");
                                             setSelectedPlayedGameId(null);
                                         }}
                                     >

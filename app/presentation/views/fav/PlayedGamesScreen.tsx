@@ -38,13 +38,13 @@ export function PlayedGamesScreen({navigation = useNavigation()}: PropsStackNavi
     useFocusEffect(
         useCallback(() => {
             if(user?.slug != undefined)
-                loadPlayedGames(user?.slug)
+                loadPlayedGames(user?.slug, user?.access_token)
         }, [user?.slug])
     );
 
     useEffect(() => {
         if (user?.slug !== undefined)
-            loadPlayedGames(user?.slug)
+            loadPlayedGames(user?.slug, user?.access_token)
     }, [JSON.stringify(playedListGames)]);
 
     const [selectedGameId, setSelectedGameId] = useState<number | null>(null);
@@ -88,7 +88,7 @@ export function PlayedGamesScreen({navigation = useNavigation()}: PropsStackNavi
                                         style={styleAccount.modalAcceptButton}
                                         onPress={async () => {
                                             console.log(item.name)
-                                            await deletePlayedGame(item.id_api, user?.slug || "");
+                                            await deletePlayedGame(item.id_api, user?.slug || "", user?.access_token ? user?.access_token : "");
                                             setSelectedGameId(null);
                                         }}
                                     >

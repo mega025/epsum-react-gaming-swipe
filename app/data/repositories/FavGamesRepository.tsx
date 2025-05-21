@@ -7,9 +7,13 @@ import Toast from "react-native-toast-message";
 
 
 export class FavGamesRepository implements FavGamesRepositoryInterface {
-    async loadFavGames(slug: string): Promise<FavGame[]> {
+    async loadFavGames(slug: string, token: string): Promise<FavGame[]> {
         try {
-            const response = await ApiDelivery.get(`/favgames/user/${slug}`)
+            const response = await ApiDelivery.get(`/favgames/user/${slug}`, {
+                headers: {
+                    Authorization:"Bearer "+token,
+                }
+            })
             return Promise.resolve(response.data);
         } catch (error) {
             let e = (error as AxiosError);
@@ -18,9 +22,13 @@ export class FavGamesRepository implements FavGamesRepositoryInterface {
         }
     }
 
-    async deleteFavGame(slug: string, id_api: number): Promise<ApiDeliveryResponse> {
+    async deleteFavGame(slug: string, id_api: number, token: string): Promise<ApiDeliveryResponse> {
         try {
-            const response = await ApiDelivery.delete(`/favgames/delete/${slug}/${id_api}`);
+            const response = await ApiDelivery.delete(`/favgames/delete/${slug}/${id_api}`, {
+                headers: {
+                    Authorization:"Bearer "+token,
+                }
+            });
             return Promise.resolve(response.data);
         } catch (error) {
             let e = (error as AxiosError);
@@ -29,9 +37,13 @@ export class FavGamesRepository implements FavGamesRepositoryInterface {
         }
     }
 
-    async addPlayedGame(slug: string, favgame: FavGame): Promise<ApiDeliveryResponse> {
+    async addPlayedGame(slug: string, favgame: FavGame, token: string): Promise<ApiDeliveryResponse> {
         try {
-            const response = await ApiDelivery.post(`/favgames-played/add/${slug}`, favgame);
+            const response = await ApiDelivery.post(`/favgames-played/add/${slug}`, favgame, {
+                headers: {
+                    Authorization:"Bearer "+token,
+                }
+            });
             return Promise.resolve(response.data);
         } catch (error) {
             let e = (error as AxiosError<{error:string}>);
@@ -40,9 +52,13 @@ export class FavGamesRepository implements FavGamesRepositoryInterface {
         }
     }
 
-    async deletePlayedGame(slug: string, id_api: number): Promise<ApiDeliveryResponse> {
+    async deletePlayedGame(slug: string, id_api: number, token: string): Promise<ApiDeliveryResponse> {
         try {
-            const response = await ApiDelivery.delete(`/favgames-played/delete/${slug}/${id_api}`);
+            const response = await ApiDelivery.delete(`/favgames-played/delete/${slug}/${id_api}`, {
+                headers: {
+                    Authorization:"Bearer "+token,
+                }
+            });
             return Promise.resolve(response.data);
         } catch (error) {
             let e = (error as AxiosError<{error:string}>);
@@ -51,9 +67,13 @@ export class FavGamesRepository implements FavGamesRepositoryInterface {
         }
     }
 
-    async loadPlayedGames(slug: string): Promise<FavGame[]> {
+    async loadPlayedGames(slug: string, token: string): Promise<FavGame[]> {
         try {
-            const response = await ApiDelivery.get(`/favgames-played/user/${slug}`)
+            const response = await ApiDelivery.get(`/favgames-played/user/${slug}`, {
+                headers: {
+                    Authorization:"Bearer "+token,
+                }
+            })
             return Promise.resolve(response.data);
         } catch (error) {
             let e = (error as AxiosError<{error:string}>);

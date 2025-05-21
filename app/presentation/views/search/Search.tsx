@@ -74,7 +74,7 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
     useFocusEffect(
         useCallback(() => {
             if(user?.slug != undefined) {
-                loadFavGames(user?.slug)
+                loadFavGames(user?.slug, user?.access_token)
             }
         }, [user?.slug])
     );
@@ -120,7 +120,7 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
                     if (!checkIfGameFromApiIsLiked(item.name)) {
                         try {
                             await addGameToFav(transformGameIntoFavGameInterface(item), user?.slug ? user?.slug : "");
-                            await loadFavGames(user?.slug ? user?.slug : "")
+                            await loadFavGames(user?.slug ? user?.slug : "", user?.access_token ? user?.access_token : "");
 
                         } catch (error) {
                             Toast.show({
@@ -132,9 +132,10 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
                         try {
                             await deleteGameFromFav(
                                 item.id,
-                                user?.slug ? user?.slug : ""
+                                user?.slug ? user?.slug : "",
+                                user?.access_token ? user?.access_token : "",
                             );
-                            await loadFavGames(user?.slug ? user?.slug : "")
+                            await loadFavGames(user?.slug ? user?.slug : "", user?.access_token ? user?.access_token : "")
 
                         } catch (error) {
                             Toast.show({
@@ -157,7 +158,7 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
     const searchCompanyItem = useCallback(({item} : {item:CompanyDetailsInterface}) =>(
         <View style={styleSearchCompanyItem.companyCard}>
             <TouchableOpacity
-                style={{backgroundColor: AppColors.lightPink, borderRadius: 10, marginStart: wp("3%")}}
+                style={{backgroundColor: AppColors.softWhite, borderRadius: 10, marginStart: wp("3%")}}
                 onPress={() => navigation.push("CompanyDetails", {companyId:item.id})}>
                 <Image
                     source={{
