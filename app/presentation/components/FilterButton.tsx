@@ -37,6 +37,8 @@ function FilterModal({ onApply}: FilterModalProps) {
                     'Nintendo Switch',
                     'PC (Microsoft Windows)',
                     'PlayStation 4',
+                    'PlayStation 3',
+                    'PlayStation 2',
                     'Xbox One',
                     'Nintendo 3DS',
                     'iOS',
@@ -175,7 +177,7 @@ const styles = StyleSheet.create({
         padding: 20,
     },
     modalContent: {
-        backgroundColor: AppColors.colorButton,
+        backgroundColor: AppColors.darkPurple,
         padding: 20,
         borderRadius: 12,
         maxHeight: '80%',
