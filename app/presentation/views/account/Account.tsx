@@ -26,6 +26,7 @@ import {PasswordsDTO} from "../../../domain/entities/UpdatePasswordDTO";
 import * as ImagePickerExpo from "expo-image-picker";
 import {AppColors} from "../../theme/AppTheme";
 import styles from "../auth/StylesAuthViews";
+import {removeUserUseCase} from "../../../domain/usesCases/userLocal/removeUser";
 
 export function Account({navigation = useNavigation(), route}: PropsStackNavigation){
 

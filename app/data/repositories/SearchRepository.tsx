@@ -16,7 +16,7 @@ export class SearchRepository implements SearchRepositoryInterface {
             return Promise.resolve(response.data)
         } catch (error) {
             let e = (error as AxiosError);
-            console.error("Error: ", e.message);
+            console.log("Error: ", e.message);
             return Promise.reject(e.message);
         }
     }
@@ -35,7 +35,7 @@ export class SearchRepository implements SearchRepositoryInterface {
             return Promise.resolve(response.data)
         } catch (error) {
             let e = (error as AxiosError);
-            console.error("Error: ", e.message);
+            console.log("Error: ", e.message);
             return Promise.reject(e.message);
         }
     }
@@ -80,7 +80,7 @@ export class SearchRepository implements SearchRepositoryInterface {
 
             return uniqueCompanies;
         } catch (error) {
-            console.error('Error fetching top companies:', error);
+            console.log('Error fetching top companies:', error);
             throw error;
         }
     }

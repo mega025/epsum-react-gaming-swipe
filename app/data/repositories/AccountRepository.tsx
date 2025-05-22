@@ -20,7 +20,7 @@ export class AccountRepository implements AccountRepositoryInterface {
             return Promise.resolve(response.data);
         } catch (error) {
             let e = (error as AxiosError<{error: string}>);
-            console.error(e.response);
+            console.log(e.response);
             return Promise.reject(e.response);
         }
     }
@@ -40,7 +40,7 @@ export class AccountRepository implements AccountRepositoryInterface {
             return Promise.resolve(response.data);
         } catch (error) {
             let e = (error as AxiosError<{error: string}>);
-            console.error(e.response);
+            console.log(e.response);
             return Promise.reject(e.response);
         }
     }
@@ -55,7 +55,7 @@ export class AccountRepository implements AccountRepositoryInterface {
             return Promise.resolve(response.data);
         } catch (error) {
             let e = (error as AxiosError<{error: string}>);
-            console.error(e.response?.data.error);
+            console.log(e.response?.data.error);
             Toast.show({
                 type: "error",
                 text1: e.response?.data.error,

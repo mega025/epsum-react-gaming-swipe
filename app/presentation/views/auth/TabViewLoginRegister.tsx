@@ -21,6 +21,7 @@ import {AppColors} from "../../theme/AppTheme";
 import {LoginScreen} from "./Login";
 import StylesTabBar from "./StylesTabBar";
 import stylesTabBar from "./StylesTabBar";
+import Toast from "react-native-toast-message";
 
 const renderScene = SceneMap({
     login: LoginScreen,
