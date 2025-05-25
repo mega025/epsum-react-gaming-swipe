@@ -5,6 +5,7 @@ export const AppColors = {
     blue:"#0583F2",
     orangeColor:"#b47617",
     darkPurple:"#130121",
+    darkPurpleTrasparent:"rgba(19,1,33,0.6)",
     transparent:"#00000000",
     red:"#c50a0a",
     green:"#4bc00f",

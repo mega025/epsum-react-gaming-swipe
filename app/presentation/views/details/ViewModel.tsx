@@ -6,6 +6,36 @@ import {loadCompanyDetailsUseCase} from "../../../domain/usesCases/gameDetails/l
 import {CompanyDetailsInterface} from "../../../domain/entities/Company";
 import countries from "i18n-iso-countries";
 import enLocale from "i18n-iso-countries/langs/en.json";
+import {GetUserInterface, UserInterface} from "../../../domain/entities/User";
+import {getUserDBUseCase} from "../../../domain/usesCases/account/GetUser";
+import {FavGame} from "../../../domain/entities/FavGame";
+import {loadPlayedGamesUseCase} from "../../../domain/usesCases/favGames/LoadPlayedGames";
+
+export const userDetailsViewModel = () => {
+    const [showLoading, setShowLoading] = useState(false);
+    const [userDetails, setUserDetails] = useState<GetUserInterface>()
+    const [favGames, setFavGames] = useState<FavGame[]>([])
+    const [playedGames, setPlayedGames] = useState<FavGame[]>([])
+
+    const loadUserGames = async (slug: string, token: string) => {
+        setShowLoading(true)
+        const responseFav = await loadFavGamesUseCase(slug, token);
+        const responsePlayed = await loadPlayedGamesUseCase(slug, token);
+        setFavGames(responseFav)
+        setPlayedGames(responsePlayed)
+        setShowLoading(false)
+    }
+
+    return {
+        showLoading,
+        userDetails,
+        favGames,
+        playedGames,
+        loadUserGames
+
+    }
+
+}
 
 export const gameDetailsViewModel = () => {
     const [gameDetails, setGameDetails] = useState<GameDetailsInterface>();

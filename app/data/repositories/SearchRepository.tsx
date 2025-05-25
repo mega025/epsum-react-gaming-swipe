@@ -4,6 +4,8 @@ import {CompanyDetailsInterface} from "../../domain/entities/Company";
 import {IgdbApiDelivery} from "../sources/remote/igdbAPI/IgdbApiDelivery";
 import axios, {AxiosError} from "axios";
 import {ApiDeliveryResponse} from "../sources/remote/models/ApiDeliveryResponse";
+import {GetSearchUserInterface, SearchUserDTO} from "../../domain/entities/User";
+import {ApiDelivery} from "../sources/remote/api/ApiDelivery";
 
 
 export class SearchRepository implements SearchRepositoryInterface {
@@ -82,6 +84,21 @@ export class SearchRepository implements SearchRepositoryInterface {
         } catch (error) {
             console.log('Error fetching top companies:', error);
             throw error;
+        }
+    }
+
+    async searchUsers(userParameters: SearchUserDTO, token: string): Promise<GetSearchUserInterface[]> {
+        try {
+            const response = await ApiDelivery.post("/users/search/", userParameters, {
+                headers: {
+                    Authorization:"Bearer "+token,
+                }
+            });
+            return Promise.resolve(response.data)
+        } catch (error) {
+            let e = (error as AxiosError);
+            console.log("Error: ", e.response?.data);
+            return Promise.reject(e.response?.data);
         }
     }
 

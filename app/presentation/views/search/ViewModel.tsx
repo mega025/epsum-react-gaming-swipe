@@ -5,10 +5,14 @@ import {searchMostAnticipatedGamesUseCase} from "../../../domain/usesCases/searc
 import {searchGamesByUserInputUseCase} from "../../../domain/usesCases/search/SearchGamesByUserInput";
 import {searchCompanyByUserInputUseCase} from "../../../domain/usesCases/search/SearchCompanyByUserInput";
 import {CompanyDetailsInterface} from "../../../domain/entities/Company";
+import {searchUsersUseCase} from "../../../domain/usesCases/search/SearchUsers";
+import {GetSearchUserInterface, SearchUserDTO} from "../../../domain/entities/User";
 
 const searchViewModel = () => {
     const [searchText, setSearchText] = useState("");
+    const [searchUserText, setSearchUserText] = useState("");
     const [gamesDisplayed, setGamesDisplayed] = useState<Game[]>([]);
+    const [searchedUsers, setSearchedUsers] = useState<GetSearchUserInterface[]>([]);
     const [companyDisplayed, setCompanyDisplayed] = useState<CompanyDetailsInterface[]>([]);
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(1);
@@ -32,6 +36,15 @@ const searchViewModel = () => {
         await searchGames(filters.category, filters.platform);
 
     };
+
+    const searchUsers = async (userParameters: SearchUserDTO, token: string) => {
+        setLoading(true);
+        const response = await searchUsersUseCase(userParameters, token);
+        setSearchedUsers(response)
+        setLoading(false);
+
+    }
+
     const searchGames = async (category: string | null, platform: string | null) => {
         setLoading(true);
         try {
@@ -125,6 +138,21 @@ const searchViewModel = () => {
         }
     };
 
+    const onSearchUserTextChange = async (text: string, token: string) => {
+        if (text === "") {
+            setSearchUserText("")
+            setSearchedUsers([]);
+            return;
+        }
+        setSearchUserText(text);
+        const names = text.split(" ")
+        const userParameters : SearchUserDTO = {
+            name: names[0],
+            last_name: names[1],
+        }
+        await searchUsers(userParameters, token)
+    }
+
     const loadMoreGames = () => {
         if (!loading && gamesDisplayed.length >= 13) {
             setLoading(true)
@@ -164,7 +192,11 @@ const searchViewModel = () => {
         setSelectedCategory,
         setSelectedPlatform,
         searchTopCompany,
-        companyDisplayed
+        companyDisplayed,
+        searchedUsers,
+        searchUsers,
+        searchUserText,
+        onSearchUserTextChange
     }
 }
 export default {searchViewModel}

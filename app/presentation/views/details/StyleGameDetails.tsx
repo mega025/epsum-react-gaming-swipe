@@ -49,7 +49,7 @@ const styleGameDetails = StyleSheet.create({
         fontFamily: "zen_kaku_medium",
         height: 40,
         color: AppColors.white,
-        fontSize: wp("4.7%"),
+        fontSize: wp("4.3%"),
         marginTop: hp("2.5%"),
     },
 

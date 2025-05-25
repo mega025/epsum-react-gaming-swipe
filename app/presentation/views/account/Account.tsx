@@ -121,7 +121,7 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                 <View style={styleAccount.containerPhoto}>
                     <View style={stylesProfilePicture.container}>
                         <View style={stylesProfilePicture.containerPhoto}>
-                            <Image style={stylesProfilePicture.photo}  source={userDB?.image ? {uri: `http://10.0.2.2:8000${userDB?.image}`} : require("../../../../assets/account.png")}
+                            <Image style={stylesProfilePicture.photo}  source={userDB?.image ? {uri: `http://10.0.2.2:8000${userDB?.image}`} : require("../../../../assets/account-image.jpg")}
                                 />
                         </View>
                         <TouchableOpacity style={stylesProfilePicture.changePhotoButton} onPress={selectImage}>
@@ -334,7 +334,7 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                         </Modal>
                         <Pressable
                             onPress={() => setModalVisibleLastPassword(true)}>
-                            <Text style={styleAccount.TextResetPassword}>Reset Password</Text>
+                            <Text style={styleAccount.TextResetPassword}>Change Password</Text>
                         </Pressable>
 
                     </View>
@@ -353,7 +353,7 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
     );
 }
 
-const stylesProfilePicture =StyleSheet.create({
+export const stylesProfilePicture =StyleSheet.create({
     container:{
         flex: 1,
         alignItems:"center",
@@ -366,8 +366,8 @@ const stylesProfilePicture =StyleSheet.create({
         width:100,
         height:100,
         borderRadius:50,
+        resizeMode: "contain",
         alignItems:"center",
-        resizeMode:"center",
     },
     changePhotoButton:{
         backgroundColor:AppColors.darkPink,

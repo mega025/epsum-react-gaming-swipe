@@ -164,7 +164,7 @@ export function CompanyDetails ({navigation = useNavigation()}: PropsStackNaviga
                                     </View>
                                 )}
                                 <Text style={styleGameDetails.infoTitles}>Description</Text>
-                                <Text style={styleGameDetails.summary}>{companyDetails?.description ? companyDetails.description : "No description available"}</Text>
+                                <Text style={{...styleGameDetails.summary, marginBottom: hp("4%")}}>{companyDetails?.description ? companyDetails.description : "No description available"}</Text>
                                 {companyDetails?.developed && (
                                     <View>
                                         <Text style={styleGameDetails.infoTitles}>Developed games</Text>

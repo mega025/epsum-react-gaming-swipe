@@ -7,6 +7,8 @@ import {Account} from "./app/presentation/views/account/Account";
 import {GameDetails} from "./app/presentation/views/details/GameDetails";
 import {Game} from "./app/domain/entities/Game";
 import {CompanyDetails} from "./app/presentation/views/details/CompanyDetails";
+import {UserDetails} from "./app/presentation/views/details/UserDetails";
+import {GetSearchUserInterface} from "./app/domain/entities/User";
 
 
 export type RootStackParamsList = {
@@ -14,6 +16,7 @@ export type RootStackParamsList = {
     TabViewLoginRegister: undefined;
     GameDetails: {gameId: number, likeButton: boolean};
     CompanyDetails: {companyId: number}
+    UserDetails: {userSearch: GetSearchUserInterface};
 }
 
 const Stack = createStackNavigator<RootStackParamsList>();
@@ -36,6 +39,7 @@ export default function App() {
               <Stack.Screen name="UserNavigation" component={UserNavigation} ></Stack.Screen>
               <Stack.Screen name="GameDetails" component={GameDetails} ></Stack.Screen>
               <Stack.Screen name="CompanyDetails" component={CompanyDetails} ></Stack.Screen>
+              <Stack.Screen name="UserDetails" component={UserDetails} ></Stack.Screen>
           </Stack.Navigator>
       </NavigationContainer>
   );

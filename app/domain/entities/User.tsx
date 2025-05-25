@@ -15,7 +15,16 @@ export interface GetUserInterface {
     image: string
 }
 
+export interface GetSearchUserInterface {
+    name: string
+    last_name: string
+    image: string
+    slug: string
+}
+
+
 export type UpdateUserDTO = Partial<Pick<GetUserInterface, "name" | "last_name">>
+export type SearchUserDTO = Pick<GetUserInterface, "name" | "last_name">
 
 export interface LoginUserInterface {
     email: string;

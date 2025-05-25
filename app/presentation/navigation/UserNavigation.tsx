@@ -26,14 +26,14 @@ export function UserNavigation ({navigation = useNavigation(), route}: PropsStac
             headerShown:false,
             tabBarShowLabel: false,
             tabBarStyle: {height: 55},
-            tabBarItemStyle: {justifyContent: "center", alignItems: "center", backgroundColor:AppColors.darkPurple},
+            tabBarItemStyle: {justifyContent: "center", alignItems: "center", backgroundColor: AppColors.darkPurple},
         }}
         >
             <Tab.Screen name="Home" options={{title:"Home",
                 tabBarIcon: ({color})=>(
                     <Image
                         source={require("../../../assets/brujula2.png")}
-                        style={{width:25,height:25,marginTop:15,tintColor:"white"}}/>
+                        style={{width:25,height:25,marginTop:15, tintColor:"white"}}/>
                 )}}
                         component={Home} />
             <Tab.Screen name="Fav" options={{title:"Fav",

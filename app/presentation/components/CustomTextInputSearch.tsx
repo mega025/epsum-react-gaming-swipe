@@ -6,7 +6,7 @@ interface Props {
     keyboardType: KeyboardType;
     secureTextEntry: boolean;
     onPressButtonFromInterface: (text: string) => void;
-    value: string;
+    value?: string;
 }
 
 export const CustomTextInputSearch = ({keyboardType, secureTextEntry, onPressButtonFromInterface, value}: Props) => {

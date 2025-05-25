@@ -9,7 +9,7 @@ import {
 }
     from "react-native";
 import { CustomTextInputSearch } from "../../components/CustomTextInputSearch";
-import {styleSearch, styleSearchCompanyItem, styleSearchGameItem} from "./StyleSearch";
+import {styleSearch, styleSearchCompanyItem, styleSearchGameItem, styleSearchUserItem} from "./StyleSearch";
 import {Game} from "../../../domain/entities/Game";
 import viewModel from "./ViewModel";
 import {AppColors} from "../../theme/AppTheme";
@@ -25,6 +25,11 @@ import viewModelFav from "../fav/ViewModel";
 import {PlatformItem} from "../../components/PlatformItem";
 import Toast from "react-native-toast-message";
 import {CompanyDetailsInterface} from "../../../domain/entities/Company";
+import stylesHome from "../home/StyleHome";
+import styleHome from "../home/StyleHome";
+import {GetSearchUserInterface, SearchUserDTO} from "../../../domain/entities/User";
+import {styles} from "react-native-toast-message/lib/src/components/BaseToast.styles";
+import {stylesProfilePicture} from "../account/Account";
 
 export function Search({navigation = useNavigation()}: PropsStackNavigation) {
     const {
@@ -34,6 +39,8 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
         loadMoreGames,
         onSearchTextChange,
         searchText,
+        searchUserText,
+        onSearchUserTextChange,
         searchMostAnticipatedGames,
         setSearchText,
         onApplyFilters,
@@ -43,10 +50,12 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
         setFiltersApplied,
         setSelectedCategory,
         setSelectedPlatform,
+        searchedUsers,
         searchTopCompany,
+        searchUsers,
         companyDisplayed
     } = viewModel.searchViewModel()
-    const [selectedTab, setSelectedTab] = useState<"games" | "company">("games");
+    const [selectedTab, setSelectedTab] = useState<"games" | "company" | "users">("games");
 
     useEffect(() => {
         searchMostAnticipatedGames()
@@ -82,6 +91,16 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
     const checkIfGameFromApiIsLiked = (gameName: string) => {
         return favListGames.some(game => game.name === gameName);
     }
+
+    const searchUserItem = useCallback(({item} : {item:GetSearchUserInterface}) => (
+        <TouchableOpacity style={styleSearchUserItem.container} onPress={() => navigation.push("UserDetails", {userSearch : item})}>
+            <Image source={item.image ? {uri: `http://10.0.2.2:8000${item.image}`} : require("../../../../assets/account-image.jpg")}
+                    style={styleSearchUserItem.image}
+            />
+            <Text style={styleSearchUserItem.name}>{item.name}</Text>
+            <Text style={styleSearchUserItem.name}>{item.last_name}</Text>
+        </TouchableOpacity>
+    ), [])
 
     const searchGameItem = useCallback(({item} : {item:Game}) => (
         <View style={styleSearchGameItem.gameCard}>
@@ -201,6 +220,13 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
                         >
                             <Text style={[styleSearch.tabText, selectedTab === "company" && styleSearch.tabTextSelected]}>Companies</Text>
                         </TouchableOpacity>
+
+                        <TouchableOpacity
+                            style={[styleSearch.tabButton, selectedTab === "users" && styleSearch.tabButtonSelected]}
+                            onPress={() => setSelectedTab("users")}
+                        >
+                            <Text style={[styleSearch.tabText, selectedTab === "users" && styleSearch.tabTextSelected]}>Users</Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
                 {selectedTab === "games" && (
@@ -303,6 +329,36 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
                             }}
                         />
                 </>
+                )}
+
+                {selectedTab ===  "users" && (
+                    <>
+                        <View style={styleSearch.containerHeader}>
+                            <View style={styleSearch.containerSearchInput}>
+                                <CustomTextInputSearch
+                                    keyboardType="default"
+                                    secureTextEntry={false}
+                                    value={searchUserText}
+                                    onPressButtonFromInterface={(text: string) => onSearchUserTextChange(text, user?.access_token ? user?.access_token : "")}
+                                />
+                            </View>
+                        </View>
+                        <FlatList
+                            data={searchedUsers}
+                            removeClippedSubviews={true}
+                            renderItem={searchUserItem}
+                            ListEmptyComponent={
+                                <View style={{ alignItems: "center", width: "100%", marginTop: 20 }}>
+                                    <Text style={{ ...styleSearch.emptyFlatListText, display: loading ? "none" : "flex" }}>
+                                        No results
+                                    </Text>
+                                </View>
+                            }
+                        />
+                        <View style={stylesHome.loadingIconContainer}>
+                            <ActivityIndicator style={styleHome.loading} size="large" color="#ffffff" animating={loading} />
+                        </View>
+                    </>
                 )}
             </ImageBackground>
         </View>

@@ -88,7 +88,7 @@ const styleSearch = StyleSheet.create({
     },
 
     emptyFlatListText : {
-        fontSize: 20,
+        fontSize: wp("4%"),
         color: "#ad2c2c",
         height: 28,
         fontFamily: "zen_kaku_regular",
@@ -260,5 +260,31 @@ const styleSearchCompanyItem = StyleSheet.create({
 
 });
 
+const styleSearchUserItem = StyleSheet.create({
+    container: {
+        flexDirection: "row",
+        margin: wp("3%"),
+        gap: wp("1%")
+    },
 
-export {styleSearch, styleSearchGameItem, styleSearchCompanyItem };
+    name: {
+        fontSize: wp("3.7%"),
+        lineHeight: 20,
+        verticalAlign: "middle",
+        fontFamily: "zen_kaku_regular",
+        color:AppColors.white,
+    },
+
+    image: {
+        width:wp("15%"),
+        height:wp("15%"),
+        borderRadius:50,
+        marginEnd: wp("5%"),
+        alignItems:"center",
+        resizeMode:"center",
+    }
+
+})
+
+
+export {styleSearch, styleSearchGameItem, styleSearchCompanyItem, styleSearchUserItem};
