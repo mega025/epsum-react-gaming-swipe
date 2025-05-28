@@ -130,7 +130,7 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
                                 <TouchableOpacity onPress={async () => {
                                     if (!checkIfGameFromApiIsLiked(gameDetails ? gameDetails.name : "")) {
                                         try {
-                                            await addGameToFav(transformGameIntoFavGameInterface(gameDetails), user?.slug ? user?.slug : "");
+                                            await addGameToFav(transformGameIntoFavGameInterface(gameDetails), user?.slug ? user?.slug : "", user?.access_token ? user.access_token : "");
                                             await loadFavGames(user?.slug ? user?.slug : "", user?.access_token ? user?.access_token : "")
 
                                         } catch (error) {

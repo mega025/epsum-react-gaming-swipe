@@ -27,9 +27,14 @@ export class HomeRepository implements HomeRepositoryInterface {
         }
     }
 
-    async addGameToFavorite(slug: string, videogame: FavGame): Promise<ApiDeliveryResponse> {
+    async addGameToFavorite(slug: string, videogame: FavGame, token: string): Promise<ApiDeliveryResponse> {
         try {
-            const response = await ApiDelivery.post(`/favgames/add/${slug}`, videogame);
+            const response = await ApiDelivery.post(`/favgames/add/${slug}`, videogame,
+                {
+                    headers: {
+                        Authorization: "Bearer "+token
+                    }
+                });
             return Promise.resolve(response.data)
         }  catch (error)  {
             const e = (error as AxiosError<{error:string}>);

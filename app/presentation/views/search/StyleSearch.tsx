@@ -43,12 +43,11 @@ const styleSearch = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         paddingHorizontal: wp("3%"),
-        paddingVertical: hp("1%"),
         alignSelf: "center",
     },
 
     gameCardsContainer: {
-        paddingBottom:hp("39.8%"),
+            paddingBottom:hp("37.8%"),
     },
 
     gameCover: {
@@ -75,9 +74,11 @@ const styleSearch = StyleSheet.create({
     },
 
     resultText: {
-        fontSize: 17,
+        fontSize: wp("4%"),
         color: "#fff",
         height: 28,
+        verticalAlign: "middle",
+        marginBottom: hp("0.2%"),
         fontFamily: "zen_kaku_regular",
     },
     resultTextFilter: {

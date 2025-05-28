@@ -55,7 +55,7 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
         searchUsers,
         companyDisplayed
     } = viewModel.searchViewModel()
-    const [selectedTab, setSelectedTab] = useState<"games" | "company" | "users">("games");
+    const [selectedTab, setSelectedTab] = useState<"games" | "developers" | "users">("games");
 
     useEffect(() => {
         searchMostAnticipatedGames()
@@ -138,7 +138,7 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
                 <TouchableOpacity onPress={async () => {
                     if (!checkIfGameFromApiIsLiked(item.name)) {
                         try {
-                            await addGameToFav(transformGameIntoFavGameInterface(item), user?.slug ? user?.slug : "");
+                            await addGameToFav(transformGameIntoFavGameInterface(item), user?.slug ? user?.slug : "", user?.access_token ? user.access_token : "");
                             await loadFavGames(user?.slug ? user?.slug : "", user?.access_token ? user?.access_token : "");
 
                         } catch (error) {
@@ -215,10 +215,10 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
                         </TouchableOpacity>
 
                         <TouchableOpacity
-                            style={[styleSearch.tabButton, selectedTab === "company" && styleSearch.tabButtonSelected]}
-                            onPress={() => setSelectedTab("company")}
+                            style={[styleSearch.tabButton, selectedTab === "developers" && styleSearch.tabButtonSelected]}
+                            onPress={() => setSelectedTab("developers")}
                         >
-                            <Text style={[styleSearch.tabText, selectedTab === "company" && styleSearch.tabTextSelected]}>Companies</Text>
+                            <Text style={[styleSearch.tabText, selectedTab === "developers" && styleSearch.tabTextSelected]}>Developers</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity
@@ -268,7 +268,7 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
                                     </TouchableOpacity>
                                 </View>
                             ) : (
-                                <Text style={styleSearch.resultText}>-  TOP 10  -  MOST ANTICIPATED GAMES</Text>
+                                <Text style={styleSearch.resultText}><Text style={{...styleSearch.resultText, fontFamily: "zen_kaku_medium", fontSize: wp("4.4")}}>TOP 10</Text>   Most anticipated games</Text>
                             )}
                         </View>
 
@@ -301,10 +301,10 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
                     </>
                 )}
 
-                {selectedTab === "company" && (
+                {selectedTab === "developers" && (
                 <>
                     <View style={styleSearch.resultTextContainer}>
-                        <Text style={styleSearch.resultText}>- TOP 20 - GAME DEVELOPERS</Text>
+                        <Text style={styleSearch.resultText}><Text style={{...styleSearch.resultText, fontFamily: "zen_kaku_medium", fontSize: wp("4.4")}}>TOP 20</Text>   Game developers</Text>
                     </View>
                         <FlatList
                             data={companyDisplayed}
@@ -334,7 +334,7 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
                 {selectedTab ===  "users" && (
                     <>
                         <View style={styleSearch.containerHeader}>
-                            <View style={styleSearch.containerSearchInput}>
+                            <View style={{...styleSearch.containerSearchInput, paddingVertical: hp("1%")}}>
                                 <CustomTextInputSearch
                                     keyboardType="default"
                                     secureTextEntry={false}

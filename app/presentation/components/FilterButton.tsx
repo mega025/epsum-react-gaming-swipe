@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
         padding: 20,
     },
     button: {
-        backgroundColor: '#19114b',
+        backgroundColor: AppColors.transparent,
         padding: 12,
         borderRadius: 8,
         alignItems: 'center',
@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
     buttonText: {
         color: '#fff',
         fontWeight: '600',
-        fontFamily: "zen_kaku_light",
+        fontFamily: "zen_kaku_medium",
         height:25,
     },
     modalOverlay: {
@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
         gap: 8,
     },
     optionButton: {
-        backgroundColor: '#f0f0f0',
+        backgroundColor: AppColors.darkPink,
         padding: 8,
         borderRadius: 20,
         marginRight: 8,
@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#007BFF',
     },
     optionText: {
-        color: '#333',
+        color: AppColors.white,
     },
     selectedText: {
         color: '#fff',

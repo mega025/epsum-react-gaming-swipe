@@ -66,8 +66,8 @@ const styleGameDetails = StyleSheet.create({
         color: AppColors.white,
         lineHeight: 50,
         borderBottomWidth: 2,
-        borderBottomColor: AppColors.orangeColor,
-        fontSize: wp("4.4%"),
+        borderBottomColor: AppColors.orangeColorTransparent,
+        fontSize: wp("4.2%"),
     },
 
     fav:{

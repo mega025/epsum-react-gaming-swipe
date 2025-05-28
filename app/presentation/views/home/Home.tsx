@@ -114,7 +114,7 @@ export function Home({navigation = useNavigation()}: PropsStackNavigation) {
                                         setActiveIndex(activeIndex - 1)
                                         console.log(swipesCounter+" "+user?.slug)
                                         if(user?.slug != undefined) {
-                                            await addGameToFav(transformGameIntoFavGameInterface(item), user?.slug);
+                                            await addGameToFav(transformGameIntoFavGameInterface(item), user?.slug, user.access_token);
                                         }
                                     }}
                                     onSwipedLeft={() => {
