@@ -53,7 +53,9 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
         searchedUsers,
         searchTopCompany,
         searchUsers,
-        companyDisplayed
+        companyDisplayed,
+        selectedPlatform,
+        selectedCategory,
     } = viewModel.searchViewModel()
     const [selectedTab, setSelectedTab] = useState<"games" | "developers" | "users">("games");
 
@@ -239,7 +241,7 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
                                     value={searchText}
                                     onPressButtonFromInterface={(text: string) => onSearchTextChange(text)}
                                 />
-                                <FiltroComponent onApply={onApplyFilters} />
+                                <FiltroComponent onApply={onApplyFilters} selectedPlatform={selectedPlatform} selectedGenre={selectedCategory} />
                             </View>
                         </View>
                         <View style={styleSearch.resultTextContainer}>

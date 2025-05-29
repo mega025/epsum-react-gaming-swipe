@@ -196,6 +196,8 @@ const searchViewModel = () => {
         searchedUsers,
         searchUsers,
         searchUserText,
+        selectedPlatform,
+        selectedCategory,
         onSearchUserTextChange
     }
 }

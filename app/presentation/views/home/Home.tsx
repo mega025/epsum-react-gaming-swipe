@@ -23,12 +23,12 @@ import {UseUserLocalStorage} from "../../hooks/UseUserLocalStorage";
 import {FavGame} from "../../../domain/entities/FavGame";
 import {PropsStackNavigation} from "../../interfaces/StackNav";
 import {useNavigation} from "@react-navigation/native";
+import FiltroComponent from "../../components/FilterButton";
 
 
 export function Home({navigation = useNavigation()}: PropsStackNavigation) {
 
     const tinderCardsRef = useRef<Array<CardItemHandle | null>>([]);
-    let [activeIndex, setActiveIndex] = useState<number>(9);
 
     const {
         listGames,
@@ -36,12 +36,18 @@ export function Home({navigation = useNavigation()}: PropsStackNavigation) {
         transformCoverUrl,
         showLoading,
         addGameToFav,
+        selectedGenre,
+        activeIndex,
+        setActiveIndex,
+        swipesCounter,
+        setSwipesCounter,
+        selectedPlatform,
         showMessageLoading,
+        refillSwipeGamesWithFilters,
         setMessageLoading,
         transformGameIntoFavGameInterface
     } = viewModel.homeViewModel()
     const {user} = UseUserLocalStorage()
-    let [swipesCounter, setSwipesCounter] = useState(0);
 
     const nullGenre: Genre = {name : "N/A"}
     const nullPlatform: Platform = {abbreviation : "N/A"}
@@ -55,7 +61,15 @@ export function Home({navigation = useNavigation()}: PropsStackNavigation) {
             setMessageLoading(true);
             setSwipesCounter(0);
             setActiveIndex(9)
-            refillSwipeGames()
+            if (selectedGenre == null && selectedPlatform == null)
+                refillSwipeGames()
+            else {
+                const filters = {
+                    category: selectedGenre,
+                    platform: selectedPlatform,
+                }
+                refillSwipeGamesWithFilters(filters)
+            }
         }
     }, [swipesCounter]);
 
@@ -122,6 +136,7 @@ export function Home({navigation = useNavigation()}: PropsStackNavigation) {
                                         setSwipesCounter(swipesCounter + 1);
                                         console.log(swipesCounter+" "+ activeIndex +" "+listGames.length);
                                     }}
+
                                 >
                                     <TouchableOpacity onPress={() => navigation.navigate("GameDetails", {gameId : item.id, likeButton: false})}>
                                         <Image
@@ -169,6 +184,9 @@ export function Home({navigation = useNavigation()}: PropsStackNavigation) {
                                 </TinderCard>
                                 <View style={styleHome.buttonsContainer}>
                                     <XButton onPress={() =>  tinderCardsRef.current[activeIndex]?.swipeLeft()}></XButton>
+                                    <View style={{position: "absolute", start: wp("26%"), top: hp("4%")}}>
+                                        <FiltroComponent onApply={refillSwipeGamesWithFilters} selectedGenre={selectedGenre} selectedPlatform={selectedPlatform}  />
+                                    </View>
                                     <Image source={require("../../../../assets/logo.png")} style={stylesHome.logo}></Image>
                                     <LikeButton onPress={() => tinderCardsRef.current[activeIndex]?.swipeRight()}></LikeButton>
                                 </View>
@@ -180,13 +198,13 @@ export function Home({navigation = useNavigation()}: PropsStackNavigation) {
             <Text style={{color: "#FFF",
                 fontSize:20,
                 zIndex: 99,
-                top: 400,
+                top: hp("45%"),
                 bottom: 0,
-                left: 100,
+                left: wp("33%"),
                 right: 0,
                 position: "absolute",
                 fontFamily: "zen_kaku_light",
-                display: showMessageLoading ? "flex" : "none"}}>Loading more games...</Text>
+                display: showMessageLoading ? "flex" : "none"}}>Loading games...</Text>
             <View style={stylesHome.loadingIconContainer}>
                 <ActivityIndicator style={styleHome.loading} size="large" color="#ffffff" animating={showLoading}/>
             </View>

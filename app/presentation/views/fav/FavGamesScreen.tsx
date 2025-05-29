@@ -20,11 +20,7 @@ import {AppColors} from "../../theme/AppTheme";
 import {useFocusEffect, useNavigation} from "@react-navigation/native";
 import Toast from "react-native-toast-message";
 import styleAccount from "../account/StyleAccount";
-import {CustomTextInput} from "../../components/CustomTextInput";
-import {UserInterface} from "../../../domain/entities/User";
-import App from "../../../../App";
 import {PropsStackNavigation} from "../../interfaces/StackNav";
-import {addPlayedGameUseCase} from "../../../domain/usesCases/favGames/AddPlayedGame";
 
 
 export function FavGamesScreen({navigation = useNavigation()}: PropsStackNavigation) {

@@ -6,13 +6,19 @@ import {FavGame} from "../../../domain/entities/FavGame";
 import viewModel from "../fav/ViewModel";
 import {refillGamesFromSwiperUseCase} from "../../../domain/usesCases/home/RefillGamesFromSwiper";
 import {addGameToFavoriteUseCase} from "../../../domain/usesCases/home/AddGameToFavorite";
+import {refillGamesFromSwiperWithFiltersUseCase} from "../../../domain/usesCases/home/RefillGamesFromSwiperWithFilters";
 
 
 export const homeViewModel = () => {
 
     let [listGames, setListGames] = useState<Game[]>([]);
     let [showLoading, setShowLoading] = useState(true);
+    let [selectedPlatform, setSelectedPlatform] = useState<string | null>(null);
+    let [selectedGenre, setSelectedGenre] = useState<string | null>(null);
     let [showMessageLoading, setMessageLoading] = useState(false);
+    let [activeIndex, setActiveIndex] = useState<number>(9);
+    let [swipesCounter, setSwipesCounter] = useState(0);
+
     const {favListGames} = viewModel.favScreenViewModel();
 
     const refillSwipeGames = async () => {
@@ -21,6 +27,18 @@ export const homeViewModel = () => {
         const response = await refillGamesFromSwiperUseCase()
         setListGames(response)
         setShowLoading(false)
+        setMessageLoading(false);
+    }
+
+    const refillSwipeGamesWithFilters = async (filters: { category: string | null; platform: string | null }) => {
+        setMessageLoading(true)
+        setListGames([]);
+        setSelectedPlatform(filters.platform);
+        setSelectedGenre(filters.category);
+        setSwipesCounter(0);
+        setActiveIndex(9)
+        const response = await refillGamesFromSwiperWithFiltersUseCase(filters.platform, filters.category);
+        setListGames(response)
         setMessageLoading(false);
     }
 
@@ -61,8 +79,15 @@ export const homeViewModel = () => {
         showLoading,
         setShowLoading,
         addGameToFav,
+        activeIndex,
+        swipesCounter,
+        setActiveIndex,
+        setSwipesCounter,
         showMessageLoading,
         setMessageLoading,
+        refillSwipeGamesWithFilters,
+        selectedGenre,
+        selectedPlatform,
         transformGameIntoFavGameInterface
     }
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
     View,
     Text,
@@ -6,68 +6,62 @@ import {
     Modal,
     StyleSheet,
     ActivityIndicator,
-    ScrollView,
+    ScrollView, Image,
 } from 'react-native';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { IgdbApiDelivery } from '../../data/sources/remote/igdbAPI/IgdbApiDelivery';
 import {AppColors} from "../theme/AppTheme";
+import {useFocusEffect} from "@react-navigation/native";
 
 interface FilterModalProps {
     onApply: (filters: { category: string | null; platform: string | null }) => void;
+    selectedPlatform: string | null;
+    selectedGenre: string | null;
 }
 
-function FilterModal({ onApply}: FilterModalProps) {
+function FilterModal({ onApply, selectedGenre, selectedPlatform}: FilterModalProps) {
     const [modalVisible, setModalVisible] = useState(false);
     const [categories, setCategories] = useState<string[]>([]);
     const [platforms, setPlatforms] = useState<string[]>([]);
-    const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-    const [selectedPlatform, setSelectedPlatform] = useState<string | null>(null);
+    const [selectedCategoryInModal, setSelectedCategoryInModal] = useState<string | null>(null);
+    const [selectedPlatformInModal, setSelectedPlatformInModal] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
+    useFocusEffect(
+        useCallback(() => {
         const fetchFilters = async () => {
             try {
                 setLoading(true);
-
-                const genreRes = await IgdbApiDelivery.post('genres', 'fields name; limit 100;');
-                const platRes = await IgdbApiDelivery.post('platforms', 'fields name; limit 500;');
-
+                const genreRes = await IgdbApiDelivery.post('genres', 'fields name; limit 30;');
                 const popularPlatforms = [
                     'PlayStation 5',
-                    'Xbox Series X',
-                    'Nintendo Switch',
+                    'Xbox Series X|S',
+                    'Nintendo Switch 2',
                     'PC (Microsoft Windows)',
                     'PlayStation 4',
+                    'Xbox One',
+                    'Nintendo Switch',
                     'PlayStation 3',
                     'PlayStation 2',
-                    'Xbox One',
+                    'Xbox 360',
                     'Nintendo 3DS',
-                    'iOS',
-                    'Game Boy Advance',
-                    'Xbox',
                     'Nintendo DS',
-                    'Nintendo Switch 2',
-                    'Game Boy',
-                    'Xbox Series X|S',
+                    'iOS',
                     'Android',
                 ];
 
-                const filteredPlatforms = platRes.data.filter((platform: any) =>
-                    popularPlatforms.some(popularPlatform =>
-                        platform.name.toLowerCase() === popularPlatform.toLowerCase()
-                    )
-                );
-
                 setCategories(genreRes.data.map((c: { name: string }) => c.name));
-                setPlatforms(filteredPlatforms.map((p: { name: string }) => p.name));
-
+                setPlatforms(popularPlatforms);
+                setSelectedPlatformInModal(selectedPlatform);
+                setSelectedCategoryInModal(selectedGenre);
                 setLoading(false);
             } catch (err) {
-                console.error('Error fetching filters:', err);
+                console.log('Error fetching filters:', err);
                 setLoading(false);
             }
         };
         fetchFilters();
-    }, []);
+    }, []));
 
     const renderOptions = (data: string[], selected: string | null, setSelected: (val: string | null) => void) => (
         <View style={styles.optionsContainer}>
@@ -87,11 +81,9 @@ function FilterModal({ onApply}: FilterModalProps) {
 
     const applyFilters = () => {
         onApply({
-            category: selectedCategory,
-            platform: selectedPlatform,
+            category: selectedCategoryInModal,
+            platform: selectedPlatformInModal,
         });
-        setSelectedCategory(null);
-        setSelectedPlatform(null);
 
         setModalVisible(false);
 
@@ -100,13 +92,15 @@ function FilterModal({ onApply}: FilterModalProps) {
     return (
         <View style={styles.container}>
             <TouchableOpacity style={styles.button} onPress={() => setModalVisible(true)}>
-                <Text style={styles.buttonText}>Filter</Text>
+                <Image source={require("../../../assets/filter-icon.png")}
+                       style={{width: wp("7%"), height: wp("7%"), tintColor: AppColors.white}}
+                />
             </TouchableOpacity>
 
             <Modal
                 visible={modalVisible}
-                animationType="slide"
-                transparent
+                animationType="fade"
+                transparent={true}
                 onRequestClose={() => setModalVisible(false)}
             >
                 <View style={styles.modalOverlay}>
@@ -123,13 +117,13 @@ function FilterModal({ onApply}: FilterModalProps) {
                             <ActivityIndicator size="large" />
                         ) : (
                             <ScrollView>
-                                <Text style={styles.label}>Categories</Text>
-                                <View style={styles.divider} />
-                                {renderOptions(categories, selectedCategory, setSelectedCategory)}
-                                <View style={styles.divider} />
                                 <Text style={styles.label}>Platforms</Text>
                                 <View style={styles.divider} />
-                                {renderOptions(platforms, selectedPlatform, setSelectedPlatform)}
+                                {renderOptions(platforms, selectedPlatformInModal, setSelectedPlatformInModal)}
+                                <View style={styles.divider} />
+                                <Text style={styles.label}>Categories</Text>
+                                <View style={styles.divider} />
+                                {renderOptions(categories, selectedCategoryInModal, setSelectedCategoryInModal)}
                             </ScrollView>
                         )}
                         <TouchableOpacity
@@ -166,13 +160,13 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         color: '#fff',
-        fontWeight: '600',
-        fontFamily: "zen_kaku_medium",
+        fontSize: wp("3.9%"),
+        fontFamily: "zen_kaku_bold",
         height:25,
     },
     modalOverlay: {
         flex: 1,
-        backgroundColor: 'rgba(246,237,237,0.3)',
+        backgroundColor: 'rgba(0,0,0,0.48)',
         justifyContent: 'center',
         padding: 20,
     },
@@ -191,12 +185,12 @@ const styles = StyleSheet.create({
         fontFamily: "zen_kaku_medium",
     },
     label: {
-        fontWeight: '600',
         marginTop: 10,
+        textAlign: "center",
         marginBottom: 6,
         fontSize: 16,
         color: AppColors.white,
-        fontFamily: "zen_kaku_light",
+        fontFamily: "zen_kaku_medium",
         height: 25,
     },
     optionsContainer: {
@@ -212,24 +206,23 @@ const styles = StyleSheet.create({
         marginBottom: 8,
     },
     selectedOption: {
-        backgroundColor: '#007BFF',
+        backgroundColor: AppColors.orangeColor,
     },
     optionText: {
         color: AppColors.white,
     },
     selectedText: {
         color: '#fff',
-        fontWeight: '600',
     },
     closeButton: {
         position: 'absolute',
-        top: 10,
-        right: 10,
+        top: wp("2%"),
+        right: wp("4%"),
         zIndex: 1,
         padding: 8,
     },
     closeButtonText: {
-        fontSize: 22,
-        color: '#ff0000',
+        fontSize: wp("5%"),
+        color: AppColors.red,
     },
 });

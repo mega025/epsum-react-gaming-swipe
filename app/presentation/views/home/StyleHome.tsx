@@ -7,8 +7,8 @@ const stylesHome = StyleSheet.create({
         backgroundColor: AppColors.darkPurple,
     },
     logo: {
-        width: wp("15%"),
-        height: wp("15%"),
+        width: wp("13%"),
+        height: wp("13%"),
         alignSelf: "center",
     },
     overlayLabelContainer: {
