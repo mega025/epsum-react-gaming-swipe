@@ -5,15 +5,17 @@ interface Props {
     label: string,
     keyboardType:KeyboardType;
     secureTextEntry: boolean
+    maxLenght: number
     onChangeText: (text: string) => void;
 }
 
-export const CustomTextInputInline = ({label ,keyboardType ,secureTextEntry, onChangeText}: Props) => {
+export const CustomTextInputInline = ({label, maxLenght, keyboardType,secureTextEntry, onChangeText}: Props) => {
     return (
         <View>
             <Text style={styles.formInputLabel}>{label}</Text>
             <TextInput style={styles.formInputInline}
                     keyboardType={keyboardType}
+                    maxLength={maxLenght}
                     secureTextEntry={secureTextEntry}
                     onChangeText={(text) => onChangeText(text)}
             ></TextInput>

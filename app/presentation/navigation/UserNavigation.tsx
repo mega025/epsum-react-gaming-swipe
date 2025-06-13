@@ -10,7 +10,8 @@ import {UseUserLocalStorage} from "../hooks/UseUserLocalStorage";
 import {useNavigation} from "@react-navigation/native";
 import {PropsStackNavigation} from "../interfaces/StackNav";
 import {setupValidTokenInterceptor} from "../../data/sources/remote/api/ApiDelivery";
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen"; // Para usar % de la pantalla
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
+import {removeUserUseCase} from "../../domain/usesCases/userLocal/removeUser"; // Para usar % de la pantalla
 
 const Tab = createBottomTabNavigator();
 

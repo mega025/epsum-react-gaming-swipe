@@ -17,7 +17,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-nat
 import {UseUserLocalStorage} from "../../hooks/UseUserLocalStorage";
 import {FavGame} from "../../../domain/entities/FavGame";
 import {AppColors} from "../../theme/AppTheme";
-import {useFocusEffect, useNavigation} from "@react-navigation/native";
+import {useFocusEffect, useIsFocused, useNavigation} from "@react-navigation/native";
 import Toast from "react-native-toast-message";
 import styleAccount from "../account/StyleAccount";
 import {CustomTextInput} from "../../components/CustomTextInput";
@@ -30,22 +30,20 @@ export function PlayedGamesScreen({navigation = useNavigation()}: PropsStackNavi
     const {playedListGames,
         loadPlayedGames,
         showLoading,
+        addPlayedGame,
         deletePlayedGame,
         deleteGameFromFav} = viewModel.favScreenViewModel();
     const {user} = UseUserLocalStorage()
     const [modalVisibleDeleteGame, setModalVisibleDeleteGame] = useState(false);
 
+    const isFocused = useIsFocused();
+
     useFocusEffect(
         useCallback(() => {
             if(user?.slug != undefined)
                 loadPlayedGames(user?.slug, user?.access_token)
-        }, [user?.slug])
+        }, [user?.slug, addPlayedGame])
     );
-
-    useEffect(() => {
-        if (user?.slug !== undefined)
-            loadPlayedGames(user?.slug, user?.access_token)
-    }, [JSON.stringify(playedListGames)]);
 
     const [selectedGameId, setSelectedGameId] = useState<number | null>(null);
 

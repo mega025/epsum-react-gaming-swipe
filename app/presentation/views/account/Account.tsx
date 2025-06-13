@@ -152,9 +152,11 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                                                 <CustomTextInput
                                                     label={"First name"}
                                                     keyboardType={"default"}
+                                                    maxLenght={15}
                                                     secureTextEntry={false}
                                                     onChangeText={(text) => setUpdateFirstName(text)}
                                                 />
+                                                <Text style={styleAccount.charactersCounter}>{updatedFirstName.length}/15</Text>
                                                 <View style={styleAccount.containerButton}>
                                                     <Pressable
                                                         style={styleAccount.modalCancelButton}
@@ -220,9 +222,11 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                                                 <CustomTextInput
                                                     label={"Last name"}
                                                     keyboardType={"default"}
+                                                    maxLenght={15}
                                                     secureTextEntry={false}
                                                     onChangeText={(text) => setUpdateLastName(text)}
                                                 />
+                                                <Text style={styleAccount.charactersCounter}>{updatedLastName.length}/15</Text>
                                                 <View style={styleAccount.containerButton}>
                                                     <Pressable
                                                         style={styleAccount.modalCancelButton}
@@ -236,7 +240,7 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                                                             if(userDB != undefined) {
                                                                 if (updatedLastName === "") {
                                                                     setErrorMessage("Empty fields are not allowed")
-                                                                    setModalVisibleFirst(!modalVisibleLast)
+                                                                    setModalVisibleLast(!modalVisibleLast)
                                                                 } else {
                                                                     const data: UpdateUserDTO = {
                                                                         last_name: updatedLastName

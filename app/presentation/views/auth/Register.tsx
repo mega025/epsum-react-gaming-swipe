@@ -33,11 +33,13 @@ export function RegisterScreen() {
                         <View style={styles.formInlineInputsContainer}>
                             <CustomTextInputInline label={"Name"}
                                              keyboardType={"default"}
+                                             maxLenght={15}
                                              secureTextEntry={false}
                                              onChangeText={(text) => onChangeRegister("name", text)}/>
 
                             <CustomTextInputInline label={"Last name"}
                                              keyboardType={"default"}
+                                             maxLenght={15}
                                              secureTextEntry={false}
                                              onChangeText={(text) => onChangeRegister("lastName", text)}/>
                         </View>

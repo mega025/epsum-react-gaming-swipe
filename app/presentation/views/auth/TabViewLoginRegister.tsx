@@ -22,6 +22,7 @@ import {LoginScreen} from "./Login";
 import StylesTabBar from "./StylesTabBar";
 import stylesTabBar from "./StylesTabBar";
 import Toast from "react-native-toast-message";
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const renderScene = SceneMap({
     login: LoginScreen,
@@ -54,12 +55,17 @@ export default function TabViewLoginRegister({}) {
     ]);
 
     return (
-        <TabView
-            navigationState={{ index, routes }}
-            renderScene={renderScene}
-            onIndexChange={setIndex}
-            renderTabBar={renderTabBar}
-            initialLayout={{ width: layout.width }}
-        />
+        <KeyboardAwareScrollView
+            enableAutomaticScroll={false}
+            keyboardShouldPersistTaps="handled"
+            contentContainerStyle={{ flex: 1 }}>
+            <TabView
+                navigationState={{ index, routes }}
+                renderScene={renderScene}
+                onIndexChange={setIndex}
+                renderTabBar={renderTabBar}
+                initialLayout={{ width: layout.width }}
+            />
+        </KeyboardAwareScrollView>
     );
 }

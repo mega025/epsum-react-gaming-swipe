@@ -8,6 +8,10 @@ const styleAccount = StyleSheet.create({
         alignItems: "center",
     },
 
+    charactersCounter: {
+        color: AppColors.white,
+    },
+
     passwordHint: {
         fontFamily: "zen_kaku_regular",
         color: AppColors.white,

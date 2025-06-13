@@ -9,6 +9,7 @@ import {deleteFavGameUseCase} from "../../../domain/usesCases/favGames/DeleteFav
 import {loadPlayedGamesUseCase} from "../../../domain/usesCases/favGames/LoadPlayedGames";
 import {addPlayedGameUseCase} from "../../../domain/usesCases/favGames/AddPlayedGame";
 import {deletePlayedGameUseCase} from "../../../domain/usesCases/favGames/DeletePlayedGame";
+import {PropsStackNavigation} from "../../interfaces/StackNav";
 
 
 export const favScreenViewModel = () => {

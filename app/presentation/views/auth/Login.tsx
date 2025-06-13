@@ -9,6 +9,7 @@ import Toast from "react-native-toast-message";
 import {CustomTextInputPassword} from "../../components/CustomTextInputPassword";
 import stylesAuthViews from "./StylesAuthViews";
 import {useNavigation} from "@react-navigation/native";
+import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 
 export function LoginScreen({navigation = useNavigation(), route}: PropsStackNavigation){
 
@@ -33,6 +34,7 @@ export function LoginScreen({navigation = useNavigation(), route}: PropsStackNav
 
     return (
         <SafeAreaView style={stylesAuthViews.container}>
+
             <ImageBackground source={require("../../../../assets/background.png")}
                              style={{width: '100%', height: '100%'}}>
                 <View style={styles.formContainer}>
