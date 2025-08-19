@@ -15,6 +15,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#19114b",
         borderRadius: 4,
         padding: 7,
+        elevation:30,
         paddingHorizontal: 10,
         alignSelf:'baseline',
         alignItems: "center",

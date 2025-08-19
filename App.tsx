@@ -1,5 +1,5 @@
 import {NavigationContainer} from "@react-navigation/native";
-import {createStackNavigator} from "@react-navigation/stack";
+import {CardStyleInterpolators, createStackNavigator} from "@react-navigation/stack";
 import {useFonts} from "expo-font";
 import TabViewLoginRegister from "./app/presentation/views/auth/TabViewLoginRegister";
 import {UserNavigation} from "./app/presentation/navigation/UserNavigation";
@@ -9,6 +9,7 @@ import {Game} from "./app/domain/entities/Game";
 import {CompanyDetails} from "./app/presentation/views/details/CompanyDetails";
 import {UserDetails} from "./app/presentation/views/details/UserDetails";
 import {GetSearchUserInterface} from "./app/domain/entities/User";
+
 
 
 export type RootStackParamsList = {
@@ -34,7 +35,10 @@ export default function App() {
 
     return (
       <NavigationContainer>
-          <Stack.Navigator screenOptions={{ headerShown: false }}>
+          <Stack.Navigator screenOptions={{
+              headerShown: false,
+              gestureEnabled: true,
+              cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, }}>
               <Stack.Screen name="TabViewLoginRegister" component={TabViewLoginRegister}/>
               <Stack.Screen name="UserNavigation" component={UserNavigation} ></Stack.Screen>
               <Stack.Screen name="GameDetails" component={GameDetails} ></Stack.Screen>

@@ -96,7 +96,7 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
 
     const searchUserItem = useCallback(({item} : {item:GetSearchUserInterface}) => (
         <TouchableOpacity style={styleSearchUserItem.container} onPress={() => navigation.push("UserDetails", {userSearch : item})}>
-            <Image source={item.image ? {uri: `http://10.0.2.2:8000${item.image}`} : require("../../../../assets/account-image.jpg")}
+            <Image source={item.image ? {uri: `http://192.168.1.91:8000${item.image}`} : require("../../../../assets/account-image.jpg")}
                     style={styleSearchUserItem.image}
             />
             <Text style={styleSearchUserItem.name}>{item.name}</Text>
@@ -241,7 +241,9 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
                                     value={searchText}
                                     onPressButtonFromInterface={(text: string) => onSearchTextChange(text)}
                                 />
-                                <FiltroComponent onApply={onApplyFilters} selectedPlatform={selectedPlatform} selectedGenre={selectedCategory} />
+                                <View style={{marginTop: wp("-3%")}}>
+                                    <FiltroComponent onApply={onApplyFilters} selectedPlatform={selectedPlatform} selectedGenre={selectedCategory} />
+                                </View>
                             </View>
                         </View>
                         <View style={styleSearch.resultTextContainer}>

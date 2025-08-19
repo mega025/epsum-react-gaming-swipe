@@ -8,19 +8,19 @@ const stylesHome = StyleSheet.create({
     },
     logo: {
         width: wp("13%"),
-        height: wp("13%"),
+        height: wp("12%"),
         alignSelf: "center",
     },
     overlayLabelContainer: {
-        width: wp("78%"),
-        height: hp("66%"),
-        borderRadius: hp("2%"),
+        width: wp("77%"),
+        height: hp("73%"),
+        borderRadius: hp("2.5%"),
         justifyContent: "center",
         alignItems: "center",
     },
     wrapper: {
         flex: 1,
-        marginBottom: hp("7%"),
+        marginBottom: hp("9%"),
     },
     cardContainer: {
         ...StyleSheet.absoluteFillObject,
@@ -51,7 +51,8 @@ const stylesHome = StyleSheet.create({
     },
     image: {
         width: "100%",
-        height: hp("45%"),
+        height: hp("50.6%"),
+        resizeMode:"contain",
         borderTopRightRadius: 20,
         borderTopLeftRadius: 20,
     },
@@ -62,7 +63,7 @@ const stylesHome = StyleSheet.create({
     },
     ratingText: {
         fontSize: wp("5%"),
-        backgroundColor: "#00da08",
+        backgroundColor: AppColors.orangeColor,
         color: "#FFF",
         fontWeight: "bold",
         padding: wp("2%"),
@@ -79,7 +80,7 @@ const stylesHome = StyleSheet.create({
         width: wp("55%"),
         height: hp("8%"),
         verticalAlign: "middle",
-        fontFamily: "zen_kaku_regular",
+        fontFamily: "zen_kaku_medium",
     },
     firstRowCardContainer: {
         flexDirection: "row",
@@ -102,8 +103,8 @@ const stylesHome = StyleSheet.create({
     buttonsContainer: {
         alignSelf: "center",
         flexDirection: "row",
-        gap: wp("13%"),
-        top: wp("92%"),
+        gap: wp("16%"),
+        top: wp("86%"),
     },
 });
 

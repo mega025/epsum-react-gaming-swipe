@@ -123,7 +123,7 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                         <View style={styleAccount.containerPhoto}>
                             <View style={stylesProfilePicture.container}>
                                 <View style={stylesProfilePicture.containerPhoto}>
-                                    <Image style={stylesProfilePicture.photo}  source={userDB?.image ? {uri: `http://10.0.2.2:8000${userDB?.image}`} : require("../../../../assets/account-image.jpg")}
+                                    <Image style={stylesProfilePicture.photo}  source={userDB?.image ? {uri: `http://192.168.1.91:8000${userDB?.image}`} : require("../../../../assets/account-image.jpg")}
                                     />
                                 </View>
                                 <TouchableOpacity style={stylesProfilePicture.changePhotoButton} onPress={selectImage}>

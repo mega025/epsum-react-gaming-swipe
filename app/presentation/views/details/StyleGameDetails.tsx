@@ -16,18 +16,24 @@ const styleGameDetails = StyleSheet.create({
         flexDirection: "row",
         paddingTop: hp("13%"),
         paddingBottom: hp("2%"),
+        paddingHorizontal: hp("2%"),
         elevation: 30,
         gap: 20,
         backgroundColor: AppColors.darkPurple,
 
     },
 
+    goBackIconTouchable: {
+        start:wp("3%"),
+        bottom: hp("32%"),
+        position: "absolute",
+    },
+
     goBackIcon: {
         width: wp("7%"),
         height: hp("3%"),
-        tintColor: "white",
-        position: "absolute",
-        bottom: hp("30%"),
+        resizeMode:"contain",
+        tintColor: "white"
     },
 
     name: {
@@ -46,11 +52,14 @@ const styleGameDetails = StyleSheet.create({
     },
 
     infoTitles: {
-        fontFamily: "zen_kaku_medium",
-        height: 40,
+        fontFamily: "zen_kaku_bold",
+        lineHeight: hp("5%"),
+        textTransform: "uppercase",
         color: AppColors.white,
         fontSize: wp("4.3%"),
         marginTop: hp("2.5%"),
+        marginBottom: hp("1.5%"),
+
     },
 
     summary: {

@@ -11,11 +11,10 @@ import {useNavigation} from "@react-navigation/native";
 import {PropsStackNavigation} from "../interfaces/StackNav";
 import {setupValidTokenInterceptor} from "../../data/sources/remote/api/ApiDelivery";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
-import {removeUserUseCase} from "../../domain/usesCases/userLocal/removeUser"; // Para usar % de la pantalla
 
 const Tab = createBottomTabNavigator();
 
-export function UserNavigation ({navigation = useNavigation(), route}: PropsStackNavigation) {
+export function UserNavigation ({navigation = useNavigation()}: PropsStackNavigation) {
     const {user} = UseUserLocalStorage()
 
     useEffect(() => {
@@ -35,7 +34,7 @@ export function UserNavigation ({navigation = useNavigation(), route}: PropsStac
                 tabBarIcon: ({color})=>(
                     <Image
                         source={require("../../../assets/brujula2.png")}
-                        style={{width:25,height:25,marginTop:15, tintColor:"white"}}/>
+                        style={stylesTabBarItems.item}/>
                 )}}
                         component={Home} />
             <Tab.Screen name="Fav" options={{title:"Fav",
@@ -68,6 +67,7 @@ const stylesTabBarItems = StyleSheet.create({
         width:25,
         height:25,
         paddingHorizontal: wp("2%"),
+        resizeMode:"contain",
         marginTop:15,
         tintColor:"white"
     }

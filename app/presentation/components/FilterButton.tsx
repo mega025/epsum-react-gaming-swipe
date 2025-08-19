@@ -148,16 +148,12 @@ const styles = StyleSheet.create({
         marginVertical: 10,
     },
     container: {
-        padding: 20,
+        paddingHorizontal: wp("5.4%"),
     },
     button: {
         backgroundColor: AppColors.transparent,
-        padding: 12,
-        borderRadius: 8,
-        alignItems: 'center',
-        minWidth:"auto",
-        marginBottom: 12,
     },
+
     buttonText: {
         color: '#fff',
         fontSize: wp("3.9%"),

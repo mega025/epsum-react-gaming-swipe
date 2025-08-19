@@ -53,7 +53,7 @@ const styleAccount = StyleSheet.create({
         fontSize: wp("4.5%"),
         height: hp("4%"),
         color: AppColors.white,
-        fontFamily: "zen_kaku_regular",
+        fontFamily: "zen_kaku_medium",
     },
     containerPhoto: {
         alignItems: "center",
@@ -70,7 +70,7 @@ const styleAccount = StyleSheet.create({
         marginLeft: wp("10%"),
         fontSize: wp("4.9%"),
         color: AppColors.white,
-        fontFamily: "zen_kaku_regular",
+        fontFamily: "zen_kaku_medium",
     },
     Name: {
         fontSize: wp("7.3%"),

@@ -99,7 +99,7 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
                     <>
                     <ScrollView style={{paddingBottom: hp("60%")}} showsVerticalScrollIndicator={false}>
                         <View style={styleGameDetails.header}>
-                            <TouchableOpacity onPress={navigation.goBack}>
+                            <TouchableOpacity onPress={() => navigation.goBack()} style={styleGameDetails.goBackIconTouchable}>
                                 <Image source={require("../../../../assets/go-back-icon.png")}
                                        style={styleGameDetails.goBackIcon}/>
                             </TouchableOpacity>

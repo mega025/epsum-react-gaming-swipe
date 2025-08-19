@@ -19,11 +19,9 @@ import React, {useCallback, useEffect, useState} from "react";
 import App, {RootStackParamsList} from "../../../../App";
 import {styleGameDetails, styleSimilarGame} from "./StyleGameDetails";
 import {AppColors} from "../../theme/AppTheme";
-import countries from 'i18n-iso-countries';
-import enLocale from 'i18n-iso-countries/langs/en.json';
 import {SimilarGame} from "../../../domain/entities/Game";
 import {homeViewModel} from "../home/ViewModel";
-import {white} from "react-native-paper/lib/typescript/styles/themes/v2/colors";
+
 
 
 type CompanyDetailsRouteProp = RouteProp<RootStackParamsList, "CompanyDetails">;
@@ -133,9 +131,9 @@ export function CompanyDetails ({navigation = useNavigation()}: PropsStackNaviga
                     <>
                         <ScrollView style={{paddingBottom: hp("60%")}} showsVerticalScrollIndicator={false}>
                             <View style={{...styleGameDetails.header, flexDirection: "column", paddingBottom: 0, alignItems:"center"}}>
-                                <TouchableOpacity onPress={navigation.goBack}>
+                                <TouchableOpacity onPress={navigation.goBack} style={{...styleGameDetails.goBackIconTouchable, bottom: hp("37%")}}>
                                     <Image source={require("../../../../assets/go-back-icon.png")}
-                                           style={{...styleGameDetails.goBackIcon, bottom: hp("3"), end: wp("40%")}} />
+                                           style={styleGameDetails.goBackIcon} />
                                 </TouchableOpacity>
                                 <View style={{width: wp("100%"), alignItems: "center", backgroundColor: AppColors.softWhite}}>
                                     <Image

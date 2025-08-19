@@ -116,8 +116,8 @@ export function Home({navigation = useNavigation()}: PropsStackNavigation) {
                             >
                                 <TinderCard
                                     ref={(el) => (tinderCardsRef.current[index] = el)}
-                                    cardWidth={wp("78%")}
-                                    cardHeight={hp("66%")}
+                                    cardWidth={wp("77%")}
+                                    cardHeight={hp("73%")}
                                     disableBottomSwipe={true}
                                     disableTopSwipe={true}
                                     OverlayLabelRight={OverlayRight}
@@ -178,13 +178,13 @@ export function Home({navigation = useNavigation()}: PropsStackNavigation) {
                                                       scrollEnabled={true}
                                                       nestedScrollEnabled={true}/>
                                             <Text
-                                                style={{fontSize: 17, fontFamily: "zen_kaku_regular"}}>{item.release_dates ? item.release_dates[0].y : "N/A"}</Text>
+                                                style={{fontSize: 17, fontFamily: "zen_kaku_medium"}}>{item.release_dates ? item.release_dates[0].y : "N/A"}</Text>
                                         </View>
                                     </View>
                                 </TinderCard>
                                 <View style={styleHome.buttonsContainer}>
                                     <XButton onPress={() =>  tinderCardsRef.current[activeIndex]?.swipeLeft()}></XButton>
-                                    <View style={{position: "absolute", start: wp("26%"), top: hp("4%")}}>
+                                    <View style={{position:"absolute", start: wp("30%"), top: hp("9%")}}>
                                         <FiltroComponent onApply={refillSwipeGamesWithFilters} selectedGenre={selectedGenre} selectedPlatform={selectedPlatform}  />
                                     </View>
                                     <Image source={require("../../../../assets/logo.png")} style={stylesHome.logo}></Image>

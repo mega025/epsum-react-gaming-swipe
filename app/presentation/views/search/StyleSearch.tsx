@@ -41,13 +41,13 @@ const styleSearch = StyleSheet.create({
     containerSearchInput: {
         flexDirection: "row",
         alignItems: "center",
-        justifyContent: "center",
         paddingHorizontal: wp("3%"),
+        paddingVertical: hp("2%"),
         alignSelf: "center",
     },
 
     gameCardsContainer: {
-            paddingBottom:hp("37.8%"),
+        paddingBottom:hp("37.8%"),
     },
 
     gameCover: {

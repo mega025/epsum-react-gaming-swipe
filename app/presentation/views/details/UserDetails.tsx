@@ -80,7 +80,7 @@ export function UserDetails ({navigation = useNavigation()}: PropsStackNavigatio
                                            style={{...styleGameDetails.goBackIcon, bottom: hp("3"), end: wp("40%")}} />
                                 </TouchableOpacity>
                                 <View style={{width: wp("100%"), alignItems: "center"}}>
-                                    <Image source={userSearch.image ? {uri: `http://10.0.2.2:8000${userSearch.image}`} : require("../../../../assets/account-image.jpg")}
+                                    <Image source={userSearch.image ? {uri: `http://192.168.1.91:8000${userSearch.image}`} : require("../../../../assets/account-image.jpg")}
                                             style={stylesProfilePicture.photo}
                                     />
                                 </View>
