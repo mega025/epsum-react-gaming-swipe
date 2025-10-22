@@ -124,9 +124,7 @@ export function CompanyDetails ({navigation = useNavigation()}: PropsStackNaviga
 
     return (
         <SafeAreaView>
-            <ImageBackground source={require("../../../../assets/definitiveBackground.jpeg")}
-                             style={{width: wp("100%"), height: '100%'}}>
-
+            <View style={{width: '100%', height: '100%', backgroundColor: AppColors.backgroundColor}}>
                 {!showLoading ? (
                     <>
                         <ScrollView style={{paddingBottom: hp("60%")}} showsVerticalScrollIndicator={false}>
@@ -205,7 +203,7 @@ export function CompanyDetails ({navigation = useNavigation()}: PropsStackNaviga
                         <ActivityIndicator style={styleHome.loading} size="large" color="#ffffff" animating={showLoading}/>
                     </View>
                 )}
-            </ImageBackground>
+            </View>
         </SafeAreaView>
     )
 }

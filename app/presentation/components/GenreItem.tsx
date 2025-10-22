@@ -13,8 +13,8 @@ export const GenreItem = ({item}: {item: Genre}) => {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: AppColors.orangeColor,
-        borderRadius: 4,
+        backgroundColor: AppColors.neonPurple,
+        borderRadius: 15,
         padding: 7,
         alignSelf:'baseline',
         alignItems: "center",

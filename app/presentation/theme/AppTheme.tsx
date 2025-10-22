@@ -1,17 +1,19 @@
 export const AppColors = {
     black: "#FF000000" ,
-    white:"#FFFFFFFF",
-    darkPink:"#220526",
+    white:"#ffffff",
+    darkPink:"#505050",
+    backgroundColor: "#000000",
     blue:"#0583F2",
-    orangeColor:"#1a008a",
-    orangeColorTransparent:"rgba(2,4,24,0.38)",
-    darkPurple:"#130121",
+    neonPurple:"#1a008a",
+    neonPurpleTransparent:"rgba(2,4,24,0.38)",
+    buttonBackground:"#1f1f3a",
     darkPurpleTrasparent:"rgba(19,1,33,0.6)",
     transparent:"#00000000",
     red:"#c50a0a",
+    orange:"#ce6b1a",
     green:"#4bc00f",
-    gray: "#cbbaff",
-    softWhite: "rgba(215,207,255,0.88)"
+    gray: "#313131",
+    softWhite: "rgba(215,207,255,0.88)",
 }
 export const AppFonts = {
     black: "zen_kaku_gothic_antique_black",

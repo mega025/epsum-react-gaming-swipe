@@ -17,16 +17,17 @@ export const XButton=({onPress}:Props)=>{
 
 const styles = StyleSheet.create({
     addButton:{
-        height:hp("3%"),
-        width:hp("3%"),
+        height:hp("2%"),
+        width:hp("2%"),
         tintColor:"red",
     },
     cont:{
-        backgroundColor:AppColors.darkPurple,
+        backgroundColor:AppColors.buttonBackground,
         borderRadius:40,
-        height:hp("8%"),
-        width:hp("8%"),
+        height:hp("7%"),
+        width:hp("7%"),
         alignItems:"center",
-        justifyContent:"center"
+        justifyContent:"center",
+        elevation: 10,
     }
 });

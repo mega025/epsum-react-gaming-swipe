@@ -19,7 +19,7 @@ const styleGameDetails = StyleSheet.create({
         paddingHorizontal: hp("2%"),
         elevation: 30,
         gap: 20,
-        backgroundColor: AppColors.darkPurple,
+        backgroundColor: AppColors.buttonBackground,
 
     },
 
@@ -75,7 +75,7 @@ const styleGameDetails = StyleSheet.create({
         color: AppColors.white,
         lineHeight: 50,
         borderBottomWidth: 2,
-        borderBottomColor: AppColors.orangeColorTransparent,
+        borderBottomColor: AppColors.neonPurpleTransparent,
         fontSize: wp("4.2%"),
     },
 
@@ -96,7 +96,7 @@ const styleSimilarGame = StyleSheet.create({
         marginBottom: hp("5%"),
         marginTop: hp("2%"),
         borderRadius: 10,
-        backgroundColor: AppColors.darkPurple,
+        backgroundColor: AppColors.buttonBackground,
         elevation: 10,
     },
 

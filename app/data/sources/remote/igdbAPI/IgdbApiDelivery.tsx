@@ -4,7 +4,7 @@ const IgdbApiDelivery = axios.create({
     headers: {
         "Content-Type": "text/plain",
         "Client-ID": "rfazmbjne5v3x5o3gxu2pwe8ulwfet",
-        "Authorization": "Bearer lced5ylcemw6dnjjocoubi3ae7z6in"
+        "Authorization": "Bearer 4w0wtmi36kvcwk3lqubpby2u93g7cs"
     },
 
 })

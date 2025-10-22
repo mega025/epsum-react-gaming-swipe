@@ -108,8 +108,7 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
 
     return (
         <SafeAreaView style={styleAccount.container}>
-            <ImageBackground source={require("../../../../assets/definitiveBackground.jpeg")}
-                             style={{width: '100%', height: '100%'}}>
+            <View style={{width: '100%', height: '100%', backgroundColor: AppColors.backgroundColor}}>
                 {!showLoading ? (
                     <>
                         <View>
@@ -359,7 +358,7 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                         </View>
                     </>
                 )}
-            </ImageBackground>
+            </View>
         </SafeAreaView>
     );
 }

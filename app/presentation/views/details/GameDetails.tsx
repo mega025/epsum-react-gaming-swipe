@@ -27,6 +27,7 @@ import Toast from "react-native-toast-message";
 import viewModelFav from "../fav/ViewModel";
 import {styleSearchGameItem} from "../search/StyleSearch";
 import {UseUserLocalStorage} from "../../hooks/UseUserLocalStorage";
+import {AppColors} from "../../theme/AppTheme";
 
 
 type GameDetailsRouteProp = RouteProp<RootStackParamsList, "GameDetails">;
@@ -93,8 +94,7 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
 
     return(
         <SafeAreaView>
-            <ImageBackground source={require("../../../../assets/definitiveBackground.jpeg")}
-                             style={{width: wp("100%"), height: '100%'}}>
+            <View style={{width: '100%', height: '100%', backgroundColor: AppColors.backgroundColor}}>
                 {!showLoading ? (
                     <>
                     <ScrollView style={{paddingBottom: hp("60%")}} showsVerticalScrollIndicator={false}>
@@ -236,7 +236,7 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
                         <ActivityIndicator style={styleHome.loading} size="large" color="#ffffff" animating={showLoading}/>
                     </View>
                 )}
-            </ImageBackground>
+            </View>
             <View style={stylesHome.loadingIconContainer}>
                 <ActivityIndicator style={styleHome.loading} size="large" color="#ffffff" animating={showLoading}/>
             </View>

@@ -59,7 +59,7 @@ const styleSearch = StyleSheet.create({
 
     containerHeader:{
         elevation:2,
-        backgroundColor: AppColors.darkPurple,
+        backgroundColor: AppColors.buttonBackground,
     },
 
     resultTextContainer: {

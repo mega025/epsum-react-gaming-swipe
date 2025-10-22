@@ -6,25 +6,25 @@ interface Props {
     onPress: () => void;
 }
 
-export const LikeButton=({onPress}: Props)=>{
+export const RewindButton=({onPress}: Props)=>{
     return (
-        <TouchableOpacity style={styles.cont} onPress={onPress}>
-            <Image source={require("../../../assets/heart.png")} style={styles.HeartButton}></Image>
+        <TouchableOpacity style={styles.container} onPress={onPress}>
+            <Image source={require("../../../assets/go-back-icon.png")} style={styles.button}></Image>
         </TouchableOpacity>
     )
 }
 
 const styles = StyleSheet.create({
-    HeartButton:{
-        height:hp("3%"),
-        width:hp("3%"),
-        tintColor:"green",
+    button:{
+        height:hp("2%"),
+        width:hp("2%"),
+        tintColor: AppColors.orange,
     },
-    cont:{
+    container:{
         backgroundColor:AppColors.buttonBackground,
         borderRadius:40,
-        height:hp("7%"),
-        width:hp("7%"),
+        height:hp("6%"),
+        width:hp("6%"),
         alignItems:"center",
         justifyContent:"center"
     }

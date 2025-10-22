@@ -196,10 +196,7 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
 
     return (
         <View style={styleSearch.container}>
-            <ImageBackground
-                source={require("../../../../assets/definitiveBackground.jpeg")}
-                style={{ width: "100%", height: "100%" }}
-            >
+            <View style={{width: '100%', height: '100%', backgroundColor: AppColors.backgroundColor}}>
                 <View style={styleSearch.containerHeader}>
                     <View style={styleSearch.logoContainer}>
                         <Image source={require("../../../../assets/logo.png")} style={styleSearch.logo} />
@@ -364,7 +361,7 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
                         </View>
                     </>
                 )}
-            </ImageBackground>
+            </View>
         </View>
     );
 }

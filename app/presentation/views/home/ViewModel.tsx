@@ -16,27 +16,22 @@ export const homeViewModel = () => {
     let [selectedPlatform, setSelectedPlatform] = useState<string | null>(null);
     let [selectedGenre, setSelectedGenre] = useState<string | null>(null);
     let [showMessageLoading, setMessageLoading] = useState(false);
-    let [activeIndex, setActiveIndex] = useState<number>(9);
     let [swipesCounter, setSwipesCounter] = useState(0);
 
     const {favListGames} = viewModel.favScreenViewModel();
 
     const refillSwipeGames = async () => {
         setShowLoading(true)
-        setListGames([]);
         const response = await refillGamesFromSwiperUseCase()
-        setListGames(response)
+        setListGames((prev) => [...prev, ...response])
         setShowLoading(false)
         setMessageLoading(false);
     }
 
     const refillSwipeGamesWithFilters = async (filters: { category: string | null; platform: string | null }) => {
         setMessageLoading(true)
-        setListGames([]);
         setSelectedPlatform(filters.platform);
         setSelectedGenre(filters.category);
-        setSwipesCounter(0);
-        setActiveIndex(9)
         const response = await refillGamesFromSwiperWithFiltersUseCase(filters.platform, filters.category);
         setListGames(response)
         setMessageLoading(false);
@@ -79,9 +74,7 @@ export const homeViewModel = () => {
         showLoading,
         setShowLoading,
         addGameToFav,
-        activeIndex,
         swipesCounter,
-        setActiveIndex,
         setSwipesCounter,
         showMessageLoading,
         setMessageLoading,

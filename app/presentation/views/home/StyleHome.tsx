@@ -4,34 +4,29 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-nat
 
 const stylesHome = StyleSheet.create({
     iconButton: {
-        backgroundColor: AppColors.darkPurple,
+        backgroundColor: AppColors.buttonBackground,
     },
     logo: {
         width: wp("13%"),
         height: wp("12%"),
         alignSelf: "center",
     },
-    overlayLabelContainer: {
-        width: wp("77%"),
-        height: hp("73%"),
-        borderRadius: hp("2.5%"),
-        justifyContent: "center",
-        alignItems: "center",
-    },
     wrapper: {
         flex: 1,
         marginBottom: hp("9%"),
     },
     cardContainer: {
-        ...StyleSheet.absoluteFillObject,
-        justifyContent: "center",
-        alignItems: "center",
+        flex: 1,
+        alignItems: 'center',
+        zIndex: 99,
+        justifyContent: 'center',
     },
-    card: {
-        backgroundColor: AppColors.gray,
-        borderRadius: 20,
-        elevation: 10,
-        position: "absolute",
+    cardStyle: {
+        width: '90%',
+        height: '90%',
+        borderRadius: 15,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     loadingIconContainer: {
         position: "absolute",
@@ -51,60 +46,63 @@ const stylesHome = StyleSheet.create({
     },
     image: {
         width: "100%",
-        height: hp("50.6%"),
+        height: hp("50%"),
         resizeMode:"contain",
         borderTopRightRadius: 20,
         borderTopLeftRadius: 20,
     },
+    overlayLabelContainer: {
+        width: '100%',
+        height: '100%',
+        paddingHorizontal: wp("4.6%"),
+        paddingVertical: hp("3.8%"),
+        borderRadius: 15,
+        justifyContent: "center",
+        alignItems: "center",
+    },
     overlayLabelText: {
         color: "white",
-        fontSize: wp("8%"),
-        fontWeight: "bold",
+        fontSize: wp("6%"),
+        fontFamily:"zen_kaku_bold",
     },
     ratingText: {
         fontSize: wp("5%"),
-        backgroundColor: AppColors.orangeColor,
+        backgroundColor: AppColors.neonPurple,
         color: "#FFF",
         fontWeight: "bold",
         padding: wp("2%"),
         borderRadius: 8,
-    },
-    platformsContainer: {
-        width: wp("65%"),
-    },
-    genreContainer: {
-        width: wp("50%"),
+        marginTop: hp("-4%"),
     },
     gameNameText: {
-        fontSize: wp("4%"),
+        fontSize: wp("3.3%"),
         width: wp("55%"),
-        height: hp("8%"),
-        verticalAlign: "middle",
+        height: hp("6%"),
         fontFamily: "zen_kaku_medium",
+        color: AppColors.white,
+    },
+    releaseDateText: {
+        fontSize: wp("4%"),
+        fontFamily: "zen_kaku_medium",
+        color: AppColors.white,
     },
     firstRowCardContainer: {
         flexDirection: "row",
-        position: "absolute",
         alignItems: "center",
-        gap: wp("4%"),
-    },
-    secondRowCardContainer: {
-        marginTop: hp("10%"),
-        position: "absolute",
-        elevation: 5,
+        gap: wp("7.5%"),
     },
     thirdRowCardContainer: {
-        marginTop: hp("15%"),
         flexDirection: "row",
-        gap: wp("5%"),
-        position: "absolute",
+        gap: wp("1%"),
         alignItems: "center",
+        marginTop: hp("1%"),
     },
     buttonsContainer: {
         alignSelf: "center",
         flexDirection: "row",
+        zIndex: 99,
         gap: wp("16%"),
-        top: wp("86%"),
+        bottom: hp("3%"),
     },
 });
 

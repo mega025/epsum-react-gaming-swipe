@@ -11,7 +11,7 @@ const styleFav = StyleSheet.create({
     header: {
         paddingTop: hp("9%"),
         elevation:2,
-        backgroundColor: AppColors.darkPurple,
+        backgroundColor: AppColors.buttonBackground,
     },
     title: {
         height: 70,

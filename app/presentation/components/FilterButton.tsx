@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
         padding: 20,
     },
     modalContent: {
-        backgroundColor: AppColors.darkPurple,
+        backgroundColor: AppColors.buttonBackground,
         padding: 20,
         borderRadius: 12,
         maxHeight: '80%',
@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
         marginBottom: 8,
     },
     selectedOption: {
-        backgroundColor: AppColors.orangeColor,
+        backgroundColor: AppColors.neonPurple,
     },
     optionText: {
         color: AppColors.white,

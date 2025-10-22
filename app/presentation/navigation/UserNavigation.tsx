@@ -27,7 +27,7 @@ export function UserNavigation ({navigation = useNavigation()}: PropsStackNaviga
             headerShown:false,
             tabBarShowLabel: false,
             tabBarActiveBackgroundColor: AppColors.darkPink,
-            tabBarStyle: {height: 55, backgroundColor: AppColors.darkPurple},
+            tabBarStyle: {height: hp("8%"), backgroundColor: AppColors.buttonBackground},
         }}
         >
             <Tab.Screen name="Home" options={{title:"Home",
@@ -64,8 +64,7 @@ export function UserNavigation ({navigation = useNavigation()}: PropsStackNaviga
 
 const stylesTabBarItems = StyleSheet.create({
     item: {
-        width:25,
-        height:25,
+        width:wp("7.5%"),
         paddingHorizontal: wp("2%"),
         resizeMode:"contain",
         marginTop:15,

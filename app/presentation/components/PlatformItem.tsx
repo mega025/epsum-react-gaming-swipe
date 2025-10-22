@@ -13,7 +13,7 @@ export const PlatformItem = ({item}: {item: Platform}) => {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: "#19114b",
-        borderRadius: 4,
+        borderRadius: 15,
         padding: 7,
         elevation:30,
         paddingHorizontal: 10,

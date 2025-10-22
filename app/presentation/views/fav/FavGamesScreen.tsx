@@ -141,8 +141,7 @@ export function FavGamesScreen({navigation = useNavigation()}: PropsStackNavigat
 
     return (
         <View style={styleFav.container}>
-            <ImageBackground source={require("../../../../assets/definitiveBackground.jpeg")}
-                             style={{width: '100%', height: '100%'}}>
+            <View style={{width: '100%', height: '100%', backgroundColor: AppColors.backgroundColor}}>
                 <View style={stylesHome.loadingIconContainer}>
                     <ActivityIndicator style={styleHome.loading} size="large" color="#ffffff" animating={showLoading}/>
                 </View>
@@ -156,7 +155,7 @@ export function FavGamesScreen({navigation = useNavigation()}: PropsStackNavigat
                     />
                 </View>
                 <Toast/>
-            </ImageBackground>
+            </View>
         </View>
     );
 }
