@@ -24,6 +24,7 @@ import {CustomTextInput} from "../../components/CustomTextInput";
 import {UserInterface} from "../../../domain/entities/User";
 import App from "../../../../App";
 import {PropsStackNavigation} from "../../interfaces/StackNav";
+import {stylesFavGameItem} from "./FavGamesScreen";
 
 
 export function PlayedGamesScreen({navigation = useNavigation()}: PropsStackNavigation) {
@@ -41,8 +42,8 @@ export function PlayedGamesScreen({navigation = useNavigation()}: PropsStackNavi
     useFocusEffect(
         useCallback(() => {
             if(user?.slug != undefined)
-                loadPlayedGames(user?.slug, user?.access_token)
-        }, [user?.slug, addPlayedGame])
+                loadPlayedGames(user?.slug)
+        }, [user?.slug])
     );
 
     const [selectedGameId, setSelectedGameId] = useState<number | null>(null);
@@ -86,7 +87,7 @@ export function PlayedGamesScreen({navigation = useNavigation()}: PropsStackNavi
                                         style={styleAccount.modalAcceptButton}
                                         onPress={async () => {
                                             console.log(item.name)
-                                            await deletePlayedGame(item.id_api, user?.slug || "", user?.access_token ? user?.access_token : "");
+                                            await deletePlayedGame(item.id_api, user?.slug || "");
                                             setSelectedGameId(null);
                                         }}
                                     >
@@ -102,13 +103,11 @@ export function PlayedGamesScreen({navigation = useNavigation()}: PropsStackNavi
     ), [user?.slug, selectedGameId, navigation]);
 
     return (
-        <View style={styleFav.container}>
-            <ImageBackground source={require("../../../../assets/definitiveBackground.jpeg")}
-                             style={{width: '100%', height: '100%'}}>
+        <View style={{width: '100%', height: '100%', backgroundColor: AppColors.backgroundColor}}>
                 <View style={stylesHome.loadingIconContainer}>
                     <ActivityIndicator style={styleHome.loading} size="large" color="#ffffff" animating={showLoading}/>
                 </View>
-                <View style={{borderTopColor: "#ffffff", borderTopWidth: 1}}>
+                <View style={{height:"100%"}}>
                     <FlatList data={playedListGames}
                               removeClippedSubviews={true}
                               renderItem={favGameRenderItem}
@@ -118,38 +117,6 @@ export function PlayedGamesScreen({navigation = useNavigation()}: PropsStackNavi
                     />
                 </View>
                 <Toast/>
-            </ImageBackground>
         </View>
     );
 }
-
-const stylesFavGameItem = StyleSheet.create({
-    card: {
-        alignSelf: "center",
-        justifyContent: "center",
-        width: "100%",
-        height: hp("18%"),
-        borderBottomWidth: 1,
-        borderBottomColor: "#ddd",
-    },
-
-    container: {
-        position: "absolute",
-        flexDirection: "row",
-        gap: 15,
-        alignItems: "center",
-    },
-
-    image : {
-        width: wp("27%"),
-        height: hp("16%"),
-        marginStart: wp("2.5%"),
-        borderRadius: wp("1.5%"),
-    },
-
-    deleteIcon: {
-        width: 20,
-        height: 20,
-        tintColor: AppColors.white,
-    }
-})

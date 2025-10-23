@@ -30,6 +30,7 @@ import styleHome from "../home/StyleHome";
 import {GetSearchUserInterface, SearchUserDTO} from "../../../domain/entities/User";
 import {styles} from "react-native-toast-message/lib/src/components/BaseToast.styles";
 import {stylesProfilePicture} from "../account/Account";
+import {API_BASE_URL} from "../../../data/sources/remote/api/ApiDelivery";
 
 export function Search({navigation = useNavigation()}: PropsStackNavigation) {
     const {
@@ -85,7 +86,7 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
     useFocusEffect(
         useCallback(() => {
             if(user?.slug != undefined) {
-                loadFavGames(user?.slug, user?.access_token)
+                loadFavGames(user?.slug)
             }
         }, [user?.slug])
     );
@@ -96,7 +97,7 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
 
     const searchUserItem = useCallback(({item} : {item:GetSearchUserInterface}) => (
         <TouchableOpacity style={styleSearchUserItem.container} onPress={() => navigation.push("UserDetails", {userSearch : item})}>
-            <Image source={item.image ? {uri: `http://192.168.1.91:8000${item.image}`} : require("../../../../assets/account-image.jpg")}
+            <Image source={item.image ? {uri: `${API_BASE_URL.slice(0, -4)}${item.image}`} : require("../../../../assets/account-image.jpg")}
                     style={styleSearchUserItem.image}
             />
             <Text style={styleSearchUserItem.name}>{item.name}</Text>
@@ -116,7 +117,7 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
                     style={styleSearchGameItem.gameCover}
                 />
             </TouchableOpacity>
-            <View style={styleSearchGameItem.infoContainer}>
+            <View>
                 <View style={styleSearchGameItem.name_rating}>
                     <Text style={styleSearchGameItem.gameName}>{item.name}</Text>
                 </View>
@@ -140,8 +141,8 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
                 <TouchableOpacity onPress={async () => {
                     if (!checkIfGameFromApiIsLiked(item.name)) {
                         try {
-                            await addGameToFav(transformGameIntoFavGameInterface(item), user?.slug ? user?.slug : "", user?.access_token ? user.access_token : "");
-                            await loadFavGames(user?.slug ? user?.slug : "", user?.access_token ? user?.access_token : "");
+                            await addGameToFav(transformGameIntoFavGameInterface(item), user?.slug ? user?.slug : "");
+                            await loadFavGames(user?.slug ? user?.slug : "");
 
                         } catch (error) {
                             Toast.show({
@@ -154,9 +155,8 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
                             await deleteGameFromFav(
                                 item.id,
                                 user?.slug ? user?.slug : "",
-                                user?.access_token ? user?.access_token : "",
                             );
-                            await loadFavGames(user?.slug ? user?.slug : "", user?.access_token ? user?.access_token : "")
+                            await loadFavGames(user?.slug ? user?.slug : "")
 
                         } catch (error) {
                             Toast.show({
@@ -201,7 +201,6 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
                     <View style={styleSearch.logoContainer}>
                         <Image source={require("../../../../assets/logo.png")} style={styleSearch.logo} />
                     </View>
-
                     <View>
                         <Text style={styleSearch.headerTitle}>Search</Text>
                     </View>

@@ -6,6 +6,7 @@ import {UseUserLocalStorage} from "../../hooks/UseUserLocalStorage";
 import {loginAuthUseCase} from "../../../domain/usesCases/auth/LoginAuth";
 import {saveUserUserCase} from "../../../domain/usesCases/userLocal/saveUser";
 import Toast from "react-native-toast-message";
+import {saveTokens} from "../../../data/sources/local/secure/TokenStorage";
 
 const loginViewModel= () => {
 
@@ -39,9 +40,12 @@ const loginViewModel= () => {
     const login= async  () => {
         if (validateForm()){
             const response = await loginAuthUseCase(loginValues as LoginUserInterface);
-            await saveUserUserCase(response as LoggedUserInterface)
+            const user = response;
+            await saveUserUserCase(user)
+            await saveTokens(response.access_token, response.refresh_token)
             console.log(response)
             await getUserSession()
+            return user
         }
     }
 

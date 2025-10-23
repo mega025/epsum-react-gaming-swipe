@@ -1,10 +1,10 @@
 export const AppColors = {
     black: "#FF000000" ,
     white:"#ffffff",
-    darkPink:"#505050",
+    opacWhite: "rgba(255,255,255,0.45)",
     backgroundColor: "#000000",
     blue:"#0583F2",
-    neonPurple:"#1a008a",
+    neonPurple:"#403475",
     neonPurpleTransparent:"rgba(2,4,24,0.38)",
     buttonBackground:"#1f1f3a",
     darkPurpleTrasparent:"rgba(19,1,33,0.6)",

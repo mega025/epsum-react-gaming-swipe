@@ -17,32 +17,32 @@ export const favScreenViewModel = () => {
     let [playedListGames, setPlayedListGames] = useState<FavGame[]>([]);
     let [showLoading, setShowLoading] = useState(true);
 
-    const loadFavGames = async (slug: string, token: string) => {
-        const response = await loadFavGamesUseCase(slug, token);
+    const loadFavGames = async (slug: string) => {
+        const response = await loadFavGamesUseCase(slug);
         setFavListGames(response);
         setShowLoading(false);
     }
 
-    const loadPlayedGames = async (slug: string, token: string) => {
-        const response = await loadPlayedGamesUseCase(slug, token);
+    const loadPlayedGames = async (slug: string) => {
+        const response = await loadPlayedGamesUseCase(slug);
         setPlayedListGames(response);
         setShowLoading(false);
     }
 
-    const addPlayedGame = async (slug: string, favgame: FavGame, token: string) => {
-        const response = await addPlayedGameUseCase(slug, favgame, token);
-        await loadFavGames(slug, token);
-        await loadPlayedGames(slug, token);
+    const addPlayedGame = async (slug: string, favgame: FavGame) => {
+        await addPlayedGameUseCase(slug, favgame);
+        await loadFavGames(slug);
+        await loadPlayedGames(slug);
     }
 
-    const deleteGameFromFav = async (id_api: number, slug: string, token: string) => {
-        await deleteFavGameUseCase(slug, id_api, token)
-        await loadFavGames(slug, token)
+    const deleteGameFromFav = async (id_api: number, slug: string) => {
+        await deleteFavGameUseCase(slug, id_api)
+        await loadFavGames(slug)
     }
 
-    const deletePlayedGame = async (id_api: number, slug: string, token: string) => {
-        await deletePlayedGameUseCase(slug, id_api, token)
-        await loadPlayedGames(slug, token)
+    const deletePlayedGame = async (id_api: number, slug: string) => {
+        await deletePlayedGameUseCase(slug, id_api)
+        await loadPlayedGames(slug)
     }
 
     return{

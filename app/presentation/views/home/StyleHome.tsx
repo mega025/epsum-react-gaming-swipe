@@ -23,10 +23,11 @@ const stylesHome = StyleSheet.create({
     },
     cardStyle: {
         width: '90%',
-        height: '90%',
+        height: '93%',
         borderRadius: 15,
         justifyContent: 'center',
         alignItems: 'center',
+        elevation: 10,
     },
     loadingIconContainer: {
         position: "absolute",
@@ -55,7 +56,7 @@ const stylesHome = StyleSheet.create({
         width: '100%',
         height: '100%',
         paddingHorizontal: wp("4.6%"),
-        paddingVertical: hp("3.8%"),
+        paddingVertical: hp("2.5%"),
         borderRadius: 15,
         justifyContent: "center",
         alignItems: "center",
@@ -82,8 +83,7 @@ const stylesHome = StyleSheet.create({
         color: AppColors.white,
     },
     releaseDateText: {
-        fontSize: wp("4%"),
-        fontFamily: "zen_kaku_medium",
+        fontSize: wp("3%"),
         color: AppColors.white,
     },
     firstRowCardContainer: {
@@ -93,7 +93,7 @@ const stylesHome = StyleSheet.create({
     },
     thirdRowCardContainer: {
         flexDirection: "row",
-        gap: wp("1%"),
+        gap: wp("5%"),
         alignItems: "center",
         marginTop: hp("1%"),
     },

@@ -56,7 +56,7 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
     useFocusEffect(
         useCallback(() => {
             if(user?.slug != undefined) {
-                loadFavGames(user?.slug, user?.access_token)
+                loadFavGames(user?.slug)
             }
         }, [user?.slug])
     );
@@ -93,7 +93,6 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
         ), [navigation])
 
     return(
-        <SafeAreaView>
             <View style={{width: '100%', height: '100%', backgroundColor: AppColors.backgroundColor}}>
                 {!showLoading ? (
                     <>
@@ -130,8 +129,8 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
                                 <TouchableOpacity onPress={async () => {
                                     if (!checkIfGameFromApiIsLiked(gameDetails ? gameDetails.name : "")) {
                                         try {
-                                            await addGameToFav(transformGameIntoFavGameInterface(gameDetails), user?.slug ? user?.slug : "", user?.access_token ? user.access_token : "");
-                                            await loadFavGames(user?.slug ? user?.slug : "", user?.access_token ? user?.access_token : "")
+                                            await addGameToFav(transformGameIntoFavGameInterface(gameDetails), user?.slug ? user?.slug : "");
+                                            await loadFavGames(user?.slug ? user?.slug : "")
 
                                         } catch (error) {
                                             Toast.show({
@@ -144,9 +143,8 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
                                             await deleteGameFromFav(
                                                 gameDetails ? gameDetails?.id : 0,
                                                 user?.slug ? user?.slug : "",
-                                                user?.access_token ? user?.access_token : ""
                                             );
-                                            await loadFavGames(user?.slug ? user?.slug : "", user?.access_token ? user?.access_token : "")
+                                            await loadFavGames(user?.slug ? user?.slug : "")
 
                                         } catch (error) {
                                             Toast.show({
@@ -173,7 +171,7 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
                                 )}/>
 
                             <Text style={styleGameDetails.infoTitles}>Platforms</Text>
-                            <FlatList style={{...styleHome.platformsContainer, width: wp("90%")}}
+                            <FlatList style={{ width: wp("90%")}}
                                       data={gameDetails?.platforms ? gameDetails?.platforms : [nullPlatform]}
                                       renderItem={PlatformItem}
                                       horizontal={true}
@@ -183,7 +181,7 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
                                       nestedScrollEnabled={true}/>
 
                             <Text style={styleGameDetails.infoTitles}>Genres</Text>
-                            <FlatList style={{...styleHome.genreContainer, width: wp("90%")}}
+                            <FlatList style={{ width: wp("90%")}}
                                       data={gameDetails?.genres ? gameDetails?.genres : [nullGenre]}
                                       renderItem={GenreItem}
                                       horizontal={true}
@@ -237,9 +235,5 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
                     </View>
                 )}
             </View>
-            <View style={stylesHome.loadingIconContainer}>
-                <ActivityIndicator style={styleHome.loading} size="large" color="#ffffff" animating={showLoading}/>
-            </View>
-        </SafeAreaView>
     )
 }

@@ -37,9 +37,9 @@ export const homeViewModel = () => {
         setMessageLoading(false);
     }
 
-    const addGameToFav = async (game: FavGame | undefined, slug: string, token: string) => {
+    const addGameToFav = async (game: FavGame | undefined, slug: string) => {
         if (game !== undefined)
-            await addGameToFavoriteUseCase(slug, game, token);
+            await addGameToFavoriteUseCase(slug, game);
     }
 
     const transformGameIntoFavGameInterface =(item: Game | GameDetailsInterface | undefined) => {

@@ -35,7 +35,7 @@ export function FavGamesScreen({navigation = useNavigation()}: PropsStackNavigat
     useFocusEffect(
         useCallback(() => {
             if(user?.slug != undefined) {
-                loadFavGames(user?.slug, user?.access_token);
+                loadFavGames(user?.slug);
             }
         }, [user?.slug])
     );
@@ -91,7 +91,7 @@ export function FavGamesScreen({navigation = useNavigation()}: PropsStackNavigat
                                         style={styleAccount.modalAcceptButton}
                                         onPress={async () => {
                                             console.log(item.name)
-                                            await deleteGameFromFav(item.id_api, user?.slug || "", user?.access_token ? user?.access_token : "");
+                                            await deleteGameFromFav(item.id_api, user?.slug || "");
                                             setSelectedDeleteGameId(null);
                                         }}
                                     >
@@ -124,7 +124,7 @@ export function FavGamesScreen({navigation = useNavigation()}: PropsStackNavigat
                                         style={styleAccount.modalAcceptButton}
                                         onPress={async () => {
                                             console.log(item.name)
-                                            await addPlayedGame(user?.slug ? user?.slug : "", item, user?.access_token ? user?.access_token : "");
+                                            await addPlayedGame(user?.slug ? user?.slug : "", item);
                                             setSelectedPlayedGameId(null);
                                         }}
                                     >
@@ -145,7 +145,7 @@ export function FavGamesScreen({navigation = useNavigation()}: PropsStackNavigat
                 <View style={stylesHome.loadingIconContainer}>
                     <ActivityIndicator style={styleHome.loading} size="large" color="#ffffff" animating={showLoading}/>
                 </View>
-                <View style={{borderTopColor: "#ffffff", borderTopWidth: 1}}>
+                <View style={{height:"100%"}}>
                     <FlatList data={favListGames}
                               removeClippedSubviews={true}
                               renderItem={favGameRenderItem}
@@ -160,18 +160,14 @@ export function FavGamesScreen({navigation = useNavigation()}: PropsStackNavigat
     );
 }
 
-const stylesFavGameItem = StyleSheet.create({
+export const stylesFavGameItem = StyleSheet.create({
     card: {
-        alignSelf: "center",
         justifyContent: "center",
         width: "100%",
         height: hp("18%"),
-        borderBottomWidth: 1,
-        borderBottomColor: "#ddd",
     },
 
     container: {
-        position: "absolute",
         flexDirection: "row",
         gap: 10,
         alignItems: "center",
@@ -185,8 +181,8 @@ const stylesFavGameItem = StyleSheet.create({
     },
 
     deleteIcon: {
-        width: 20,
-        height: 20,
+        width: wp("4%"),
+        height: wp("4%"),
         tintColor: AppColors.white,
     }
 })

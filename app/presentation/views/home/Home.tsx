@@ -126,6 +126,7 @@ export function Home({navigation = useNavigation()}: PropsStackNavigation) {
                     stylesHome.overlayLabelContainer,
                     {
                         backgroundColor: 'green',
+                        opacity: 0.8
                     },
                 ]}
             >
@@ -140,6 +141,7 @@ export function Home({navigation = useNavigation()}: PropsStackNavigation) {
                     stylesHome.overlayLabelContainer,
                     {
                         backgroundColor: 'red',
+                        opacity: 0.8,
                     },
                 ]}
             >
@@ -156,18 +158,16 @@ export function Home({navigation = useNavigation()}: PropsStackNavigation) {
                     cardStyle={styleHome.cardStyle}
                     overlayLabelContainerStyle={styleHome.overlayLabelContainer}
                     renderCard={renderCard}
-                    onIndexChange={async (index) => {
-                        if (swipesCounter >= 7) {
-                            console.log("Loading more games...")
-                            await refillSwipeGames()
-                            setSwipesCounter(0)
-                        }
-                        setSwipesCounter(2)
-                        console.log(swipesCounter)
+                    disableTopSwipe={true}
+                    disableBottomSwipe={true}
+                    onIndexChange={(index) => {
                         console.log('Current Active index', index);
                     }}
-                    onSwipeRight={(cardIndex) => {
+                    onSwipeRight={async (cardIndex) => {
                         console.log('cardIndex', cardIndex);
+                        if (user?.slug !== undefined)
+                            await addGameToFav(transformGameIntoFavGameInterface(listGames[cardIndex]), user.slug)
+                        console.log(listGames[cardIndex].name);
                     }}
                     onSwipeLeft={(cardIndex) => {
                         console.log('onSwipeLeft', cardIndex);
@@ -178,19 +178,13 @@ export function Home({navigation = useNavigation()}: PropsStackNavigation) {
                     onSwipedAll={() => {
                         console.log("ola")
                     }}
-                    onSwipeTop={(cardIndex) => {
-                        console.log('onSwipeTop', cardIndex);
-                    }}
-                    onSwipeBottom={(cardIndex) => {
-                        console.log('onSwipeBottom', cardIndex);
-                    }}
                     OverlayLabelRight={OverlayRight}
                     OverlayLabelLeft={OverlayLeft}
                 />
             </GestureHandlerRootView>
             <View style={styleHome.buttonsContainer}>
                 <XButton onPress={() =>  ref.current?.swipeLeft()}></XButton>
-                <View>
+                <View style={{gap:hp("2%"), alignItems: "center"}}>
                     <RewindButton onPress={() =>  ref.current?.swipeBack()}></RewindButton>
                     <FilterButton onApply={refillSwipeGamesWithFilters} selectedGenre={selectedGenre} selectedPlatform={selectedPlatform}  />
                 </View>

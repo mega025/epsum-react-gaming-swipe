@@ -19,8 +19,8 @@ export const userDetailsViewModel = () => {
 
     const loadUserGames = async (slug: string, token: string) => {
         setShowLoading(true)
-        const responseFav = await loadFavGamesUseCase(slug, token);
-        const responsePlayed = await loadPlayedGamesUseCase(slug, token);
+        const responseFav = await loadFavGamesUseCase(slug);
+        const responsePlayed = await loadPlayedGamesUseCase(slug);
         setFavGames(responseFav)
         setPlayedGames(responsePlayed)
         setShowLoading(false)

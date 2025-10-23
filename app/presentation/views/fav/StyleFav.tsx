@@ -10,7 +10,7 @@ const styleFav = StyleSheet.create({
 
     header: {
         paddingTop: hp("9%"),
-        elevation:2,
+        elevation:10,
         backgroundColor: AppColors.buttonBackground,
     },
     title: {
@@ -26,10 +26,9 @@ const styleFav = StyleSheet.create({
     footerFavGames: {
         alignSelf: "center",
         color: AppColors.white,
-        backgroundColor: AppColors.darkPink,
         width: "100%",
         textAlign: "center",
-        fontSize: wp("4%"),
+        fontSize: wp("3%"),
         height: hp("5.3%"),
         paddingVertical: hp("1.4%"),
         fontFamily: "zen_kaku_regular",

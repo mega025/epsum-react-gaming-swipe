@@ -1,6 +1,7 @@
 import React from "react";
 import { TextInput, KeyboardType, StyleSheet } from "react-native";
 import { AppColors } from "../theme/AppTheme";
+import {widthPercentageToDP as wp} from "react-native-responsive-screen";
 
 interface Props {
     keyboardType: KeyboardType;
@@ -25,14 +26,13 @@ export const CustomTextInputSearch = ({keyboardType, secureTextEntry, onPressBut
 
 const styles = StyleSheet.create({
     formInput: {
-        fontSize: 15,
-        marginBottom: 10,
+        fontSize: wp("3.4%"),
         borderWidth: 1,
         borderColor: AppColors.white,
         paddingVertical: 5,
         paddingHorizontal: 10,
         borderRadius: 10,
-        backgroundColor: AppColors.darkPink,
+        backgroundColor: AppColors.neonPurple,
         height: 45,
         width: "75%",
         fontFamily: "zen_kaku_regular",

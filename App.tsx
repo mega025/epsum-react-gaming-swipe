@@ -9,6 +9,7 @@ import {Game} from "./app/domain/entities/Game";
 import {CompanyDetails} from "./app/presentation/views/details/CompanyDetails";
 import {UserDetails} from "./app/presentation/views/details/UserDetails";
 import {GetSearchUserInterface} from "./app/domain/entities/User";
+import {UseUserLocalStorage} from "./app/presentation/hooks/UseUserLocalStorage";
 
 
 
@@ -24,6 +25,10 @@ const Stack = createStackNavigator<RootStackParamsList>();
 
 export default function App() {
 
+    const {
+        user,
+    } = UseUserLocalStorage()
+
     const [fontsLoaded] = useFonts({
         "zen_kaku_light": require("./assets/fonts/zen_kaku_gothic_antique_light.ttf"),
         "zen_kaku_medium": require("./assets/fonts/zen_kaku_gothic_antique_medium.ttf"),
@@ -35,7 +40,9 @@ export default function App() {
 
     return (
       <NavigationContainer>
-          <Stack.Navigator screenOptions={{
+          <Stack.Navigator
+              initialRouteName={user && user.slug ? "UserNavigation" : "TabViewLoginRegister"}
+              screenOptions={{
               headerShown: false,
               gestureEnabled: true,
               cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, }}>

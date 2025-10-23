@@ -10,13 +10,9 @@ import {UseUserLocalStorage} from "../../presentation/hooks/UseUserLocalStorage"
 
 export class AccountRepository implements AccountRepositoryInterface {
 
-    async getUser(slug: string, token: string): Promise<GetUserInterface> {
+    async getUser(slug: string): Promise<GetUserInterface> {
         try {
-            const response = await ApiDelivery.get(`users/${slug}`, {
-                headers: {
-                    Authorization:"Bearer "+token,
-                }
-            });
+            const response = await ApiDelivery.get(`users/${slug}`);
             return Promise.resolve(response.data);
         } catch (error) {
             let e = (error as AxiosError<{error: string}>);
@@ -25,14 +21,13 @@ export class AccountRepository implements AccountRepositoryInterface {
         }
     }
 
-    async updateUser(slug: string, token: string, data: UpdateUserDTO | FormData | undefined): Promise<ApiDeliveryResponse> {
+    async updateUser(slug: string, data: UpdateUserDTO | FormData | undefined): Promise<ApiDeliveryResponse> {
         try {
             const isFormData = data instanceof FormData;
             console.log(isFormData);
             const response = await ApiDelivery.post(`users/update/${slug}`, data,
                 {
                     headers: {
-                        Authorization: `Bearer ${token}`,
                         ...(isFormData ? {"Content-Type": " multipart/form-data"} : { 'Content-Type': 'application/json' }),
 
                     },
@@ -45,13 +40,9 @@ export class AccountRepository implements AccountRepositoryInterface {
         }
     }
 
-    async updateUserPassword(slug: string, token: string, data: PasswordsDTO): Promise<ApiDeliveryResponse> {
+    async updateUserPassword(slug: string, data: PasswordsDTO): Promise<ApiDeliveryResponse> {
         try {
-            const response = await ApiDelivery.post(`users/update-password/${slug}`, data, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                }
-            })
+            const response = await ApiDelivery.post(`users/update-password/${slug}`, data)
             return Promise.resolve(response.data);
         } catch (error) {
             let e = (error as AxiosError<{error: string}>);

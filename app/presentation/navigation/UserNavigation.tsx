@@ -9,7 +9,6 @@ import {useEffect} from "react";
 import {UseUserLocalStorage} from "../hooks/UseUserLocalStorage";
 import {useNavigation} from "@react-navigation/native";
 import {PropsStackNavigation} from "../interfaces/StackNav";
-import {setupValidTokenInterceptor} from "../../data/sources/remote/api/ApiDelivery";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 
 const Tab = createBottomTabNavigator();
@@ -17,16 +16,13 @@ const Tab = createBottomTabNavigator();
 export function UserNavigation ({navigation = useNavigation()}: PropsStackNavigation) {
     const {user} = UseUserLocalStorage()
 
-    useEffect(() => {
-        setupValidTokenInterceptor(navigation)
-    }, []);
 
     return (
         <Tab.Navigator  screenOptions={{
             tabBarHideOnKeyboard: true,
             headerShown:false,
             tabBarShowLabel: false,
-            tabBarActiveBackgroundColor: AppColors.darkPink,
+            tabBarActiveBackgroundColor: AppColors.backgroundColor,
             tabBarStyle: {height: hp("8%"), backgroundColor: AppColors.buttonBackground},
         }}
         >

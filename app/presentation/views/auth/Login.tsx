@@ -26,12 +26,6 @@ export function LoginScreen({navigation = useNavigation(), route}: PropsStackNav
         }
     }, [errorMessage]);
 
-    useEffect(() => {
-        if (user && user?.access_token) {
-            navigation.replace("UserNavigation")
-        }
-    })
-
     return (
         <SafeAreaView style={stylesAuthViews.container}>
 
@@ -55,7 +49,12 @@ export function LoginScreen({navigation = useNavigation(), route}: PropsStackNav
 
                 </View>
                 <View style={styles.formButtonContainer}>
-                    <RoundedButton text="Sign in" onPressFromInterface={() => login()} />
+                    <RoundedButton text="Sign in" onPressFromInterface={async () =>{
+                        const user = await login()
+                        if(user){
+                            navigation.replace("UserNavigation")
+                        }
+                    }}/>
                 </View>
                 <Toast/>
             </ImageBackground>
