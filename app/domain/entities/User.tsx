@@ -33,6 +33,6 @@ export interface LoginUserInterface {
 
 export interface LoggedUserInterface {
     slug: string;
-    access_token: string;
-    refresh_token: string
+    access_token?: string;
+    refresh_token?: string
 }

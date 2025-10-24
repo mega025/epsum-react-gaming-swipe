@@ -13,7 +13,7 @@ export const GenreItem = ({item}: {item: Genre}) => {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: AppColors.neonPurple,
+        backgroundColor: AppColors.secondaryColor,
         borderRadius: 15,
         padding: 7,
         alignSelf:'baseline',

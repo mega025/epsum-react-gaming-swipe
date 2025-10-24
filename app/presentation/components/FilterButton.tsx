@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
         marginBottom: 8,
     },
     selectedOption: {
-        backgroundColor: AppColors.neonPurple,
+        backgroundColor: AppColors.secondaryColor,
     },
     optionText: {
         color: AppColors.white,

@@ -134,9 +134,9 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
             </View>
             <View style={styleSearchGameItem.thirdColumnContainer}>
                 {item.rating ? (
-                    <Text style={styleSearchGameItem.rating}>⭐ {item.rating.toFixed(1)}</Text>
+                    <Text style={styleSearchGameItem.rating}>{item.rating.toFixed(1)}</Text>
                 ) : (
-                    <Text style={styleSearchGameItem.rating}>⭐ N/A</Text>
+                    <Text style={styleSearchGameItem.rating}>No rate</Text>
                 )}
                 <TouchableOpacity onPress={async () => {
                     if (!checkIfGameFromApiIsLiked(item.name)) {
@@ -199,7 +199,7 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
             <View style={{width: '100%', height: '100%', backgroundColor: AppColors.backgroundColor}}>
                 <View style={styleSearch.containerHeader}>
                     <View style={styleSearch.logoContainer}>
-                        <Image source={require("../../../../assets/logo.png")} style={styleSearch.logo} />
+                        <Image source={require("../../../../assets/igdb-logo.webp")} style={styleSearch.logo} />
                     </View>
                     <View>
                         <Text style={styleSearch.headerTitle}>Search</Text>
@@ -237,7 +237,7 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
                                     value={searchText}
                                     onPressButtonFromInterface={(text: string) => onSearchTextChange(text)}
                                 />
-                                <View style={{marginTop: wp("-3%")}}>
+                                <View>
                                     <FiltroComponent onApply={onApplyFilters} selectedPlatform={selectedPlatform} selectedGenre={selectedCategory} />
                                 </View>
                             </View>

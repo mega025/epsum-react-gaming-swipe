@@ -68,7 +68,7 @@ const stylesHome = StyleSheet.create({
     },
     ratingText: {
         fontSize: wp("5%"),
-        backgroundColor: AppColors.neonPurple,
+        backgroundColor: AppColors.secondaryColor,
         color: "#FFF",
         fontWeight: "bold",
         padding: wp("2%"),

@@ -13,7 +13,13 @@ import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 
 export function LoginScreen({navigation = useNavigation(), route}: PropsStackNavigation){
 
-    const{onChangeLogin,login, user, errorMessage, setErrorMessage} = viewModel.loginViewModel();
+    const {onChangeLogin,
+        login,
+        user,
+        errorMessage,
+        setErrorMessage
+    } = viewModel.loginViewModel();
+
     const [showPassword, setShowPassword] = useState(true);
 
     useEffect(() => {

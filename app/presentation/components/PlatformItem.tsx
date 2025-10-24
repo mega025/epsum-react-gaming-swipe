@@ -1,18 +1,19 @@
 import {Dimensions, Text, View} from "react-native";
 import {Platform} from "../../domain/entities/Game";
 import {StyleSheet} from "react-native";
+import {AppColors} from "../theme/AppTheme";
 
 export const PlatformItem = ({item}: {item: Platform}) => {
     return (
         <View style={styles.container}>
-                <Text style={styles.abbreviation}>{item.abbreviation}</Text>
+                <Text style={styles.abbreviation}>{item.abbreviation ? item.abbreviation : item.name}</Text>
         </View>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: "#19114b",
+        backgroundColor: AppColors.thirdColor,
         borderRadius: 15,
         padding: 7,
         elevation:30,

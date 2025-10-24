@@ -17,6 +17,7 @@ export class HomeRepository implements HomeRepositoryInterface {
                 "cover.url, " +
                 "genres.name, " +
                 "platforms.abbreviation, " +
+                "platforms.name, " +
                 "rating, release_dates.y; limit 10; where rating > 70; offset "+randomOffset+";")
 
             return Promise.resolve(response.data)

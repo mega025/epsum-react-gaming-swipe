@@ -10,6 +10,9 @@ import {CompanyDetails} from "./app/presentation/views/details/CompanyDetails";
 import {UserDetails} from "./app/presentation/views/details/UserDetails";
 import {GetSearchUserInterface} from "./app/domain/entities/User";
 import {UseUserLocalStorage} from "./app/presentation/hooks/UseUserLocalStorage";
+import {useEffect} from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import {loadTokens} from "./app/data/sources/local/secure/TokenStorage";
 
 
 
@@ -25,9 +28,17 @@ const Stack = createStackNavigator<RootStackParamsList>();
 
 export default function App() {
 
+    AsyncStorage.clear()
+
     const {
         user,
+        getUserSession
     } = UseUserLocalStorage()
+
+    useEffect(() => {
+        if (user !== undefined)
+            console.log(user?.slug)
+    }, [user?.slug]);
 
     const [fontsLoaded] = useFonts({
         "zen_kaku_light": require("./assets/fonts/zen_kaku_gothic_antique_light.ttf"),
@@ -37,11 +48,10 @@ export default function App() {
         "zen_kaku_black": require("./assets/fonts/zen_kaku_gothic_antique_black.ttf"),
     });
 
-
     return (
       <NavigationContainer>
           <Stack.Navigator
-              initialRouteName={user && user.slug ? "UserNavigation" : "TabViewLoginRegister"}
+              initialRouteName={user && user.slug !== undefined ? "UserNavigation" : "TabViewLoginRegister"}
               screenOptions={{
               headerShown: false,
               gestureEnabled: true,
@@ -54,7 +64,6 @@ export default function App() {
           </Stack.Navigator>
       </NavigationContainer>
   );
-
 }
 
 

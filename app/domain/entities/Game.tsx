@@ -34,7 +34,8 @@ export interface Video{
 }
 
 export interface Platform {
-    abbreviation: string;
+    abbreviation?: string;
+    name: string;
 }
 
 

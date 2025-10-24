@@ -60,7 +60,7 @@ export function Home({navigation = useNavigation()}: PropsStackNavigation) {
     const {user} = UseUserLocalStorage()
 
     const nullGenre: Genre = {name : "N/A"}
-    const nullPlatform: Platform = {abbreviation : "N/A"}
+    const nullPlatform: Platform = {name : "N/A"}
 
     useEffect(() => {
         refillSwipeGames()

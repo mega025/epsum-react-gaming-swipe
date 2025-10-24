@@ -18,5 +18,4 @@ export class UserLocalRepository implements UserLocalRepositoryInterface {
         const {save} = LocalStorage()
         await save("gsapp_user", JSON.stringify(user))
     }
-
 }

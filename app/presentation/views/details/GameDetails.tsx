@@ -114,9 +114,9 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
                                 <Text style={styleGameDetails.name}>{gameDetails?.name}</Text>
                                 <View style={{flexDirection: "row", gap: wp("19%")}}>
                                     {gameDetails?.rating ? (
-                                        <Text style={styleGameDetails.rating}>⭐ {gameDetails?.rating.toFixed(1)}</Text>
+                                        <Text style={styleGameDetails.rating}>{gameDetails?.rating.toFixed(1)}</Text>
                                     ) : (
-                                        <Text style={styleGameDetails.rating}>⭐ N/A</Text>
+                                        <Text style={styleGameDetails.rating}>No rate</Text>
                                     )}
                                     <Text style={styleGameDetails.rating}>{gameDetails?.release_dates[0] ? gameDetails?.release_dates[0].y : "N/A"}</Text>
                                 </View>

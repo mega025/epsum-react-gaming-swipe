@@ -6,9 +6,10 @@ import { RFPercentage } from "react-native-responsive-fontsize";
 
 const styleSearch = StyleSheet.create({
     logo: {
-        width: 35,
-        height: 35,
+        width: wp("12%"),
+        height: hp("4%"),
         marginTop: hp("1%"),
+        tintColor: AppColors.white,
     },
     container: {
         flex: 1,
@@ -155,13 +156,16 @@ const styleSearchGameItem = StyleSheet.create({
     },
     fav:{
         width:wp("6%"),
-        height:hp("3%"),
+        height:hp("2.5%"),
         tintColor:"#4dc51f",
         alignSelf: "center",
-        padding:hp("1.5%"),
     },
     rating: {
         fontSize: wp("3%"),
+        backgroundColor: AppColors.thirdColor,
+        padding: wp("2%"),
+        width: wp("15%"),
+        borderRadius: 15,
         textAlign: "center",
         color: AppColors.white,
     },
