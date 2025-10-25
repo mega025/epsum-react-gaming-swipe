@@ -49,7 +49,7 @@ export function FavGamesScreen({navigation = useNavigation()}: PropsStackNavigat
                 <TouchableOpacity onPress={() => navigation.navigate("GameDetails", {gameId : item.id_api, likeButton: true})}>
                     <Image source={{ uri: item.image_url }} style={stylesFavGameItem.image} />
                 </TouchableOpacity>
-                <Text style={{ ...stylesHome.gameNameText, width: wp("46%"), fontSize: wp("3.5%"), color:"white"}}>{item.name}</Text>
+                <Text style={{ ...stylesHome.gameNameText, width: wp("46%")}}>{item.name}</Text>
                 <TouchableOpacity
                     style={{...stylesFavGameItem.deleteIcon, marginRight: wp("2.5%")}}
                     onPress={() => {

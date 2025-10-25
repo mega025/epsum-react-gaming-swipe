@@ -1,6 +1,7 @@
 import {Image, TouchableOpacity,StyleSheet} from "react-native";
 import {AppColors} from "../theme/AppTheme";
 import {heightPercentageToDP as hp} from "react-native-responsive-screen";
+import {Shadow} from "react-native-shadow-2";
 
 interface Props {
     onPress: () => void;
@@ -8,9 +9,11 @@ interface Props {
 
 export const RewindButton=({onPress}: Props)=>{
     return (
-        <TouchableOpacity style={styles.container} onPress={onPress}>
-            <Image source={require("../../../assets/rewind-arrow.png")} style={styles.button}></Image>
-        </TouchableOpacity>
+            <Shadow startColor={"rgba(255,138,4,0.05)"}>
+            <TouchableOpacity style={styles.container} onPress={onPress}>
+                <Image source={require("../../../assets/rewind-arrow.png")} style={styles.button}></Image>
+            </TouchableOpacity>
+        </Shadow>
     )
 }
 

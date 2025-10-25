@@ -195,7 +195,7 @@ const styles = StyleSheet.create({
         gap: 8,
     },
     optionButton: {
-        backgroundColor: AppColors.buttonBackground,
+        backgroundColor: AppColors.neonPurpleTransparent,
         padding: 8,
         borderRadius: 20,
         marginRight: 8,

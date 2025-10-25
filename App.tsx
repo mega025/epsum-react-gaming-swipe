@@ -10,9 +10,11 @@ import {CompanyDetails} from "./app/presentation/views/details/CompanyDetails";
 import {UserDetails} from "./app/presentation/views/details/UserDetails";
 import {GetSearchUserInterface} from "./app/domain/entities/User";
 import {UseUserLocalStorage} from "./app/presentation/hooks/UseUserLocalStorage";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {loadTokens} from "./app/data/sources/local/secure/TokenStorage";
+import * as SplashScreen from "expo-splash-screen";
+
 
 
 
@@ -27,18 +29,21 @@ export type RootStackParamsList = {
 const Stack = createStackNavigator<RootStackParamsList>();
 
 export default function App() {
-
-    AsyncStorage.clear()
-
     const {
         user,
         getUserSession
     } = UseUserLocalStorage()
 
+    SplashScreen.preventAutoHideAsync()
+
+
     useEffect(() => {
-        if (user !== undefined)
+        if (user?.slug !==  undefined) {
             console.log(user?.slug)
-    }, [user?.slug]);
+        }
+        SplashScreen.hideAsync();
+
+    }, []);
 
     const [fontsLoaded] = useFonts({
         "zen_kaku_light": require("./assets/fonts/zen_kaku_gothic_antique_light.ttf"),
@@ -51,16 +56,16 @@ export default function App() {
     return (
       <NavigationContainer>
           <Stack.Navigator
-              initialRouteName={user && user.slug !== undefined ? "UserNavigation" : "TabViewLoginRegister"}
+              initialRouteName={user && user.slug ? "UserNavigation" : "TabViewLoginRegister"}
               screenOptions={{
               headerShown: false,
               gestureEnabled: true,
               cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, }}>
               <Stack.Screen name="TabViewLoginRegister" component={TabViewLoginRegister}/>
-              <Stack.Screen name="UserNavigation" component={UserNavigation} ></Stack.Screen>
-              <Stack.Screen name="GameDetails" component={GameDetails} ></Stack.Screen>
-              <Stack.Screen name="CompanyDetails" component={CompanyDetails} ></Stack.Screen>
-              <Stack.Screen name="UserDetails" component={UserDetails} ></Stack.Screen>
+              <Stack.Screen name="UserNavigation" component={UserNavigation}/>
+              <Stack.Screen name="GameDetails" component={GameDetails}/>
+              <Stack.Screen name="CompanyDetails" component={CompanyDetails}/>
+              <Stack.Screen name="UserDetails" component={UserDetails}/>
           </Stack.Navigator>
       </NavigationContainer>
   );

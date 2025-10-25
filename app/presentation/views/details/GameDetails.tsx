@@ -25,7 +25,7 @@ import YoutubePlayer from "react-native-youtube-iframe";
 import {styleGameDetails, styleSimilarGame} from "./StyleGameDetails";
 import Toast from "react-native-toast-message";
 import viewModelFav from "../fav/ViewModel";
-import {styleSearchGameItem} from "../search/StyleSearch";
+import {styleSearch, styleSearchGameItem} from "../search/StyleSearch";
 import {UseUserLocalStorage} from "../../hooks/UseUserLocalStorage";
 import {AppColors} from "../../theme/AppTheme";
 
@@ -74,7 +74,7 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
     }, []);
 
     const nullGenre: Genre = {name : "No genres registered"}
-    const nullPlatform: Platform = {abbreviation : "No platforms registered"}
+    const nullPlatform: Platform = {name : "No platforms registered"}
 
     const similarGameItem = useCallback(({item} : {item:SimilarGame}) => (
         <View style={styleSimilarGame.card}>
@@ -96,7 +96,10 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
             <View style={{width: '100%', height: '100%', backgroundColor: AppColors.backgroundColor}}>
                 {!showLoading ? (
                     <>
-                    <ScrollView style={{paddingBottom: hp("60%")}} showsVerticalScrollIndicator={false}>
+                    <ScrollView showsVerticalScrollIndicator={false}>
+                        <View style={{...styleSearch.logoContainer, position:"absolute", zIndex:99}}>
+                            <Image source={require("../../../../assets/igdb-logo.webp")} style={styleSearch.logo} />
+                        </View>
                         <View style={styleGameDetails.header}>
                             <TouchableOpacity onPress={() => navigation.goBack()} style={styleGameDetails.goBackIconTouchable}>
                                 <Image source={require("../../../../assets/go-back-icon.png")}
@@ -112,13 +115,9 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
                             />
                             <View style={{flex: 1}}>
                                 <Text style={styleGameDetails.name}>{gameDetails?.name}</Text>
-                                <View style={{flexDirection: "row", gap: wp("19%")}}>
-                                    {gameDetails?.rating ? (
-                                        <Text style={styleGameDetails.rating}>{gameDetails?.rating.toFixed(1)}</Text>
-                                    ) : (
-                                        <Text style={styleGameDetails.rating}>No rate</Text>
-                                    )}
-                                    <Text style={styleGameDetails.rating}>{gameDetails?.release_dates[0] ? gameDetails?.release_dates[0].y : "N/A"}</Text>
+                                <View style={{flexDirection: "row", gap: wp("10%")}}>
+                                    <Text style={styleGameDetails.rating}>{gameDetails?.rating ? gameDetails?.rating.toFixed(1) : "No rate"}</Text>
+                                    <Text style={styleGameDetails.rating}>{gameDetails?.release_dates[0] ? gameDetails?.release_dates[0].y : "TBD"}</Text>
                                 </View>
                             </View>
                         </View>
@@ -165,8 +164,10 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
                                 data={gameDetails?.involved_companies}
                                 scrollEnabled={false}
                                 renderItem={({ item }) => (
-                                    <TouchableOpacity onPress={() => navigation.push("CompanyDetails", {companyId: item.company.id})}>
+                                    <TouchableOpacity style={{flexDirection: "row", alignSelf:"flex-start", alignItems:"center", gap:wp("3%")}} onPress={() => navigation.push("CompanyDetails", {companyId: item.company.id})}>
                                         <Text style={styleGameDetails.involvedCompany}>{item.company.name}</Text>
+                                        <Image source={require("../../../../assets/url-icon.png")}
+                                        style={{width: wp("3.5%"), height: hp("1.6%"), tintColor: AppColors.white}}/>
                                     </TouchableOpacity>
                                 )}/>
 

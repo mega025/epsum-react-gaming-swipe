@@ -6,7 +6,7 @@ import {AppColors} from "../../theme/AppTheme";
 const styleGameDetails = StyleSheet.create({
     image: {
         width: wp("40%"),
-        height: hp("25%"),
+        height: hp("25.9%"),
         borderRadius: wp("2.4%"),
     },
 
@@ -24,7 +24,7 @@ const styleGameDetails = StyleSheet.create({
 
     goBackIconTouchable: {
         start:wp("3%"),
-        bottom: hp("32%"),
+        bottom: hp("31.5%"),
         position: "absolute",
     },
 
@@ -36,7 +36,7 @@ const styleGameDetails = StyleSheet.create({
     },
 
     name: {
-        fontSize: wp("5.7%"),
+        fontSize: wp("4.5%"),
         color: AppColors.white,
         height: hp("22%"),
         width: "85%",
@@ -59,7 +59,7 @@ const styleGameDetails = StyleSheet.create({
         lineHeight: hp("5%"),
         textTransform: "uppercase",
         color: AppColors.white,
-        fontSize: wp("4.3%"),
+        fontSize: wp("3.7%"),
         marginTop: hp("2.5%"),
         marginBottom: hp("1.5%"),
 
@@ -68,7 +68,7 @@ const styleGameDetails = StyleSheet.create({
     summary: {
         fontFamily: "zen_kaku_regular",
         color: AppColors.white,
-        fontSize: wp("4%"),
+        fontSize: wp("3.5%"),
         lineHeight: 27,
         textAlign: "justify",
     },
@@ -79,7 +79,7 @@ const styleGameDetails = StyleSheet.create({
         lineHeight: 50,
         borderBottomWidth: 2,
         borderBottomColor: AppColors.neonPurpleTransparent,
-        fontSize: wp("4.2%"),
+        fontSize: wp("3.5%"),
     },
 
     fav:{
@@ -94,11 +94,12 @@ const styleGameDetails = StyleSheet.create({
 const styleSimilarGame = StyleSheet.create({
     card: {
         width: wp("37%"),
-        height: hp("31%"),
+        height: hp("30%"),
         marginRight: wp("2.5%"),
         marginBottom: hp("5%"),
         marginTop: hp("2%"),
         borderRadius: 10,
+        alignSelf: "stretch",
         backgroundColor: AppColors.buttonBackground,
         elevation: 10,
     },
@@ -111,12 +112,11 @@ const styleSimilarGame = StyleSheet.create({
     },
 
     name: {
-        fontSize: wp("3.3%"),
+        fontSize: wp("2.9%"),
         padding: wp("2.5%"),
         textAlign: "center",
         fontFamily: "zen_kaku_regular",
         color: AppColors.white,
-        verticalAlign: "middle",
         lineHeight: 20,
     },
 })

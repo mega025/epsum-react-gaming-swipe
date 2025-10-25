@@ -1,6 +1,7 @@
 import { StyleSheet } from "react-native";
 import { AppColors } from "../../theme/AppTheme";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
+import {shadow} from "react-native-paper";
 
 const stylesHome = StyleSheet.create({
     iconButton: {
@@ -22,12 +23,12 @@ const stylesHome = StyleSheet.create({
         justifyContent: 'center',
     },
     cardStyle: {
-        width: '90%',
-        height: '93%',
-        borderRadius: 15,
+        width: wp("83%"),
+        height: hp("69%"),
         justifyContent: 'center',
         alignItems: 'center',
-        elevation: 10,
+        backgroundColor: AppColors.buttonBackground,
+        borderRadius: 15,
     },
     loadingIconContainer: {
         position: "absolute",
@@ -47,16 +48,14 @@ const stylesHome = StyleSheet.create({
     },
     image: {
         width: "100%",
-        height: hp("50%"),
+        height: hp("50.9%"),
         resizeMode:"contain",
-        borderTopRightRadius: 20,
-        borderTopLeftRadius: 20,
+        borderTopRightRadius: 15,
+        borderTopLeftRadius: 15,
     },
     overlayLabelContainer: {
-        width: '100%',
-        height: '100%',
-        paddingHorizontal: wp("4.6%"),
-        paddingVertical: hp("2.5%"),
+        width: wp("83%"),
+        height: "100%",
         borderRadius: 15,
         justifyContent: "center",
         alignItems: "center",
@@ -69,16 +68,16 @@ const stylesHome = StyleSheet.create({
     ratingText: {
         fontSize: wp("5%"),
         backgroundColor: AppColors.secondaryColor,
-        color: "#FFF",
+        color: AppColors.white,
+        textAlign: "right",
         fontWeight: "bold",
         padding: wp("2%"),
         borderRadius: 8,
-        marginTop: hp("-4%"),
     },
     gameNameText: {
         fontSize: wp("3.3%"),
-        width: wp("55%"),
-        height: hp("6%"),
+        width: "87%",
+        lineHeight: hp("2%"),
         fontFamily: "zen_kaku_medium",
         color: AppColors.white,
     },
@@ -87,13 +86,13 @@ const stylesHome = StyleSheet.create({
         color: AppColors.white,
     },
     firstRowCardContainer: {
+        width: "100%",
         flexDirection: "row",
         alignItems: "center",
-        gap: wp("7.5%"),
     },
     thirdRowCardContainer: {
         flexDirection: "row",
-        gap: wp("5%"),
+        gap: wp("4%"),
         alignItems: "center",
         marginTop: hp("1%"),
     },
