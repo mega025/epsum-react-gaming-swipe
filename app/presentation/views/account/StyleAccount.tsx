@@ -67,17 +67,15 @@ const styleAccount = StyleSheet.create({
         width: "100%",
     },
     labelName: {
-        marginLeft: wp("10%"),
         fontSize: wp("4.9%"),
         color: AppColors.white,
         fontFamily: "zen_kaku_medium",
     },
     Name: {
         fontSize: wp("7.3%"),
-        marginTop: 6,
-        width: 290,
-        height: 42,
-        marginLeft: wp("10%"),
+        marginTop: hp("1%"),
+        width: "90%",
+        lineHeight: 40,
         color: AppColors.white,
         fontFamily: "zen_kaku_light",
     },
@@ -97,11 +95,11 @@ const styleAccount = StyleSheet.create({
         marginTop: hp("7%"),
     },
     TextResetPassword: {
-        fontSize: wp("4.5%"),
+        fontSize: wp("3.5%"),
         color: AppColors.white,
         textDecorationLine: "underline",
         fontFamily: "zen_kaku_regular",
-        height:25,
+        lineHeight:25,
 
     },
     containerLogOut: {
@@ -109,13 +107,12 @@ const styleAccount = StyleSheet.create({
         marginTop: hp("8%"),
     },
     LogOut: {
-        fontSize: wp("7%"),
+        fontSize: wp("5%"),
         color: AppColors.red,
         fontFamily: "zen_kaku_regular",
         fontWeight: "bold",
     },
     modalText: {
-        marginBottom: 15,
         textAlign: 'center',
     },
     centeredView: {
@@ -126,10 +123,10 @@ const styleAccount = StyleSheet.create({
     },
     modalView: {
         backgroundColor: AppColors.buttonBackground,
-        borderRadius: 10,
-        padding: 20,
-        gap: 20,
-        width: 350,
+        borderRadius: 15,
+        padding: wp("5%"),
+        gap: hp("2%"),
+        width: wp("80%"),
         alignItems: "center",
         shadowColor: "#000",
         shadowOffset: { width: 0, height: 2 },
@@ -156,26 +153,26 @@ const styleAccount = StyleSheet.create({
     },
     containerButton:{
         flexDirection: "row",
-        gap: 120
+        gap: wp("30%")
     },
     modalButtonTextStyle: {
         color: "white",
-        fontSize: 16,
+        fontSize: wp("3.5%"),
         fontWeight: "bold",
         fontFamily: "zen_kaku_regular",
-        height:20,
+        lineHeight:20,
     },
     textPopUp:{
-        fontSize: wp("4.5%"),
+        fontSize: wp("4%"),
         color: AppColors.white,
         textAlign: "center",
-        fontFamily: "zen_kaku_medium",
+        fontFamily: "zen_kaku_regular",
         height:hp("3%"),
         verticalAlign: "middle"
     },
 
     gameNamePopUp:{
-        fontSize: wp("5%"),
+        fontSize: wp("4.3%"),
         color: AppColors.white,
         textAlign: "center",
         fontFamily: "zen_kaku_medium",

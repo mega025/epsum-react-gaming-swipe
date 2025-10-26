@@ -4,6 +4,6 @@ import {PasswordsDTO} from "../../entities/UpdatePasswordDTO";
 
 const {updateUserPassword} = new AccountRepository()
 
-export const updatePasswordUseCase  = async (slug: string, token:string, data: PasswordsDTO) => {
-    return await updateUserPassword(slug, token, data)
+export const updatePasswordUseCase  = async (slug: string, data: PasswordsDTO) => {
+    return await updateUserPassword(slug, data)
 }

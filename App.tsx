@@ -14,9 +14,7 @@ import {useEffect, useState} from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {loadTokens} from "./app/data/sources/local/secure/TokenStorage";
 import * as SplashScreen from "expo-splash-screen";
-
-
-
+import {Asset} from "expo-asset";
 
 export type RootStackParamsList = {
     UserNavigation: undefined;
@@ -29,21 +27,6 @@ export type RootStackParamsList = {
 const Stack = createStackNavigator<RootStackParamsList>();
 
 export default function App() {
-    const {
-        user,
-        getUserSession
-    } = UseUserLocalStorage()
-
-    SplashScreen.preventAutoHideAsync()
-
-
-    useEffect(() => {
-        if (user?.slug !==  undefined) {
-            console.log(user?.slug)
-        }
-        SplashScreen.hideAsync();
-
-    }, []);
 
     const [fontsLoaded] = useFonts({
         "zen_kaku_light": require("./assets/fonts/zen_kaku_gothic_antique_light.ttf"),
@@ -53,6 +36,35 @@ export default function App() {
         "zen_kaku_black": require("./assets/fonts/zen_kaku_gothic_antique_black.ttf"),
     });
 
+    const {
+        user,
+        getUserSession
+    } = UseUserLocalStorage()
+
+    const [isLoggedIn, setIsLoggedIn] = useState(false)
+
+    SplashScreen.preventAutoHideAsync()
+
+    useEffect(() => {
+        const loadAssets = async () => {
+            try {
+                const assets = [
+                    require("./assets/fonts/zen_kaku_gothic_antique_black.ttf"),
+                    require("./assets/fonts/zen_kaku_gothic_antique_light.ttf"),
+                    require("./assets/fonts/zen_kaku_gothic_antique_bold.ttf"),
+                    require("./assets/fonts/zen_kaku_gothic_antique_medium.ttf"),
+                    require("./assets/fonts/zen_kaku_gothic_antique_regular.ttf"),
+                ]
+                await Promise.all(assets.map(asset => Asset.fromModule(asset).downloadAsync()));
+                await SplashScreen.hideAsync();
+            } catch (e) {
+                console.log(e)
+            }
+        }
+        loadAssets();
+    }, []);
+
+    if (user === undefined) return null;
     return (
       <NavigationContainer>
           <Stack.Navigator

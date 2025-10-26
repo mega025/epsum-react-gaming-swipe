@@ -27,6 +27,8 @@ import * as ImagePickerExpo from "expo-image-picker";
 import {AppColors} from "../../theme/AppTheme";
 import styles from "../auth/StylesAuthViews";
 import {removeUserUseCase} from "../../../domain/usesCases/userLocal/removeUser";
+import {API_BASE_URL} from "../../../data/sources/remote/api/ApiDelivery";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-native-responsive-screen";
 
 export function Account({navigation = useNavigation(), route}: PropsStackNavigation){
 
@@ -53,7 +55,7 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
     useFocusEffect(
         useCallback(() => {
             if(user?.slug != undefined){
-                getUserDB(user?.slug, user?.access_token)
+                getUserDB(user?.slug)
                 if (userDB != undefined)
                     console.log(userDB)
             }
@@ -98,8 +100,8 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                 console.log(formData);
 
                 if(user?.slug != undefined){
-                    await updateUserDetails(user?.slug, user?.access_token, formData)
-                    await getUserDB(user?.slug, user?.access_token)
+                    await updateUserDetails(user?.slug, formData)
+                    await getUserDB(user?.slug)
                     console.log("aaaa")
                 }
             }
@@ -107,7 +109,6 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
     }
 
     return (
-        <SafeAreaView style={styleAccount.container}>
             <View style={{width: '100%', height: '100%', backgroundColor: AppColors.backgroundColor}}>
                 {!showLoading ? (
                     <>
@@ -122,7 +123,7 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                         <View style={styleAccount.containerPhoto}>
                             <View style={stylesProfilePicture.container}>
                                 <View style={stylesProfilePicture.containerPhoto}>
-                                    <Image style={stylesProfilePicture.photo}  source={userDB?.image ? {uri: `http://192.168.1.91:8000${userDB?.image}`} : require("../../../../assets/account-image.jpg")}
+                                    <Image style={stylesProfilePicture.photo}  source={userDB?.image ? {uri: `${API_BASE_URL.slice(0, -4)}${userDB?.image}`} : require("../../../../assets/account-image.jpg")}
                                     />
                                 </View>
                                 <TouchableOpacity style={stylesProfilePicture.changePhotoButton} onPress={selectImage}>
@@ -130,9 +131,9 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                                 </TouchableOpacity>
                             </View>
                         </View>
+                        <View style={{paddingHorizontal:wp("10%")}}>
                         <View style={styleAccount.containerName}>
                             <Text style={styleAccount.labelName}>Name</Text>
-
                             <View style={styleAccount.containerEditName}>
                                 <Text style={styleAccount.Name}>{userDB?.name}</Text>
                                 <View>
@@ -176,7 +177,7 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                                                                     }
                                                                     console.log(data)
                                                                     if (user?.slug != undefined)
-                                                                        updateUserDetails(user?.slug, user?.access_token, data)
+                                                                        updateUserDetails(user?.slug, data)
 
                                                                     userDB.name = updatedFirstName
                                                                     setModalVisibleFirst(!modalVisibleFirst)
@@ -235,7 +236,7 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                                                     </Pressable>
                                                     <Pressable
                                                         style={styleAccount.modalAcceptButton}
-                                                        onPress={() => {
+                                                        onPress={async () => {
                                                             if(userDB != undefined) {
                                                                 if (updatedLastName === "") {
                                                                     setErrorMessage("Empty fields are not allowed")
@@ -246,7 +247,7 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                                                                     }
                                                                     console.log(data)
                                                                     if (user?.slug != undefined)
-                                                                        updateUserDetails(user?.slug, user?.access_token, data)
+                                                                        await updateUserDetails(user?.slug, data)
 
                                                                     userDB.last_name = updatedLastName
                                                                     setModalVisibleLast(!modalVisibleLast)
@@ -269,6 +270,7 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
 
                                 </View>
                             </View>
+                        </View>
                         </View>
                         <View style={styleAccount.containerResetPassword}>
                             <View>
@@ -318,13 +320,13 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                                                 </Pressable>
                                                 <Pressable
                                                     style={styleAccount.modalAcceptButton}
-                                                    onPress={() => {
+                                                    onPress={async () => {
                                                         if (user?.slug != undefined) {
                                                             const passwordsDTO: PasswordsDTO = {
                                                                 oldPassword: updatePasswordDTO.oldPassword,
                                                                 newPassword: updatePasswordDTO.newPassword,
                                                             }
-                                                            updateUserPassword(user?.slug, user?.access_token, passwordsDTO)
+                                                            await updateUserPassword(user?.slug, passwordsDTO)
                                                             console.log(updatePasswordDTO)
                                                         }
                                                         setModalVisibleLastPassword(!modalVisiblePassword)
@@ -359,7 +361,6 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                     </>
                 )}
             </View>
-        </SafeAreaView>
     );
 }
 
@@ -373,26 +374,23 @@ export const stylesProfilePicture =StyleSheet.create({
 
     },
     photo:{
-        width:100,
-        height:100,
+        width:wp("25%"),
+        height:wp("25%"),
         borderRadius:50,
         resizeMode: "contain",
         alignItems:"center",
     },
     changePhotoButton:{
-        backgroundColor:AppColors.darkPink,
-        width:160,
-        height:35,
-        alignSelf:"center",
+        backgroundColor:AppColors.secondaryColor,
+        width:wp("30%"),
+        height:hp("3.7%"),
+        justifyContent:"center",
         borderRadius:25,
-        marginTop:110,
-
+        marginTop:hp("3%"),
     },
     changePhotoButtonText:{
-        alignSelf:"center",
-        verticalAlign:"middle",
         fontFamily:"zen_kaku_regular",
-        height: 30,
         color:AppColors.white,
+        alignSelf:"center",
     }
 })

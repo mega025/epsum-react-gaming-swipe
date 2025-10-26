@@ -10,6 +10,7 @@ import {PasswordsDTO} from "../../../domain/entities/UpdatePasswordDTO";
 import {getUserDBUseCase} from "../../../domain/usesCases/account/GetUser";
 import {updateUserUseCase} from "../../../domain/usesCases/account/UpdateUser";
 import {updatePasswordUseCase} from "../../../domain/usesCases/account/UpdatePassword";
+import {clearTokens} from "../../../data/sources/local/secure/TokenStorage";
 
 export const accountViewModel =()=> {
 
@@ -24,25 +25,26 @@ export const accountViewModel =()=> {
 
     const deleteSession = async () => {
         await removeUserUseCase()
+        await clearTokens()
     }
 
-    const getUserDB = async (slug: string, token: string) => {
-        const response = await getUserDBUseCase(slug, token)
+    const getUserDB = async (slug: string) => {
+        const response = await getUserDBUseCase(slug)
         setUserDB(response)
         setShowLoading(false)
     }
 
-    const updateUserDetails = async (slug: string, token: string, data: UpdateUserDTO | FormData | undefined) => {
-        const response = await updateUserUseCase(slug, token, data)
+    const updateUserDetails = async (slug: string, data: UpdateUserDTO | FormData | undefined) => {
+        const response = await updateUserUseCase(slug, data)
         Toast.show({
             type:"success",
             text1: response.message,
         })
     }
 
-    const updateUserPassword = async (slug: string, token: string, passwordDTO: PasswordsDTO) => {
+    const updateUserPassword = async (slug: string, passwordDTO: PasswordsDTO) => {
         if (validateUpdatePasswordForm()) {
-            const response = await updatePasswordUseCase(slug, token, passwordDTO)
+            const response = await updatePasswordUseCase(slug, passwordDTO)
             Toast.show({
                 type:"success",
                 text1: response.message,
