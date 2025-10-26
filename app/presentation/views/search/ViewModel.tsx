@@ -13,7 +13,6 @@ const searchViewModel = () => {
     const [searchUserText, setSearchUserText] = useState("");
     const [gamesDisplayed, setGamesDisplayed] = useState<Game[]>([]);
     const [searchedUsers, setSearchedUsers] = useState<GetSearchUserInterface[]>([]);
-    const [companyDisplayed, setCompanyDisplayed] = useState<CompanyDetailsInterface[]>([]);
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(1);
     const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -94,19 +93,6 @@ const searchViewModel = () => {
         } catch (error) {
             console.error("Error fetching filtered games:", error);
             return [];
-        }
-    };
-    const searchTopCompany = async () => {
-        try {
-            setLoading(true);
-
-            const response = await searchCompanyByUserInputUseCase();
-
-            setCompanyDisplayed(response);
-        } catch (error) {
-            console.error("Error fetching companies:", error);
-        } finally {
-            setLoading(false);
         }
     };
 
@@ -191,8 +177,6 @@ const searchViewModel = () => {
         setFiltersApplied,
         setSelectedCategory,
         setSelectedPlatform,
-        searchTopCompany,
-        companyDisplayed,
         searchedUsers,
         searchUsers,
         searchUserText,

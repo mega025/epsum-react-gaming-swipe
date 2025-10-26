@@ -2,9 +2,7 @@ import {RouteProp, useFocusEffect, useNavigation, useRoute} from "@react-navigat
 import {PropsStackNavigation} from "../../interfaces/StackNav";
 import {
     ActivityIndicator,
-    FlatList,
     Image,
-    ImageBackground, SafeAreaView,
     ScrollView,
     Text,
     TouchableOpacity,
@@ -28,6 +26,7 @@ import {SimilarGame} from "../../../domain/entities/Game";
 import {FavGame} from "../../../domain/entities/FavGame";
 import {styleSearch} from "../search/StyleSearch";
 import {API_BASE_URL, ApiDelivery} from "../../../data/sources/remote/api/ApiDelivery";
+import {FlashList} from "@shopify/flash-list";
 
 type GameDetailsRouteProp = RouteProp<RootStackParamsList, "UserDetails">;
 
@@ -45,9 +44,9 @@ export function UserDetails ({navigation = useNavigation()}: PropsStackNavigatio
 
     useFocusEffect(
         useCallback(() => {
-            if(user?.slug != undefined)
-                loadUserGames(userSearch.slug, user?.access_token ? user?.access_token : "");
-        }, [user?.access_token])
+            if(userSearch.slug !== undefined)
+                loadUserGames(userSearch.slug);
+        }, [userSearch])
     );
 
 
@@ -90,7 +89,7 @@ export function UserDetails ({navigation = useNavigation()}: PropsStackNavigatio
                             {favGames.length > 0 && (
                                 <View>
                                     <Text style={{...styleGameDetails.infoTitles, textAlign: "center"}}>Favorites games</Text>
-                                    <FlatList
+                                    <FlashList
                                         data={favGames}
                                         renderItem={favGameItem}
                                         fadingEdgeLength={50}
@@ -103,7 +102,7 @@ export function UserDetails ({navigation = useNavigation()}: PropsStackNavigatio
                             {playedGames.length > 0 && (
                                 <View>
                                     <Text style={{...styleGameDetails.infoTitles, textAlign: "center", marginTop: wp("0%")}}>Played games</Text>
-                                    <FlatList
+                                    <FlashList
                                         data={playedGames}
                                         renderItem={favGameItem}
                                         fadingEdgeLength={50}

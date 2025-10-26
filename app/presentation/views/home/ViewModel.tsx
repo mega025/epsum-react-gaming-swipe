@@ -7,6 +7,7 @@ import viewModel from "../fav/ViewModel";
 import {refillGamesFromSwiperUseCase} from "../../../domain/usesCases/home/RefillGamesFromSwiper";
 import {addGameToFavoriteUseCase} from "../../../domain/usesCases/home/AddGameToFavorite";
 import {refillGamesFromSwiperWithFiltersUseCase} from "../../../domain/usesCases/home/RefillGamesFromSwiperWithFilters";
+import {transformCoverUrl} from "../../utils/transformCoverUrl";
 
 
 export const homeViewModel = () => {
@@ -58,19 +59,10 @@ export const homeViewModel = () => {
         }
     }
 
-
-    const transformCoverUrl = (url:string) => {
-        const cutUrlFirstPart = url.substring(0, 38);
-        const cutUrlSecondPart = url.substring(url.lastIndexOf("/") + 1);
-        return "https:"+cutUrlFirstPart+"cover_big/"+cutUrlSecondPart;
-    }
-
-
     return {
         listGames,
         refillSwipeGames,
         setListGames,
-        transformCoverUrl,
         showLoading,
         setShowLoading,
         addGameToFav,

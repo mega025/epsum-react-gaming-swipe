@@ -2,6 +2,8 @@ import {Dimensions, Text, View} from "react-native";
 import {Genre, Platform} from "../../domain/entities/Game";
 import {StyleSheet} from "react-native";
 import {AppColors} from "../theme/AppTheme";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-native-responsive-screen";
+
 
 export const GenreItem = ({item}: {item: Genre}) => {
     return (
@@ -18,14 +20,13 @@ const styles = StyleSheet.create({
         padding: 7,
         alignSelf:'baseline',
         alignItems: "center",
-        marginEnd: 5,
+        marginEnd: wp("1%"),
     },
 
     name: {
-        fontSize: 13,
-        height: 19,
+        fontSize: wp("3%"),
         verticalAlign: "middle",
         fontFamily: "zen_kaku_regular",
-        color: "#fff",
+        color: AppColors.white,
     }
 })

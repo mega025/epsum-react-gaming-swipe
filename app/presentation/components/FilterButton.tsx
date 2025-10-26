@@ -71,7 +71,7 @@ function FilterModal({ onApply, selectedGenre, selectedPlatform}: FilterModalPro
                     style={[styles.optionButton, selected === item && styles.selectedOption]}
                     onPress={() => setSelected(selected === item ? null : item)}
                 >
-                    <Text style={selected === item ? styles.selectedText : styles.optionText}>
+                    <Text style={styles.optionText}>
                         {item}
                     </Text>
                 </TouchableOpacity>
@@ -84,9 +84,7 @@ function FilterModal({ onApply, selectedGenre, selectedPlatform}: FilterModalPro
             category: selectedCategoryInModal,
             platform: selectedPlatformInModal,
         });
-
         setModalVisible(false);
-
     };
 
     return (
@@ -111,18 +109,13 @@ function FilterModal({ onApply, selectedGenre, selectedPlatform}: FilterModalPro
                         >
                             <Text style={styles.closeButtonText}>✕</Text>
                         </TouchableOpacity>
-                        <Text style={styles.title}>Filter</Text>
-
                         {loading ? (
                             <ActivityIndicator size="large" />
                         ) : (
-                            <ScrollView>
+                            <ScrollView showsVerticalScrollIndicator={false}>
                                 <Text style={styles.label}>Platforms</Text>
-                                <View style={styles.divider} />
                                 {renderOptions(platforms, selectedPlatformInModal, setSelectedPlatformInModal)}
-                                <View style={styles.divider} />
                                 <Text style={styles.label}>Categories</Text>
-                                <View style={styles.divider} />
                                 {renderOptions(categories, selectedCategoryInModal, setSelectedCategoryInModal)}
                             </ScrollView>
                         )}
@@ -142,80 +135,63 @@ function FilterModal({ onApply, selectedGenre, selectedPlatform}: FilterModalPro
 export default FilterModal;
 
 const styles = StyleSheet.create({
-    divider: {
-        height: 1,
-        backgroundColor: '#ccc',
-        marginVertical: 10,
-    },
     container: {
         paddingHorizontal: wp("5.4%"),
     },
     button: {
         backgroundColor: AppColors.transparent,
+        alignItems: "flex-end",
     },
-
     buttonText: {
-        color: '#fff',
+        color: AppColors.white,
         fontSize: wp("3.9%"),
-        fontFamily: "zen_kaku_bold",
-        height:25,
+        fontFamily: "zen_kaku_regular",
     },
     modalOverlay: {
         flex: 1,
         backgroundColor: 'rgba(0,0,0,0.48)',
         justifyContent: 'center',
-        padding: 20,
+        padding: wp("4%"),
     },
     modalContent: {
         backgroundColor: AppColors.buttonBackground,
-        padding: 20,
-        borderRadius: 12,
-        maxHeight: '80%',
+        padding: wp("8%"),
+        borderRadius: 15,
+        maxHeight: "80%",
     },
-    title: {
-        fontSize: 22,
-        fontWeight: 'bold',
-        marginBottom: 15,
-        textAlign: 'center',
-        color: AppColors.white,
-        fontFamily: "zen_kaku_medium",
-    },
+
     label: {
-        marginTop: 10,
         textAlign: "center",
-        marginBottom: 6,
-        fontSize: 16,
+        fontSize: wp("4%"),
         color: AppColors.white,
         fontFamily: "zen_kaku_medium",
-        height: 25,
+        alignSelf: "flex-start",
+        marginVertical: hp("3%"),
+        marginStart: wp("2%"),
     },
     optionsContainer: {
         flexDirection: 'row',
         flexWrap: 'wrap',
-        gap: 8,
+        gap: wp("1%"),
     },
     optionButton: {
-        backgroundColor: AppColors.neonPurpleTransparent,
-        padding: 8,
+        backgroundColor: AppColors.lighterButtonBackground,
+        padding: wp("2%"),
         borderRadius: 20,
-        marginRight: 8,
-        marginBottom: 8,
+        marginBottom:hp("1%"),
     },
     selectedOption: {
         backgroundColor: AppColors.secondaryColor,
     },
     optionText: {
         color: AppColors.white,
-    },
-    selectedText: {
-        color: '#fff',
+        fontSize: wp("3%"),
+        fontFamily: "zen_kaku_regular",
     },
     closeButton: {
         position: 'absolute',
-        top: wp("2%"),
-        right: wp("4%"),
-        zIndex: 1,
-        padding: 8,
+        right: wp("1%"),
+        padding: wp("4%"),
     },
     closeButtonText: {
         fontSize: wp("5%"),

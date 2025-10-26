@@ -17,7 +17,7 @@ export const userDetailsViewModel = () => {
     const [favGames, setFavGames] = useState<FavGame[]>([])
     const [playedGames, setPlayedGames] = useState<FavGame[]>([])
 
-    const loadUserGames = async (slug: string, token: string) => {
+    const loadUserGames = async (slug: string) => {
         setShowLoading(true)
         const responseFav = await loadFavGamesUseCase(slug);
         const responsePlayed = await loadPlayedGamesUseCase(slug);

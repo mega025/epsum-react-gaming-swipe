@@ -8,6 +8,7 @@ export const AppColors = {
     thirdColor: "#19114b",
     neonPurpleTransparent:"rgba(2,4,24,0.38)",
     buttonBackground:"#1f1f3a",
+    lighterButtonBackground:"rgba(44,44,80,0.82)",
     darkPurpleTrasparent:"rgba(19,1,33,0.6)",
     transparent:"#00000000",
     red:"#c50a0a",

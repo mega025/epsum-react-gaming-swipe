@@ -151,7 +151,7 @@ const styleSearch = StyleSheet.create({
 
 const styleSearchGameItem = StyleSheet.create({
     thirdColumnContainer:{
-        gap: hp("3%"),
+        gap: hp("2.7%"),
         marginStart: wp("3%"),
     },
     fav:{
@@ -257,9 +257,9 @@ const styleSearchUserItem = StyleSheet.create({
     },
 
     name: {
-        fontSize: wp("3.7%"),
+        fontSize: wp("3.3%"),
         lineHeight: 20,
-        verticalAlign: "middle",
+        alignSelf:"center",
         fontFamily: "zen_kaku_regular",
         color:AppColors.white,
     },
@@ -270,7 +270,7 @@ const styleSearchUserItem = StyleSheet.create({
         borderRadius:50,
         marginEnd: wp("5%"),
         alignItems:"center",
-        resizeMode:"center",
+        resizeMode:"contain",
     }
 
 })

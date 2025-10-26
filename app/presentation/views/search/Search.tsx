@@ -1,11 +1,9 @@
 import React, {useCallback, useEffect, useState} from "react";
 import {
     Image,
-    ImageBackground,
     Text,
     View,
-    TouchableWithoutFeedback,
-    Keyboard, FlatList, ActivityIndicator, TouchableOpacity,
+    Keyboard, ActivityIndicator, TouchableOpacity,
 }
     from "react-native";
 import { CustomTextInputSearch } from "../../components/CustomTextInputSearch";
@@ -28,14 +26,13 @@ import {CompanyDetailsInterface} from "../../../domain/entities/Company";
 import stylesHome from "../home/StyleHome";
 import styleHome from "../home/StyleHome";
 import {GetSearchUserInterface, SearchUserDTO} from "../../../domain/entities/User";
-import {styles} from "react-native-toast-message/lib/src/components/BaseToast.styles";
-import {stylesProfilePicture} from "../account/Account";
 import {API_BASE_URL} from "../../../data/sources/remote/api/ApiDelivery";
+import {FlashList} from "@shopify/flash-list";
+import {transformCoverUrl} from "../../utils/transformCoverUrl";
 
 export function Search({navigation = useNavigation()}: PropsStackNavigation) {
     const {
         gamesDisplayed,
-        setGamesDisplayed,
         loading,
         loadMoreGames,
         onSearchTextChange,
@@ -52,9 +49,6 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
         setSelectedCategory,
         setSelectedPlatform,
         searchedUsers,
-        searchTopCompany,
-        searchUsers,
-        companyDisplayed,
         selectedPlatform,
         selectedCategory,
     } = viewModel.searchViewModel()
@@ -63,36 +57,37 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
     useEffect(() => {
         searchMostAnticipatedGames()
     }, []);
-    useEffect(() => {
-        searchTopCompany()
-    }, []);
 
     const {user} = UseUserLocalStorage()
 
     const {
         addGameToFav,
         transformGameIntoFavGameInterface,
-        transformCoverUrl
     } = viewModelHome.homeViewModel()
 
     const {
         deleteGameFromFav,
         loadFavGames,
+        loadPlayedGames,
+        playedListGames,
         favListGames,
     } = viewModelFav.favScreenViewModel()
-
-    const [gameLiked, setGameLiked] = useState(false);
 
     useFocusEffect(
         useCallback(() => {
             if(user?.slug != undefined) {
                 loadFavGames(user?.slug)
+                loadPlayedGames(user?.slug)
             }
         }, [user?.slug])
     );
 
-    const checkIfGameFromApiIsLiked = (gameName: string) => {
-        return favListGames.some(game => game.name === gameName);
+    const checkIfGameFromApiIsLiked = (gameId: number) => {
+        return favListGames.some(game => game.id_api === gameId);
+    }
+
+    const checkIfGameFromApiIsPlayed = (gameId: number) => {
+        return playedListGames.some(game => game.id_api === gameId);
     }
 
     const searchUserItem = useCallback(({item} : {item:GetSearchUserInterface}) => (
@@ -122,7 +117,7 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
                     <Text style={styleSearchGameItem.gameName}>{item.name}</Text>
                 </View>
                 <View style={styleSearchGameItem.plaformsFlatlistContainer}>
-                    <FlatList data={item.platforms}
+                    <FlashList data={item.platforms}
                               renderItem={PlatformItem}
                               horizontal={true}
                               fadingEdgeLength={80}
@@ -139,18 +134,19 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
                     <Text style={styleSearchGameItem.rating}>No rate</Text>
                 )}
                 <TouchableOpacity onPress={async () => {
-                    if (!checkIfGameFromApiIsLiked(item.name)) {
+                    if (!checkIfGameFromApiIsLiked(item.id)) {
                         try {
-                            await addGameToFav(transformGameIntoFavGameInterface(item), user?.slug ? user?.slug : "");
-                            await loadFavGames(user?.slug ? user?.slug : "");
-
+                            if (!checkIfGameFromApiIsPlayed(item.id)) {
+                                await addGameToFav(transformGameIntoFavGameInterface(item), user?.slug ? user?.slug : "");
+                                await loadFavGames(user?.slug ? user?.slug : "");
+                            }
                         } catch (error) {
                             Toast.show({
                                 "type": "error",
                                 "text1": "Error while trying to save the game",
                             })
                         }
-                    } else {
+                    } if (checkIfGameFromApiIsLiked(item.id)) {
                         try {
                             await deleteGameFromFav(
                                 item.id,
@@ -167,32 +163,14 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
                     }
                 }}>
                     <Image style={styleSearchGameItem.fav} source={
-                        checkIfGameFromApiIsLiked(item.name)
+                        checkIfGameFromApiIsLiked(item.id)
                             ? require("../../../../assets/filled-heart.png")
-                            : require("../../../../assets/heart.png")}/>
+                            : checkIfGameFromApiIsPlayed(item.id) ? require("../../../../assets/check-icon.png") : require("../../../../assets/heart.png")}/>
                 </TouchableOpacity>
-                <Text style={styleSearchGameItem.gameReleaseYear}>{item.release_dates?.[0]?.y ?? "N/A"}</Text>
+                <Text style={styleSearchGameItem.gameReleaseYear}>{item.release_dates?.[0]?.y ?? "TBD"}</Text>
             </View>
         </View>
     ), [addGameToFav, checkIfGameFromApiIsLiked, loadFavGames, deleteGameFromFav, transformCoverUrl, navigation])
-
-    const searchCompanyItem = useCallback(({item} : {item:CompanyDetailsInterface}) =>(
-        <View style={styleSearchCompanyItem.companyCard}>
-            <TouchableOpacity
-                style={{backgroundColor: AppColors.softWhite, borderRadius: 10, marginStart: wp("3%")}}
-                onPress={() => navigation.push("CompanyDetails", {companyId:item.id})}>
-                <Image
-                    source={{
-                        uri: item.logo?.url
-                            ? item.logo.url
-                            : "https://lightwidget.com/wp-content/uploads/localhost-file-not-found.jpg",
-                    }}
-                    style={styleSearchCompanyItem.companyCover}  resizeMode="contain"
-                />
-            </TouchableOpacity>
-            <Text style={styleSearchCompanyItem.companyName}>{item.name}</Text>
-        </View>
-    ), [])
 
     return (
         <View style={styleSearch.container}>
@@ -211,14 +189,6 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
                         >
                             <Text style={[styleSearch.tabText, selectedTab === "games" && styleSearch.tabTextSelected]}>Games</Text>
                         </TouchableOpacity>
-
-                        <TouchableOpacity
-                            style={[styleSearch.tabButton, selectedTab === "developers" && styleSearch.tabButtonSelected]}
-                            onPress={() => setSelectedTab("developers")}
-                        >
-                            <Text style={[styleSearch.tabText, selectedTab === "developers" && styleSearch.tabTextSelected]}>Developers</Text>
-                        </TouchableOpacity>
-
                         <TouchableOpacity
                             style={[styleSearch.tabButton, selectedTab === "users" && styleSearch.tabButtonSelected]}
                             onPress={() => setSelectedTab("users")}
@@ -273,7 +243,7 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
                         </View>
 
                         <View style={styleSearch.gameCardsContainer}>
-                            <FlatList
+                            <FlashList
                                 data={gamesDisplayed}
                                 keyExtractor={(item, index) => String(index)}
                                 fadingEdgeLength={80}
@@ -301,36 +271,6 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
                     </>
                 )}
 
-                {selectedTab === "developers" && (
-                <>
-                    <View style={styleSearch.resultTextContainer}>
-                        <Text style={styleSearch.resultText}><Text style={{...styleSearch.resultText, fontFamily: "zen_kaku_medium", fontSize: wp("4.4")}}>TOP 20</Text>   Game developers</Text>
-                    </View>
-                        <FlatList
-                            data={companyDisplayed}
-                            keyExtractor={(item, index) => String(index)}
-                            renderItem={searchCompanyItem}
-                            ListFooterComponent={
-                                loading ? (
-                                    <ActivityIndicator
-                                        size="large"
-                                        color={AppColors.white}
-                                        style={{ marginTop: 20 }}
-                                    />
-                                ) : null
-                            }
-                            ListEmptyComponent={() => {
-                                if (loading) return null;
-                                return (
-                                    <View style={styleSearch.emptyContainer}>
-                                        <Text style={styleSearch.emptyText}>No companies found.</Text>
-                                    </View>
-                                );
-                            }}
-                        />
-                </>
-                )}
-
                 {selectedTab ===  "users" && (
                     <>
                         <View style={styleSearch.containerHeader}>
@@ -343,7 +283,7 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
                                 />
                             </View>
                         </View>
-                        <FlatList
+                        <FlashList
                             data={searchedUsers}
                             removeClippedSubviews={true}
                             renderItem={searchUserItem}

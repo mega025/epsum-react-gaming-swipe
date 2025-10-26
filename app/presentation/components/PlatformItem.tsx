@@ -2,6 +2,8 @@ import {Dimensions, Text, View} from "react-native";
 import {Platform} from "../../domain/entities/Game";
 import {StyleSheet} from "react-native";
 import {AppColors} from "../theme/AppTheme";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-native-responsive-screen";
+
 
 export const PlatformItem = ({item}: {item: Platform}) => {
     return (
@@ -16,18 +18,15 @@ const styles = StyleSheet.create({
         backgroundColor: AppColors.thirdColor,
         borderRadius: 15,
         padding: 7,
-        elevation:30,
-        paddingHorizontal: 10,
         alignSelf:'baseline',
         alignItems: "center",
-        marginEnd: 5,
+        marginEnd: wp("1%"),
     },
 
     abbreviation: {
-        fontSize: 12,
+        fontSize: wp("3%"),
         fontFamily: "zen_kaku_regular",
-        height: 19,
         verticalAlign: "middle",
-        color: "#fff",
+        color: AppColors.white,
     }
 })

@@ -1,11 +1,8 @@
 import {RouteProp, useNavigation, useRoute} from "@react-navigation/native";
 import {PropsStackNavigation} from "../../interfaces/StackNav";
-import {styles} from "react-native-toast-message/lib/src/components/BaseToast.styles";
 import {
-    ActivityIndicator, FlatList,
+    ActivityIndicator,
     Image,
-    ImageBackground,
-    SafeAreaView,
     ScrollView,
     Text,
     TouchableOpacity,
@@ -21,6 +18,7 @@ import {styleGameDetails, styleSimilarGame} from "./StyleGameDetails";
 import {AppColors} from "../../theme/AppTheme";
 import {SimilarGame} from "../../../domain/entities/Game";
 import {homeViewModel} from "../home/ViewModel";
+import {FlashList} from "@shopify/flash-list";
 
 
 
@@ -123,7 +121,6 @@ export function CompanyDetails ({navigation = useNavigation()}: PropsStackNaviga
     ), [navigation])
 
     return (
-        <SafeAreaView>
             <View style={{width: '100%', height: '100%', backgroundColor: AppColors.backgroundColor}}>
                 {!showLoading ? (
                     <>
@@ -164,7 +161,7 @@ export function CompanyDetails ({navigation = useNavigation()}: PropsStackNaviga
                                 {companyDetails?.developed && (
                                     <View>
                                         <Text style={styleGameDetails.infoTitles}>Developed games</Text>
-                                        <FlatList
+                                        <FlashList
                                             data={developedGames}
                                             renderItem={developedGameItem}
                                             fadingEdgeLength={50}
@@ -181,7 +178,7 @@ export function CompanyDetails ({navigation = useNavigation()}: PropsStackNaviga
                                 {companyDetails?.published && (
                                     <View>
                                         <Text style={{...styleGameDetails.infoTitles, marginTop: wp("-4%")}}>Published games</Text>
-                                        <FlatList
+                                        <FlashList
                                             data={publishedGames}
                                             renderItem={developedGameItem}
                                             fadingEdgeLength={50}
@@ -204,6 +201,5 @@ export function CompanyDetails ({navigation = useNavigation()}: PropsStackNaviga
                     </View>
                 )}
             </View>
-        </SafeAreaView>
     )
 }

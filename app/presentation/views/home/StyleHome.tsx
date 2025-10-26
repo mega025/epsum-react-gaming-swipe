@@ -20,11 +20,12 @@ const stylesHome = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         zIndex: 99,
+        marginTop: hp("3%"),
         justifyContent: 'center',
     },
     cardStyle: {
         width: wp("83%"),
-        height: hp("69%"),
+        height: hp("68%"),
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: AppColors.buttonBackground,
@@ -76,7 +77,7 @@ const stylesHome = StyleSheet.create({
     },
     gameNameText: {
         fontSize: wp("3.3%"),
-        width: "87%",
+        width: "85%",
         lineHeight: hp("2%"),
         fontFamily: "zen_kaku_medium",
         color: AppColors.white,
@@ -89,10 +90,12 @@ const stylesHome = StyleSheet.create({
         width: "100%",
         flexDirection: "row",
         alignItems: "center",
+        gap: wp("2%"),
     },
     thirdRowCardContainer: {
         flexDirection: "row",
-        gap: wp("4%"),
+        height: hp("4%"),
+        gap:wp("5%"),
         alignItems: "center",
         marginTop: hp("1%"),
     },
@@ -101,7 +104,7 @@ const stylesHome = StyleSheet.create({
         flexDirection: "row",
         zIndex: 99,
         gap: wp("16%"),
-        bottom: hp("3%"),
+        bottom: hp("2%"),
     },
 });
 

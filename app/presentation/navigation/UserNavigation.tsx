@@ -1,4 +1,3 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {Home} from "../views/home/Home";
 import {Image, StyleSheet} from "react-native";
 import TabViewFavScreen from "../views/fav/TabViewFavScreen";
@@ -10,30 +9,30 @@ import {UseUserLocalStorage} from "../hooks/UseUserLocalStorage";
 import {useNavigation} from "@react-navigation/native";
 import {PropsStackNavigation} from "../interfaces/StackNav";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
+import {createMaterialBottomTabNavigator} from "@react-navigation/material-bottom-tabs";
+import {styles} from "react-native-toast-message/lib/src/components/BaseToast.styles";
+import App from "../../../App";
 
-const Tab = createBottomTabNavigator();
+const Tab = createMaterialBottomTabNavigator();
 
 export function UserNavigation ({navigation = useNavigation()}: PropsStackNavigation) {
-    const {user} = UseUserLocalStorage()
-
-
     return (
-        <Tab.Navigator  screenOptions={{
-            tabBarHideOnKeyboard: true,
-            headerShown:false,
-            tabBarShowLabel: false,
-            tabBarActiveBackgroundColor: AppColors.backgroundColor,
-            tabBarStyle: {height: hp("8%"), backgroundColor: AppColors.buttonBackground},
-        }}
+        <Tab.Navigator
+            initialRouteName="Home"
+            shifting={true}
+            activeIndicatorStyle={{backgroundColor: AppColors.secondaryColor}}
+            activeColor={AppColors.white}
+            inactiveColor={AppColors.buttonBackground}
+            barStyle={{ backgroundColor: AppColors.buttonBackground, height: hp("10%")}}
         >
-            <Tab.Screen name="Home" options={{title:"Home",
+            <Tab.Screen name="Home" options={{title:"Swipes",
                 tabBarIcon: ({color})=>(
                     <Image
-                        source={require("../../../assets/brujula2.png")}
+                        source={require("../../../assets/home-icon.png")}
                         style={stylesTabBarItems.item}/>
                 )}}
                         component={Home} />
-            <Tab.Screen name="Fav" options={{title:"Fav",
+            <Tab.Screen name="Fav" options={{title:"Library",
                 tabBarIcon: ({color})=>(
                     <Image
                         source={require("../../../assets/heart.png")}
@@ -60,10 +59,10 @@ export function UserNavigation ({navigation = useNavigation()}: PropsStackNaviga
 
 const stylesTabBarItems = StyleSheet.create({
     item: {
-        width:wp("7.5%"),
+        width:wp("8.5%"),
+        height:hp("3%"),
         paddingHorizontal: wp("2%"),
         resizeMode:"contain",
-        marginTop:15,
-        tintColor:"white"
+        tintColor:AppColors.white,
     }
 })

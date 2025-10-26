@@ -1,5 +1,5 @@
 import {
-    ActivityIndicator, FlatList,
+    ActivityIndicator,
     Image,
     ImageBackground,
     SafeAreaView,
@@ -28,6 +28,8 @@ import viewModelFav from "../fav/ViewModel";
 import {styleSearch, styleSearchGameItem} from "../search/StyleSearch";
 import {UseUserLocalStorage} from "../../hooks/UseUserLocalStorage";
 import {AppColors} from "../../theme/AppTheme";
+import {FlashList} from "@shopify/flash-list";
+import {transformCoverUrl} from "../../utils/transformCoverUrl";
 
 
 type GameDetailsRouteProp = RouteProp<RootStackParamsList, "GameDetails">;
@@ -44,25 +46,31 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
     const {
         addGameToFav,
         transformGameIntoFavGameInterface,
-        transformCoverUrl
     } = viewModelHome.homeViewModel()
 
     const {
         deleteGameFromFav,
         loadFavGames,
         favListGames,
+        loadPlayedGames,
+        playedListGames,
     } = viewModelFav.favScreenViewModel()
 
     useFocusEffect(
         useCallback(() => {
             if(user?.slug != undefined) {
                 loadFavGames(user?.slug)
+                loadPlayedGames(user?.slug)
             }
         }, [user?.slug])
     );
 
-    const checkIfGameFromApiIsLiked = (gameName: string) => {
-        return favListGames.some(game => game.name === gameName);
+    const checkIfGameFromApiIsLiked = (gameId: number) => {
+        return favListGames.some(game => game.id_api === gameId);
+    }
+
+    const checkIfGameFromApiIsPlayed = (gameId: number) => {
+        return playedListGames.some(game => game.id_api === gameId);
     }
 
     const route = useRoute<GameDetailsRouteProp>()
@@ -71,6 +79,7 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
 
     useEffect(() => {
         loadGameDetails(gameId)
+        console.log(likeButton)
     }, []);
 
     const nullGenre: Genre = {name : "No genres registered"}
@@ -126,11 +135,12 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
                                 <Text style={styleGameDetails.infoTitles}>Involved companies</Text>
                                 {likeButton && (
                                 <TouchableOpacity onPress={async () => {
-                                    if (!checkIfGameFromApiIsLiked(gameDetails ? gameDetails.name : "")) {
+                                    if (!checkIfGameFromApiIsLiked(gameDetails?.id || 0)) {
                                         try {
-                                            await addGameToFav(transformGameIntoFavGameInterface(gameDetails), user?.slug ? user?.slug : "");
-                                            await loadFavGames(user?.slug ? user?.slug : "")
-
+                                            if (!checkIfGameFromApiIsPlayed(gameDetails?.id || 0)) {
+                                                await addGameToFav(transformGameIntoFavGameInterface(gameDetails), user?.slug || "");
+                                                await loadFavGames(user?.slug || "")
+                                            }
                                         } catch (error) {
                                             Toast.show({
                                                 "type": "error",
@@ -154,13 +164,13 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
                                     }
                                 }}>
                                     <Image style={styleGameDetails.fav} source={
-                                        checkIfGameFromApiIsLiked(gameDetails ? gameDetails.name : "")
+                                        checkIfGameFromApiIsLiked(gameDetails?.id || 0)
                                             ? require("../../../../assets/filled-heart.png")
-                                            : require("../../../../assets/heart.png")}/>
+                                            : checkIfGameFromApiIsPlayed(gameDetails?.id || 0) ? require("../../../../assets/check-icon.png") : require("../../../../assets/heart.png")}/>
                                 </TouchableOpacity>
                             )}
                             </View>
-                            <FlatList
+                            <FlashList
                                 data={gameDetails?.involved_companies}
                                 scrollEnabled={false}
                                 renderItem={({ item }) => (
@@ -172,7 +182,7 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
                                 )}/>
 
                             <Text style={styleGameDetails.infoTitles}>Platforms</Text>
-                            <FlatList style={{ width: wp("90%")}}
+                            <FlashList style={{ width: wp("90%")}}
                                       data={gameDetails?.platforms ? gameDetails?.platforms : [nullPlatform]}
                                       renderItem={PlatformItem}
                                       horizontal={true}
@@ -182,7 +192,7 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
                                       nestedScrollEnabled={true}/>
 
                             <Text style={styleGameDetails.infoTitles}>Genres</Text>
-                            <FlatList style={{ width: wp("90%")}}
+                            <FlashList style={{ width: wp("90%")}}
                                       data={gameDetails?.genres ? gameDetails?.genres : [nullGenre]}
                                       renderItem={GenreItem}
                                       horizontal={true}
@@ -218,7 +228,7 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
                             {gameDetails?.similar_games && (
                                 <View>
                                     <Text style={styleGameDetails.infoTitles}>Similar games</Text>
-                                    <FlatList
+                                    <FlashList
                                         data={gameDetails?.similar_games}
                                         renderItem={similarGameItem}
                                         fadingEdgeLength={50}

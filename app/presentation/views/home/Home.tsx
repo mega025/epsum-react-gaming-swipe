@@ -3,8 +3,8 @@ import {
     View,
     Image,
     ActivityIndicator,
-    StyleSheet, FlatList,
-    TouchableOpacity,
+    StyleSheet,
+    TouchableOpacity, FlatList,
 } from "react-native";
 import stylesHome from "./StyleHome";
 import {Text} from "react-native"
@@ -15,7 +15,6 @@ import viewModel from "./ViewModel";
 import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp,
-    widthPercentageToDP
 } from "react-native-responsive-screen";
 import {Game, Genre, GenreDTO, Platform} from "../../../domain/entities/Game";
 import {UseUserLocalStorage} from "../../hooks/UseUserLocalStorage";
@@ -32,6 +31,8 @@ import {LikeButton} from "../../components/LikeButton";
 import FilterButton from "../../components/FilterButton";
 import {RewindButton} from "../../components/RewindButton";
 import {Shadow} from "react-native-shadow-2";
+import {FlashList} from "@shopify/flash-list";
+import {transformCoverUrl} from "../../utils/transformCoverUrl";
 
 
 function FiltroComponent(props: {
@@ -49,7 +50,6 @@ export function Home({navigation = useNavigation()}: PropsStackNavigation) {
     const {
         listGames,
         refillSwipeGames,
-        transformCoverUrl,
         showLoading,
         addGameToFav,
         selectedGenre,
@@ -64,8 +64,8 @@ export function Home({navigation = useNavigation()}: PropsStackNavigation) {
 
     const {user} = UseUserLocalStorage()
 
-    const nullGenre: Genre = {name : "N/A"}
-    const nullPlatform: Platform = {name : "N/A"}
+    const nullGenre: Genre = {name : "No genres"}
+    const nullPlatform: Platform = {name : "No platforms"}
 
     useEffect(() => {
         refillSwipeGames()
@@ -94,8 +94,8 @@ export function Home({navigation = useNavigation()}: PropsStackNavigation) {
                                 : "N/A"
                         }</Text>
                     </View>
-                    <View style={{marginTop: hp("2%")}}>
-                        <FlatList
+                    <View style={{marginTop: hp("1%")}}>
+                        <FlashList
                             data={item.platforms ? item.platforms : [nullPlatform]}
                                   renderItem={PlatformItem}
                                   horizontal={true}
@@ -105,7 +105,8 @@ export function Home({navigation = useNavigation()}: PropsStackNavigation) {
                                   nestedScrollEnabled={true}/>
                     </View>
                     <View style={styleHome.thirdRowCardContainer}>
-                        <FlatList
+                        <FlashList
+                            style={{width: "83%"}}
                                   data={item.genres ? item.genres : [nullGenre]}
                                   renderItem={GenreItem}
                                   horizontal={true}
