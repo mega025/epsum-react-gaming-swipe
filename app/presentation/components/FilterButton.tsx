@@ -12,19 +12,20 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-nat
 import { IgdbApiDelivery } from '../../data/sources/remote/igdbAPI/IgdbApiDelivery';
 import {AppColors} from "../theme/AppTheme";
 import {useFocusEffect} from "@react-navigation/native";
+import {Platform} from "../../domain/entities/Game";
 
 interface FilterModalProps {
-    onApply: (filters: { category: string | null; platform: string | null }) => void;
-    selectedPlatform: string | null;
-    selectedGenre: string | null;
+    onApply: (filters: { category: Platform | null; platform: Platform | null }) => void;
+    selectedPlatform: Platform | null;
+    selectedGenre: Platform | null;
 }
 
 function FilterModal({ onApply, selectedGenre, selectedPlatform}: FilterModalProps) {
     const [modalVisible, setModalVisible] = useState(false);
-    const [categories, setCategories] = useState<string[]>([]);
-    const [platforms, setPlatforms] = useState<string[]>([]);
-    const [selectedCategoryInModal, setSelectedCategoryInModal] = useState<string | null>(null);
-    const [selectedPlatformInModal, setSelectedPlatformInModal] = useState<string | null>(null);
+    const [categories, setCategories] = useState<Platform[]>([]);
+    const [platforms, setPlatforms] = useState<Platform[]>([]);
+    const [selectedCategoryInModal, setSelectedCategoryInModal] = useState<Platform | null>(null);
+    const [selectedPlatformInModal, setSelectedPlatformInModal] = useState<Platform | null>(null);
     const [loading, setLoading] = useState(true);
 
     useFocusEffect(
@@ -32,28 +33,72 @@ function FilterModal({ onApply, selectedGenre, selectedPlatform}: FilterModalPro
         const fetchFilters = async () => {
             try {
                 setLoading(true);
-                const genreRes = await IgdbApiDelivery.post('genres', 'fields name; limit 30;');
-                const popularPlatforms = [
-                    'PlayStation 5',
-                    'Xbox Series X|S',
-                    'Nintendo Switch 2',
-                    'PC (Microsoft Windows)',
-                    'PlayStation 4',
-                    'Xbox One',
-                    'Nintendo Switch',
-                    'PlayStation 3',
-                    'PlayStation 2',
-                    'Xbox 360',
-                    'Nintendo 3DS',
-                    'Nintendo DS',
-                    'iOS',
-                    'Android',
-                ];
+                const genreRes = await IgdbApiDelivery.post('genres', 'fields name, id; limit 30;');
+                const popularPlatforms: Platform [] = [
+                    {
+                        id:167,
+                        name:'PlayStation 5'
+                    },
+                    {
+                        id:169,
+                        name:'Xbox Series X|S'
+                    },
+                    {
+                        id:6,
+                        name:'PC (Microsoft Windows)'
+                    },
+                    {
+                        id:48,
+                        name:'PlayStation 4'
+                    },
+                    {
+                        id:49,
+                        name:'Xbox One'
+                    },
+                    {
+                        id:130,
+                        name:'Nintendo Switch'
+                    },
+                    {
+                        id:9,
+                        name:'PlayStation 3',
+                    },
+                    {
+                        id:8,
+                        name:'PlayStation 2',
+                    },
 
-                setCategories(genreRes.data.map((c: { name: string }) => c.name));
+                    {
+                        id:12,
+                        name:'Xbox 360',
+                    },
+
+                    {
+                        id:37,
+                        name:'Nintendo 3DS',
+                    },
+
+                    {
+                        id:20,
+                        name:'Nintengo DS',
+                    },
+                    {
+                        id:39,
+                        name:'iOS',
+                    },
+                    {
+                        id:34,
+                        name:'Android',
+                    },
+                ];
+                setCategories(genreRes.data);
                 setPlatforms(popularPlatforms);
+                console.log(selectedGenre?.name);
+                console.log(selectedPlatform?.name);
                 setSelectedPlatformInModal(selectedPlatform);
                 setSelectedCategoryInModal(selectedGenre);
+                console.log(selectedCategoryInModal?.id)
+                console.log(selectedPlatformInModal?.id)
                 setLoading(false);
             } catch (err) {
                 console.log('Error fetching filters:', err);
@@ -63,16 +108,16 @@ function FilterModal({ onApply, selectedGenre, selectedPlatform}: FilterModalPro
         fetchFilters();
     }, []));
 
-    const renderOptions = (data: string[], selected: string | null, setSelected: (val: string | null) => void) => (
+    const renderOptions = (data: Platform[], selected: Platform | null, setSelected: (val: Platform | null) => void) => (
         <View style={styles.optionsContainer}>
             {data.map((item) => (
                 <TouchableOpacity
-                    key={item}
-                    style={[styles.optionButton, selected === item && styles.selectedOption]}
-                    onPress={() => setSelected(selected === item ? null : item)}
+                    key={item.name}
+                    style={[styles.optionButton, selected?.name === item.name && styles.selectedOption]}
+                    onPress={() => setSelected(selected?.name === item.name ? null : item)}
                 >
                     <Text style={styles.optionText}>
-                        {item}
+                        {item.name}
                     </Text>
                 </TouchableOpacity>
             ))}
@@ -91,7 +136,11 @@ function FilterModal({ onApply, selectedGenre, selectedPlatform}: FilterModalPro
         <View style={styles.container}>
             <TouchableOpacity style={styles.button} onPress={() => setModalVisible(true)}>
                 <Image source={require("../../../assets/filter-icon.png")}
-                       style={{width: wp("7%"), height: wp("7%"), tintColor: AppColors.white}}
+                       style={{
+                           width: wp("7%"),
+                           height: wp("7%"),
+                           tintColor: selectedGenre == null && selectedPlatform == null ? AppColors.gray : AppColors.white,
+                }}
                 />
             </TouchableOpacity>
 

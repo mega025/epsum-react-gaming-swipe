@@ -29,7 +29,7 @@ import {styleSearch, styleSearchGameItem} from "../search/StyleSearch";
 import {UseUserLocalStorage} from "../../hooks/UseUserLocalStorage";
 import {AppColors} from "../../theme/AppTheme";
 import {FlashList} from "@shopify/flash-list";
-import {transformCoverUrl} from "../../utils/transformCoverUrl";
+import {transformCoverUrl, transformSmallCoverUrl} from "../../utils/transformCoverUrl";
 
 
 type GameDetailsRouteProp = RouteProp<RootStackParamsList, "GameDetails">;
@@ -91,7 +91,7 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
                 <Image
                     source={{
                         uri: item.cover
-                            ? transformCoverUrl(item.cover.url)
+                            ? transformSmallCoverUrl(item.cover.url)
                             : "https://www.igdb.com/assets/no_cover_show-ef1e36c00e101c2fb23d15bb80edd9667bbf604a12fc0267a66033afea320c65.png"
                     }}
                     style={styleSimilarGame.image}

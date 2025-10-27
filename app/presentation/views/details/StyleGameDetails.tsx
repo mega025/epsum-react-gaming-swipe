@@ -94,30 +94,30 @@ const styleGameDetails = StyleSheet.create({
 const styleSimilarGame = StyleSheet.create({
     card: {
         width: wp("37%"),
-        height: hp("30%"),
+        height: hp("31.6%"),
         marginRight: wp("2.5%"),
         marginBottom: hp("5%"),
         marginTop: hp("2%"),
         borderRadius: 10,
-        alignSelf: "stretch",
         backgroundColor: AppColors.buttonBackground,
         elevation: 10,
     },
 
     image: {
-        width: wp("37%"),
-        height: hp("20%"),
+        width: "100%",
+        height: hp("22.7%"),
         borderTopRightRadius: 10,
         borderTopLeftRadius: 10,
+        resizeMode: "contain",
     },
 
     name: {
         fontSize: wp("2.9%"),
         padding: wp("2.5%"),
+        flex:1,
         textAlign: "center",
         fontFamily: "zen_kaku_regular",
         color: AppColors.white,
-        lineHeight: 20,
     },
 })
 

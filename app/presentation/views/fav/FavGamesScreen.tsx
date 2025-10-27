@@ -57,7 +57,7 @@ export function FavGamesScreen({navigation = useNavigation()}: PropsStackNavigat
                             ? setSelectedPlayedGameId(item.id)
                             : Toast.show({"type": "error", "text1": "Unexpected error!"})}}
                 >
-                    <Image source={require("../../../../assets/check-icon.png")} style={stylesFavGameItem.deleteIcon} />
+                    <Image source={require("../../../../assets/check-icon.png")} style={{...stylesFavGameItem.deleteIcon, tintColor: AppColors.green}} />
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={stylesFavGameItem.deleteIcon}

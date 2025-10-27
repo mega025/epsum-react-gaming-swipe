@@ -1,6 +1,6 @@
 import {IgdbApiDelivery} from "../../../data/sources/remote/igdbAPI/IgdbApiDelivery";
 import {useState} from "react";
-import {Game, GameDetailsInterface, Genre, GenreDTO} from "../../../domain/entities/Game";
+import {Game, GameDetailsInterface, Genre, GenreDTO, Platform} from "../../../domain/entities/Game";
 import {ApiDelivery} from "../../../data/sources/remote/api/ApiDelivery";
 import {FavGame} from "../../../domain/entities/FavGame";
 import viewModel from "../fav/ViewModel";
@@ -14,28 +14,26 @@ export const homeViewModel = () => {
 
     let [listGames, setListGames] = useState<Game[]>([]);
     let [showLoading, setShowLoading] = useState(true);
-    let [selectedPlatform, setSelectedPlatform] = useState<string | null>(null);
-    let [selectedGenre, setSelectedGenre] = useState<string | null>(null);
-    let [showMessageLoading, setMessageLoading] = useState(false);
+    let [selectedPlatform, setSelectedPlatform] = useState<Platform | null>(null);
+    let [selectedGenre, setSelectedGenre] = useState<Platform | null>(null);
     let [swipesCounter, setSwipesCounter] = useState(0);
 
     const {favListGames} = viewModel.favScreenViewModel();
 
     const refillSwipeGames = async () => {
-        setShowLoading(true)
+        setShowLoading(true);
         const response = await refillGamesFromSwiperUseCase()
-        setListGames((prev) => [...prev, ...response])
-        setShowLoading(false)
-        setMessageLoading(false);
+        setListGames(response)
+        setShowLoading(false);
     }
 
-    const refillSwipeGamesWithFilters = async (filters: { category: string | null; platform: string | null }) => {
-        setMessageLoading(true)
+    const refillSwipeGamesWithFilters = async (filters: { category: Platform | null; platform: Platform | null }) => {
+        setShowLoading(true);
         setSelectedPlatform(filters.platform);
         setSelectedGenre(filters.category);
         const response = await refillGamesFromSwiperWithFiltersUseCase(filters.platform, filters.category);
         setListGames(response)
-        setMessageLoading(false);
+        setShowLoading(false);
     }
 
     const addGameToFav = async (game: FavGame | undefined, slug: string) => {
@@ -68,8 +66,6 @@ export const homeViewModel = () => {
         addGameToFav,
         swipesCounter,
         setSwipesCounter,
-        showMessageLoading,
-        setMessageLoading,
         refillSwipeGamesWithFilters,
         selectedGenre,
         selectedPlatform,

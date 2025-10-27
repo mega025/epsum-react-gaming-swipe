@@ -3,7 +3,7 @@ import {ApiDeliveryResponse} from "../sources/remote/models/ApiDeliveryResponse"
 import {ApiDelivery} from "../sources/remote/api/ApiDelivery";
 import {IgdbApiDelivery} from "../sources/remote/igdbAPI/IgdbApiDelivery";
 import {AxiosError} from "axios";
-import {Game} from "../../domain/entities/Game";
+import {Game, Platform} from "../../domain/entities/Game";
 import {FavGame} from "../../domain/entities/FavGame";
 import Toast from "react-native-toast-message";
 
@@ -18,7 +18,7 @@ export class HomeRepository implements HomeRepositoryInterface {
                 "genres.name, " +
                 "platforms.abbreviation, " +
                 "platforms.name, " +
-                "rating, release_dates.y; limit 10; where rating > 70; offset "+randomOffset+";")
+                "rating, release_dates.y; limit 15; where rating > 70; offset "+randomOffset+";")
 
             return Promise.resolve(response.data)
         } catch (error) {
@@ -28,41 +28,16 @@ export class HomeRepository implements HomeRepositoryInterface {
         }
     }
 
-    async refillGamesFromSwiperWithFilters(platform: string | null, genre: string | null): Promise<Game[]> {
+    async refillGamesFromSwiperWithFilters(platform: Platform | null, genre: Platform | null): Promise<Game[]> {
         try {
-            let platformFilter = ""
-            let genreFilter = ""
+            let query = ""
             let response
-            if (platform !== null && genre !== null) {
-                const maxGames = await IgdbApiDelivery.post(
-                    "/games/count",
-                    "fields name, " +
-                    "cover.url, " +
-                    "genres.name, " +
-                    "platforms.abbreviation, " +
-                    "rating, release_dates.y; " +
-                    "limit 10; " +
-                    "where platforms.name = \""+platform+"\" & genres.name = \"" + genre + "\" & rating > 50;"
-                )
-                const maxOffset = Math.max(0, maxGames.data?.count - 10);
-                const randomOffset = Math.round(((Math.random()*maxOffset)*100)/100).toFixed(0)
-
-                response = await IgdbApiDelivery.post(
-                    "/games",
-                    "fields name, " +
-                    "cover.url, " +
-                    "genres.name, " +
-                    "platforms.abbreviation, " +
-                    "rating, release_dates.y; " +
-                    "limit 10; " +
-                    "offset " + randomOffset + "; " +
-                    "where platforms.name = \""+platform+"\" & genres.name = \"" + genre + "\" & rating > 50;")
-            } else {
-                if (platform !== null) {
-                    platformFilter = 'where platforms.name = "'+platform+'" & rating > 50;'
-                }
-                if (genre !== null) {
-                    genreFilter = 'where genres.name = "'+genre+'" & rating > 50;'
+                if (genre !== null && platform !== null) {
+                    query = 'where genres = ['+genre.id+'] & platforms = ['+platform.id+'] & rating > 50;'
+                } if (genre !== null && platform === null) {
+                    query = 'where genres = ['+genre.id+'] & rating > 50;'
+                } if (genre === null && platform !== null) {
+                    query = 'where platforms = ['+platform.id+'] & rating > 50;'
                 }
                 const maxGames = await IgdbApiDelivery.post(
                     "/games/count",
@@ -70,9 +45,8 @@ export class HomeRepository implements HomeRepositoryInterface {
                     "cover.url, " +
                     "genres.name, " +
                     "platforms.abbreviation, " +
-                    "rating, release_dates.y; limit 10;"+
-                    platformFilter+
-                    genreFilter)
+                    "rating, release_dates.y;"+
+                    query)
 
                 const maxOffset = Math.max(0, maxGames.data?.count - 10);
                 const randomOffset = Math.round(((Math.random()*maxOffset)*100)/100).toFixed(0)
@@ -82,10 +56,8 @@ export class HomeRepository implements HomeRepositoryInterface {
                     "cover.url, " +
                     "genres.name, " +
                     "platforms.abbreviation, " +
-                    "rating, release_dates.y; limit 10; offset "+randomOffset+";"+
-                    platformFilter+
-                    genreFilter)
-            }
+                    "rating, release_dates.y; limit 15; offset "+randomOffset+";"+
+                    query)
             return Promise.resolve(response.data)
         } catch (error) {
             let e = error as AxiosError;

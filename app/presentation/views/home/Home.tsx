@@ -56,9 +56,7 @@ export function Home({navigation = useNavigation()}: PropsStackNavigation) {
         swipesCounter,
         setSwipesCounter,
         selectedPlatform,
-        showMessageLoading,
         refillSwipeGamesWithFilters,
-        setMessageLoading,
         transformGameIntoFavGameInterface
     } = viewModel.homeViewModel()
 
@@ -171,11 +169,12 @@ export function Home({navigation = useNavigation()}: PropsStackNavigation) {
                             data={listGames}
                             cardStyle={styleHome.cardStyle}
                             overlayLabelContainerStyle={styleHome.overlayLabelContainer}
+                            swipeVelocityThreshold={1000}
                             renderCard={renderCard}
                             disableTopSwipe={true}
                             disableBottomSwipe={true}
-                            onIndexChange={(index) => {
-                                console.log('Current Active index', index);
+                            onIndexChange={async (index) => {
+                                console.log('Current Active index', index, listGames.length);
                             }}
                             onSwipeRight={async (cardIndex) => {
                                 console.log('cardIndex', cardIndex);
@@ -190,7 +189,18 @@ export function Home({navigation = useNavigation()}: PropsStackNavigation) {
                                 console.log('onPress');
                             }}
                             onSwipedAll={() => {
-                                console.log("ola")
+                                setTimeout(async () => {
+                                    if (selectedGenre == null && selectedPlatform == null) {
+                                        await refillSwipeGames()
+
+                                    } else {
+                                        const filters = {
+                                            category: selectedGenre,
+                                            platform: selectedPlatform,
+                                        }
+                                        await refillSwipeGamesWithFilters(filters);
+                                    }
+                                }, 350)
                             }}
                             OverlayLabelRight={OverlayRight}
                             OverlayLabelLeft={OverlayLeft}

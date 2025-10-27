@@ -19,6 +19,7 @@ import {AppColors} from "../../theme/AppTheme";
 import {SimilarGame} from "../../../domain/entities/Game";
 import {homeViewModel} from "../home/ViewModel";
 import {FlashList} from "@shopify/flash-list";
+import {transformCoverUrl, transformSmallCoverUrl} from "../../utils/transformCoverUrl";
 
 
 
@@ -36,10 +37,6 @@ export function CompanyDetails ({navigation = useNavigation()}: PropsStackNaviga
         formatUnixDate,
         getCountryNameFromNumericCode,
     } = companyDetailsViewModel()
-
-    const {
-        transformCoverUrl
-    } = homeViewModel()
 
     useEffect(() => {
         loadCompanyDetails(companyId)
@@ -110,7 +107,7 @@ export function CompanyDetails ({navigation = useNavigation()}: PropsStackNaviga
                 <Image
                     source={{
                         uri: item.cover
-                            ? transformCoverUrl(item.cover.url)
+                            ? transformSmallCoverUrl(item.cover.url)
                             : "https://www.igdb.com/assets/no_cover_show-ef1e36c00e101c2fb23d15bb80edd9667bbf604a12fc0267a66033afea320c65.png"
                     }}
                     style={styleSimilarGame.image}

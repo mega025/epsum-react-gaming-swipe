@@ -19,8 +19,8 @@ const stylesHome = StyleSheet.create({
     cardContainer: {
         flex: 1,
         alignItems: 'center',
-        zIndex: 99,
         marginTop: hp("3%"),
+        zIndex: 1,
         justifyContent: 'center',
     },
     cardStyle: {
