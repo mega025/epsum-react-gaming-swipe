@@ -6,7 +6,7 @@ import {PropsStackNavigation} from "../../../../presentation/interfaces/StackNav
 import Toast from "react-native-toast-message";
 import {clearTokens, loadTokens, saveTokens} from "../../local/secure/TokenStorage";
 
-export const API_BASE_URL = "http://172.20.10.4:8000/api";
+export const API_BASE_URL = "http://192.168.2.11:8000/api";
 
 const ApiDelivery = axios.create({
     baseURL: API_BASE_URL,

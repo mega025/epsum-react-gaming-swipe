@@ -3,11 +3,11 @@ import {GameDetailsRepositoryInterface} from "../repositories/GameDetailsReposit
 export interface Game {
     id: number;
     name: string;
-    rating: number;
-    platforms: Platform[];
-    release_dates: ReleaseDate[];
-    genres: Genre[];
-    cover: Cover;
+    rating?: number;
+    platforms?: Platform[];
+    release_dates?: ReleaseDate[];
+    genres?: Genre[];
+    cover?: Cover;
 }
 
 export interface GameDetailsInterface extends Game {

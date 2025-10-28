@@ -207,9 +207,9 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
                                     value={searchText}
                                     onPressButtonFromInterface={(text: string) => onSearchTextChange(text)}
                                 />
-                                <View>
-                                    <FiltroComponent onApply={onApplyFilters} selectedPlatform={selectedPlatform} selectedGenre={selectedCategory} />
-                                </View>
+                                {/*<View>*/}
+                                {/*    <FiltroComponent onApply={onApplyFilters} selectedPlatform={selectedPlatform} selectedGenre={selectedCategory} />*/}
+                                {/*</View>*/}
                             </View>
                         </View>
                         <View style={styleSearch.resultTextContainer}>

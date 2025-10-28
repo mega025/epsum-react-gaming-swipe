@@ -33,6 +33,7 @@ import {RewindButton} from "../../components/RewindButton";
 import {Shadow} from "react-native-shadow-2";
 import {FlashList} from "@shopify/flash-list";
 import {transformCoverUrl} from "../../utils/transformCoverUrl";
+import {generateNoGamesFoundCard, NO_GAMES_FOUND_LABEL} from "../../utils/noGameFoundWithThisFilters";
 
 
 function FiltroComponent(props: {
@@ -49,13 +50,14 @@ export function Home({navigation = useNavigation()}: PropsStackNavigation) {
 
     const {
         listGames,
+        setListGames,
         refillSwipeGames,
         showLoading,
         addGameToFav,
-        selectedGenre,
+        selectedGenres,
         swipesCounter,
         setSwipesCounter,
-        selectedPlatform,
+        selectedPlatforms,
         refillSwipeGamesWithFilters,
         transformGameIntoFavGameInterface
     } = viewModel.homeViewModel()
@@ -72,7 +74,7 @@ export function Home({navigation = useNavigation()}: PropsStackNavigation) {
     const renderCard = useCallback((item: Game) => {
         return (
             <View style={{width: "100%", height:"100%"}}>
-                <TouchableOpacity onPress={() => navigation.navigate("GameDetails", {gameId : item.id, likeButton: false})}>
+                <TouchableOpacity onPress={() => item.name !== NO_GAMES_FOUND_LABEL ? navigation.navigate("GameDetails", {gameId : item.id, likeButton: false}) : {}}>
                     <Image
                         source={{
                             uri: item.cover
@@ -113,7 +115,7 @@ export function Home({navigation = useNavigation()}: PropsStackNavigation) {
                                   scrollEnabled={true}
                                   nestedScrollEnabled={true}/>
                         <Text
-                            style={styleHome.releaseDateText}>{item.release_dates ? item.release_dates[0].y : "N/A"}</Text>
+                            style={styleHome.releaseDateText}>{item.release_dates ? item.release_dates[0].y : ""}</Text>
                     </View>
                 </View>
             </View>
@@ -179,24 +181,21 @@ export function Home({navigation = useNavigation()}: PropsStackNavigation) {
                             onSwipeRight={async (cardIndex) => {
                                 console.log('cardIndex', cardIndex);
                                 if (user?.slug !== undefined)
-                                    await addGameToFav(transformGameIntoFavGameInterface(listGames[cardIndex]), user.slug)
+                                    if (listGames[cardIndex].name !== NO_GAMES_FOUND_LABEL)
+                                        await addGameToFav(transformGameIntoFavGameInterface(listGames[cardIndex]), user.slug)
                                 console.log(listGames[cardIndex].name);
                             }}
                             onSwipeLeft={(cardIndex) => {
                                 console.log('onSwipeLeft', cardIndex);
                             }}
-                            onPress={() => {
-                                console.log('onPress');
-                            }}
                             onSwipedAll={() => {
                                 setTimeout(async () => {
-                                    if (selectedGenre == null && selectedPlatform == null) {
+                                    if (selectedGenres.length === 0 && selectedPlatforms.length === 0) {
                                         await refillSwipeGames()
-
                                     } else {
                                         const filters = {
-                                            category: selectedGenre,
-                                            platform: selectedPlatform,
+                                            genres: selectedGenres,
+                                            platforms: selectedPlatforms,
                                         }
                                         await refillSwipeGamesWithFilters(filters);
                                     }
@@ -210,7 +209,7 @@ export function Home({navigation = useNavigation()}: PropsStackNavigation) {
                         <XButton onPress={() =>  ref.current?.swipeLeft()}></XButton>
                         <View style={{gap:hp("2%"), alignItems: "center"}}>
                             <RewindButton onPress={() =>  ref.current?.swipeBack()}></RewindButton>
-                            <FilterButton onApply={refillSwipeGamesWithFilters} selectedGenre={selectedGenre} selectedPlatform={selectedPlatform}  />
+                            <FilterButton onApply={refillSwipeGamesWithFilters} selectedGenre={selectedGenres} selectedPlatform={selectedPlatforms}  />
                         </View>
                         <LikeButton onPress={() => ref.current?.swipeRight()}></LikeButton>
                     </View>

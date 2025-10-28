@@ -8,14 +8,15 @@ import {refillGamesFromSwiperUseCase} from "../../../domain/usesCases/home/Refil
 import {addGameToFavoriteUseCase} from "../../../domain/usesCases/home/AddGameToFavorite";
 import {refillGamesFromSwiperWithFiltersUseCase} from "../../../domain/usesCases/home/RefillGamesFromSwiperWithFilters";
 import {transformCoverUrl} from "../../utils/transformCoverUrl";
+import {generateNoGamesFoundCard} from "../../utils/noGameFoundWithThisFilters";
 
 
 export const homeViewModel = () => {
 
     let [listGames, setListGames] = useState<Game[]>([]);
     let [showLoading, setShowLoading] = useState(true);
-    let [selectedPlatform, setSelectedPlatform] = useState<Platform | null>(null);
-    let [selectedGenre, setSelectedGenre] = useState<Platform | null>(null);
+    let [selectedPlatforms, setSelectedPlatforms] = useState<Platform[]>([]);
+    let [selectedGenres, setSelectedGenres] = useState<Platform[]>([]);
     let [swipesCounter, setSwipesCounter] = useState(0);
 
     const {favListGames} = viewModel.favScreenViewModel();
@@ -27,12 +28,16 @@ export const homeViewModel = () => {
         setShowLoading(false);
     }
 
-    const refillSwipeGamesWithFilters = async (filters: { category: Platform | null; platform: Platform | null }) => {
+    const refillSwipeGamesWithFilters = async (filters: { genres: Platform[]; platforms: Platform[]}) => {
         setShowLoading(true);
-        setSelectedPlatform(filters.platform);
-        setSelectedGenre(filters.category);
-        const response = await refillGamesFromSwiperWithFiltersUseCase(filters.platform, filters.category);
-        setListGames(response)
+        setSelectedPlatforms(filters.platforms);
+        setSelectedGenres(filters.genres);
+        const response = await refillGamesFromSwiperWithFiltersUseCase(filters.platforms, filters.genres);
+        if (response.length === 0) {
+            setListGames([generateNoGamesFoundCard(filters.genres, filters.platforms), generateNoGamesFoundCard(filters.genres, filters.platforms)]);
+        } else {
+            setListGames(response)
+        }
         setShowLoading(false);
     }
 
@@ -48,7 +53,7 @@ export const homeViewModel = () => {
                 rating_score: item.rating ? Math.round((item.rating * 100) / 100) : 0,
                 release_year: item.release_dates ? item.release_dates[0].y : 0,
                 image_url: item.cover ? transformCoverUrl(item.cover.url) : "",
-                platforms: item.platforms,
+                platforms: item.platforms ? item.platforms : [],
                 genres: item.genres ? item.genres : [],
                 id_api: item.id
             }
@@ -67,8 +72,8 @@ export const homeViewModel = () => {
         swipesCounter,
         setSwipesCounter,
         refillSwipeGamesWithFilters,
-        selectedGenre,
-        selectedPlatform,
+        selectedGenres,
+        selectedPlatforms,
         transformGameIntoFavGameInterface
     }
 }

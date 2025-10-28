@@ -15,17 +15,17 @@ import {useFocusEffect} from "@react-navigation/native";
 import {Platform} from "../../domain/entities/Game";
 
 interface FilterModalProps {
-    onApply: (filters: { category: Platform | null; platform: Platform | null }) => void;
-    selectedPlatform: Platform | null;
-    selectedGenre: Platform | null;
+    onApply: (filters: { genres: Platform []; platforms: Platform [] }) => void;
+    selectedPlatform: Platform [];
+    selectedGenre: Platform [];
 }
 
 function FilterModal({ onApply, selectedGenre, selectedPlatform}: FilterModalProps) {
     const [modalVisible, setModalVisible] = useState(false);
     const [categories, setCategories] = useState<Platform[]>([]);
     const [platforms, setPlatforms] = useState<Platform[]>([]);
-    const [selectedCategoryInModal, setSelectedCategoryInModal] = useState<Platform | null>(null);
-    const [selectedPlatformInModal, setSelectedPlatformInModal] = useState<Platform | null>(null);
+    const [selectedGenresInModal, setSelectedGenresInModal] = useState<Platform []>([]);
+    const [selectedPlatformsInModal, setSelectedPlatformsInModal] = useState<Platform []>([]);
     const [loading, setLoading] = useState(true);
 
     useFocusEffect(
@@ -93,12 +93,8 @@ function FilterModal({ onApply, selectedGenre, selectedPlatform}: FilterModalPro
                 ];
                 setCategories(genreRes.data);
                 setPlatforms(popularPlatforms);
-                console.log(selectedGenre?.name);
-                console.log(selectedPlatform?.name);
-                setSelectedPlatformInModal(selectedPlatform);
-                setSelectedCategoryInModal(selectedGenre);
-                console.log(selectedCategoryInModal?.id)
-                console.log(selectedPlatformInModal?.id)
+                setSelectedPlatformsInModal(selectedPlatform);
+                setSelectedGenresInModal(selectedGenre);
                 setLoading(false);
             } catch (err) {
                 console.log('Error fetching filters:', err);
@@ -108,13 +104,16 @@ function FilterModal({ onApply, selectedGenre, selectedPlatform}: FilterModalPro
         fetchFilters();
     }, []));
 
-    const renderOptions = (data: Platform[], selected: Platform | null, setSelected: (val: Platform | null) => void) => (
+    const renderOptions = (data: Platform[], selecteds: Platform [], setSelected: (val: Platform []) => void) => (
         <View style={styles.optionsContainer}>
             {data.map((item) => (
                 <TouchableOpacity
                     key={item.name}
-                    style={[styles.optionButton, selected?.name === item.name && styles.selectedOption]}
-                    onPress={() => setSelected(selected?.name === item.name ? null : item)}
+                    style={[styles.optionButton, selecteds?.some(selected => selected.name === item.name) && styles.selectedOption]}
+                    onPress={() =>
+                        selecteds?.some(selected => selected.name === item.name)
+                            ? setSelected(selecteds?.filter(selected => selected.name !== item.name))
+                            : setSelected([...selecteds, item])}
                 >
                     <Text style={styles.optionText}>
                         {item.name}
@@ -126,8 +125,8 @@ function FilterModal({ onApply, selectedGenre, selectedPlatform}: FilterModalPro
 
     const applyFilters = () => {
         onApply({
-            category: selectedCategoryInModal,
-            platform: selectedPlatformInModal,
+            genres: selectedGenresInModal,
+            platforms: selectedPlatformsInModal,
         });
         setModalVisible(false);
     };
@@ -163,9 +162,9 @@ function FilterModal({ onApply, selectedGenre, selectedPlatform}: FilterModalPro
                         ) : (
                             <ScrollView showsVerticalScrollIndicator={false}>
                                 <Text style={styles.label}>Platforms</Text>
-                                {renderOptions(platforms, selectedPlatformInModal, setSelectedPlatformInModal)}
+                                {renderOptions(platforms, selectedPlatformsInModal, setSelectedPlatformsInModal)}
                                 <Text style={styles.label}>Categories</Text>
-                                {renderOptions(categories, selectedCategoryInModal, setSelectedCategoryInModal)}
+                                {renderOptions(categories, selectedGenresInModal, setSelectedGenresInModal)}
                             </ScrollView>
                         )}
                         <TouchableOpacity

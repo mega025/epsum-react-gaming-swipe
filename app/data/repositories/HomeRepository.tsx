@@ -28,17 +28,20 @@ export class HomeRepository implements HomeRepositoryInterface {
         }
     }
 
-    async refillGamesFromSwiperWithFilters(platform: Platform | null, genre: Platform | null): Promise<Game[]> {
+    async refillGamesFromSwiperWithFilters(platforms: Platform[], genres: Platform[]): Promise<Game[]> {
         try {
             let query = ""
             let response
-                if (genre !== null && platform !== null) {
-                    query = 'where genres = ['+genre.id+'] & platforms = ['+platform.id+'] & rating > 50;'
-                } if (genre !== null && platform === null) {
-                    query = 'where genres = ['+genre.id+'] & rating > 50;'
-                } if (genre === null && platform !== null) {
-                    query = 'where platforms = ['+platform.id+'] & rating > 50;'
+            const genresToString = genres.map(item => item.id).join(', ');
+            const platformsToString = platforms.map(item => item.id).join(', ');
+                if (genres.length > 0 && platforms.length > 0) {
+                    query = 'where genres = ['+genresToString+'] & platforms = ['+platformsToString+'] & rating > 50;'
+                } if (genres.length > 0 && platforms.length === 0) {
+                    query = 'where genres = ['+genresToString+'] & rating > 50;'
+                } if (genres.length === 0 && platforms.length > 0) {
+                    query = 'where platforms = ['+platformsToString+'] & rating > 50;'
                 }
+                console.log(query);
                 const maxGames = await IgdbApiDelivery.post(
                     "/games/count",
                     "fields name, " +
