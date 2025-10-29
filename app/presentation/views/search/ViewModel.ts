@@ -103,8 +103,8 @@ const searchViewModel = () => {
         setLoading(false)
     };
 
-    const searchGamesByUserInput = async (input: string, page: number = 1) => {
-        setLoading(true);
+    const searchGamesByUserInput = async (input: string, page: number = 1, showLoading: boolean) => {
+        setLoading(showLoading);
         const response = await searchGamesByUserInputUseCase(input, page);
         if (page === 1)
             setGamesDisplayed(response);
@@ -120,7 +120,7 @@ const searchViewModel = () => {
         } else {
             setSearchText(text);
             setPage(1);
-            await searchGamesByUserInput(text, 1);
+            await searchGamesByUserInput(text, 1, true);
         }
     };
 
@@ -139,19 +139,16 @@ const searchViewModel = () => {
         await searchUsers(userParameters, token)
     }
 
-    const loadMoreGames = () => {
+    const loadMoreGames = async () => {
         if (!loading && gamesDisplayed.length >= 13) {
-            setLoading(true)
             setPage((prevPage) => {
                 const nextPage = prevPage + 1;
-
                 if (searchText !== "") {
-                    searchGamesByUserInput(searchText, nextPage);
+                    searchGamesByUserInput(searchText, nextPage, false);
                 } else if (appliedFilters.category || appliedFilters.platform) {
                     fetchFilteredGames(appliedFilters.category, appliedFilters.platform, nextPage)
                         .then((moreGames) => {
                             setGamesDisplayed((prevGames) => [...prevGames, ...moreGames]);
-                            setLoading(false)
                         });
                 }
 

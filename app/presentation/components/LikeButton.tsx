@@ -9,19 +9,19 @@ interface Props {
 
 export const LikeButton=({onPress}: Props)=>{
     return (
-        <Shadow startColor={"rgba(4,255,25,0.05)"}>
-            <TouchableOpacity style={styles.cont} onPress={onPress}>
-                <Image source={require("../../../assets/heart.png")} style={styles.HeartButton}></Image>
+        <Shadow startColor={"rgba(4,121,255,0.10)"}>
+            <TouchableOpacity style={stylesLikeButton.cont} onPress={onPress}>
+                <Image source={require("../../../assets/x.png")} style={stylesLikeButton.likeButton}></Image>
             </TouchableOpacity>
         </Shadow>
     )
 }
 
-const styles = StyleSheet.create({
-    HeartButton:{
-        height:hp("3%"),
-        width:hp("3%"),
-        tintColor:"green",
+export const stylesLikeButton = StyleSheet.create({
+    likeButton:{
+        height:hp("2.5%"),
+        width:hp("2.5%"),
+        tintColor:AppColors.like,
     },
     cont:{
         backgroundColor:AppColors.buttonBackground,

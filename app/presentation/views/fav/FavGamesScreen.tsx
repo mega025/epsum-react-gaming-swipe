@@ -51,7 +51,7 @@ export function FavGamesScreen({navigation = useNavigation()}: PropsStackNavigat
                 </TouchableOpacity>
                 <Text style={{ ...stylesHome.gameNameText, width: wp("46%")}}>{item.name}</Text>
                 <TouchableOpacity
-                    style={{...stylesFavGameItem.deleteIcon, marginRight: wp("2.5%")}}
+                    style={{...stylesFavGameItem.deleteIcon, alignItems:"center", justifyContent:"center"}}
                     onPress={() => {
                         item.id
                             ? setSelectedPlayedGameId(item.id)
@@ -60,7 +60,7 @@ export function FavGamesScreen({navigation = useNavigation()}: PropsStackNavigat
                     <Image source={require("../../../../assets/check-icon.png")} style={{...stylesFavGameItem.deleteIcon, tintColor: AppColors.green}} />
                 </TouchableOpacity>
                 <TouchableOpacity
-                    style={stylesFavGameItem.deleteIcon}
+                    style={{...stylesFavGameItem.deleteIcon, alignItems:"center", justifyContent:"center"}}
                     onPress={() => {
                         item.id
                             ? setSelectedDeleteGameId(item.id)
@@ -142,18 +142,25 @@ export function FavGamesScreen({navigation = useNavigation()}: PropsStackNavigat
     return (
         <View style={styleFav.container}>
             <View style={{width: '100%', height: '100%', backgroundColor: AppColors.backgroundColor}}>
-                <View style={stylesHome.loadingIconContainer}>
-                    <ActivityIndicator style={styleHome.loading} size="large" color="#ffffff" animating={showLoading}/>
-                </View>
-                <View style={{height:"100%"}}>
-                    <FlatList data={favListGames}
-                              removeClippedSubviews={true}
-                              renderItem={favGameRenderItem}
-                              extraData={favListGames}
-                              fadingEdgeLength={80}
-                              ListFooterComponent={<Text style={{...styleFav.footerFavGames, display: showLoading ? "none" : "flex"}}>Add more games!</Text>}
-                    />
-                </View>
+                {showLoading ? (
+                    <>
+                        <View style={stylesHome.loadingIconContainer}>
+                            <ActivityIndicator style={styleHome.loading} size="large" color="#ffffff" animating={showLoading}/>
+                        </View>
+                    </>
+                ):(
+                    <>
+                        <View style={{height:"100%"}}>
+                            <FlatList data={favListGames}
+                                      removeClippedSubviews={true}
+                                      renderItem={favGameRenderItem}
+                                      extraData={favListGames}
+                                      fadingEdgeLength={80}
+                                      ListFooterComponent={<Text style={{...styleFav.footerFavGames, display: showLoading ? "none" : "flex"}}>Add more games!</Text>}
+                            />
+                        </View>
+                    </>
+                )}
                 <Toast/>
             </View>
         </View>
@@ -181,8 +188,9 @@ export const stylesFavGameItem = StyleSheet.create({
     },
 
     deleteIcon: {
-        width: wp("4%"),
-        height: wp("4%"),
+        width: wp("8%"),
+        height: wp("8%"),
+        padding: wp("2%"),
         tintColor: AppColors.white,
     }
 })

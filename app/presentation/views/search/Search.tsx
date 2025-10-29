@@ -28,7 +28,8 @@ import styleHome from "../home/StyleHome";
 import {GetSearchUserInterface, SearchUserDTO} from "../../../domain/entities/User";
 import {API_BASE_URL} from "../../../data/sources/remote/api/ApiDelivery";
 import {FlashList} from "@shopify/flash-list";
-import {transformCoverUrl, transformSmallCoverUrl} from "../../utils/transformCoverUrl";
+import {transformCoverUrl, transformSmallCoverUrl} from "../../utils/TransformCoverUrls";
+import show = Toast.show;
 
 export function Search({navigation = useNavigation()}: PropsStackNavigation) {
     const {
@@ -118,6 +119,7 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
                 </View>
                 <View style={styleSearchGameItem.plaformsFlatlistContainer}>
                     <FlashList data={item.platforms}
+                               style={{minWidth:wp("50%")}}
                               renderItem={PlatformItem}
                               horizontal={true}
                               fadingEdgeLength={80}
@@ -131,7 +133,17 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
                 {item.rating ? (
                     <Text style={styleSearchGameItem.rating}>{item.rating.toFixed(1)}</Text>
                 ) : (
-                    <Text style={styleSearchGameItem.rating}>No rate</Text>
+                    <>
+                        <View style={styleSearchGameItem.rating}>
+                            <Text style={{width:item.hypes ? "auto" : "100%", fontSize:wp("3%"), textAlign:"center", color: item.hypes ? AppColors.green : AppColors.white}}>
+                                {item.hypes ? item.hypes : "No rate"}</Text>
+                            {item.hypes && (
+                            <Image style={{width:wp("3%"), height:hp("1%"), tintColor: AppColors.green}}
+                                source={require("../../../../assets/hypes-icon.png")}/>
+                            )}
+                        </View>
+                    </>
+
                 )}
                 <TouchableOpacity onPress={async () => {
                     if (!checkIfGameFromApiIsLiked(item.id)) {
@@ -241,32 +253,35 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
                                 <Text style={styleSearch.resultText}><Text style={{...styleSearch.resultText, fontFamily: "zen_kaku_medium", fontSize: wp("4.4")}}>TOP 10</Text>   Most anticipated games</Text>
                             )}
                         </View>
-
                         <View style={styleSearch.gameCardsContainer}>
-                            <FlashList
-                                data={gamesDisplayed}
-                                keyExtractor={(item, index) => String(index)}
-                                fadingEdgeLength={80}
-                                renderItem={searchGameItem}
-                                ListFooterComponent={
-                                    loading ? (
-                                        <ActivityIndicator
-                                            size="large"
-                                            color={AppColors.white}
-                                            style={{ paddingVertical: 15 }}
-                                        />
-                                    ) : null
-                                }
-                                onEndReached={loadMoreGames}
-                                onEndReachedThreshold={1.5}
-                                ListEmptyComponent={
-                                    <View style={{ alignItems: "center", width: "100%", marginTop: 20 }}>
-                                        <Text style={{ ...styleSearch.emptyFlatListText, display: loading ? "none" : "flex" }}>
-                                            No results
-                                        </Text>
+                            {loading ? (
+                                <>
+                                    <View style={stylesHome.loadingIconContainer}>
+                                        <ActivityIndicator style={styleHome.loading} size="large" color="#ffffff" animating={loading} />
                                     </View>
-                                }
-                            />
+                                </>
+                            ):(
+                                <>
+                                    <FlashList
+                                        data={gamesDisplayed}
+                                        keyExtractor={(item, index) => String(index)}
+                                        fadingEdgeLength={80}
+                                        renderItem={searchGameItem}
+                                        ListFooterComponent={
+                                            <Text style={{...styleFav.footerFavGames, display: gamesDisplayed.length > 0 ? "flex" : "none"}}>No more games</Text>
+                                        }
+                                        onEndReached={loadMoreGames}
+                                        onEndReachedThreshold={1.5}
+                                        ListEmptyComponent={
+                                            <View style={{ alignItems: "center", width: "100%", marginTop: 20 }}>
+                                                <Text style={{ ...styleSearch.emptyFlatListText, display: loading ? "none" : "flex" }}>
+                                                    No results
+                                                </Text>
+                                            </View>
+                                        }
+                                    />
+                                </>
+                            )}
                         </View>
                     </>
                 )}
@@ -274,7 +289,7 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
                 {selectedTab ===  "users" && (
                     <>
                         <View style={styleSearch.containerHeader}>
-                            <View style={{...styleSearch.containerSearchInput, paddingVertical: hp("1%")}}>
+                            <View style={styleSearch.containerSearchInput}>
                                 <CustomTextInputSearch
                                     keyboardType="default"
                                     secureTextEntry={false}
@@ -283,21 +298,28 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
                                 />
                             </View>
                         </View>
-                        <FlashList
-                            data={searchedUsers}
-                            removeClippedSubviews={true}
-                            renderItem={searchUserItem}
-                            ListEmptyComponent={
-                                <View style={{ alignItems: "center", width: "100%", marginTop: 20 }}>
-                                    <Text style={{ ...styleSearch.emptyFlatListText, display: loading ? "none" : "flex" }}>
-                                        No results
-                                    </Text>
+                        {loading ? (
+                            <>
+                                <View style={stylesHome.loadingIconContainer}>
+                                    <ActivityIndicator style={styleHome.loading} size="large" color="#ffffff" animating={loading} />
                                 </View>
-                            }
-                        />
-                        <View style={stylesHome.loadingIconContainer}>
-                            <ActivityIndicator style={styleHome.loading} size="large" color="#ffffff" animating={loading} />
-                        </View>
+                            </>
+                        ):(
+                            <>
+                                <FlashList
+                                    data={searchedUsers}
+                                    removeClippedSubviews={true}
+                                    renderItem={searchUserItem}
+                                    ListEmptyComponent={
+                                        <View style={{ alignItems: "center", width: "100%", marginTop: 20 }}>
+                                            <Text style={{ ...styleSearch.emptyFlatListText, display: loading ? "none" : "flex" }}>
+                                                No results
+                                            </Text>
+                                        </View>
+                                    }
+                                />
+                            </>
+                        )}
                     </>
                 )}
             </View>

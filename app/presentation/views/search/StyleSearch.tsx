@@ -29,7 +29,7 @@ const styleSearch = StyleSheet.create({
         alignSelf: "center",
         gap: 6,
         justifyContent: "center",
-        marginTop: hp("5%"),
+        marginTop: hp("5.5%"),
     },
 
     headerTitle: {
@@ -156,14 +156,18 @@ const styleSearchGameItem = StyleSheet.create({
     },
     fav:{
         width:wp("6%"),
-        height:hp("2.5%"),
+        height:hp("3%"),
         tintColor:"#4dc51f",
+        resizeMode:"contain",
         alignSelf: "center",
     },
     rating: {
         fontSize: wp("3%"),
         backgroundColor: AppColors.thirdColor,
         padding: wp("2%"),
+        flexDirection:"row",
+        gap:wp("1%"),
+        alignItems: "center",
         width: wp("15%"),
         borderRadius: 15,
         textAlign: "center",
@@ -203,7 +207,8 @@ const styleSearchGameItem = StyleSheet.create({
         color:AppColors.white,
     },
     plaformsFlatlistContainer:{
-        flex:2,
+        flex:1,
+        minWidth:wp("50%"),
         width: wp("50%"),
         flexDirection:"row",
         alignSelf: "center",

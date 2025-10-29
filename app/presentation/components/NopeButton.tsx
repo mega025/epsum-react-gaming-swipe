@@ -8,21 +8,21 @@ interface Props {
     onPress: () => void;
 }
 
-export const XButton=({onPress}:Props)=>{
+export const NopeButton=({onPress}:Props)=>{
     return (
         <Shadow startColor={"rgba(255,4,4,0.08)"}>
-            <TouchableOpacity style={styles.cont} onPress={onPress}>
-                <Image source={require("../../../assets/x.png")} style={styles.addButton}></Image>
+            <TouchableOpacity style={stylesNopeButton.cont} onPress={onPress}>
+                <Image source={require("../../../assets/circle-icon.png")} style={stylesNopeButton.nopeButton}></Image>
             </TouchableOpacity>
         </Shadow>
     )
 }
 
-const styles = StyleSheet.create({
-    addButton:{
-        height:hp("2%"),
-        width:hp("2%"),
-        tintColor:"red",
+export const stylesNopeButton = StyleSheet.create({
+    nopeButton:{
+        height:hp("3%"),
+        width:hp("3%"),
+        tintColor:AppColors.nope,
     },
     cont:{
         backgroundColor:AppColors.buttonBackground,

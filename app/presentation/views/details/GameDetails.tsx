@@ -29,7 +29,7 @@ import {styleSearch, styleSearchGameItem} from "../search/StyleSearch";
 import {UseUserLocalStorage} from "../../hooks/UseUserLocalStorage";
 import {AppColors} from "../../theme/AppTheme";
 import {FlashList} from "@shopify/flash-list";
-import {transformCoverUrl, transformSmallCoverUrl} from "../../utils/transformCoverUrl";
+import {transformCoverUrl, transformSmallCoverUrl} from "../../utils/TransformCoverUrls";
 
 
 type GameDetailsRouteProp = RouteProp<RootStackParamsList, "GameDetails">;
@@ -126,7 +126,7 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
                                 <Text style={styleGameDetails.name}>{gameDetails?.name}</Text>
                                 <View style={{flexDirection: "row", gap: wp("10%")}}>
                                     <Text style={styleGameDetails.rating}>{gameDetails?.rating ? gameDetails?.rating.toFixed(1) : "No rate"}</Text>
-                                    <Text style={styleGameDetails.rating}>{gameDetails?.release_dates[0] ? gameDetails?.release_dates[0].y : "TBD"}</Text>
+                                    <Text style={styleGameDetails.rating}>{gameDetails?.release_dates ? gameDetails?.release_dates[0].y : "TBD"}</Text>
                                 </View>
                             </View>
                         </View>
@@ -201,7 +201,7 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
                                       scrollEnabled={true}
                                       nestedScrollEnabled={true}/>
 
-                            {gameDetails?.release_dates[0] && (
+                            {gameDetails?.release_dates && (
                                 <View>
                                     <Text style={styleGameDetails.infoTitles}>Release date</Text>
                                     <Text style={{...styleGameDetails.summary, lineHeight: 20}}>{gameDetails?.release_dates[0].human}</Text>

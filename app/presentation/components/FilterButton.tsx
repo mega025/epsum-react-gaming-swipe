@@ -13,6 +13,7 @@ import { IgdbApiDelivery } from '../../data/sources/remote/igdbAPI/IgdbApiDelive
 import {AppColors} from "../theme/AppTheme";
 import {useFocusEffect} from "@react-navigation/native";
 import {Platform} from "../../domain/entities/Game";
+import {popularPlatforms} from "../utils/PopularPlatformsArray";
 
 interface FilterModalProps {
     onApply: (filters: { genres: Platform []; platforms: Platform [] }) => void;
@@ -34,63 +35,6 @@ function FilterModal({ onApply, selectedGenre, selectedPlatform}: FilterModalPro
             try {
                 setLoading(true);
                 const genreRes = await IgdbApiDelivery.post('genres', 'fields name, id; limit 30;');
-                const popularPlatforms: Platform [] = [
-                    {
-                        id:167,
-                        name:'PlayStation 5'
-                    },
-                    {
-                        id:169,
-                        name:'Xbox Series X|S'
-                    },
-                    {
-                        id:6,
-                        name:'PC (Microsoft Windows)'
-                    },
-                    {
-                        id:48,
-                        name:'PlayStation 4'
-                    },
-                    {
-                        id:49,
-                        name:'Xbox One'
-                    },
-                    {
-                        id:130,
-                        name:'Nintendo Switch'
-                    },
-                    {
-                        id:9,
-                        name:'PlayStation 3',
-                    },
-                    {
-                        id:8,
-                        name:'PlayStation 2',
-                    },
-
-                    {
-                        id:12,
-                        name:'Xbox 360',
-                    },
-
-                    {
-                        id:37,
-                        name:'Nintendo 3DS',
-                    },
-
-                    {
-                        id:20,
-                        name:'Nintengo DS',
-                    },
-                    {
-                        id:39,
-                        name:'iOS',
-                    },
-                    {
-                        id:34,
-                        name:'Android',
-                    },
-                ];
                 setCategories(genreRes.data);
                 setPlatforms(popularPlatforms);
                 setSelectedPlatformsInModal(selectedPlatform);
@@ -131,14 +75,21 @@ function FilterModal({ onApply, selectedGenre, selectedPlatform}: FilterModalPro
         setModalVisible(false);
     };
 
+    const clearFilters = () => {
+        setSelectedGenresInModal([])
+        setSelectedPlatformsInModal([])
+    }
+
     return (
         <View style={styles.container}>
             <TouchableOpacity style={styles.button} onPress={() => setModalVisible(true)}>
-                <Image source={require("../../../assets/filter-icon.png")}
+                <Image source={selectedGenre.length === 0 && selectedPlatform.length === 0
+                    ? require("../../../assets/filter-icon.png")
+                    : require("../../../assets/active-filter-icon.png")}
                        style={{
                            width: wp("7%"),
                            height: wp("7%"),
-                           tintColor: selectedGenre == null && selectedPlatform == null ? AppColors.gray : AppColors.white,
+                           tintColor: selectedGenre.length === 0 && selectedPlatform.length === 0 ? AppColors.white : "",
                 }}
                 />
             </TouchableOpacity>
@@ -167,12 +118,20 @@ function FilterModal({ onApply, selectedGenre, selectedPlatform}: FilterModalPro
                                 {renderOptions(categories, selectedGenresInModal, setSelectedGenresInModal)}
                             </ScrollView>
                         )}
-                        <TouchableOpacity
-                            style={[styles.button, { marginTop: 20 }]}
-                            onPress={applyFilters}
-                        >
-                            <Text style={styles.buttonText}>Apply Filters</Text>
-                        </TouchableOpacity>
+                        <View style={{flexDirection:"row", paddingHorizontal: wp("2%")}}>
+                            <TouchableOpacity
+                                style={[styles.button, { marginTop: hp("2%"), width: "50%", alignItems: "flex-start" }]}
+                                onPress={clearFilters}
+                            >
+                                <Text style={{...styles.buttonText, color: AppColors.red}}>Clear filters</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={[styles.button, { marginTop: hp("2%"), width: "50%" }]}
+                                onPress={applyFilters}
+                            >
+                                <Text style={styles.buttonText}>Apply filters</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                 </View>
             </Modal>

@@ -8,6 +8,7 @@ export interface Game {
     release_dates?: ReleaseDate[];
     genres?: Genre[];
     cover?: Cover;
+    hypes?: number;
 }
 
 export interface GameDetailsInterface extends Game {

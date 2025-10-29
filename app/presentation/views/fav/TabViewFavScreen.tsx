@@ -20,6 +20,9 @@ import {FavGamesScreen} from "./FavGamesScreen";
 import {PlayedGamesScreen} from "./PlayedGamesScreen";
 import styleFav from "./StyleFav";
 import stylesTabBar from "../auth/StylesTabBar";
+import {useEffect} from "react";
+import {favScreenViewModel} from "./ViewModel";
+import {UseUserLocalStorage} from "../../hooks/UseUserLocalStorage";
 
 const renderScene = SceneMap({
     favgames: FavGamesScreen,
@@ -43,6 +46,7 @@ const renderTabBar = (props: any) => (
 export default function TabViewFavScreen({}) {
     const layout = useWindowDimensions();
     const [index, setIndex] = React.useState(0);
+
     const [routes] = React.useState([
         { key: 'favgames', title: 'I want them' },
         { key: 'playedgames', title: 'I have them' },

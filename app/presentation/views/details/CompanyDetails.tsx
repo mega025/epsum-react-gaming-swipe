@@ -19,7 +19,7 @@ import {AppColors} from "../../theme/AppTheme";
 import {SimilarGame} from "../../../domain/entities/Game";
 import {homeViewModel} from "../home/ViewModel";
 import {FlashList} from "@shopify/flash-list";
-import {transformCoverUrl, transformSmallCoverUrl} from "../../utils/transformCoverUrl";
+import {transformCoverUrl, transformSmallCoverUrl} from "../../utils/TransformCoverUrls";
 
 
 
@@ -123,7 +123,7 @@ export function CompanyDetails ({navigation = useNavigation()}: PropsStackNaviga
                     <>
                         <ScrollView style={{paddingBottom: hp("60%")}} showsVerticalScrollIndicator={false}>
                             <View style={{...styleGameDetails.header, flexDirection: "column", paddingBottom: 0, alignItems:"center"}}>
-                                <TouchableOpacity onPress={navigation.goBack} style={{...styleGameDetails.goBackIconTouchable, bottom: hp("37%")}}>
+                                <TouchableOpacity onPress={navigation.goBack} style={{...styleGameDetails.goBackIconTouchable, bottom: hp("35%")}}>
                                     <Image source={require("../../../../assets/go-back-icon.png")}
                                            style={styleGameDetails.goBackIcon} />
                                 </TouchableOpacity>

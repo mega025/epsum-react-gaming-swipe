@@ -6,6 +6,7 @@ import {AxiosError} from "axios";
 import {Game, Platform} from "../../domain/entities/Game";
 import {FavGame} from "../../domain/entities/FavGame";
 import Toast from "react-native-toast-message";
+import {refillGamesFromSwiperUseCase} from "../../domain/usesCases/home/RefillGamesFromSwiper";
 
 export class HomeRepository implements HomeRepositoryInterface {
     async refillGamesFromSwiper(): Promise<Game[]> {
@@ -32,6 +33,10 @@ export class HomeRepository implements HomeRepositoryInterface {
         try {
             let query = ""
             let response
+            if (genres.length === 0 && platforms.length === 0) {
+                response = await refillGamesFromSwiperUseCase()
+                return Promise.resolve(response)
+            }
             const genresToString = genres.map(item => item.id).join(', ');
             const platformsToString = platforms.map(item => item.id).join(', ');
                 if (genres.length > 0 && platforms.length > 0) {

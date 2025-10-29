@@ -24,8 +24,10 @@ const styleGameDetails = StyleSheet.create({
 
     goBackIconTouchable: {
         start:wp("3%"),
-        bottom: hp("31.5%"),
+        bottom: hp("30%"),
         position: "absolute",
+        height: hp("5%"),
+        justifyContent: "center",
     },
 
     goBackIcon: {

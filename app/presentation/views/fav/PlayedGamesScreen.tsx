@@ -56,7 +56,7 @@ export function PlayedGamesScreen({navigation = useNavigation()}: PropsStackNavi
                 </TouchableOpacity>
                 <Text style={{ ...stylesHome.gameNameText, width: wp("53%"), fontSize: wp("3.5%"), color:"white"}}>{item.name}</Text>
                 <TouchableOpacity
-                    style={stylesFavGameItem.deleteIcon}
+                    style={{...stylesFavGameItem.deleteIcon, alignItems:"center", justifyContent:"center"}}
                     onPress={() => {
                         item.id
                             ? setSelectedGameId(item.id)
@@ -104,18 +104,25 @@ export function PlayedGamesScreen({navigation = useNavigation()}: PropsStackNavi
 
     return (
         <View style={{width: '100%', height: '100%', backgroundColor: AppColors.backgroundColor}}>
-                <View style={stylesHome.loadingIconContainer}>
-                    <ActivityIndicator style={styleHome.loading} size="large" color="#ffffff" animating={showLoading}/>
-                </View>
-                <View style={{height:"100%"}}>
-                    <FlatList data={playedListGames}
-                              removeClippedSubviews={true}
-                              renderItem={favGameRenderItem}
-                              extraData={playedListGames}
-                              fadingEdgeLength={80}
-                              ListFooterComponent={<Text style={{...styleFav.footerFavGames, display: showLoading ? "none" : "flex"}}>Play more games!</Text>}
-                    />
-                </View>
+            {showLoading ? (
+                <>
+                    <View style={stylesHome.loadingIconContainer}>
+                        <ActivityIndicator style={styleHome.loading} size="large" color="#ffffff" animating={showLoading}/>
+                    </View>
+                </>
+            ):(
+                <>
+                    <View style={{height:"100%"}}>
+                        <FlatList data={playedListGames}
+                                  removeClippedSubviews={true}
+                                  renderItem={favGameRenderItem}
+                                  extraData={playedListGames}
+                                  fadingEdgeLength={80}
+                                  ListFooterComponent={<Text style={{...styleFav.footerFavGames, display: showLoading ? "none" : "flex"}}>Play more games!</Text>}
+                        />
+                    </View>
+                </>
+            )}
                 <Toast/>
         </View>
     );

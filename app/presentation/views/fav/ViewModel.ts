@@ -16,6 +16,7 @@ export const favScreenViewModel = () => {
     let [favListGames, setFavListGames] = useState<FavGame[]>([]);
     let [playedListGames, setPlayedListGames] = useState<FavGame[]>([]);
     let [showLoading, setShowLoading] = useState(true);
+    let [updatePlayedGames, setUpdatePlayedGames] = useState<boolean>(false);
 
     const loadFavGames = async (slug: string) => {
         const response = await loadFavGamesUseCase(slug);
@@ -31,8 +32,8 @@ export const favScreenViewModel = () => {
 
     const addPlayedGame = async (slug: string, favgame: FavGame) => {
         await addPlayedGameUseCase(slug, favgame);
-        await loadFavGames(slug);
         await loadPlayedGames(slug);
+        await loadFavGames(slug);
     }
 
     const deleteGameFromFav = async (id_api: number, slug: string) => {

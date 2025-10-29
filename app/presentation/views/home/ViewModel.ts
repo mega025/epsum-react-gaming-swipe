@@ -7,8 +7,8 @@ import viewModel from "../fav/ViewModel";
 import {refillGamesFromSwiperUseCase} from "../../../domain/usesCases/home/RefillGamesFromSwiper";
 import {addGameToFavoriteUseCase} from "../../../domain/usesCases/home/AddGameToFavorite";
 import {refillGamesFromSwiperWithFiltersUseCase} from "../../../domain/usesCases/home/RefillGamesFromSwiperWithFilters";
-import {transformCoverUrl} from "../../utils/transformCoverUrl";
-import {generateNoGamesFoundCard} from "../../utils/noGameFoundWithThisFilters";
+import {transformCoverUrl} from "../../utils/TransformCoverUrls";
+import {generateNoGamesFoundCard} from "../../utils/NoGameFoundWithThisFilters";
 
 
 export const homeViewModel = () => {

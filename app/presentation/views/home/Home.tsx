@@ -26,14 +26,14 @@ import {AppColors} from "../../theme/AppTheme";
 import {styles} from "react-native-toast-message/lib/src/components/BaseToast.styles";
 import {GenreItem} from "../../components/GenreItem";
 import {PlatformItem} from "../../components/PlatformItem";
-import {XButton} from "../../components/XButton";
-import {LikeButton} from "../../components/LikeButton";
+import {NopeButton, stylesNopeButton} from "../../components/NopeButton";
+import {LikeButton, stylesLikeButton} from "../../components/LikeButton";
 import FilterButton from "../../components/FilterButton";
 import {RewindButton} from "../../components/RewindButton";
 import {Shadow} from "react-native-shadow-2";
 import {FlashList} from "@shopify/flash-list";
-import {transformCoverUrl} from "../../utils/transformCoverUrl";
-import {generateNoGamesFoundCard, NO_GAMES_FOUND_LABEL} from "../../utils/noGameFoundWithThisFilters";
+import {transformCoverUrl} from "../../utils/TransformCoverUrls";
+import {generateNoGamesFoundCard, NO_GAMES_FOUND_LABEL} from "../../utils/NoGameFoundWithThisFilters";
 
 
 function FiltroComponent(props: {
@@ -131,7 +131,7 @@ export function Home({navigation = useNavigation()}: PropsStackNavigation) {
                 style={[
                     stylesHome.overlayLabelContainer,
                     {
-                        backgroundColor: 'green',
+                        backgroundColor: AppColors.like,
                         opacity: 0.8
                     },
                 ]}
@@ -146,7 +146,7 @@ export function Home({navigation = useNavigation()}: PropsStackNavigation) {
                 style={[
                     stylesHome.overlayLabelContainer,
                     {
-                        backgroundColor: 'red',
+                        backgroundColor: AppColors.nope,
                         opacity: 0.8,
                     },
                 ]}
@@ -206,7 +206,7 @@ export function Home({navigation = useNavigation()}: PropsStackNavigation) {
                         />
                     </GestureHandlerRootView>
                     <View style={styleHome.buttonsContainer}>
-                        <XButton onPress={() =>  ref.current?.swipeLeft()}></XButton>
+                        <NopeButton onPress={() =>  ref.current?.swipeLeft()}></NopeButton>
                         <View style={{gap:hp("2%"), alignItems: "center"}}>
                             <RewindButton onPress={() =>  ref.current?.swipeBack()}></RewindButton>
                             <FilterButton onApply={refillSwipeGamesWithFilters} selectedGenre={selectedGenres} selectedPlatform={selectedPlatforms}  />

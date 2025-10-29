@@ -74,7 +74,7 @@ export function UserDetails ({navigation = useNavigation()}: PropsStackNavigatio
                         <View style={{...styleGameDetails.header, flexDirection: "column", paddingBottom: 0, alignItems:"center"}}>
                             <TouchableOpacity onPress={navigation.goBack}>
                                 <Image source={require("../../../../assets/go-back-icon.png")}
-                                       style={{...styleGameDetails.goBackIcon, bottom: hp("3"), end: wp("40%")}} />
+                                       style={{...styleGameDetails.goBackIcon, bottom: hp("5%"), end: wp("43%")}} />
                             </TouchableOpacity>
                             <View style={{width: wp("100%"), alignItems: "center"}}>
                                 <Image source={userSearch.image ? {uri: `${API_BASE_URL.slice(0, -4)}${userSearch.image}`} : require("../../../../assets/account-image.jpg")}

@@ -13,7 +13,7 @@ export class SearchRepository implements SearchRepositoryInterface {
         try {
             const response = await IgdbApiDelivery.post(
                 "/games",
-                `fields name, rating, platforms.abbreviation, genres.name, cover.url, release_dates.y; limit 10; 
+                `fields name, hypes, rating, platforms.abbreviation, genres.name, cover.url, release_dates.y; limit 10; 
                 sort hypes desc; where total_rating_count = null & release_dates.y >= 2025;`)
             return Promise.resolve(response.data)
         } catch (error) {

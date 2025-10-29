@@ -4,6 +4,8 @@ export const AppColors = {
     opacWhite: "rgba(255,255,255,0.45)",
     backgroundColor: "#121315",
     blue:"#0583F2",
+    like:"#0583F2",
+    nope:"#c50a0a",
     secondaryColor:"#403475",
     thirdColor: "#19114b",
     neonPurpleTransparent:"rgba(2,4,24,0.38)",
