@@ -3,8 +3,8 @@ import {
     Alert,
     Image,
     ImageBackground,
-    Modal,
-    Pressable, SafeAreaView, StyleSheet,
+    Modal, Platform,
+    SafeAreaView, StyleSheet,
     Text,
     TextInput,
     TouchableOpacity,
@@ -81,7 +81,7 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
         }
 
         let result = await ImagePickerExpo.launchImageLibraryAsync({
-            mediaTypes:ImagePickerExpo.MediaTypeOptions.All,
+            mediaTypes:['images'],
             allowsEditing: true,
             aspect:[1,1],
             quality:1
@@ -91,6 +91,12 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
         if (!result.canceled) {
             if (userDB != undefined) {
                 const selectedAsset = result.assets[0]
+                let path = selectedAsset.uri;
+                if (Platform.OS === "ios") {
+                    path = "~" + path.substring(path.indexOf("/Documents"));
+                }
+                if (!selectedAsset.fileName) selectedAsset.fileName = path.split("/").pop();
+
                 const formData = new FormData();
                 formData.append('image', {
                     uri: selectedAsset.uri,
@@ -158,13 +164,13 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                                                 />
                                                 <Text style={styleAccount.charactersCounter}>{updatedFirstName.length}/15</Text>
                                                 <View style={styleAccount.containerButton}>
-                                                    <Pressable
+                                                    <TouchableOpacity
                                                         style={styleAccount.modalCancelButton}
                                                         onPress={() => setModalVisibleFirst(!modalVisibleFirst)}
                                                     >
                                                         <Text style={styleAccount.modalButtonTextStyle}>Cancel</Text>
-                                                    </Pressable>
-                                                    <Pressable
+                                                    </TouchableOpacity>
+                                                    <TouchableOpacity
                                                         style={styleAccount.modalAcceptButton}
                                                         onPress={() => {
                                                             if(userDB != undefined) {
@@ -187,16 +193,16 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                                                         }
                                                     >
                                                         <Text style={styleAccount.modalButtonTextStyle}>Accept</Text>
-                                                    </Pressable>
+                                                    </TouchableOpacity>
                                                 </View>
                                             </View>
                                         </View>
                                     </Modal>
 
-                                    <Pressable
+                                    <TouchableOpacity
                                         onPress={() => setModalVisibleFirst(true)}>
                                         <Image source={require('../../../../assets/edit.png')} style={styleAccount.editButton}/>
-                                    </Pressable>
+                                    </TouchableOpacity>
 
                                 </View>
                             </View>
@@ -228,13 +234,13 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                                                 />
                                                 <Text style={styleAccount.charactersCounter}>{updatedLastName.length}/15</Text>
                                                 <View style={styleAccount.containerButton}>
-                                                    <Pressable
+                                                    <TouchableOpacity
                                                         style={styleAccount.modalCancelButton}
                                                         onPress={() => setModalVisibleLast(!modalVisibleLast)}
                                                     >
                                                         <Text style={styleAccount.modalButtonTextStyle}>Cancel</Text>
-                                                    </Pressable>
-                                                    <Pressable
+                                                    </TouchableOpacity>
+                                                    <TouchableOpacity
                                                         style={styleAccount.modalAcceptButton}
                                                         onPress={async () => {
                                                             if(userDB != undefined) {
@@ -257,16 +263,16 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                                                         }
                                                     >
                                                         <Text style={styleAccount.modalButtonTextStyle}>Accept</Text>
-                                                    </Pressable>
+                                                    </TouchableOpacity>
                                                 </View>
                                             </View>
                                         </View>
                                     </Modal>
 
-                                    <Pressable
+                                    <TouchableOpacity
                                         onPress={() => setModalVisibleLast(true)}>
                                         <Image source={require('../../../../assets/edit.png')} style={styleAccount.editButton}/>
-                                    </Pressable>
+                                    </TouchableOpacity>
 
                                 </View>
                             </View>
@@ -312,13 +318,13 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                                                 })}
                                             />
                                             <View style={styleAccount.containerButton}>
-                                                <Pressable
+                                                <TouchableOpacity
                                                     style={styleAccount.modalCancelButton}
                                                     onPress={() => setModalVisibleLastPassword(!modalVisiblePassword)}
                                                 >
                                                     <Text style={styleAccount.modalButtonTextStyle}>Cancel</Text>
-                                                </Pressable>
-                                                <Pressable
+                                                </TouchableOpacity>
+                                                <TouchableOpacity
                                                     style={styleAccount.modalAcceptButton}
                                                     onPress={async () => {
                                                         if (user?.slug != undefined) {
@@ -334,15 +340,15 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                                                     }}
                                                 >
                                                     <Text style={styleAccount.modalButtonTextStyle}>Accept</Text>
-                                                </Pressable>
+                                                </TouchableOpacity>
                                             </View>
                                         </View>
                                     </View>
                                 </Modal>
-                                <Pressable
+                                <TouchableOpacity
                                     onPress={() => setModalVisibleLastPassword(true)}>
                                     <Text style={styleAccount.TextResetPassword}>Change Password</Text>
-                                </Pressable>
+                                </TouchableOpacity>
 
                             </View>
                         </View>
@@ -377,7 +383,7 @@ export const stylesProfilePicture =StyleSheet.create({
         width:wp("25%"),
         height:wp("25%"),
         borderRadius:50,
-        resizeMode: "contain",
+        resizeMode: "cover",
         alignItems:"center",
     },
     changePhotoButton:{

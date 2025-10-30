@@ -81,13 +81,13 @@ export function FavGamesScreen({navigation = useNavigation()}: PropsStackNavigat
                                 <Text style={{...styleAccount.textPopUp, color: AppColors.red}}>Delete this game?</Text>
                                 <Text style={styleAccount.gameNamePopUp}>{item.name}</Text>
                                 <View style={styleAccount.containerButton}>
-                                    <Pressable
+                                    <TouchableOpacity
                                         style={styleAccount.modalCancelButton}
                                         onPress={() => setSelectedDeleteGameId(null)}
                                     >
                                         <Text style={styleAccount.modalButtonTextStyle}>Cancel</Text>
-                                    </Pressable>
-                                    <Pressable
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
                                         style={styleAccount.modalAcceptButton}
                                         onPress={async () => {
                                             console.log(item.name)
@@ -96,7 +96,7 @@ export function FavGamesScreen({navigation = useNavigation()}: PropsStackNavigat
                                         }}
                                     >
                                         <Text style={styleAccount.modalButtonTextStyle}>Accept</Text>
-                                    </Pressable>
+                                    </TouchableOpacity>
                                 </View>
                             </View>
                         </View>
@@ -114,13 +114,13 @@ export function FavGamesScreen({navigation = useNavigation()}: PropsStackNavigat
                                 <Text style={{...styleAccount.textPopUp, color: AppColors.green}}>Do you have this game?</Text>
                                 <Text style={styleAccount.gameNamePopUp}>{item.name}</Text>
                                 <View style={styleAccount.containerButton}>
-                                    <Pressable
+                                    <TouchableOpacity
                                         style={styleAccount.modalCancelButton}
                                         onPress={() => setSelectedPlayedGameId(null)}
                                     >
                                         <Text style={styleAccount.modalButtonTextStyle}>Cancel</Text>
-                                    </Pressable>
-                                    <Pressable
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
                                         style={styleAccount.modalAcceptButton}
                                         onPress={async () => {
                                             console.log(item.name)
@@ -129,7 +129,7 @@ export function FavGamesScreen({navigation = useNavigation()}: PropsStackNavigat
                                         }}
                                     >
                                         <Text style={styleAccount.modalButtonTextStyle}>Accept</Text>
-                                    </Pressable>
+                                    </TouchableOpacity>
                                 </View>
                             </View>
                         </View>

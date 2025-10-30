@@ -47,6 +47,17 @@ export default function TabViewFavScreen({}) {
     const layout = useWindowDimensions();
     const [index, setIndex] = React.useState(0);
 
+    const {user} = UseUserLocalStorage()
+
+    const {loadPlayedGames, loadFavGames, setFavListGames} = favScreenViewModel()
+
+    useEffect(() => {
+        if (user?.slug !== undefined) {
+            loadPlayedGames(user.slug)
+            loadFavGames(user.slug)
+        }
+    }, [index, user?.slug]);
+
     const [routes] = React.useState([
         { key: 'favgames', title: 'I want them' },
         { key: 'playedgames', title: 'I have them' },

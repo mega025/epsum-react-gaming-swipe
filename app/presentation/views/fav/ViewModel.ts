@@ -50,6 +50,7 @@ export const favScreenViewModel = () => {
         favListGames,
         playedListGames,
         setFavListGames,
+        setPlayedListGames,
         loadFavGames,
         loadPlayedGames,
         addPlayedGame,

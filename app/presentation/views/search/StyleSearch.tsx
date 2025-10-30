@@ -275,7 +275,7 @@ const styleSearchUserItem = StyleSheet.create({
         borderRadius:50,
         marginEnd: wp("5%"),
         alignItems:"center",
-        resizeMode:"contain",
+        resizeMode:"cover",
     }
 
 })

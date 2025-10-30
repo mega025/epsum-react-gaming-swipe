@@ -77,13 +77,13 @@ export function PlayedGamesScreen({navigation = useNavigation()}: PropsStackNavi
                                 <Text style={{...styleAccount.textPopUp, color: AppColors.red}}>Delete this game?</Text>
                                 <Text style={styleAccount.gameNamePopUp}>{item.name}</Text>
                                 <View style={styleAccount.containerButton}>
-                                    <Pressable
+                                    <TouchableOpacity
                                         style={styleAccount.modalCancelButton}
                                         onPress={() => setSelectedGameId(null)}
                                     >
                                         <Text style={styleAccount.modalButtonTextStyle}>Cancel</Text>
-                                    </Pressable>
-                                    <Pressable
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
                                         style={styleAccount.modalAcceptButton}
                                         onPress={async () => {
                                             console.log(item.name)
@@ -92,7 +92,7 @@ export function PlayedGamesScreen({navigation = useNavigation()}: PropsStackNavi
                                         }}
                                     >
                                         <Text style={styleAccount.modalButtonTextStyle}>Accept</Text>
-                                    </Pressable>
+                                    </TouchableOpacity>
                                 </View>
                             </View>
                         </View>
