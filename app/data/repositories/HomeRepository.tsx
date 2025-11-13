@@ -3,12 +3,28 @@ import {ApiDeliveryResponse} from "../sources/remote/models/ApiDeliveryResponse"
 import {ApiDelivery} from "../sources/remote/api/ApiDelivery";
 import {IgdbApiDelivery} from "../sources/remote/igdbAPI/IgdbApiDelivery";
 import {AxiosError} from "axios";
-import {Game, Platform} from "../../domain/entities/Game";
+import {Game, GameSimilarGames, Platform} from "../../domain/entities/Game";
 import {FavGame} from "../../domain/entities/FavGame";
 import Toast from "react-native-toast-message";
-import {refillGamesFromSwiperUseCase} from "../../domain/usesCases/home/RefillGamesFromSwiper";
 
 export class HomeRepository implements HomeRepositoryInterface {
+    async getSimilarGamesFromGame(gameId: number): Promise<GameSimilarGames[]> {
+        try {
+            const response = await IgdbApiDelivery.post(
+                "/games",
+                "fields similar_games.name, similar_games.cover.url, similar_games.platforms.abbreviation, " +
+                "similar_games.platforms.name, similar_games.genres.name, similar_games.rating, "+
+                'similar_games.release_dates.y; where id = '+gameId+';',
+            )
+            console.log(response.data);
+            return Promise.resolve(response.data);
+        } catch (error) {
+            let e = error as AxiosError;
+            console.log(e.message);
+            return Promise.reject(e);
+        }
+    }
+
     async refillGamesFromSwiper(): Promise<Game[]> {
         try {
             const randomOffset = Math.round(((Math.random()*9100)*100)/100).toFixed(0)
@@ -34,7 +50,7 @@ export class HomeRepository implements HomeRepositoryInterface {
             let query = ""
             let response
             if (genres.length === 0 && platforms.length === 0) {
-                response = await refillGamesFromSwiperUseCase()
+                response = await this.refillGamesFromSwiper()
                 return Promise.resolve(response)
             }
             const genresToString = genres.map(item => item.id).join(', ');

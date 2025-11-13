@@ -10,6 +10,9 @@ export interface Game {
     cover?: Cover;
     hypes?: number;
 }
+export interface GameSimilarGames {
+    similar_games: Game[];
+}
 
 export interface GameDetailsInterface extends Game {
     storyline: string

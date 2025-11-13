@@ -14,7 +14,8 @@ export class SearchRepository implements SearchRepositoryInterface {
             const response = await IgdbApiDelivery.post(
                 "/games",
                 `fields name, hypes, rating, platforms.abbreviation, genres.name, cover.url, release_dates.y; limit 10; 
-                sort hypes desc; where total_rating_count = null & release_dates.y >= 2025;`)
+                sort hypes desc; 
+                where first_release_date > ${Math.floor(Date.now() / 1000)} & hypes != null;`)
             return Promise.resolve(response.data)
         } catch (error) {
             let e = (error as AxiosError);

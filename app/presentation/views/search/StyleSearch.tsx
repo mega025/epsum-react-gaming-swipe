@@ -105,26 +105,16 @@ const styleSearch = StyleSheet.create({
         fontSize: wp("3%"),
         color: AppColors.red,
     },
-    title: {
-        fontSize: 20,
-        fontWeight: "bold",
-        color: AppColors.white,
-        marginBottom: 10,
-    },
-    emptyContainer: {
-        alignItems: "center",
-        justifyContent: "center",
-        marginTop: 30,
-    },
-    emptyText: {
-        color: "#888",
-        fontSize: 16,
-        fontStyle: "italic",
+    item: {
+        width:wp("7%"),
+        height:hp("2.4%"),
+        paddingHorizontal: wp("2%"),
+        tintColor:AppColors.white,
     },
     tabsContainer: {
         flexDirection: "row",
         justifyContent: "center",
-        marginVertical: 10,
+        marginVertical: hp("0.5%"),
     },
     tabButton: {
         paddingVertical: 8,
@@ -158,7 +148,6 @@ const styleSearchGameItem = StyleSheet.create({
         width:wp("6%"),
         height:hp("3%"),
         tintColor:"#4dc51f",
-        resizeMode:"contain",
         alignSelf: "center",
     },
     rating: {
@@ -275,7 +264,6 @@ const styleSearchUserItem = StyleSheet.create({
         borderRadius:50,
         marginEnd: wp("5%"),
         alignItems:"center",
-        resizeMode:"cover",
     }
 
 })

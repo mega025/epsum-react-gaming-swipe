@@ -1,11 +1,11 @@
 import React, {useCallback, useEffect, useState} from "react";
 import {
-    Image,
     Text,
     View,
     Keyboard, ActivityIndicator, TouchableOpacity,
 }
     from "react-native";
+import {Image} from "expo-image"
 import { CustomTextInputSearch } from "../../components/CustomTextInputSearch";
 import {styleSearch, styleSearchCompanyItem, styleSearchGameItem, styleSearchUserItem} from "./StyleSearch";
 import {Game} from "../../../domain/entities/Game";
@@ -30,6 +30,7 @@ import {API_BASE_URL} from "../../../data/sources/remote/api/ApiDelivery";
 import {FlashList} from "@shopify/flash-list";
 import {transformCoverUrl, transformSmallCoverUrl} from "../../utils/TransformCoverUrls";
 import show = Toast.show;
+import {stylesTabBarItems} from "../../navigation/UserNavigation";
 
 export function Search({navigation = useNavigation()}: PropsStackNavigation) {
     const {
@@ -95,6 +96,8 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
         <TouchableOpacity style={styleSearchUserItem.container} onPress={() => navigation.push("UserDetails", {userSearch : item})}>
             <Image source={item.image ? {uri: `${API_BASE_URL.slice(0, -4)}${item.image}`} : require("../../../../assets/account-image.jpg")}
                     style={styleSearchUserItem.image}
+                   contentFit="cover"
+                   transition={250}
             />
             <Text style={styleSearchUserItem.name}>{item.name}</Text>
             <Text style={styleSearchUserItem.name}>{item.last_name}</Text>
@@ -110,6 +113,8 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
                             ? transformSmallCoverUrl(item.cover.url)
                             : "https://www.igdb.com/assets/no_cover_show-ef1e36c00e101c2fb23d15bb80edd9667bbf604a12fc0267a66033afea320c65.png"
                     }}
+                    contentFit="contain"
+                    transition={250}
                     style={styleSearchGameItem.gameCover}
                 />
             </TouchableOpacity>
@@ -155,7 +160,7 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
                         } catch (error) {
                             Toast.show({
                                 "type": "error",
-                                "text1": "Error while trying to save the game",
+                                "text1": "Error while trying to like the game",
                             })
                         }
                     } if (checkIfGameFromApiIsLiked(item.id)) {
@@ -174,7 +179,10 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
                         }
                     }
                 }}>
-                    <Image style={styleSearchGameItem.fav} source={
+                    <Image
+                        contentFit="contain"
+                        transition={100}
+                        style={styleSearchGameItem.fav} source={
                         checkIfGameFromApiIsLiked(item.id)
                             ? require("../../../../assets/filled-heart.png")
                             : checkIfGameFromApiIsPlayed(item.id) ? require("../../../../assets/check-icon.png") : require("../../../../assets/heart.png")}/>
@@ -199,13 +207,19 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
                             style={[styleSearch.tabButton, selectedTab === "games" && styleSearch.tabButtonSelected]}
                             onPress={() => setSelectedTab("games")}
                         >
-                            <Text style={[styleSearch.tabText, selectedTab === "games" && styleSearch.tabTextSelected]}>Games</Text>
+                            <Image
+                                contentFit={"contain"}
+                                source={require("../../../../assets/controller-icon.png")}
+                                style={{...styleSearch.item, height: hp("2.7%"),}}/>
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={[styleSearch.tabButton, selectedTab === "users" && styleSearch.tabButtonSelected]}
                             onPress={() => setSelectedTab("users")}
                         >
-                            <Text style={[styleSearch.tabText, selectedTab === "users" && styleSearch.tabTextSelected]}>Users</Text>
+                            <Image
+                                contentFit={"contain"}
+                                source={require("../../../../assets/account-icon-filled.png")}
+                                style={styleSearch.item}/>
                         </TouchableOpacity>
                     </View>
                 </View>

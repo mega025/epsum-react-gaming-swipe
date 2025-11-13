@@ -9,6 +9,7 @@ import {addGameToFavoriteUseCase} from "../../../domain/usesCases/home/AddGameTo
 import {refillGamesFromSwiperWithFiltersUseCase} from "../../../domain/usesCases/home/RefillGamesFromSwiperWithFilters";
 import {transformCoverUrl} from "../../utils/TransformCoverUrls";
 import {generateNoGamesFoundCard} from "../../utils/NoGameFoundWithThisFilters";
+import {getSimilarGamesFromGameUseCase} from "../../../domain/usesCases/home/GetSimilarGamesFromGame";
 
 
 export const homeViewModel = () => {
@@ -26,6 +27,10 @@ export const homeViewModel = () => {
         const response = await refillGamesFromSwiperUseCase()
         setListGames(response)
         setShowLoading(false);
+    }
+
+    const getSimilarGamesFromGame = async (gameId: number) => {
+        return await getSimilarGamesFromGameUseCase(gameId)
     }
 
     const refillSwipeGamesWithFilters = async (filters: { genres: Platform[]; platforms: Platform[]}) => {
@@ -74,7 +79,8 @@ export const homeViewModel = () => {
         refillSwipeGamesWithFilters,
         selectedGenres,
         selectedPlatforms,
-        transformGameIntoFavGameInterface
+        transformGameIntoFavGameInterface,
+        getSimilarGamesFromGame
     }
 }
 

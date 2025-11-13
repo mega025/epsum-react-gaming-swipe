@@ -5,9 +5,8 @@ import {AppColors} from "../../theme/AppTheme";
 
 const styleGameDetails = StyleSheet.create({
     image: {
-        width: wp("40%"),
-        height: hp("25.9%"),
-        borderRadius: wp("2.4%"),
+        width: wp("43%"),
+        height: hp("27%"),
     },
 
     header: {
@@ -40,7 +39,7 @@ const styleGameDetails = StyleSheet.create({
     name: {
         fontSize: wp("4.5%"),
         color: AppColors.white,
-        height: hp("22%"),
+        height: hp("22.5%"),
         width: "85%",
         fontFamily: "zen_kaku_regular"
     },
@@ -88,7 +87,6 @@ const styleGameDetails = StyleSheet.create({
         width:wp("6.4%"),
         height:hp("3.3%"),
         tintColor:"#4dc51f",
-        resizeMode:"contain",
         marginTop: hp("2.9%"),
     },
 })
@@ -110,7 +108,6 @@ const styleSimilarGame = StyleSheet.create({
         height: hp("22.7%"),
         borderTopRightRadius: 10,
         borderTopLeftRadius: 10,
-        resizeMode: "contain",
     },
 
     name: {

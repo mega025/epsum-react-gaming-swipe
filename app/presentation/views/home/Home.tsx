@@ -1,7 +1,6 @@
 import {
     ImageBackground,
     View,
-    Image,
     ActivityIndicator,
     StyleSheet,
     TouchableOpacity, FlatList,
@@ -34,6 +33,8 @@ import {Shadow} from "react-native-shadow-2";
 import {FlashList} from "@shopify/flash-list";
 import {transformCoverUrl} from "../../utils/TransformCoverUrls";
 import {generateNoGamesFoundCard, NO_GAMES_FOUND_LABEL} from "../../utils/NoGameFoundWithThisFilters";
+import {Image} from "expo-image"
+import {HorizontalFlashList} from "../../components/HorizontalFlashList";
 
 
 function FiltroComponent(props: {
@@ -59,7 +60,8 @@ export function Home({navigation = useNavigation()}: PropsStackNavigation) {
         setSwipesCounter,
         selectedPlatforms,
         refillSwipeGamesWithFilters,
-        transformGameIntoFavGameInterface
+        transformGameIntoFavGameInterface,
+        getSimilarGamesFromGame,
     } = viewModel.homeViewModel()
 
     const {user} = UseUserLocalStorage()
@@ -79,8 +81,11 @@ export function Home({navigation = useNavigation()}: PropsStackNavigation) {
                         source={{
                             uri: item.cover
                                 ? transformCoverUrl(item.cover.url)
-                                : "https://www.igdb.com/assets/no_cover_show-ef1e36c00e101c2fb23d15bb80edd9667bbf604a12fc0267a66033afea320c65.png"
+                                : "https://www.igdb.com/assets/no_cover_show-ef1e36c00e101c2fb23d15bb80edd9667bbf604a12fc0267a66033afea320c65.png",
                         }}
+                        priority={"high"}
+                        contentFit="contain"
+                        transition={500}
                         style={styleHome.image}
                     />
                 </TouchableOpacity>
@@ -95,25 +100,14 @@ export function Home({navigation = useNavigation()}: PropsStackNavigation) {
                         }</Text>
                     </View>
                     <View style={{marginTop: hp("1%")}}>
-                        <FlashList
-                            data={item.platforms ? item.platforms : [nullPlatform]}
-                                  renderItem={PlatformItem}
-                                  horizontal={true}
-                                  scrollEnabled={true}
-                                  fadingEdgeLength={80}
-                                  showsHorizontalScrollIndicator={false}
-                                  nestedScrollEnabled={true}/>
+                        <HorizontalFlashList data={item.platforms ? item.platforms : [nullPlatform]}
+                                             renderItem={PlatformItem}/>
                     </View>
                     <View style={styleHome.thirdRowCardContainer}>
-                        <FlashList
-                            style={{width: "83%"}}
-                                  data={item.genres ? item.genres : [nullGenre]}
-                                  renderItem={GenreItem}
-                                  horizontal={true}
-                                  fadingEdgeLength={80}
-                                  showsHorizontalScrollIndicator={false}
-                                  scrollEnabled={true}
-                                  nestedScrollEnabled={true}/>
+                        <HorizontalFlashList data={item.genres ? item.genres : [nullGenre]}
+                                             renderItem={GenreItem}
+                                             style={{width: "83%"}}
+                        />
                         <Text
                             style={styleHome.releaseDateText}>{item.release_dates ? item.release_dates[0].y : ""}</Text>
                     </View>
@@ -155,6 +149,7 @@ export function Home({navigation = useNavigation()}: PropsStackNavigation) {
             </View>
         );
     };
+
     return (
         <View style={{width: '100%', height: '100%', backgroundColor: AppColors.backgroundColor}}>
             {showLoading ? (
@@ -172,6 +167,7 @@ export function Home({navigation = useNavigation()}: PropsStackNavigation) {
                             cardStyle={styleHome.cardStyle}
                             overlayLabelContainerStyle={styleHome.overlayLabelContainer}
                             swipeVelocityThreshold={1000}
+                            prerenderItems={5}
                             renderCard={renderCard}
                             disableTopSwipe={true}
                             disableBottomSwipe={true}
@@ -179,14 +175,22 @@ export function Home({navigation = useNavigation()}: PropsStackNavigation) {
                                 console.log('Current Active index', index, listGames.length);
                             }}
                             onSwipeRight={async (cardIndex) => {
-                                console.log('cardIndex', cardIndex);
                                 if (user?.slug !== undefined)
-                                    if (listGames[cardIndex].name !== NO_GAMES_FOUND_LABEL)
+                                    if (listGames[cardIndex].name !== NO_GAMES_FOUND_LABEL) {
                                         await addGameToFav(transformGameIntoFavGameInterface(listGames[cardIndex]), user.slug)
-                                console.log(listGames[cardIndex].name);
+                                        if (selectedGenres.length === 0 && selectedPlatforms.length === 0) {
+                                            const similarGames = await getSimilarGamesFromGame(listGames[cardIndex].id);
+                                            const existingGameIds = new Set(listGames.map(game => game.id));
+                                            const newSimilarGames = similarGames[0].similar_games.filter(
+                                                game => !existingGameIds.has(game.id)
+                                            );
+                                            if (newSimilarGames.length > 0) {
+                                                setListGames((prevGames) => [...prevGames, ...newSimilarGames]);
+                                            }
+                                        }
+                                    }
                             }}
                             onSwipeLeft={(cardIndex) => {
-                                console.log('onSwipeLeft', cardIndex);
                             }}
                             onSwipedAll={() => {
                                 setTimeout(async () => {

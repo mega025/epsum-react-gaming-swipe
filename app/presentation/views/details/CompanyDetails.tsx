@@ -2,12 +2,12 @@ import {RouteProp, useNavigation, useRoute} from "@react-navigation/native";
 import {PropsStackNavigation} from "../../interfaces/StackNav";
 import {
     ActivityIndicator,
-    Image,
     ScrollView,
     Text,
     TouchableOpacity,
     View
 } from "react-native";
+import {Image} from "expo-image";
 import {heightPercentageToDP as hp, widthPercentageToDP as wp} from "react-native-responsive-screen";
 import {companyDetailsViewModel} from "./ViewModel";
 import stylesHome from "../home/StyleHome";
@@ -19,7 +19,9 @@ import {AppColors} from "../../theme/AppTheme";
 import {SimilarGame} from "../../../domain/entities/Game";
 import {homeViewModel} from "../home/ViewModel";
 import {FlashList} from "@shopify/flash-list";
-import {transformCoverUrl, transformSmallCoverUrl} from "../../utils/TransformCoverUrls";
+import {transformCoverUrl, transformLogoUrlCompany, transformSmallCoverUrl} from "../../utils/TransformCoverUrls";
+import {getCountryNameFromNumericCode} from "../../utils/GetCountryFromNumericCode";
+import {formatUnixDate} from "../../utils/FormatUnixDate";
 
 
 
@@ -33,9 +35,6 @@ export function CompanyDetails ({navigation = useNavigation()}: PropsStackNaviga
         showLoading,
         loadCompanyDetails,
         companyDetails,
-        transformLogoUrlCompany,
-        formatUnixDate,
-        getCountryNameFromNumericCode,
     } = companyDetailsViewModel()
 
     useEffect(() => {
@@ -110,6 +109,9 @@ export function CompanyDetails ({navigation = useNavigation()}: PropsStackNaviga
                             ? transformSmallCoverUrl(item.cover.url)
                             : "https://www.igdb.com/assets/no_cover_show-ef1e36c00e101c2fb23d15bb80edd9667bbf604a12fc0267a66033afea320c65.png"
                     }}
+                    priority={"high"}
+                    contentFit="contain"
+                    transition={250}
                     style={styleSimilarGame.image}
                 />
             </TouchableOpacity>
@@ -134,7 +136,9 @@ export function CompanyDetails ({navigation = useNavigation()}: PropsStackNaviga
                                                 ? transformLogoUrlCompany(companyDetails.logo.url)
                                                 : "https://www.igdb.com/assets/no_cover_show-ef1e36c00e101c2fb23d15bb80edd9667bbf604a12fc0267a66033afea320c65.png"
                                         }}
-                                        style={{width: wp("50%"), height: hp("20%"), resizeMode: "contain", marginVertical: wp("5%")}}
+                                        contentFit="contain"
+                                        transition={500}
+                                        style={{width: wp("50%"), height: hp("20%"), marginVertical: wp("5%")}}
                                     />
                                 </View>
                                 <View style={{flex: 1}}>

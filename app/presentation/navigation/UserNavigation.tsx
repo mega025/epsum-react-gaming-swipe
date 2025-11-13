@@ -57,7 +57,7 @@ export function UserNavigation ({navigation = useNavigation()}: PropsStackNaviga
     )
 }
 
-const stylesTabBarItems = StyleSheet.create({
+export const stylesTabBarItems = StyleSheet.create({
     item: {
         width:wp("8.5%"),
         height:hp("3%"),

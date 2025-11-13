@@ -1,6 +1,5 @@
 import {
     ActivityIndicator,
-    Image,
     ImageBackground,
     SafeAreaView,
     ScrollView,
@@ -8,6 +7,7 @@ import {
     TouchableOpacity,
     View
 } from "react-native";
+import {Image} from "expo-image"
 import {RouteProp, useFocusEffect, useNavigation, useRoute} from "@react-navigation/native";
 import {RootStackParamsList} from "../../../../App";
 import styleHome from "../home/StyleHome";
@@ -30,6 +30,7 @@ import {UseUserLocalStorage} from "../../hooks/UseUserLocalStorage";
 import {AppColors} from "../../theme/AppTheme";
 import {FlashList} from "@shopify/flash-list";
 import {transformCoverUrl, transformSmallCoverUrl} from "../../utils/TransformCoverUrls";
+import {HorizontalFlashList} from "../../components/HorizontalFlashList";
 
 
 type GameDetailsRouteProp = RouteProp<RootStackParamsList, "GameDetails">;
@@ -94,6 +95,8 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
                             ? transformSmallCoverUrl(item.cover.url)
                             : "https://www.igdb.com/assets/no_cover_show-ef1e36c00e101c2fb23d15bb80edd9667bbf604a12fc0267a66033afea320c65.png"
                     }}
+                    contentFit="contain"
+                    transition={500}
                     style={styleSimilarGame.image}
                 />
             </TouchableOpacity>
@@ -120,11 +123,13 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
                                         ? transformCoverUrl(gameDetails.cover.url)
                                         : "https://lightwidget.com/wp-content/uploads/localhost-file-not-found.jpg"
                                 }}
+                                contentFit="contain"
+                                transition={250}
                                 style={styleGameDetails.image}
                             />
-                            <View style={{flex: 1}}>
+                            <View style={{flex: 2}}>
                                 <Text style={styleGameDetails.name}>{gameDetails?.name}</Text>
-                                <View style={{flexDirection: "row", gap: wp("10%")}}>
+                                <View style={{flexDirection: "row", gap: wp("11%")}}>
                                     <Text style={styleGameDetails.rating}>{gameDetails?.rating ? gameDetails?.rating.toFixed(1) : "No rate"}</Text>
                                     <Text style={styleGameDetails.rating}>{gameDetails?.release_dates ? gameDetails?.release_dates[0].y : "TBD"}</Text>
                                 </View>
@@ -163,7 +168,9 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
                                         }
                                     }
                                 }}>
-                                    <Image style={styleGameDetails.fav} source={
+                                    <Image
+                                        contentFit={"contain"}
+                                        style={styleGameDetails.fav} source={
                                         checkIfGameFromApiIsLiked(gameDetails?.id || 0)
                                             ? require("../../../../assets/filled-heart.png")
                                             : checkIfGameFromApiIsPlayed(gameDetails?.id || 0) ? require("../../../../assets/check-icon.png") : require("../../../../assets/heart.png")}/>
@@ -182,25 +189,15 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
                                 )}/>
 
                             <Text style={styleGameDetails.infoTitles}>Platforms</Text>
-                            <FlashList style={{ width: wp("90%")}}
-                                      data={gameDetails?.platforms ? gameDetails?.platforms : [nullPlatform]}
-                                      renderItem={PlatformItem}
-                                      horizontal={true}
-                                      scrollEnabled={true}
-                                      fadingEdgeLength={80}
-                                      showsHorizontalScrollIndicator={false}
-                                      nestedScrollEnabled={true}/>
-
+                            <HorizontalFlashList style={{width: wp("90")}}
+                                                 data={gameDetails?.platforms ? gameDetails?.platforms : [nullPlatform]}
+                                                 renderItem={PlatformItem}
+                            />
                             <Text style={styleGameDetails.infoTitles}>Genres</Text>
-                            <FlashList style={{ width: wp("90%")}}
-                                      data={gameDetails?.genres ? gameDetails?.genres : [nullGenre]}
-                                      renderItem={GenreItem}
-                                      horizontal={true}
-                                      fadingEdgeLength={80}
-                                      showsHorizontalScrollIndicator={false}
-                                      scrollEnabled={true}
-                                      nestedScrollEnabled={true}/>
-
+                            <HorizontalFlashList style={{width: wp("90")}}
+                                                 data={gameDetails?.genres ? gameDetails?.genres : [nullGenre]}
+                                                 renderItem={GenreItem}
+                            />
                             {gameDetails?.release_dates && (
                                 <View>
                                     <Text style={styleGameDetails.infoTitles}>Release date</Text>
@@ -228,13 +225,8 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
                             {gameDetails?.similar_games && (
                                 <View>
                                     <Text style={styleGameDetails.infoTitles}>Similar games</Text>
-                                    <FlashList
-                                        data={gameDetails?.similar_games}
-                                        renderItem={similarGameItem}
-                                        fadingEdgeLength={50}
-                                        showsHorizontalScrollIndicator={false}
-                                        horizontal={true}
-                                    />
+                                    <HorizontalFlashList data={gameDetails?.similar_games}
+                                                         renderItem={similarGameItem}/>
                                 </View>
                             )}
                         </View>

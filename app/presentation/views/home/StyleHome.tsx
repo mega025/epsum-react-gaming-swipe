@@ -50,7 +50,6 @@ const stylesHome = StyleSheet.create({
     image: {
         width: "100%",
         height: hp("50.9%"),
-        resizeMode:"contain",
         borderTopRightRadius: 15,
         borderTopLeftRadius: 15,
     },

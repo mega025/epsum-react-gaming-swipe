@@ -9,3 +9,13 @@ export const transformSmallCoverUrl = (url: string) => {
     const cutUrlSecondPart = url.substring(url.lastIndexOf("/") + 1);
     return "https:"+cutUrlFirstPart+"cover_big/"+cutUrlSecondPart;
 }
+
+export const transformLogoUrlCompany = (url:string) => {
+    const cutUrlFirstPart = url.substring(0, 38);
+    const match = url.match(/\/([^\/]+)\.\w+$/);
+    if (match) {
+        const code = match[1];
+        return "https:"+cutUrlFirstPart+"original/"+code+".jpg";
+    }
+    return
+}

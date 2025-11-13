@@ -1,13 +1,13 @@
 import {
     ActivityIndicator, Alert,
     FlatList,
-    Image,
     ImageBackground, Modal, Pressable,
     StyleSheet,
     Text,
     TouchableOpacity,
     View
 } from "react-native";
+import {Image} from "expo-image"
 import stylesHome from "../home/StyleHome";
 import styleFav from "./StyleFav";
 import viewModel from "./ViewModel";
@@ -52,7 +52,10 @@ export function PlayedGamesScreen({navigation = useNavigation()}: PropsStackNavi
         <View style={stylesFavGameItem.card}>
             <View style={stylesFavGameItem.container}>
                 <TouchableOpacity onPress={() => navigation.navigate("GameDetails", {gameId : item.id_api, likeButton: false})}>
-                    <Image source={{ uri: item.image_url }} style={stylesFavGameItem.image} />
+                    <Image
+                        contentFit="contain"
+                        transition={500}
+                        source={{ uri: item.image_url }} style={stylesFavGameItem.image} />
                 </TouchableOpacity>
                 <Text style={{ ...stylesHome.gameNameText, width: wp("53%"), fontSize: wp("3.5%"), color:"white"}}>{item.name}</Text>
                 <TouchableOpacity

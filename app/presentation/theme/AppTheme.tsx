@@ -17,7 +17,7 @@ export const AppColors = {
     orange:"#ce6b1a",
     green:"#4bc00f",
     gray: "#797878",
-    softWhite: "rgba(215,207,255,0.88)",
+    softWhite: "rgba(215,207,255,0.6)",
 }
 export const AppFonts = {
     black: "zen_kaku_gothic_antique_black",

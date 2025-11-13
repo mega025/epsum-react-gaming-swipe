@@ -1,13 +1,13 @@
 import {
     ActivityIndicator, Alert,
     FlatList,
-    Image,
     ImageBackground, Modal, Pressable,
     StyleSheet,
     Text,
     TouchableOpacity,
     View
 } from "react-native";
+import {Image} from "expo-image"
 import stylesHome from "../home/StyleHome";
 import styleFav from "./StyleFav";
 import viewModel from "./ViewModel";
@@ -47,7 +47,10 @@ export function FavGamesScreen({navigation = useNavigation()}: PropsStackNavigat
         <View style={stylesFavGameItem.card}>
             <View style={stylesFavGameItem.container}>
                 <TouchableOpacity onPress={() => navigation.navigate("GameDetails", {gameId : item.id_api, likeButton: true})}>
-                    <Image source={{ uri: item.image_url }} style={stylesFavGameItem.image} />
+                    <Image
+                        contentFit="contain"
+                        transition={500}
+                        source={{ uri: item.image_url }} style={stylesFavGameItem.image} />
                 </TouchableOpacity>
                 <Text style={{ ...stylesHome.gameNameText, width: wp("46%")}}>{item.name}</Text>
                 <TouchableOpacity
@@ -176,7 +179,7 @@ export const stylesFavGameItem = StyleSheet.create({
 
     container: {
         flexDirection: "row",
-        gap: 10,
+        gap: wp("4%"),
         alignItems: "center",
     },
 
@@ -188,8 +191,8 @@ export const stylesFavGameItem = StyleSheet.create({
     },
 
     deleteIcon: {
-        width: wp("8%"),
-        height: wp("8%"),
+        width: wp("3%"),
+        height: hp("1%"),
         padding: wp("2%"),
         tintColor: AppColors.white,
     }

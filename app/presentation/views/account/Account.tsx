@@ -1,7 +1,6 @@
 import {
     ActivityIndicator,
     Alert,
-    Image,
     ImageBackground,
     Modal, Platform,
     SafeAreaView, StyleSheet,
@@ -10,6 +9,7 @@ import {
     TouchableOpacity,
     View
 } from "react-native";
+import {Image} from "expo-image";
 import styleAccount from "./StyleAccount";
 import viewModel from "./ViewModel";
 import {useFocusEffect, useNavigation} from "@react-navigation/native";
@@ -129,7 +129,11 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                         <View style={styleAccount.containerPhoto}>
                             <View style={stylesProfilePicture.container}>
                                 <View style={stylesProfilePicture.containerPhoto}>
-                                    <Image style={stylesProfilePicture.photo}  source={userDB?.image ? {uri: `${API_BASE_URL.slice(0, -4)}${userDB?.image}`} : require("../../../../assets/account-image.jpg")}
+                                    <Image
+                                        priority={"high"}
+                                        contentFit="cover"
+                                        transition={500}
+                                        style={stylesProfilePicture.photo}  source={userDB?.image ? {uri: `${API_BASE_URL.slice(0, -4)}${userDB?.image}`} : require("../../../../assets/account-image.jpg")}
                                     />
                                 </View>
                                 <TouchableOpacity style={stylesProfilePicture.changePhotoButton} onPress={selectImage}>
@@ -383,7 +387,6 @@ export const stylesProfilePicture =StyleSheet.create({
         width:wp("25%"),
         height:wp("25%"),
         borderRadius:50,
-        resizeMode: "cover",
         alignItems:"center",
     },
     changePhotoButton:{
