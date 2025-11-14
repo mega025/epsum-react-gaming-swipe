@@ -1,4 +1,4 @@
-import {removeUserUseCase} from "../../../domain/usesCases/userLocal/removeUser";
+import {removeUserUseCase} from "../../../domain/usesCases/userLocal/RemoveUser";
 import {ApiDelivery} from "../../../data/sources/remote/api/ApiDelivery";
 import {GetUserInterface, LoggedUserInterface, UpdateUserDTO, UserInterface} from "../../../domain/entities/User";
 import Toast from "react-native-toast-message";

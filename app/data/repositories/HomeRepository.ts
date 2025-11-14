@@ -25,7 +25,7 @@ export class HomeRepository implements HomeRepositoryInterface {
         }
     }
 
-    async refillGamesFromSwiper(): Promise<Game[]> {
+    refillGamesFromSwiper= async (): Promise<Game[]> => {
         try {
             const randomOffset = Math.round(((Math.random()*9100)*100)/100).toFixed(0)
             const response = await IgdbApiDelivery.post(
@@ -34,8 +34,9 @@ export class HomeRepository implements HomeRepositoryInterface {
                 "cover.url, " +
                 "genres.name, " +
                 "platforms.abbreviation, " +
-                "platforms.name, " +
-                "rating, release_dates.y; limit 15; where rating > 70; offset "+randomOffset+";")
+                "platforms.name, summary, " +
+                "rating, release_dates.y, release_dates.date;" +
+                " limit 15; where rating > 70; offset "+randomOffset+";")
 
             return Promise.resolve(response.data)
         } catch (error) {
@@ -45,7 +46,7 @@ export class HomeRepository implements HomeRepositoryInterface {
         }
     }
 
-    async refillGamesFromSwiperWithFilters(platforms: Platform[], genres: Platform[]): Promise<Game[]> {
+    refillGamesFromSwiperWithFilters = async (platforms: Platform[], genres: Platform[]): Promise<Game[]> => {
         try {
             let query = ""
             let response
@@ -79,7 +80,7 @@ export class HomeRepository implements HomeRepositoryInterface {
                     "fields name, " +
                     "cover.url, " +
                     "genres.name, " +
-                    "platforms.abbreviation, " +
+                    "platforms.abbreviation, platforms.name, release_dates.date, summary," +
                     "rating, release_dates.y; limit 15; offset "+randomOffset+";"+
                     query)
             return Promise.resolve(response.data)

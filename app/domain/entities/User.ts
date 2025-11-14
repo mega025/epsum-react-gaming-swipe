@@ -1,30 +1,26 @@
 import {Game} from "./Game";
 
 export interface UserInterface {
-    name: string
-    last_name: string
+    username: string
     email: string;
     favorite_games?: Game[]
     password: string
 }
 
 export interface GetUserInterface {
-    name: string
-    last_name: string
+    username: string
     email: string
     image: string
 }
 
 export interface GetSearchUserInterface {
-    name: string
-    last_name: string
+    username: string
     image: string
     slug: string
 }
 
 
-export type UpdateUserDTO = Partial<Pick<GetUserInterface, "name" | "last_name">>
-export type SearchUserDTO = Pick<GetUserInterface, "name" | "last_name">
+export type UpdateUserDTO = Partial<Pick<GetUserInterface, "username">>
 
 export interface LoginUserInterface {
     email: string;

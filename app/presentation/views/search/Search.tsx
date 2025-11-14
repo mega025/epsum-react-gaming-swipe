@@ -25,7 +25,7 @@ import Toast from "react-native-toast-message";
 import {CompanyDetailsInterface} from "../../../domain/entities/Company";
 import stylesHome from "../home/StyleHome";
 import styleHome from "../home/StyleHome";
-import {GetSearchUserInterface, SearchUserDTO} from "../../../domain/entities/User";
+import {GetSearchUserInterface} from "../../../domain/entities/User";
 import {API_BASE_URL} from "../../../data/sources/remote/api/ApiDelivery";
 import {FlashList} from "@shopify/flash-list";
 import {transformCoverUrl, transformSmallCoverUrl} from "../../utils/TransformCoverUrls";
@@ -99,8 +99,7 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
                    contentFit="cover"
                    transition={250}
             />
-            <Text style={styleSearchUserItem.name}>{item.name}</Text>
-            <Text style={styleSearchUserItem.name}>{item.last_name}</Text>
+            <Text style={styleSearchUserItem.name}>{item.username}</Text>
         </TouchableOpacity>
     ), [])
 
@@ -308,7 +307,7 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
                                     keyboardType="default"
                                     secureTextEntry={false}
                                     value={searchUserText}
-                                    onPressButtonFromInterface={(text: string) => onSearchUserTextChange(text, user?.access_token ? user?.access_token : "")}
+                                    onPressButtonFromInterface={(text: string) => onSearchUserTextChange(text)}
                                 />
                             </View>
                         </View>

@@ -2,7 +2,7 @@ import {loadFavGamesUseCase} from "../../../domain/usesCases/favGames/LoadFavGam
 import {useState} from "react";
 import {GameDetailsInterface, SimilarGame} from "../../../domain/entities/Game";
 import {loadGameDetailsUseCase} from "../../../domain/usesCases/gameDetails/LoadGameDetails";
-import {loadCompanyDetailsUseCase} from "../../../domain/usesCases/gameDetails/loadCompanyDetails";
+import {loadCompanyDetailsUseCase} from "../../../domain/usesCases/gameDetails/LoadCompanyDetails";
 import {CompanyDetailsInterface} from "../../../domain/entities/Company";
 import countries from "i18n-iso-countries";
 import enLocale from "i18n-iso-countries/langs/en.json";

@@ -4,9 +4,10 @@ import {LoggedUserInterface, LoginUserInterface, UserInterface} from "../../../d
 import TabViewLoginRegister from "./TabViewLoginRegister";
 import {UseUserLocalStorage} from "../../hooks/UseUserLocalStorage";
 import {loginAuthUseCase} from "../../../domain/usesCases/auth/LoginAuth";
-import {saveUserUseCase} from "../../../domain/usesCases/userLocal/saveUser";
+import {saveUserUseCase} from "../../../domain/usesCases/userLocal/SaveUser";
 import Toast from "react-native-toast-message";
 import {saveTokens} from "../../../data/sources/local/secure/TokenStorage";
+import {validateEmail} from "../../utils/ValidateEmail";
 
 const loginViewModel= () => {
 
@@ -58,8 +59,7 @@ const registerViewModel= () => {
     const [errorMessage, setErrorMessage] = useState<string>("")
 
     const [registerValues, setRegisterValue] = useState({
-        name: "",
-        lastName: "",
+        username: "",
         email: "",
         password: "",
         confirmPassword: "",
@@ -69,8 +69,7 @@ const registerViewModel= () => {
         if(validateForm()){
             const user: UserInterface = {
                 email: registerValues.email,
-                name: registerValues.name,
-                last_name: registerValues.lastName,
+                username: registerValues.username,
                 password: registerValues.password,
             }
             const response = await registerUseCase(user)
@@ -87,21 +86,9 @@ const registerViewModel= () => {
         })
     }
 
-    const validateEmail = (email: string) => {
-        let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
-        if (!reg.test(email)) {
-            return false;
-        } else {
-            return true
-        }
-    }
-
     const validateForm = () => {
-        if (registerValues.name === "") {
+        if (registerValues.username === "") {
             setErrorMessage("First name is required");
-            return false
-        } if (registerValues.lastName === "") {
-            setErrorMessage("Last name is required")
             return false
         } if (registerValues.email === "") {
             setErrorMessage("Email is required")

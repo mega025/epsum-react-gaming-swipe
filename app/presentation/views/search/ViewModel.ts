@@ -6,7 +6,7 @@ import {searchGamesByUserInputUseCase} from "../../../domain/usesCases/search/Se
 import {searchCompanyByUserInputUseCase} from "../../../domain/usesCases/search/SearchCompanyByUserInput";
 import {CompanyDetailsInterface} from "../../../domain/entities/Company";
 import {searchUsersUseCase} from "../../../domain/usesCases/search/SearchUsers";
-import {GetSearchUserInterface, SearchUserDTO} from "../../../domain/entities/User";
+import {GetSearchUserInterface, UpdateUserDTO} from "../../../domain/entities/User";
 
 const searchViewModel = () => {
     const [searchText, setSearchText] = useState("");
@@ -36,9 +36,9 @@ const searchViewModel = () => {
 
     };
 
-    const searchUsers = async (userParameters: SearchUserDTO, token: string) => {
+    const searchUsers = async (userParameters: UpdateUserDTO) => {
         setLoading(true);
-        const response = await searchUsersUseCase(userParameters, token);
+        const response = await searchUsersUseCase(userParameters);
         setSearchedUsers(response)
         setLoading(false);
 
@@ -124,19 +124,12 @@ const searchViewModel = () => {
         }
     };
 
-    const onSearchUserTextChange = async (text: string, token: string) => {
-        if (text === "") {
-            setSearchUserText("")
-            setSearchedUsers([]);
-            return;
-        }
+    const onSearchUserTextChange = async (text: string) => {
         setSearchUserText(text);
-        const names = text.split(" ")
-        const userParameters : SearchUserDTO = {
-            name: names[0],
-            last_name: names[1],
+        const userParameters : UpdateUserDTO = {
+            username: text,
         }
-        await searchUsers(userParameters, token)
+        await searchUsers(userParameters)
     }
 
     const loadMoreGames = async () => {

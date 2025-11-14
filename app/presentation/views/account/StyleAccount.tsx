@@ -103,6 +103,7 @@ const styleAccount = StyleSheet.create({
 
     },
     containerLogOut: {
+        alignSelf: "center",
         alignItems: "center",
         marginTop: hp("8%"),
     },
@@ -110,7 +111,6 @@ const styleAccount = StyleSheet.create({
         fontSize: wp("5%"),
         color: AppColors.red,
         fontFamily: "zen_kaku_regular",
-        fontWeight: "bold",
     },
     modalText: {
         textAlign: 'center',
@@ -179,6 +179,13 @@ const styleAccount = StyleSheet.create({
         height: "auto",
         lineHeight: hp("3%"),
         verticalAlign: "middle"
+    },
+
+    logOutIcon: {
+        tintColor: AppColors.red,
+        marginStart:wp("2%"),
+        width: wp("4%"),
+        height: hp("2%"),
     }
 });
 

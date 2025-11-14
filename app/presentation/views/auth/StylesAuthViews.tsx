@@ -20,10 +20,8 @@ const stylesAuthViews = StyleSheet.create({
     },
 
     titleRegister: {
-        fontSize: 34,
-        color: 'white',
-        alignSelf: 'flex-start',
-        marginStart: wp("13%"),
+        fontSize: wp("8%"),
+        color: AppColors.white,
         marginTop: hp("12%"),
         marginBottom: hp("5%"),
         fontFamily: "zen_kaku_light",
@@ -32,9 +30,8 @@ const stylesAuthViews = StyleSheet.create({
     passwordHint: {
         fontFamily: "zen_kaku_regular",
         color: AppColors.white,
-        fontSize: 14,
-        margin: 5,
-        height: 30,
+        fontSize: wp("3%"),
+        margin: wp("2%")
     },
 
     formContainer: {
@@ -43,7 +40,7 @@ const stylesAuthViews = StyleSheet.create({
     },
 
     formInputContainer: {
-        marginBottom: hp("2.5%"),
+        gap:hp("2%")
     },
 
     formInputContainerPassword: {

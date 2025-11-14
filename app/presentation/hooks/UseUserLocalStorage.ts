@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {LoggedUserInterface} from "../../domain/entities/User";
-import {getUserUseCase} from "../../domain/usesCases/userLocal/getUser";
+import {getUserUseCase} from "../../domain/usesCases/userLocal/GetUser";
 
 export const UseUserLocalStorage = () => {
     const [user, setUser] = useState<LoggedUserInterface>()

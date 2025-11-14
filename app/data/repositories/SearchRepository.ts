@@ -4,7 +4,7 @@ import {CompanyDetailsInterface} from "../../domain/entities/Company";
 import {IgdbApiDelivery} from "../sources/remote/igdbAPI/IgdbApiDelivery";
 import axios, {AxiosError} from "axios";
 import {ApiDeliveryResponse} from "../sources/remote/models/ApiDeliveryResponse";
-import {GetSearchUserInterface, SearchUserDTO} from "../../domain/entities/User";
+import {GetSearchUserInterface, UpdateUserDTO} from "../../domain/entities/User";
 import {ApiDelivery} from "../sources/remote/api/ApiDelivery";
 
 
@@ -13,7 +13,10 @@ export class SearchRepository implements SearchRepositoryInterface {
         try {
             const response = await IgdbApiDelivery.post(
                 "/games",
-                `fields name, hypes, rating, platforms.abbreviation, genres.name, cover.url, release_dates.y; limit 10; 
+                `fields name, hypes, rating, 
+                platforms.abbreviation, genres.name, cover.url, 
+                release_dates.y, release_dates.date, summary; 
+                limit 10; 
                 sort hypes desc; 
                 where first_release_date > ${Math.floor(Date.now() / 1000)} & hypes != null;`)
             return Promise.resolve(response.data)
@@ -32,7 +35,8 @@ export class SearchRepository implements SearchRepositoryInterface {
                 `fields name, 
                 rating, 
                 platforms.abbreviation,
-                genres.name, cover.url, 
+                genres.name, cover.url,
+                summary, release_dates.date, 
                 release_dates.y; limit 15; search "${input}"; ${offset}`
             )
             return Promise.resolve(response.data)
@@ -88,13 +92,9 @@ export class SearchRepository implements SearchRepositoryInterface {
         }
     }
 
-    async searchUsers(userParameters: SearchUserDTO, token: string): Promise<GetSearchUserInterface[]> {
+    async searchUsers(userParameters: UpdateUserDTO): Promise<GetSearchUserInterface[]> {
         try {
-            const response = await ApiDelivery.post("/users/search/", userParameters, {
-                headers: {
-                    Authorization:"Bearer "+token,
-                }
-            });
+            const response = await ApiDelivery.post("/users/search/", userParameters);
             return Promise.resolve(response.data)
         } catch (error) {
             let e = (error as AxiosError);

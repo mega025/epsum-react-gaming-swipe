@@ -26,7 +26,7 @@ import {PasswordsDTO} from "../../../domain/entities/UpdatePasswordDTO";
 import * as ImagePickerExpo from "expo-image-picker";
 import {AppColors} from "../../theme/AppTheme";
 import styles from "../auth/StylesAuthViews";
-import {removeUserUseCase} from "../../../domain/usesCases/userLocal/removeUser";
+import {removeUserUseCase} from "../../../domain/usesCases/userLocal/RemoveUser";
 import {API_BASE_URL} from "../../../data/sources/remote/api/ApiDelivery";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-native-responsive-screen";
 
@@ -143,9 +143,9 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                         </View>
                         <View style={{paddingHorizontal:wp("10%")}}>
                         <View style={styleAccount.containerName}>
-                            <Text style={styleAccount.labelName}>Name</Text>
+                            <Text style={styleAccount.labelName}>Username</Text>
                             <View style={styleAccount.containerEditName}>
-                                <Text style={styleAccount.Name}>{userDB?.name}</Text>
+                                <Text style={styleAccount.Name}>{userDB?.username}</Text>
                                 <View>
                                     <Modal
                                         animationType="fade"
@@ -158,15 +158,15 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                                     >
                                         <View style={styleAccount.centeredView}>
                                             <View style={styleAccount.modalView}>
-                                                <Text style={styleAccount.textPopUp}> Change your first name </Text>
+                                                <Text style={styleAccount.textPopUp}> Change your username </Text>
                                                 <CustomTextInput
-                                                    label={"First name"}
+                                                    label={"Username"}
                                                     keyboardType={"default"}
-                                                    maxLenght={15}
+                                                    maxLenght={20}
                                                     secureTextEntry={false}
                                                     onChangeText={(text) => setUpdateFirstName(text)}
                                                 />
-                                                <Text style={styleAccount.charactersCounter}>{updatedFirstName.length}/15</Text>
+                                                <Text style={styleAccount.charactersCounter}>{updatedFirstName.length}/20</Text>
                                                 <View style={styleAccount.containerButton}>
                                                     <TouchableOpacity
                                                         style={styleAccount.modalCancelButton}
@@ -183,13 +183,13 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                                                                     setModalVisibleFirst(!modalVisibleFirst)
                                                                 } else {
                                                                     const data: UpdateUserDTO = {
-                                                                        name: updatedFirstName
+                                                                        username: updatedFirstName
                                                                     }
                                                                     console.log(data)
                                                                     if (user?.slug != undefined)
                                                                         updateUserDetails(user?.slug, data)
 
-                                                                    userDB.name = updatedFirstName
+                                                                    userDB.username = updatedFirstName
                                                                     setModalVisibleFirst(!modalVisibleFirst)
                                                                     setUpdateFirstName("")
                                                                 }
@@ -202,7 +202,6 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                                             </View>
                                         </View>
                                     </Modal>
-
                                     <TouchableOpacity
                                         onPress={() => setModalVisibleFirst(true)}>
                                         <Image source={require('../../../../assets/edit.png')} style={styleAccount.editButton}/>
@@ -211,152 +210,11 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                                 </View>
                             </View>
                         </View>
-                        <View style={styleAccount.containerLastName}>
-                            <Text style={styleAccount.labelName}>Last name</Text>
-
-                            <View style={styleAccount.containerEditName}>
-                                <Text style={styleAccount.Name}>{userDB?.last_name}</Text>
-                                <View>
-                                    <Modal
-                                        animationType="fade"
-                                        transparent={true}
-                                        visible={modalVisibleLast}
-                                        onRequestClose={() => {
-                                            Alert.alert("Modal has been closed.");
-                                            setModalVisibleLast(!modalVisibleLast);
-                                        }}
-                                    >
-                                        <View style={styleAccount.centeredView}>
-                                            <View style={styleAccount.modalView}>
-                                                <Text style={styleAccount.textPopUp}>Change your last name</Text>
-                                                <CustomTextInput
-                                                    label={"Last name"}
-                                                    keyboardType={"default"}
-                                                    maxLenght={15}
-                                                    secureTextEntry={false}
-                                                    onChangeText={(text) => setUpdateLastName(text)}
-                                                />
-                                                <Text style={styleAccount.charactersCounter}>{updatedLastName.length}/15</Text>
-                                                <View style={styleAccount.containerButton}>
-                                                    <TouchableOpacity
-                                                        style={styleAccount.modalCancelButton}
-                                                        onPress={() => setModalVisibleLast(!modalVisibleLast)}
-                                                    >
-                                                        <Text style={styleAccount.modalButtonTextStyle}>Cancel</Text>
-                                                    </TouchableOpacity>
-                                                    <TouchableOpacity
-                                                        style={styleAccount.modalAcceptButton}
-                                                        onPress={async () => {
-                                                            if(userDB != undefined) {
-                                                                if (updatedLastName === "") {
-                                                                    setErrorMessage("Empty fields are not allowed")
-                                                                    setModalVisibleLast(!modalVisibleLast)
-                                                                } else {
-                                                                    const data: UpdateUserDTO = {
-                                                                        last_name: updatedLastName
-                                                                    }
-                                                                    console.log(data)
-                                                                    if (user?.slug != undefined)
-                                                                        await updateUserDetails(user?.slug, data)
-
-                                                                    userDB.last_name = updatedLastName
-                                                                    setModalVisibleLast(!modalVisibleLast)
-                                                                    setUpdateLastName("")
-                                                                }
-                                                            }}
-                                                        }
-                                                    >
-                                                        <Text style={styleAccount.modalButtonTextStyle}>Accept</Text>
-                                                    </TouchableOpacity>
-                                                </View>
-                                            </View>
-                                        </View>
-                                    </Modal>
-
-                                    <TouchableOpacity
-                                        onPress={() => setModalVisibleLast(true)}>
-                                        <Image source={require('../../../../assets/edit.png')} style={styleAccount.editButton}/>
-                                    </TouchableOpacity>
-
-                                </View>
-                            </View>
-                        </View>
-                        </View>
-                        <View style={styleAccount.containerResetPassword}>
-                            <View>
-                                <Modal
-                                    animationType="fade"
-                                    transparent={true}
-                                    visible={modalVisiblePassword}
-                                    onRequestClose={() => {
-                                        Alert.alert("Modal has been closed.");
-                                        setModalVisibleLastPassword(!modalVisiblePassword);
-                                    }}
-                                >
-                                    <View style={styleAccount.centeredView}>
-                                        <View style={styleAccount.modalView}>
-                                            <Text style={styleAccount.textPopUp}>Change your password</Text>
-                                            <CustomTextInputPassword
-                                                label={"Current password"}
-                                                keyboardType={"default"}
-                                                onChangeText={(text) => setUpdatePasswordDTO({
-                                                    ...updatePasswordDTO,
-                                                    oldPassword: text,
-                                                })}
-                                            />
-                                            <CustomTextInputPassword
-                                                label={"New password"}
-                                                keyboardType={"default"}
-                                                onChangeText={(text) => setUpdatePasswordDTO({
-                                                    ...updatePasswordDTO,
-                                                    newPassword: text,
-                                                })}
-                                            />
-                                            <Text style={styleAccount.passwordHint}>Password must have at least 8 characters</Text>
-                                            <CustomTextInputPassword
-                                                label={"Confirm new password"}
-                                                keyboardType={"default"}
-                                                onChangeText={(text) => setUpdatePasswordDTO({
-                                                    ...updatePasswordDTO,
-                                                    confirmPassword: text,
-                                                })}
-                                            />
-                                            <View style={styleAccount.containerButton}>
-                                                <TouchableOpacity
-                                                    style={styleAccount.modalCancelButton}
-                                                    onPress={() => setModalVisibleLastPassword(!modalVisiblePassword)}
-                                                >
-                                                    <Text style={styleAccount.modalButtonTextStyle}>Cancel</Text>
-                                                </TouchableOpacity>
-                                                <TouchableOpacity
-                                                    style={styleAccount.modalAcceptButton}
-                                                    onPress={async () => {
-                                                        if (user?.slug != undefined) {
-                                                            const passwordsDTO: PasswordsDTO = {
-                                                                oldPassword: updatePasswordDTO.oldPassword,
-                                                                newPassword: updatePasswordDTO.newPassword,
-                                                            }
-                                                            await updateUserPassword(user?.slug, passwordsDTO)
-                                                            console.log(updatePasswordDTO)
-                                                        }
-                                                        setModalVisibleLastPassword(!modalVisiblePassword)
-
-                                                    }}
-                                                >
-                                                    <Text style={styleAccount.modalButtonTextStyle}>Accept</Text>
-                                                </TouchableOpacity>
-                                            </View>
-                                        </View>
-                                    </View>
-                                </Modal>
-                                <TouchableOpacity
-                                    onPress={() => setModalVisibleLastPassword(true)}>
-                                    <Text style={styleAccount.TextResetPassword}>Change Password</Text>
-                                </TouchableOpacity>
-
-                            </View>
                         </View>
                         <View style={styleAccount.containerLogOut}>
+                            <Image source={require("../../../../assets/log-out-icon.png")}
+                                style={styleAccount.logOutIcon}
+                            />
                             <Text style={styleAccount.LogOut} onPress={() => {
                                 deleteSession().then(r => navigation.replace("TabViewLoginRegister"))}
                             }> Log out</Text>

@@ -5,6 +5,7 @@ export interface Game {
     name: string;
     rating?: number;
     platforms?: Platform[];
+    summary?: string;
     release_dates?: ReleaseDate[];
     genres?: Genre[];
     cover?: Cover;
@@ -47,6 +48,7 @@ export interface Platform {
 export interface ReleaseDate {
     y: number;
     human?: string;
+    date: number
 }
 
 export interface Genre {

@@ -29,7 +29,7 @@ import {styleSearch, styleSearchGameItem} from "../search/StyleSearch";
 import {UseUserLocalStorage} from "../../hooks/UseUserLocalStorage";
 import {AppColors} from "../../theme/AppTheme";
 import {FlashList} from "@shopify/flash-list";
-import {transformCoverUrl, transformSmallCoverUrl} from "../../utils/TransformCoverUrls";
+import {NO_IMAGE_URL, transformCoverUrl, transformSmallCoverUrl} from "../../utils/TransformCoverUrls";
 import {HorizontalFlashList} from "../../components/HorizontalFlashList";
 
 
@@ -121,7 +121,7 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
                                 source={{
                                     uri: gameDetails?.cover
                                         ? transformCoverUrl(gameDetails.cover.url)
-                                        : "https://lightwidget.com/wp-content/uploads/localhost-file-not-found.jpg"
+                                        : NO_IMAGE_URL,
                                 }}
                                 contentFit="contain"
                                 transition={250}

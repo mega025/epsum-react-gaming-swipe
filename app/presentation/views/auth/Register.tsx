@@ -24,38 +24,27 @@ export function RegisterScreen() {
     }, [errorMessage])
 
     return(
-            <SafeAreaView style={styles.container}>
+            <View style={styles.container}>
                 <ImageBackground source={require("../../../../assets/background.png")}
                                  style={{width: '100%', height: '100%'}}>
                     <View style={styles.formContainer}>
                         <Text style={styles.titleRegister}>Create an account</Text>
-
-                        <View style={styles.formInlineInputsContainer}>
-                            <CustomTextInputInline label={"Name"}
-                                             keyboardType={"default"}
-                                             maxLenght={15}
-                                             secureTextEntry={false}
-                                             onChangeText={(text) => onChangeRegister("name", text)}/>
-
-                            <CustomTextInputInline label={"Last name"}
-                                             keyboardType={"default"}
-                                             maxLenght={15}
-                                             secureTextEntry={false}
-                                             onChangeText={(text) => onChangeRegister("lastName", text)}/>
-                        </View>
                         <View style={styles.formInputContainer}>
+                            <CustomTextInput label={"Username"}
+                                             keyboardType={"default"}
+                                             maxLenght={15}
+                                             secureTextEntry={false}
+                                             onChangeText={(text) => onChangeRegister("username", text)}/>
                             <CustomTextInput label={"Email"}
                                              keyboardType={"default"}
                                              secureTextEntry={false}
                                              onChangeText={(text) => onChangeRegister("email", text)}/>
-                        </View>
-                        <View style={styles.formInputContainer}>
-                            <CustomTextInputPassword label={"Password"}
-                                             keyboardType={"default"}
-                                             onChangeText={(text) => onChangeRegister("password", text)}/>
-                            <Text style={styles.passwordHint}>Password must have at least 8 characters</Text>
-                        </View>
-                        <View style={styles.formInputContainer}>
+                            <View>
+                                <CustomTextInputPassword label={"Password"}
+                                                 keyboardType={"default"}
+                                                 onChangeText={(text) => onChangeRegister("password", text)}/>
+                                <Text style={styles.passwordHint}>Password must have at least 8 characters</Text>
+                            </View>
                             <CustomTextInputPassword label={"Confirm password"}
                                              keyboardType={"default"}
                                              onChangeText={(text) => onChangeRegister("confirmPassword", text)}/>
@@ -66,6 +55,6 @@ export function RegisterScreen() {
                     </View>
                     <Toast/>
                 </ImageBackground>
-            </SafeAreaView>
+            </View>
     )
 }

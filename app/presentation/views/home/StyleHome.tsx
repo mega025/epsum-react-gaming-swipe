@@ -49,7 +49,8 @@ const stylesHome = StyleSheet.create({
     },
     image: {
         width: "100%",
-        height: hp("50.9%"),
+        backgroundColor: AppColors.white,
+        height: hp("51.05%"),
         borderTopRightRadius: 15,
         borderTopLeftRadius: 15,
     },

@@ -1,5 +1,5 @@
 import axios from "axios";
-import {removeUserUseCase} from "../../../../domain/usesCases/userLocal/removeUser";
+import {removeUserUseCase} from "../../../../domain/usesCases/userLocal/RemoveUser";
 import {clearTokens, loadTokens, saveTokens} from "../../local/secure/TokenStorage";
 
 export const API_BASE_URL = "http://192.168.1.91:8000/api";

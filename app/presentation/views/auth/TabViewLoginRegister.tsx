@@ -3,7 +3,7 @@ import {
     Animated, LayoutChangeEvent, PressableAndroidRippleConfig, StyleProp,
     View,
     ViewStyle,
-    useWindowDimensions, Text, ImageBackground, Image, SafeAreaView, KeyboardAvoidingView
+    useWindowDimensions, Text, ImageBackground, Image, KeyboardAvoidingView
 } from 'react-native';
 import {
     TabView,
@@ -22,6 +22,7 @@ import StylesTabBar from "./StylesTabBar";
 import stylesTabBar from "./StylesTabBar";
 import Toast from "react-native-toast-message";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import {heightPercentageToDP as hp} from "react-native-responsive-screen";
 
 const renderScene = SceneMap({
     login: LoginScreen,
@@ -31,7 +32,7 @@ const renderScene = SceneMap({
 const renderTabBar = (props: any) => (
         <View>
             <ImageBackground source={require("../../../../assets/background-tab.png")}
-                             style={{...StylesTabBar.container, paddingTop:45}}>
+                             style={{...StylesTabBar.container, paddingTop:hp("8%")}}>
                 <View style={{flexDirection: "row", flexWrap: "wrap"}}>
                     <Image source={require("../../../../assets/logo.png")} style={stylesTabBar.logoImage}/>
                     <Text style={StylesTabBar.logoText}>GamingSwipe</Text>

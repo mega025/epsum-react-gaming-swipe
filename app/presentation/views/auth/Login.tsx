@@ -33,7 +33,7 @@ export function LoginScreen({navigation = useNavigation(), route}: PropsStackNav
     }, [errorMessage]);
 
     return (
-        <SafeAreaView style={stylesAuthViews.container}>
+        <View style={stylesAuthViews.container}>
 
             <ImageBackground source={require("../../../../assets/background.png")}
                              style={{width: '100%', height: '100%'}}>
@@ -45,9 +45,7 @@ export function LoginScreen({navigation = useNavigation(), route}: PropsStackNav
                                          keyboardType={"default"}
                                          secureTextEntry={false}
                                          onChangeText={(text) => onChangeLogin('email', text)}></CustomTextInput>
-                    </View>
 
-                    <View style={styles.formInputContainerPassword}>
                         <CustomTextInputPassword label={"Password"}
                                          keyboardType={"default"}
                                          onChangeText={(text) => onChangeLogin('password', text)}></CustomTextInputPassword>
@@ -64,6 +62,6 @@ export function LoginScreen({navigation = useNavigation(), route}: PropsStackNav
                 </View>
                 <Toast/>
             </ImageBackground>
-        </SafeAreaView >
+        </View >
     );
 }
