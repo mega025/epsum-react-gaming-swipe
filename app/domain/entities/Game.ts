@@ -19,6 +19,7 @@ export interface GameDetailsInterface extends Game {
     storyline: string
     summary: string
     videos: Video[]
+    screenshots: Cover[]
     similar_games: SimilarGame[]
     involved_companies: InvolvedCompany []
 }

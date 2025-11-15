@@ -8,7 +8,7 @@ const styleSearch = StyleSheet.create({
     logo: {
         width: wp("12%"),
         height: hp("4%"),
-        marginTop: hp("1%"),
+        marginTop: hp("2%"),
         tintColor: AppColors.white,
     },
     container: {

@@ -19,7 +19,7 @@ import {styles} from "react-native-toast-message/lib/src/components/BaseToast.st
 import {PropsStackNavigation} from "../../interfaces/StackNav";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import {PlatformItem} from "../../components/PlatformItem";
-import {Game, GameDetailsInterface, Genre, Platform, SimilarGame} from "../../../domain/entities/Game";
+import {Cover, Game, GameDetailsInterface, Genre, Platform, SimilarGame} from "../../../domain/entities/Game";
 import {GenreItem} from "../../components/GenreItem";
 import YoutubePlayer from "react-native-youtube-iframe";
 import {styleGameDetails, styleSimilarGame} from "./StyleGameDetails";
@@ -29,9 +29,15 @@ import {styleSearch, styleSearchGameItem} from "../search/StyleSearch";
 import {UseUserLocalStorage} from "../../hooks/UseUserLocalStorage";
 import {AppColors} from "../../theme/AppTheme";
 import {FlashList} from "@shopify/flash-list";
-import {NO_IMAGE_URL, transformCoverUrl, transformSmallCoverUrl} from "../../utils/TransformCoverUrls";
+import {
+    NO_IMAGE_URL,
+    transformBig2xCoverUrl,
+    transformCoverUrl,
+    transformSmallCoverUrl
+} from "../../utils/TransformCoverUrls";
 import {HorizontalFlashList} from "../../components/HorizontalFlashList";
-
+import PagerView from "react-native-pager-view";
+import stylesAuthViews from "../auth/StylesAuthViews";
 
 type GameDetailsRouteProp = RouteProp<RootStackParamsList, "GameDetails">;
 
@@ -96,7 +102,7 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
                             : "https://www.igdb.com/assets/no_cover_show-ef1e36c00e101c2fb23d15bb80edd9667bbf604a12fc0267a66033afea320c65.png"
                     }}
                     contentFit="contain"
-                    transition={500}
+                    transition={250}
                     style={styleSimilarGame.image}
                 />
             </TouchableOpacity>
@@ -104,13 +110,26 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
         </View>
         ), [navigation])
 
+    const defaultDataWith6Colors: Cover[] = [
+        {
+            url: NO_IMAGE_URL,
+        },
+        {
+            url: NO_IMAGE_URL,
+        },
+        {
+            url:  NO_IMAGE_URL,
+        },
+    ]
+
     return(
             <View style={{width: '100%', height: '100%', backgroundColor: AppColors.backgroundColor}}>
                 {!showLoading ? (
                     <>
                     <ScrollView showsVerticalScrollIndicator={false}>
                         <View style={{...styleSearch.logoContainer, position:"absolute", zIndex:99}}>
-                            <Image source={require("../../../../assets/igdb-logo.webp")} style={styleSearch.logo} />
+                            <Image transition={100} priority={"high"}
+                                   source={require("../../../../assets/igdb-logo.webp")} style={styleSearch.logo} />
                         </View>
                         <View style={styleGameDetails.header}>
                             <TouchableOpacity onPress={() => navigation.goBack()} style={styleGameDetails.goBackIconTouchable}>
@@ -120,11 +139,12 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
                             <Image
                                 source={{
                                     uri: gameDetails?.cover
-                                        ? transformCoverUrl(gameDetails.cover.url)
+                                        ? transformBig2xCoverUrl(gameDetails.cover.url)
                                         : NO_IMAGE_URL,
                                 }}
                                 contentFit="contain"
-                                transition={250}
+                                priority={"high"}
+                                transition={150}
                                 style={styleGameDetails.image}
                             />
                             <View style={{flex: 2}}>
@@ -183,7 +203,7 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
                                 renderItem={({ item }) => (
                                     <TouchableOpacity style={{flexDirection: "row", alignSelf:"flex-start", alignItems:"center", gap:wp("3%")}} onPress={() => navigation.push("CompanyDetails", {companyId: item.company.id})}>
                                         <Text style={styleGameDetails.involvedCompany}>{item.company.name}</Text>
-                                        <Image source={require("../../../../assets/url-icon.png")}
+                                        <Image priority={"high"} source={require("../../../../assets/url-icon.png")}
                                         style={{width: wp("3.5%"), height: hp("1.6%"), tintColor: AppColors.white}}/>
                                     </TouchableOpacity>
                                 )}/>
@@ -212,9 +232,31 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
                                     <Text style={styleGameDetails.summary}>{gameDetails?.storyline ? gameDetails?.storyline : "--"}</Text>
                                 </View>
                             )}
-
+                            {gameDetails?.screenshots && (
+                                <View>
+                                    <Text style={styleGameDetails.infoTitles}>Screenshots</Text>
+                                    <PagerView style={{flex:1, height: hp("25%")}}
+                                               initialPage={0}
+                                               overdrag={true}
+                                    >
+                                        {gameDetails?.screenshots.map ((screenshot, index) => (
+                                            <View key={index}
+                                                style={{paddingHorizontal: wp("1%")}} >
+                                            <Image
+                                                style={{width:"100%", height:hp("25%"), borderRadius:15}}
+                                                transition={250}
+                                                priority={"normal"}
+                                                source={{uri: transformCoverUrl(screenshot.url)}}/>
+                                            </View>
+                                        ))}
+                                    </PagerView>
+                                    {gameDetails?.screenshots.length > 1 && (
+                                        <Text style={{...stylesAuthViews.passwordHint, textAlign:"right"}}>Swipe to see more</Text>
+                                    )}
+                                </View>
+                            )}
                             {gameDetails?.videos && (
-                                <View style={{marginTop: hp("4%"), marginBottom: hp("-3%")}}>
+                                <View style={{marginTop: hp("2%"), marginBottom: hp("-3%")}}>
                                     <YoutubePlayer
                                         height={250}
                                         videoId={gameDetails?.videos[0].video_id}

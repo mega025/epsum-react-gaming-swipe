@@ -82,7 +82,7 @@ export function UserDetails ({navigation = useNavigation()}: PropsStackNavigatio
                                 />
                             </View>
                             <View style={{flex: 1}}>
-                                <Text style={{...styleGameDetails.name, height: "auto", lineHeight: 40, paddingBottom: hp("2%")}}>{userSearch?.name} {userSearch?.last_name}</Text>
+                                <Text style={{...styleGameDetails.name, height: "auto", lineHeight: 40, paddingBottom: hp("2%")}}>{userSearch?.username}</Text>
                             </View>
                         </View>
                         <View style={{paddingHorizontal: wp("3%")}}>

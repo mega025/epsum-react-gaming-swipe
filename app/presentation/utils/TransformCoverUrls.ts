@@ -3,6 +3,12 @@ export const NO_IMAGE_URL = "https://www.igdb.com/assets/no_cover_show-ef1e36c00
 export const transformCoverUrl = (url: string) => {
     const cutUrlFirstPart = url.substring(0, 38);
     const cutUrlSecondPart = url.substring(url.lastIndexOf("/") + 1);
+    return "https:"+cutUrlFirstPart+"original/"+cutUrlSecondPart;
+}
+
+export const transformBig2xCoverUrl = (url: string) => {
+    const cutUrlFirstPart = url.substring(0, 38);
+    const cutUrlSecondPart = url.substring(url.lastIndexOf("/") + 1);
     return "https:"+cutUrlFirstPart+"cover_big_2x/"+cutUrlSecondPart;
 }
 

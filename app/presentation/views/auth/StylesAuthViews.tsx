@@ -30,7 +30,7 @@ const stylesAuthViews = StyleSheet.create({
     passwordHint: {
         fontFamily: "zen_kaku_regular",
         color: AppColors.white,
-        fontSize: wp("3%"),
+        fontSize: wp("2.6%"),
         margin: wp("2%")
     },
 

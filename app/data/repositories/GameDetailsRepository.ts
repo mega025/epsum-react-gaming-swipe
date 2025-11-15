@@ -13,7 +13,7 @@ export class GameDetailsRepository implements GameDetailsRepositoryInterface {
                 "fields name, " +
                 "cover.url, " +
                 "genres.name, " +
-                "platforms.abbreviation, " +
+                "platforms.abbreviation, screenshots.url, " +
                 "rating, release_dates.human, release_dates.y, " +
                 "storyline, summary, videos.video_id, similar_games.name, similar_games.cover.url, " +
                 "involved_companies.company.name;" +
