@@ -11,7 +11,7 @@ import {Image} from "expo-image"
 import {RouteProp, useFocusEffect, useNavigation, useRoute} from "@react-navigation/native";
 import {RootStackParamsList} from "../../../../App";
 import styleHome from "../home/StyleHome";
-import React, {useCallback, useEffect} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import viewModelHome, {homeViewModel} from "../home/ViewModel"
 import {gameDetailsViewModel} from "./ViewModel";
 import stylesHome from "../home/StyleHome";
@@ -38,15 +38,16 @@ import {
 import {HorizontalFlashList} from "../../components/HorizontalFlashList";
 import PagerView from "react-native-pager-view";
 import stylesAuthViews from "../auth/StylesAuthViews";
+import {useGameDetails} from "../../hooks/UseGameDetails";
 
 type GameDetailsRouteProp = RouteProp<RootStackParamsList, "GameDetails">;
 
 export function GameDetails({navigation = useNavigation()}: PropsStackNavigation) {
     const {user} = UseUserLocalStorage()
+    const [showLoading, setShowLoading] = useState(true);
+
     const {
-        gameDetails,
-        loadGameDetails,
-        showLoading
+        setGameDetails,
     } = gameDetailsViewModel()
 
     const {
@@ -62,6 +63,7 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
         playedListGames,
     } = viewModelFav.favScreenViewModel()
 
+    // Loading fav and played games list to check game status
     useFocusEffect(
         useCallback(() => {
             if(user?.slug != undefined) {
@@ -79,15 +81,16 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
         return playedListGames.some(game => game.id_api === gameId);
     }
 
+    //Getting params from route
     const route = useRoute<GameDetailsRouteProp>()
     const {gameId} = route.params
     const {likeButton} = route.params
 
-    useEffect(() => {
-        loadGameDetails(gameId)
-        console.log(likeButton)
-    }, []);
+    //Using React Query to load game details and saving it in the cache
+    const {data, isLoading, error} = useGameDetails(gameId);
+    const gameDetails = data ? data[0] : undefined;
 
+    //Null objects
     const nullGenre: Genre = {name : "No genres registered"}
     const nullPlatform: Platform = {name : "No platforms registered"}
 
@@ -102,6 +105,7 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
                     }}
                     contentFit="contain"
                     transition={250}
+                    cachePolicy={"memory-disk"}
                     style={styleSimilarGame.image}
                 />
             </TouchableOpacity>
@@ -121,6 +125,18 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
         },
     ]
 
+    useEffect(() => {
+        if (!isLoading) {
+            const timeout = setTimeout(() => {
+                setShowLoading(false);
+            }, 200);
+
+            return () => clearTimeout(timeout);
+        } else {
+            setShowLoading(true);
+        }
+    }, [isLoading]);
+
     return(
             <View style={{width: '100%', height: '100%', backgroundColor: AppColors.backgroundColor}}>
                 {!showLoading ? (
@@ -128,11 +144,13 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
                     <ScrollView showsVerticalScrollIndicator={false}>
                         <View style={{...styleSearch.logoContainer, position:"absolute", zIndex:99}}>
                             <Image transition={100} priority={"high"}
+                                   cachePolicy={"memory-disk"}
                                    source={require("../../../../assets/igdb-logo.webp")} style={styleSearch.logo} />
                         </View>
                         <View style={styleGameDetails.header}>
                             <TouchableOpacity onPress={() => navigation.goBack()} style={styleGameDetails.goBackIconTouchable}>
                                 <Image source={require("../../../../assets/go-back-icon.png")}
+                                       cachePolicy={"memory-disk"}
                                        style={styleGameDetails.goBackIcon}/>
                             </TouchableOpacity>
                             <Image
@@ -144,13 +162,14 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
                                 contentFit="contain"
                                 priority={"high"}
                                 transition={150}
+                                cachePolicy={"memory-disk"}
                                 style={styleGameDetails.image}
                             />
                             <View style={{flex: 2}}>
                                 <Text style={styleGameDetails.name}>{gameDetails?.name}</Text>
                                 <View style={{flexDirection: "row", gap: wp("11%")}}>
                                     <Text style={styleGameDetails.rating}>{gameDetails?.rating ? gameDetails?.rating.toFixed(1) : "No rate"}</Text>
-                                    <Text style={styleGameDetails.rating}>{gameDetails?.release_dates ? gameDetails?.release_dates[0].y : "TBD"}</Text>
+                                    <Text style={styleGameDetails.rating}>{gameDetails?.release_dates ? (gameDetails?.release_dates[0].y ? gameDetails?.release_dates[0].y : "TBD") : "TBD"}</Text>
                                 </View>
                             </View>
                         </View>
@@ -189,6 +208,8 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
                                 }}>
                                     <Image
                                         contentFit={"contain"}
+                                        cachePolicy={"memory-disk"}
+                                        priority={"high"}
                                         style={styleGameDetails.fav} source={
                                         checkIfGameFromApiIsLiked(gameDetails?.id || 0)
                                             ? require("../../../../assets/filled-heart.png")
@@ -202,7 +223,9 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
                                 renderItem={({ item }) => (
                                     <TouchableOpacity style={{flexDirection: "row", alignSelf:"flex-start", alignItems:"center", gap:wp("3%")}} onPress={() => navigation.push("CompanyDetails", {companyId: item.company.id})}>
                                         <Text style={styleGameDetails.involvedCompany}>{item.company.name}</Text>
-                                        <Image priority={"high"} source={require("../../../../assets/url-icon.png")}
+                                        <Image priority={"high"}
+                                               cachePolicy={"memory-disk"}
+                                               source={require("../../../../assets/url-icon.png")}
                                         style={{width: wp("3.5%"), height: hp("1.6%"), tintColor: AppColors.white}}/>
                                     </TouchableOpacity>
                                 )}/>
@@ -244,7 +267,8 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
                                             <Image
                                                 style={{width:"100%", height:hp("25%"), borderRadius:15}}
                                                 transition={250}
-                                                priority={"normal"}
+                                                priority={"high"}
+                                                cachePolicy={"memory-disk"}
                                                 source={{uri: transformCoverUrl(screenshot.url)}}/>
                                             </View>
                                         ))}

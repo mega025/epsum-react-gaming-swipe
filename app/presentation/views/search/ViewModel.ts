@@ -8,6 +8,7 @@ import {CompanyDetailsInterface} from "../../../domain/entities/Company";
 import {searchUsersUseCase} from "../../../domain/usesCases/search/SearchUsers";
 import {GetSearchUserInterface, UpdateUserDTO} from "../../../domain/entities/User";
 
+
 const searchViewModel = () => {
     const [searchText, setSearchText] = useState("");
     const [searchUserText, setSearchUserText] = useState("");
@@ -22,6 +23,8 @@ const searchViewModel = () => {
         platform: null,
     });
     const [filtersApplied, setFiltersApplied] = useState(false);
+    const [debounceTimeout, setDebounceTimeout] = useState<NodeJS.Timeout | null>(null);
+
 
 
     const onApplyFilters = async (filters: { category: string | null; platform: string | null }) => {
@@ -113,15 +116,20 @@ const searchViewModel = () => {
         setLoading(false)
     };
 
-    const onSearchTextChange = async (text: string) => {
-        if (text === "") {
-            setSearchText("");
-            await searchMostAnticipatedGames()
-        } else {
-            setSearchText(text);
-            setPage(1);
-            await searchGamesByUserInput(text, 1, true);
-        }
+    const onSearchTextChange = (text: string) => {
+        setSearchText(text);
+        if (debounceTimeout) clearTimeout(debounceTimeout);
+
+        const timeout = setTimeout(async () => {
+            if (text === "") {
+                await searchMostAnticipatedGames();
+            } else {
+                setPage(1);
+                await searchGamesByUserInput(text, 1, true);
+            }
+        }, 400);
+
+        setDebounceTimeout(timeout);
     };
 
     const onSearchUserTextChange = async (text: string) => {

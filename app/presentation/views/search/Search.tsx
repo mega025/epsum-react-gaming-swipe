@@ -232,36 +232,11 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
                                     value={searchText}
                                     onPressButtonFromInterface={(text: string) => onSearchTextChange(text)}
                                 />
-                                {/*<View>*/}
-                                {/*    <FiltroComponent onApply={onApplyFilters} selectedPlatform={selectedPlatform} selectedGenre={selectedCategory} />*/}
-                                {/*</View>*/}
                             </View>
                         </View>
                         <View style={styleSearch.resultTextContainer}>
                             {searchText !== "" ? (
                                 <Text style={styleSearch.resultText}>Results for "{searchText}"</Text>
-                            ) : filtersApplied ? (
-                                <View style={styleSearch.filterTextContainer}>
-                                    <Text style={styleSearch.resultTextFilter}>
-                                        Filter:{" "}
-                                        {appliedFilters.category ? `${appliedFilters.category}` : ""}
-                                        {appliedFilters.category && appliedFilters.platform ? " and " : ""}
-                                        {appliedFilters.platform ? `${appliedFilters.platform}` : ""}
-                                    </Text>
-                                    <TouchableOpacity
-                                        onPress={() => {
-                                            setAppliedFilters({ category: null, platform: null });
-                                            setFiltersApplied(false);
-                                            setSelectedCategory(null);
-                                            setSelectedPlatform(null);
-                                            setSearchText("");
-                                            searchMostAnticipatedGames();
-                                        }}
-                                        style={styleSearch.clearFilterButton}
-                                    >
-                                        <Text style={styleSearch.clearFilterText}>✕</Text>
-                                    </TouchableOpacity>
-                                </View>
                             ) : (
                                 <Text style={styleSearch.resultText}><Text style={{...styleSearch.resultText, fontFamily: "zen_kaku_medium", fontSize: wp("4.4")}}>TOP 10</Text>   Most anticipated games</Text>
                             )}

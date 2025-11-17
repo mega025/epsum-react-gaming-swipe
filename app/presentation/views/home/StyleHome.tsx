@@ -42,8 +42,8 @@ const stylesHome = StyleSheet.create({
         opacity: 1,
     },
     loading: {
-        width: wp("12%"),
-        height: hp("3%"),
+        width: wp("10%"),
+        height: hp("2%"),
         alignSelf: "center",
         justifyContent: "center",
     },

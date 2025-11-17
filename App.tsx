@@ -15,6 +15,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import {loadTokens} from "./app/data/sources/local/secure/TokenStorage";
 import * as SplashScreen from "expo-splash-screen";
 import {Asset} from "expo-asset";
+import {queryClient} from "./app/data/sources/local/QueyClient";
+import {QueryClientProvider} from "@tanstack/react-query";
 
 
 export type RootStackParamsList = {
@@ -56,7 +58,8 @@ export default function App() {
 
     if (user === undefined) return null;
     return (
-      <NavigationContainer>
+        <QueryClientProvider client={queryClient}>
+        <NavigationContainer>
           <Stack.Navigator
               initialRouteName={user && user.slug ? "UserNavigation" : "TabViewLoginRegister"}
               screenOptions={{
@@ -69,7 +72,8 @@ export default function App() {
               <Stack.Screen name="CompanyDetails" component={CompanyDetails}/>
               <Stack.Screen name="UserDetails" component={UserDetails}/>
           </Stack.Navigator>
-      </NavigationContainer>
+        </NavigationContainer>
+        </QueryClientProvider>
   );
 }
 

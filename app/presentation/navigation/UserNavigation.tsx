@@ -23,7 +23,7 @@ export function UserNavigation ({navigation = useNavigation()}: PropsStackNaviga
             activeIndicatorStyle={{backgroundColor: AppColors.secondaryColor}}
             activeColor={AppColors.white}
             inactiveColor={AppColors.buttonBackground}
-            barStyle={{ backgroundColor: AppColors.buttonBackground, height: hp("10%")}}
+            barStyle={{ backgroundColor: AppColors.buttonBackground, height: hp("10%"), zIndex: 100 }}
         >
             <Tab.Screen name="Home" options={{title:"Swipes",
                 tabBarIcon: ({color})=>(

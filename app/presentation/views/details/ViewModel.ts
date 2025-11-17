@@ -10,6 +10,7 @@ import {GetUserInterface, UserInterface} from "../../../domain/entities/User";
 import {getUserDBUseCase} from "../../../domain/usesCases/account/GetUser";
 import {FavGame} from "../../../domain/entities/FavGame";
 import {loadPlayedGamesUseCase} from "../../../domain/usesCases/favGames/LoadPlayedGames";
+import {useGameDetails} from "../../hooks/UseGameDetails";
 
 export const userDetailsViewModel = () => {
     const [showLoading, setShowLoading] = useState(false);
@@ -39,18 +40,17 @@ export const userDetailsViewModel = () => {
 
 export const gameDetailsViewModel = () => {
     const [gameDetails, setGameDetails] = useState<GameDetailsInterface>();
-    const [showLoading, setShowLoading] = useState(true);
+
 
     const loadGameDetails = async (gameId: number) => {
         const response = await loadGameDetailsUseCase(gameId);
         setGameDetails(response[0]);
-        setShowLoading(false);
     }
 
     return {
         loadGameDetails,
         gameDetails,
-        showLoading
+        setGameDetails
     }
 }
 
