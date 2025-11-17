@@ -16,6 +16,7 @@ import {loadTokens} from "./app/data/sources/local/secure/TokenStorage";
 import * as SplashScreen from "expo-splash-screen";
 import {Asset} from "expo-asset";
 
+
 export type RootStackParamsList = {
     UserNavigation: undefined;
     TabViewLoginRegister: undefined;
@@ -46,26 +47,11 @@ export default function App() {
     SplashScreen.preventAutoHideAsync()
 
     useEffect(() => {
-        const loadAssets = async () => {
-            try {
-                const assets = [
-                    require("./assets/fonts/zen_kaku_gothic_antique_black.ttf"),
-                    require("./assets/fonts/zen_kaku_gothic_antique_light.ttf"),
-                    require("./assets/fonts/zen_kaku_gothic_antique_bold.ttf"),
-                    require("./assets/fonts/zen_kaku_gothic_antique_medium.ttf"),
-                    require("./assets/fonts/zen_kaku_gothic_antique_regular.ttf"),
-                    require("./assets/x-icon.png"),
-                    require("./assets/heart.png"),
-                    require("./assets/rewind-arrow.png"),
-                    require("./assets/filter-icon.png"),
-                ]
-                await Promise.all(assets.map(asset => Asset.fromModule(asset).downloadAsync()));
-                await SplashScreen.hideAsync();
-            } catch (e) {
-                console.log(e)
-            }
+        try {
+            SplashScreen.hideAsync();
+        } catch (e) {
+            console.log(e)
         }
-        loadAssets();
     }, []);
 
     if (user === undefined) return null;
