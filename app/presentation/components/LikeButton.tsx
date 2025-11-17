@@ -11,7 +11,7 @@ export const LikeButton=({onPress}: Props)=>{
     return (
         <Shadow startColor={"rgba(4,121,255,0.10)"}>
             <TouchableOpacity style={stylesLikeButton.cont} onPress={onPress}>
-                <Image source={require("../../../assets/x.png")} style={stylesLikeButton.likeButton}></Image>
+                <Image source={require("../../../assets/x-icon.png")} style={stylesLikeButton.likeButton}></Image>
             </TouchableOpacity>
         </Shadow>
     )

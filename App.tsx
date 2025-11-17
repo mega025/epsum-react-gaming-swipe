@@ -54,7 +54,7 @@ export default function App() {
                     require("./assets/fonts/zen_kaku_gothic_antique_bold.ttf"),
                     require("./assets/fonts/zen_kaku_gothic_antique_medium.ttf"),
                     require("./assets/fonts/zen_kaku_gothic_antique_regular.ttf"),
-                    require("./assets/x.png"),
+                    require("./assets/x-icon.png"),
                     require("./assets/heart.png"),
                     require("./assets/rewind-arrow.png"),
                     require("./assets/filter-icon.png"),
