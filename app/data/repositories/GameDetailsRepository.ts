@@ -14,7 +14,7 @@ export class GameDetailsRepository implements GameDetailsRepositoryInterface {
                 "cover.url, " +
                 "genres.name, " +
                 "platforms.abbreviation, screenshots.url, " +
-                "rating, release_dates.human, release_dates.y, " +
+                "rating, release_dates.human, release_dates.y, release_dates.date, " +
                 "storyline, summary, videos.video_id, similar_games.name, similar_games.cover.url, " +
                 "involved_companies.company.name;" +
                 `where id = ${gameId};`)

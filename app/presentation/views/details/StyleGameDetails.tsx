@@ -8,7 +8,10 @@ const styleGameDetails = StyleSheet.create({
         width: wp("43%"),
         height: hp("27%"),
     },
-
+    dot: {
+        width: wp("2%"),
+        height: hp("0.3%"),
+    },
     header: {
         width: wp("100%"),
         flexDirection: "row",
@@ -99,7 +102,7 @@ const styleSimilarGame = StyleSheet.create({
         marginBottom: hp("5%"),
         marginTop: hp("2%"),
         borderRadius: 10,
-        backgroundColor: AppColors.buttonBackground,
+        backgroundColor: AppColors.backgroundColor,
         elevation: 10,
     },
 

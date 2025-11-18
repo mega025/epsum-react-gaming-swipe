@@ -1,17 +1,17 @@
 import {
-    ActivityIndicator,
+    ActivityIndicator, Animated,
     ImageBackground,
     SafeAreaView,
     ScrollView,
     Text,
-    TouchableOpacity,
+    TouchableOpacity, useWindowDimensions,
     View
 } from "react-native";
-import {Image} from "expo-image"
+import {Image, ImageSource} from "expo-image"
 import {RouteProp, useFocusEffect, useNavigation, useRoute} from "@react-navigation/native";
 import {RootStackParamsList} from "../../../../App";
 import styleHome from "../home/StyleHome";
-import React, {useCallback, useEffect, useState} from "react";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 import viewModelHome, {homeViewModel} from "../home/ViewModel"
 import {gameDetailsViewModel} from "./ViewModel";
 import stylesHome from "../home/StyleHome";
@@ -39,12 +39,19 @@ import {HorizontalFlashList} from "../../components/HorizontalFlashList";
 import PagerView from "react-native-pager-view";
 import stylesAuthViews from "../auth/StylesAuthViews";
 import {useGameDetails} from "../../hooks/UseGameDetails";
+import {ExpandingDot} from "react-native-animated-pagination-dots";
 
 type GameDetailsRouteProp = RouteProp<RootStackParamsList, "GameDetails">;
+
+export const filledHeartSource = require("../../../../assets/filled-heart.png")
+export const checkIconSource = require("../../../../assets/check-icon.png")
+export const heartSource = require("../../../../assets/heart.png")
+
 
 export function GameDetails({navigation = useNavigation()}: PropsStackNavigation) {
     const {user} = UseUserLocalStorage()
     const [showLoading, setShowLoading] = useState(true);
+    let [likeButtonImageSource, setLikeButtonImageSource] = useState<ImageSource>()
 
     const {
         setGameDetails,
@@ -85,6 +92,15 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
     const route = useRoute<GameDetailsRouteProp>()
     const {gameId} = route.params
     const {likeButton} = route.params
+
+    useEffect(() => {
+        if (checkIfGameFromApiIsLiked(gameId))
+            setLikeButtonImageSource(filledHeartSource)
+        else if (checkIfGameFromApiIsPlayed(gameId))
+            setLikeButtonImageSource(checkIconSource)
+        else
+            setLikeButtonImageSource(heartSource)
+    }, [favListGames, playedListGames, gameId]);
 
     //Using React Query to load game details and saving it in the cache
     const {data, isLoading, error} = useGameDetails(gameId);
@@ -137,8 +153,12 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
         }
     }, [isLoading]);
 
+    const scrollX = React.useRef(new Animated.Value(0)).current;
+
+
     return(
-            <View style={{width: '100%', height: '100%', backgroundColor: AppColors.backgroundColor}}>
+            <View style={{width: '100%', height: '100%',
+                backgroundColor: showLoading ? AppColors.backgroundColor : AppColors.buttonBackground}}>
                 {!showLoading ? (
                     <>
                     <ScrollView showsVerticalScrollIndicator={false}>
@@ -173,7 +193,7 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
                                 </View>
                             </View>
                         </View>
-                        <View style={{paddingHorizontal: wp("4%")}}>
+                        <View style={{paddingHorizontal:wp("4%"), backgroundColor: AppColors.backgroundColor}}>
                             <View style={{flexDirection: "row", gap:wp("36%")}}>
                                 <Text style={styleGameDetails.infoTitles}>Involved companies</Text>
                                 {likeButton && (
@@ -182,6 +202,7 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
                                         try {
                                             if (!checkIfGameFromApiIsPlayed(gameDetails?.id || 0)) {
                                                 await addGameToFav(transformGameIntoFavGameInterface(gameDetails), user?.slug || "");
+                                                setLikeButtonImageSource(filledHeartSource)
                                                 await loadFavGames(user?.slug || "")
                                             }
                                         } catch (error) {
@@ -196,6 +217,7 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
                                                 gameDetails ? gameDetails?.id : 0,
                                                 user?.slug ? user?.slug : "",
                                             );
+                                            setLikeButtonImageSource(heartSource)
                                             await loadFavGames(user?.slug ? user?.slug : "")
 
                                         } catch (error) {
@@ -210,10 +232,7 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
                                         contentFit={"contain"}
                                         cachePolicy={"memory-disk"}
                                         priority={"high"}
-                                        style={styleGameDetails.fav} source={
-                                        checkIfGameFromApiIsLiked(gameDetails?.id || 0)
-                                            ? require("../../../../assets/filled-heart.png")
-                                            : checkIfGameFromApiIsPlayed(gameDetails?.id || 0) ? require("../../../../assets/check-icon.png") : require("../../../../assets/heart.png")}/>
+                                        style={styleGameDetails.fav} source={likeButtonImageSource}/>
                                 </TouchableOpacity>
                             )}
                             </View>
@@ -231,12 +250,12 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
                                 )}/>
 
                             <Text style={styleGameDetails.infoTitles}>Platforms</Text>
-                            <HorizontalFlashList style={{width: wp("90")}}
+                            <HorizontalFlashList style={{width: wp("90%")}}
                                                  data={gameDetails?.platforms ? gameDetails?.platforms : [nullPlatform]}
                                                  renderItem={PlatformItem}
                             />
                             <Text style={styleGameDetails.infoTitles}>Genres</Text>
-                            <HorizontalFlashList style={{width: wp("90")}}
+                            <HorizontalFlashList style={{width: wp("90%")}}
                                                  data={gameDetails?.genres ? gameDetails?.genres : [nullGenre]}
                                                  renderItem={GenreItem}
                             />
@@ -255,31 +274,52 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
                                 </View>
                             )}
                             {gameDetails?.screenshots && (
-                                <View>
-                                    <Text style={styleGameDetails.infoTitles}>Screenshots</Text>
-                                    <PagerView style={{flex:1, height: hp("25%")}}
-                                               initialPage={0}
-                                               overdrag={true}
+                                <View style={{marginTop: hp("4%")}}>
+                                    <Animated.FlatList
+                                        horizontal={true}
+                                        data={gameDetails?.screenshots}
+                                        pagingEnabled={true}
+                                        snapToAlignment={"center"}
+                                        style={{ width: wp("100%"), marginStart:wp("-4%"), marginHorizontal:wp("4%"), paddingEnd:wp("4%")}} // ancho del ScrollView, normalmente toda la pantalla
+                                        showsHorizontalScrollIndicator={false}
+                                        renderItem={({ item }) => (
+                                                <Image
+                                                    style={{ width: wp("92%"), height: hp("25%"), marginHorizontal:wp("4%"), borderRadius:5}}
+                                                    transition={250}
+                                                    priority="high"
+                                                    cachePolicy="memory-disk"
+                                                    source={{ uri: transformCoverUrl(item.url) }}
+                                                />
+                                        )}
+                                        scrollEventThrottle={16} // para que la animación sea más fluida
+                                        onScroll={Animated.event(
+                                            [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+                                            {
+                                                useNativeDriver: false,
+                                            }
+                                        )}
                                     >
-                                        {gameDetails?.screenshots.map ((screenshot, index) => (
-                                            <View key={index}
-                                                style={{paddingHorizontal: wp("1%")}} >
-                                            <Image
-                                                style={{width:"100%", height:hp("25%"), borderRadius:15}}
-                                                transition={250}
-                                                priority={"high"}
-                                                cachePolicy={"memory-disk"}
-                                                source={{uri: transformCoverUrl(screenshot.url)}}/>
-                                            </View>
-                                        ))}
-                                    </PagerView>
-                                    {gameDetails?.screenshots.length > 1 && (
-                                        <Text style={{...stylesAuthViews.passwordHint, textAlign:"right"}}>Swipe to see more</Text>
-                                    )}
+                                    </Animated.FlatList>
+                                        <ExpandingDot
+                                            data={gameDetails.screenshots}
+                                            expandingDotWidth={30}
+                                            scrollX={scrollX}
+                                            activeDotColor={AppColors.white}
+                                            inActiveDotOpacity={0.1}
+                                            inActiveDotColor={AppColors.gray}
+                                            dotStyle={styleGameDetails.dot}
+                                            containerStyle={{
+                                                position: "relative",
+                                                alignSelf: "center",
+                                                marginTop: hp("4%"),
+                                                marginBottom: hp("1%"),
+                                                flexDirection: "row",
+                                        }}
+                                        />
                                 </View>
                             )}
                             {gameDetails?.videos && (
-                                <View style={{marginTop: hp("2%"), marginBottom: hp("-3%")}}>
+                                <View style={{marginBottom: hp("-3%")}}>
                                     <YoutubePlayer
                                         height={250}
                                         videoId={gameDetails?.videos[0].video_id}
@@ -288,8 +328,8 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
                             )}
 
                             {gameDetails?.similar_games && (
-                                <View>
-                                    <Text style={styleGameDetails.infoTitles}>Similar games</Text>
+                                <View style={{marginTop: hp("4%"), backgroundColor: AppColors.buttonBackground, marginHorizontal: wp("-4%"), paddingHorizontal: wp("4%")}}>
+                                    <Text style={{...styleGameDetails.infoTitles, textAlign:"center"}}>Similar games</Text>
                                     <HorizontalFlashList data={gameDetails?.similar_games}
                                                          renderItem={similarGameItem}/>
                                 </View>
