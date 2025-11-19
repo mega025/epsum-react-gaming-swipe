@@ -62,6 +62,8 @@ export function Home({navigation = useNavigation()}: PropsStackNavigation) {
         refillSwipeGamesWithFilters,
         transformGameIntoFavGameInterface,
         getSimilarGamesFromGame,
+        setSelectedRating,
+        selectedRating
     } = viewModel.homeViewModel()
 
     const {user} = UseUserLocalStorage()
@@ -92,12 +94,14 @@ export function Home({navigation = useNavigation()}: PropsStackNavigation) {
                 <View style={{marginVertical: hp("1%"), paddingHorizontal: wp("5%")}}>
                     <View style={stylesHome.firstRowCardContainer}>
                         <Text style={stylesHome.gameNameText}> {item.name}</Text>
+                        <View style={stylesHome.ratingContainer}>
                         <Text
                             style={stylesHome.ratingText}>{
                             item.rating
-                                ? Math.round((item.rating * 100) / 100).toFixed(0)
+                                ? (item.rating === 100 ? item.rating : item.rating.toFixed(1))
                                 : "N/A"
                         }</Text>
+                        </View>
                     </View>
                     <View style={{marginTop: hp("1%")}}>
                         <HorizontalFlashList data={item.platforms ? item.platforms : [nullPlatform]}
@@ -109,7 +113,7 @@ export function Home({navigation = useNavigation()}: PropsStackNavigation) {
                                              style={{width: "83%"}}
                         />
                         <Text
-                            style={styleHome.releaseDateText}>{item.release_dates ? item.release_dates[0].y : ""}</Text>
+                            style={styleHome.releaseDateText}>{item.release_dates ? item.release_dates[0].y : "TBD"}</Text>
                     </View>
                 </View>
             </View>
@@ -194,12 +198,13 @@ export function Home({navigation = useNavigation()}: PropsStackNavigation) {
                             }}
                             onSwipedAll={() => {
                                 setTimeout(async () => {
-                                    if (selectedGenres.length === 0 && selectedPlatforms.length === 0) {
+                                    if (selectedGenres.length === 0 && selectedPlatforms.length === 0 && selectedRating === 70) {
                                         await refillSwipeGames()
                                     } else {
                                         const filters = {
                                             genres: selectedGenres,
                                             platforms: selectedPlatforms,
+                                            rating: selectedRating,
                                         }
                                         await refillSwipeGamesWithFilters(filters);
                                     }
@@ -213,7 +218,7 @@ export function Home({navigation = useNavigation()}: PropsStackNavigation) {
                         <NopeButton onPress={() =>  ref.current?.swipeLeft()}></NopeButton>
                         <View style={{gap:hp("2%"), alignItems: "center"}}>
                             <RewindButton onPress={() =>  ref.current?.swipeBack()}></RewindButton>
-                            <FilterButton onApply={refillSwipeGamesWithFilters} selectedGenre={selectedGenres} selectedPlatform={selectedPlatforms}  />
+                            <FilterButton onApply={refillSwipeGamesWithFilters} selectedGenre={selectedGenres} selectedPlatform={selectedPlatforms} selectedRating={selectedRating}  />
                         </View>
                         <LikeButton onPress={() => ref.current?.swipeRight()}></LikeButton>
                     </View>

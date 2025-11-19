@@ -7,6 +7,10 @@ import {Game, GameSimilarGames, Platform} from "../../domain/entities/Game";
 import {FavGame} from "../../domain/entities/FavGame";
 import Toast from "react-native-toast-message";
 
+const SWIPE_GAMES_CALLED_FROM_API = 15
+const NOT_NULL_FIELDS_GAME_QUERY = "& genres != null & platforms != null & cover != null;"
+
+
 export class HomeRepository implements HomeRepositoryInterface {
     async getSimilarGamesFromGame(gameId: number): Promise<GameSimilarGames[]> {
         try {
@@ -14,7 +18,7 @@ export class HomeRepository implements HomeRepositoryInterface {
                 "/games",
                 "fields similar_games.name, similar_games.cover.url, similar_games.platforms.abbreviation, " +
                 "similar_games.platforms.name, similar_games.genres.name, similar_games.rating, "+
-                'similar_games.release_dates.y; where id = '+gameId+';',
+                'similar_games.release_dates.y, similar_games.release_dates.date; where id = '+gameId+';',
             )
             console.log(response.data);
             return Promise.resolve(response.data);
@@ -27,7 +31,12 @@ export class HomeRepository implements HomeRepositoryInterface {
 
     refillGamesFromSwiper= async (): Promise<Game[]> => {
         try {
-            const randomOffset = Math.round(((Math.random()*9100)*100)/100).toFixed(0)
+            const query = `where rating >= 70 ${NOT_NULL_FIELDS_GAME_QUERY}`
+            const maxGames = await IgdbApiDelivery.post(
+                "/games/count", query)
+
+            const maxOffset = Math.max(0, maxGames.data?.count - 10);
+            const randomOffset = Math.round(((Math.random()*maxOffset)*100)/100).toFixed(0)
             const response = await IgdbApiDelivery.post(
                 "/games",
                 "fields name, " +
@@ -36,7 +45,7 @@ export class HomeRepository implements HomeRepositoryInterface {
                 "platforms.abbreviation, " +
                 "platforms.name, summary, " +
                 "rating, release_dates.y, release_dates.date;" +
-                " limit 15; where rating > 70; offset "+randomOffset+";")
+                " limit "+SWIPE_GAMES_CALLED_FROM_API+";"+query+" offset "+randomOffset+";")
 
             return Promise.resolve(response.data)
         } catch (error) {
@@ -46,35 +55,31 @@ export class HomeRepository implements HomeRepositoryInterface {
         }
     }
 
-    refillGamesFromSwiperWithFilters = async (platforms: Platform[], genres: Platform[]): Promise<Game[]> => {
+    refillGamesFromSwiperWithFilters = async (platforms: Platform[], genres: Platform[], rating: number): Promise<Game[]> => {
         try {
+            const decimalRating = rating-1;
             let query = ""
             let response
-            if (genres.length === 0 && platforms.length === 0) {
+            if (genres.length === 0 && platforms.length === 0 && rating === 70) {
                 response = await this.refillGamesFromSwiper()
                 return Promise.resolve(response)
             }
             const genresToString = genres.map(item => item.id).join(', ');
             const platformsToString = platforms.map(item => item.id).join(', ');
                 if (genres.length > 0 && platforms.length > 0) {
-                    query = 'where genres = ['+genresToString+'] & platforms = ['+platformsToString+'] & rating > 50;'
+                    query = 'where genres = ['+genresToString+'] & platforms = ['+platformsToString+`] & rating >= ${decimalRating} ${NOT_NULL_FIELDS_GAME_QUERY};`
                 } if (genres.length > 0 && platforms.length === 0) {
-                    query = 'where genres = ['+genresToString+'] & rating > 50;'
+                    query = 'where genres = ['+genresToString+`] & rating >= ${decimalRating} ${NOT_NULL_FIELDS_GAME_QUERY};`
                 } if (genres.length === 0 && platforms.length > 0) {
-                    query = 'where platforms = ['+platformsToString+'] & rating > 50;'
-                }
-                console.log(query);
+                    query = 'where platforms = ['+platformsToString+`] & rating >= ${decimalRating} ${NOT_NULL_FIELDS_GAME_QUERY};`
+                } if (rating > 0)
+                    query = `where rating >= ${decimalRating} ${NOT_NULL_FIELDS_GAME_QUERY};`;
                 const maxGames = await IgdbApiDelivery.post(
-                    "/games/count",
-                    "fields name, " +
-                    "cover.url, " +
-                    "genres.name, " +
-                    "platforms.abbreviation, " +
-                    "rating, release_dates.y;"+
-                    query)
+                    "/games/count", query)
 
                 const maxOffset = Math.max(0, maxGames.data?.count - 10);
                 const randomOffset = Math.round(((Math.random()*maxOffset)*100)/100).toFixed(0)
+                console.log(query)
                 response = await IgdbApiDelivery.post(
                     "/games",
                     "fields name, " +

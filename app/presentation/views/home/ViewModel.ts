@@ -18,6 +18,7 @@ export const homeViewModel = () => {
     let [showLoading, setShowLoading] = useState(true);
     let [selectedPlatforms, setSelectedPlatforms] = useState<Platform[]>([]);
     let [selectedGenres, setSelectedGenres] = useState<Platform[]>([]);
+    let [selectedRating, setSelectedRating] = useState<number>(70);
     let [swipesCounter, setSwipesCounter] = useState(0);
 
     const {favListGames} = viewModel.favScreenViewModel();
@@ -33,13 +34,15 @@ export const homeViewModel = () => {
         return await getSimilarGamesFromGameUseCase(gameId)
     }
 
-    const refillSwipeGamesWithFilters = async (filters: { genres: Platform[]; platforms: Platform[]}) => {
+    const refillSwipeGamesWithFilters = async (filters: { genres: Platform[]; platforms: Platform[], rating: number}) => {
         setShowLoading(true);
         setSelectedPlatforms(filters.platforms);
         setSelectedGenres(filters.genres);
-        const response = await refillGamesFromSwiperWithFiltersUseCase(filters.platforms, filters.genres);
+        setSelectedRating(filters.rating);
+        const response = await refillGamesFromSwiperWithFiltersUseCase(filters.platforms, filters.genres, filters.rating);
         if (response.length === 0) {
-            setListGames([generateNoGamesFoundCard(filters.genres, filters.platforms), generateNoGamesFoundCard(filters.genres, filters.platforms)]);
+            const gamesNotFoundCard = generateNoGamesFoundCard(filters.genres, filters.platforms, filters.rating)
+            setListGames([gamesNotFoundCard, gamesNotFoundCard]);
         } else {
             setListGames(response)
         }
@@ -82,7 +85,9 @@ export const homeViewModel = () => {
         selectedGenres,
         selectedPlatforms,
         transformGameIntoFavGameInterface,
-        getSimilarGamesFromGame
+        getSimilarGamesFromGame,
+        selectedRating,
+        setSelectedRating,
     }
 }
 

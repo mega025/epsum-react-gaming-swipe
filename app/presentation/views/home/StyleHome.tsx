@@ -65,24 +65,29 @@ const stylesHome = StyleSheet.create({
         fontSize: wp("6%"),
         fontFamily:"zen_kaku_bold",
     },
-    ratingText: {
-        fontSize: wp("5%"),
+    ratingContainer: {
         backgroundColor: AppColors.secondaryColor,
-        color: AppColors.white,
-        textAlign: "right",
-        fontWeight: "bold",
         padding: wp("2%"),
+        alignSelf: "flex-end",
         borderRadius: 8,
+        width : "19%",
+        alignItems: "center",
+    },
+    ratingText: {
+        fontSize: wp("4.2%"),
+        color: AppColors.white,
+        fontWeight: "bold",
     },
     gameNameText: {
         fontSize: wp("3.3%"),
-        width: "85%",
+        width: "78%",
         lineHeight: hp("2%"),
         fontFamily: "zen_kaku_medium",
         color: AppColors.white,
     },
     releaseDateText: {
         fontSize: wp("3%"),
+        fontWeight: "bold",
         color: AppColors.white,
     },
     firstRowCardContainer: {
@@ -94,7 +99,7 @@ const stylesHome = StyleSheet.create({
     thirdRowCardContainer: {
         flexDirection: "row",
         height: hp("4%"),
-        gap:wp("5%"),
+        gap:wp("4%"),
         alignItems: "center",
         marginTop: hp("1%"),
     },

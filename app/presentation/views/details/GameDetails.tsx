@@ -305,8 +305,8 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
                                             expandingDotWidth={30}
                                             scrollX={scrollX}
                                             activeDotColor={AppColors.white}
-                                            inActiveDotOpacity={0.1}
-                                            inActiveDotColor={AppColors.gray}
+                                            inActiveDotOpacity={0.4}
+                                            inActiveDotColor="#fff"
                                             dotStyle={styleGameDetails.dot}
                                             containerStyle={{
                                                 position: "relative",

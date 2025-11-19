@@ -14,19 +14,22 @@ import {AppColors} from "../theme/AppTheme";
 import {useFocusEffect} from "@react-navigation/native";
 import {Platform} from "../../domain/entities/Game";
 import {popularPlatforms} from "../utils/PopularPlatformsArray";
+import Slider from "@react-native-community/slider";
 
 interface FilterModalProps {
-    onApply: (filters: { genres: Platform []; platforms: Platform [] }) => void;
+    onApply: (filters: { genres: Platform []; platforms: Platform []; rating: number }) => void;
     selectedPlatform: Platform [];
     selectedGenre: Platform [];
+    selectedRating: number;
 }
 
-function FilterModal({ onApply, selectedGenre, selectedPlatform}: FilterModalProps) {
+function FilterModal({ onApply, selectedGenre, selectedPlatform, selectedRating}: FilterModalProps) {
     const [modalVisible, setModalVisible] = useState(false);
     const [categories, setCategories] = useState<Platform[]>([]);
     const [platforms, setPlatforms] = useState<Platform[]>([]);
     const [selectedGenresInModal, setSelectedGenresInModal] = useState<Platform []>([]);
     const [selectedPlatformsInModal, setSelectedPlatformsInModal] = useState<Platform []>([]);
+    const [selectedRatingInModal, setSelectedRatingInModal] = useState<number>(0);
     const [loading, setLoading] = useState(true);
 
     useFocusEffect(
@@ -39,6 +42,7 @@ function FilterModal({ onApply, selectedGenre, selectedPlatform}: FilterModalPro
                 setPlatforms(popularPlatforms);
                 setSelectedPlatformsInModal(selectedPlatform);
                 setSelectedGenresInModal(selectedGenre);
+                setSelectedRatingInModal(selectedRating);
                 setLoading(false);
             } catch (err) {
                 console.log('Error fetching filters:', err);
@@ -71,6 +75,7 @@ function FilterModal({ onApply, selectedGenre, selectedPlatform}: FilterModalPro
         onApply({
             genres: selectedGenresInModal,
             platforms: selectedPlatformsInModal,
+            rating: selectedRatingInModal
         });
         setModalVisible(false);
     };
@@ -78,22 +83,24 @@ function FilterModal({ onApply, selectedGenre, selectedPlatform}: FilterModalPro
     const clearFilters = () => {
         setSelectedGenresInModal([])
         setSelectedPlatformsInModal([])
+        setSelectedRatingInModal(70)
     }
+
+    const nullFilters = selectedGenre.length === 0 && selectedPlatform.length === 0 && selectedRating === 70
 
     return (
         <View style={styles.container}>
             <TouchableOpacity style={styles.button} onPress={() => setModalVisible(true)}>
-                <Image source={selectedGenre.length === 0 && selectedPlatform.length === 0
+                <Image source={nullFilters
                     ? require("../../../assets/filter-icon.png")
                     : require("../../../assets/active-filter-icon.png")}
                        style={{
                            width: wp("7%"),
                            height: wp("7%"),
-                           tintColor: selectedGenre.length === 0 && selectedPlatform.length === 0 ? AppColors.white : "",
+                           tintColor: nullFilters  ? AppColors.white : "",
                 }}
                 />
             </TouchableOpacity>
-
             <Modal
                 visible={modalVisible}
                 animationType="fade"
@@ -112,6 +119,20 @@ function FilterModal({ onApply, selectedGenre, selectedPlatform}: FilterModalPro
                             <ActivityIndicator size="large" />
                         ) : (
                             <ScrollView showsVerticalScrollIndicator={false}>
+                                <Text style={styles.label}>Rating</Text>
+                                <View style={{flexDirection:"row", paddingHorizontal: wp("2%"), alignItems:"center", gap: wp("5%")}}>
+                                    <Slider
+                                        style={{width: "80%", height: hp("2%")}}
+                                        minimumValue={0}
+                                        maximumValue={100}
+                                        step={5}
+                                        value={selectedRatingInModal}
+                                        onValueChange={setSelectedRatingInModal}
+                                        minimumTrackTintColor={AppColors.secondaryColor}
+                                        maximumTrackTintColor="#000000"
+                                    />
+                                    <Text style={styles.label}>{selectedRatingInModal}</Text>
+                                </View>
                                 <Text style={styles.label}>Platforms</Text>
                                 {renderOptions(platforms, selectedPlatformsInModal, setSelectedPlatformsInModal)}
                                 <Text style={styles.label}>Categories</Text>
