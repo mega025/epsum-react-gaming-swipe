@@ -14,7 +14,7 @@ export class SearchRepository implements SearchRepositoryInterface {
             const response = await IgdbApiDelivery.post(
                 "/games",
                 `fields name, hypes, rating, 
-                platforms.abbreviation, genres.name, cover.url, 
+                platforms.abbreviation, platforms.name, genres.name, cover.url, 
                 release_dates.y, release_dates.date, summary; 
                 limit 10; 
                 sort hypes desc; 
@@ -34,7 +34,7 @@ export class SearchRepository implements SearchRepositoryInterface {
                 "/games",
                 `fields name, 
                 rating, 
-                platforms.abbreviation,
+                platforms.abbreviation, platforms.name,
                 genres.name, cover.url,
                 summary, release_dates.date, 
                 release_dates.y; limit 15; search "${input}"; ${offset}`
@@ -44,51 +44,6 @@ export class SearchRepository implements SearchRepositoryInterface {
             let e = (error as AxiosError);
             console.log("Error: ", e.message);
             return Promise.reject(e.message);
-        }
-    }
-    async getFirst15Companies(): Promise<CompanyDetailsInterface[]> {
-        try {
-            const gamesResponse = await IgdbApiDelivery.post(
-                '/games',
-                `fields name; limit 100; sort hypes desc;
-                 where rating != null & total_rating_count > 900 & hypes > 20;`
-            );
-
-            const gameIds: number[] = gamesResponse.data.map((game: any) => game.id);
-
-            const involvedCompaniesResponse = await IgdbApiDelivery.post(
-                '/involved_companies',
-                `fields company; where game = (${gameIds.join(',')}) & developer = true; limit 100 ;`
-            );
-
-            const companyIds: number[] = involvedCompaniesResponse.data.map((item: any) => item.company);
-
-            const companiesResponse = await IgdbApiDelivery.post(
-                '/companies',
-                `fields id,name,description,country,logo.image_id; where id = (${companyIds.join(',')}); limit 20;`
-            );
-
-            const companies: CompanyDetailsInterface[] = companiesResponse.data.map((company: any) => ({
-                id: company.id,
-                name: company.name,
-                description: company.description,
-                country: company.country,
-                logo: {
-                    id: company.logo?.id,
-                    url: company.logo?.image_id
-                        ? `https://images.igdb.com/igdb/image/upload/t_logo_med/${company.logo.image_id}.png`
-                        : '',
-                },
-            }));
-
-            const uniqueCompanies: CompanyDetailsInterface[] = Array.from(
-                new Map(companies.map((company) => [company.id, company])).values()
-            ).slice(0, 20);
-
-            return uniqueCompanies;
-        } catch (error) {
-            console.log('Error fetching top companies:', error);
-            throw error;
         }
     }
 

@@ -17,6 +17,7 @@ import * as SplashScreen from "expo-splash-screen";
 import {Asset} from "expo-asset";
 import {queryClient} from "./app/data/sources/local/QueyClient";
 import {QueryClientProvider} from "@tanstack/react-query";
+import {GameProvider} from "./app/presentation/provider/GameProvider";
 
 
 export type RootStackParamsList = {
@@ -59,6 +60,7 @@ export default function App() {
     if (user === undefined) return null;
     return (
         <QueryClientProvider client={queryClient}>
+        <GameProvider>
         <NavigationContainer>
           <Stack.Navigator
               initialRouteName={user && user.slug ? "UserNavigation" : "TabViewLoginRegister"}
@@ -73,6 +75,7 @@ export default function App() {
               <Stack.Screen name="UserDetails" component={UserDetails}/>
           </Stack.Navigator>
         </NavigationContainer>
+        </GameProvider>
         </QueryClientProvider>
   );
 }

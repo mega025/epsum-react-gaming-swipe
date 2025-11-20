@@ -10,7 +10,7 @@ import {
 import {Image} from "expo-image"
 import stylesHome from "../home/StyleHome";
 import styleFav from "./StyleFav";
-import viewModel from "./ViewModel";
+import viewModel, {favScreenViewModel} from "./ViewModel";
 import React, {useCallback, useEffect, useMemo, useState} from "react";
 import styleHome from "../home/StyleHome";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
@@ -22,13 +22,12 @@ import Toast from "react-native-toast-message";
 import styleAccount from "../account/StyleAccount";
 import {PropsStackNavigation} from "../../interfaces/StackNav";
 
-
 export function FavGamesScreen({navigation = useNavigation()}: PropsStackNavigation) {
     const {favListGames,
         loadFavGames,
         showLoading,
         addPlayedGame,
-        deleteGameFromFav} = viewModel.favScreenViewModel();
+        deleteGameFromFav} = favScreenViewModel();
     const {user} = UseUserLocalStorage()
     const [modalVisibleDeleteGame, setModalVisibleDeleteGame] = useState(false);
 

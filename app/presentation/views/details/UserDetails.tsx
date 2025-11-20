@@ -51,7 +51,7 @@ export function UserDetails ({navigation = useNavigation()}: PropsStackNavigatio
 
 
     const favGameItem = useCallback(({item} : {item:FavGame}) => (
-        <View style={styleSimilarGame.card}>
+        <View style={{...styleSimilarGame.card, backgroundColor: AppColors.buttonBackground}}>
             <TouchableOpacity onPress={() => {navigation.push("GameDetails", {gameId : item.id_api, likeButton: true})}}>
                 <Image
                     source={{

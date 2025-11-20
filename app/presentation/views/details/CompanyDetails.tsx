@@ -101,7 +101,7 @@ export function CompanyDetails ({navigation = useNavigation()}: PropsStackNaviga
     }, [showLoading]);
 
     const developedGameItem = useCallback(({item} : {item:SimilarGame}) => (
-        <View style={styleSimilarGame.card}>
+        <View style={{...styleSimilarGame.card, backgroundColor: AppColors.buttonBackground}}>
             <TouchableOpacity onPress={() => {navigation.push("GameDetails", {gameId : item.id, likeButton: true})}}>
                 <Image
                     source={{
@@ -125,11 +125,11 @@ export function CompanyDetails ({navigation = useNavigation()}: PropsStackNaviga
                     <>
                         <ScrollView style={{paddingBottom: hp("60%")}} showsVerticalScrollIndicator={false}>
                             <View style={{...styleGameDetails.header, flexDirection: "column", paddingBottom: 0, alignItems:"center"}}>
-                                <TouchableOpacity onPress={navigation.goBack} style={{...styleGameDetails.goBackIconTouchable, bottom: hp("35%")}}>
+                                <TouchableOpacity onPress={navigation.goBack} style={{...styleGameDetails.goBackIconTouchable, bottom: hp("30%")}}>
                                     <Image source={require("../../../../assets/go-back-icon.png")}
                                            style={styleGameDetails.goBackIcon} />
                                 </TouchableOpacity>
-                                <View style={{width: wp("100%"), alignItems: "center", backgroundColor: AppColors.softWhite}}>
+                                <View style={{width: wp("100%"), alignItems: "center"}}>
                                     <Image
                                         source={{
                                             uri: companyDetails?.logo
@@ -138,7 +138,7 @@ export function CompanyDetails ({navigation = useNavigation()}: PropsStackNaviga
                                         }}
                                         contentFit="contain"
                                         transition={500}
-                                        style={{width: wp("50%"), height: hp("20%"), marginVertical: wp("5%")}}
+                                        style={{width: wp("40%"), height: hp("20%"), marginVertical: wp("1%")}}
                                     />
                                 </View>
                                 <View style={{flex: 1}}>
@@ -192,7 +192,6 @@ export function CompanyDetails ({navigation = useNavigation()}: PropsStackNaviga
                                         />
                                     </View>
                                 )}
-
                             </View>
                         </ScrollView>
                     </>

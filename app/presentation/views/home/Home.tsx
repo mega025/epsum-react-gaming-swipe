@@ -3,7 +3,7 @@ import {
     View,
     ActivityIndicator,
     StyleSheet,
-    TouchableOpacity, FlatList,
+    TouchableOpacity, FlatList, InteractionManager,
 } from "react-native";
 import stylesHome from "./StyleHome";
 import {Text} from "react-native"
@@ -183,14 +183,16 @@ export function Home({navigation = useNavigation()}: PropsStackNavigation) {
                                     if (listGames[cardIndex].name !== NO_GAMES_FOUND_LABEL) {
                                         await addGameToFav(transformGameIntoFavGameInterface(listGames[cardIndex]), user.slug)
                                         if (selectedGenres.length === 0 && selectedPlatforms.length === 0) {
-                                            const similarGames = await getSimilarGamesFromGame(listGames[cardIndex].id);
-                                            const existingGameIds = new Set(listGames.map(game => game.id));
-                                            const newSimilarGames = similarGames[0].similar_games.filter(
-                                                game => !existingGameIds.has(game.id)
-                                            );
-                                            if (newSimilarGames.length > 0) {
-                                                setListGames((prevGames) => [...prevGames, ...newSimilarGames]);
-                                            }
+                                            InteractionManager.runAfterInteractions(async () => {
+                                                const similarGames = await getSimilarGamesFromGame(listGames[cardIndex].id);
+                                                const existingGameIds = new Set(listGames.map(game => game.id));
+                                                const newSimilarGames = similarGames[0].similar_games.filter(
+                                                    game => !existingGameIds.has(game.id)
+                                                );
+                                                if (newSimilarGames.length > 0) {
+                                                            setListGames((prevGames) => [...prevGames, ...newSimilarGames]);
+                                                }
+                                            })
                                         }
                                     }
                             }}

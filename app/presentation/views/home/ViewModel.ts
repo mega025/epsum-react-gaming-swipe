@@ -58,7 +58,7 @@ export const homeViewModel = () => {
         if (item !== undefined) {
             const favGameDTO: FavGame = {
                 name: item.name,
-                rating_score: item.rating ? Math.round((item.rating * 100) / 100) : 0,
+                rating_score: item.rating ? Number(item.rating.toFixed(1)) : 0,
                 release_date: item.release_dates ? item.release_dates[0].date : undefined,
                 summary: item.summary,
                 image_url: item.cover ? transformCoverUrl(item.cover.url) : NO_IMAGE_URL,

@@ -1,5 +1,5 @@
 import {ApiDelivery} from "../../../data/sources/remote/api/ApiDelivery";
-import React, { useState } from 'react';
+import React, {useCallback, useState} from 'react';
 import {FavGame} from "../../../domain/entities/FavGame";
 import {UseUserLocalStorage} from "../../hooks/UseUserLocalStorage";
 import Toast from "react-native-toast-message";
@@ -10,13 +10,13 @@ import {loadPlayedGamesUseCase} from "../../../domain/usesCases/favGames/LoadPla
 import {addPlayedGameUseCase} from "../../../domain/usesCases/favGames/AddPlayedGame";
 import {deletePlayedGameUseCase} from "../../../domain/usesCases/favGames/DeletePlayedGame";
 import {PropsStackNavigation} from "../../interfaces/StackNav";
+import {DeviceEventEmitter} from "react-native";
+import {useGameContext} from "../../provider/GameProvider";
 
 
 export const favScreenViewModel = () => {
-    let [favListGames, setFavListGames] = useState<FavGame[]>([]);
-    let [playedListGames, setPlayedListGames] = useState<FavGame[]>([]);
+    const { playedListGames, setPlayedListGames, favListGames, setFavListGames } = useGameContext();
     let [showLoading, setShowLoading] = useState(true);
-    let [updatePlayedGames, setUpdatePlayedGames] = useState<boolean>(false);
 
     const loadFavGames = async (slug: string) => {
         const response = await loadFavGamesUseCase(slug);
@@ -32,8 +32,8 @@ export const favScreenViewModel = () => {
 
     const addPlayedGame = async (slug: string, favgame: FavGame) => {
         await addPlayedGameUseCase(slug, favgame);
-        await loadPlayedGames(slug);
         await loadFavGames(slug);
+        await loadPlayedGames(slug);
     }
 
     const deleteGameFromFav = async (id_api: number, slug: string) => {
@@ -57,6 +57,7 @@ export const favScreenViewModel = () => {
         showLoading,
         deleteGameFromFav,
         deletePlayedGame,
+        setShowLoading,
     }
 }
 

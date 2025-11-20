@@ -1,5 +1,5 @@
 import {
-    ActivityIndicator, Alert,
+    ActivityIndicator, Alert, DeviceEventEmitter,
     FlatList,
     ImageBackground, Modal, Pressable,
     StyleSheet,
@@ -10,19 +10,16 @@ import {
 import {Image} from "expo-image"
 import stylesHome from "../home/StyleHome";
 import styleFav from "./StyleFav";
-import viewModel from "./ViewModel";
-import React, {useCallback, useEffect, useMemo, useState} from "react";
+import viewModel, {favScreenViewModel} from "./ViewModel";
+import React, {useCallback, useState} from "react";
 import styleHome from "../home/StyleHome";
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
+import { widthPercentageToDP as wp} from "react-native-responsive-screen";
 import {UseUserLocalStorage} from "../../hooks/UseUserLocalStorage";
 import {FavGame} from "../../../domain/entities/FavGame";
 import {AppColors} from "../../theme/AppTheme";
-import {useFocusEffect, useIsFocused, useNavigation} from "@react-navigation/native";
+import {useFocusEffect, useNavigation} from "@react-navigation/native";
 import Toast from "react-native-toast-message";
 import styleAccount from "../account/StyleAccount";
-import {CustomTextInput} from "../../components/CustomTextInput";
-import {UserInterface} from "../../../domain/entities/User";
-import App from "../../../../App";
 import {PropsStackNavigation} from "../../interfaces/StackNav";
 import {stylesFavGameItem} from "./FavGamesScreen";
 
@@ -31,18 +28,14 @@ export function PlayedGamesScreen({navigation = useNavigation()}: PropsStackNavi
     const {playedListGames,
         loadPlayedGames,
         showLoading,
-        addPlayedGame,
-        deletePlayedGame,
-        deleteGameFromFav} = viewModel.favScreenViewModel();
+        deletePlayedGame} = favScreenViewModel();
     const {user} = UseUserLocalStorage()
-    const [modalVisibleDeleteGame, setModalVisibleDeleteGame] = useState(false);
-
-    const isFocused = useIsFocused();
 
     useFocusEffect(
         useCallback(() => {
-            if(user?.slug != undefined)
-                loadPlayedGames(user?.slug)
+            if(user?.slug != undefined) {
+                loadPlayedGames(user?.slug);
+            }
         }, [user?.slug])
     );
 
