@@ -48,7 +48,7 @@ const styleSearch = StyleSheet.create({
     },
 
     gameCardsContainer: {
-        height: "60%",
+        flex:1,
     },
 
     gameCover: {
@@ -168,9 +168,11 @@ const styleSearchGameItem = StyleSheet.create({
         textAlign: "center",
     },
     gameCard: {
+        width: "100%",
         flexDirection: "row",
         padding: wp("2%"),
         alignItems: "center",
+        zIndex:1,
     },
     gameCover: {
         padding:wp("1%"),

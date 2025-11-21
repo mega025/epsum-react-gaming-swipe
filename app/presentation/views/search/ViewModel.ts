@@ -24,40 +24,19 @@ const searchViewModel = () => {
     });
     const [filtersApplied, setFiltersApplied] = useState(false);
     const [debounceTimeout, setDebounceTimeout] = useState<NodeJS.Timeout | null>(null);
-
-
-
-    const onApplyFilters = async (filters: { category: string | null; platform: string | null }) => {
-        setSearchText("");
-        setSelectedCategory(filters.category);
-        setSelectedPlatform(filters.platform);
-        setAppliedFilters(filters);
-        setFiltersApplied(true);
-        console.log("Filtros aplicados:", appliedFilters);
-
-        await searchGames(filters.category, filters.platform);
-
-    };
+    const [debounceTimeoutUser, setDebounceTimeoutUser] = useState<NodeJS.Timeout | null>(null);
 
     const searchUsers = async (userParameters: UpdateUserDTO) => {
         setLoading(true);
-        const response = await searchUsersUseCase(userParameters);
-        setSearchedUsers(response)
+        if (userParameters.username !== "") {
+            const response = await searchUsersUseCase(userParameters);
+            setSearchedUsers(response)
+        } else {
+            setSearchedUsers([]);
+        }
         setLoading(false);
-
     }
 
-    const searchGames = async (category: string | null, platform: string | null) => {
-        setLoading(true);
-        try {
-            const filteredGames = await fetchFilteredGames(category, platform);
-            setGamesDisplayed(filteredGames);
-        } catch (err) {
-            console.error('Error fetching filtered games:', err);
-        } finally {
-            setLoading(false);
-        }
-    };
     const fetchFilteredGames = async (
         category: string | null,
         platform: string | null,
@@ -134,10 +113,12 @@ const searchViewModel = () => {
 
     const onSearchUserTextChange = async (text: string) => {
         setSearchUserText(text);
-        const userParameters : UpdateUserDTO = {
-            username: text,
-        }
-        await searchUsers(userParameters)
+
+        if (debounceTimeoutUser) clearTimeout(debounceTimeoutUser)
+        const timeout = setTimeout(async () => {
+            await searchUsers({username: text});
+        }, 400)
+        setDebounceTimeoutUser(timeout);
     }
 
     const loadMoreGames = async () => {
@@ -168,7 +149,6 @@ const searchViewModel = () => {
         searchGamesByUserInput,
         searchMostAnticipatedGames,
         setSearchText,
-        onApplyFilters,
         filtersApplied,
         appliedFilters,
         setAppliedFilters,

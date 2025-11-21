@@ -42,17 +42,7 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
         searchUserText,
         onSearchUserTextChange,
         searchMostAnticipatedGames,
-        setSearchText,
-        onApplyFilters,
-        filtersApplied,
-        appliedFilters,
-        setAppliedFilters,
-        setFiltersApplied,
-        setSelectedCategory,
-        setSelectedPlatform,
         searchedUsers,
-        selectedPlatform,
-        selectedCategory,
     } = viewModel.searchViewModel()
     const [selectedTab, setSelectedTab] = useState<"games" | "developers" | "users">("games");
 
@@ -238,7 +228,7 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
                             {searchText !== "" ? (
                                 <Text style={styleSearch.resultText}>Results for "{searchText}"</Text>
                             ) : (
-                                <Text style={styleSearch.resultText}><Text style={{...styleSearch.resultText, fontFamily: "zen_kaku_medium", fontSize: wp("4.4")}}>TOP 10</Text>   Most anticipated games</Text>
+                                <Text style={styleSearch.resultText}><Text style={{...styleSearch.resultText, fontFamily: "zen_kaku_medium", fontSize: wp("4.4")}}>TOP 15</Text>   Most anticipated games</Text>
                             )}
                         </View>
                         <View style={styleSearch.gameCardsContainer}>

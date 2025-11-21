@@ -16,7 +16,7 @@ export class SearchRepository implements SearchRepositoryInterface {
                 `fields name, hypes, rating, 
                 platforms.abbreviation, platforms.name, genres.name, cover.url, 
                 release_dates.y, release_dates.date, summary; 
-                limit 10; 
+                limit 15; 
                 sort hypes desc; 
                 where first_release_date > ${Math.floor(Date.now() / 1000)} & hypes != null;`)
             return Promise.resolve(response.data)

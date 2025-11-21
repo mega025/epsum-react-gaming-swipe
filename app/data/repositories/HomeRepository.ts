@@ -68,11 +68,11 @@ export class HomeRepository implements HomeRepositoryInterface {
             const platformsToString = platforms.map(item => item.id).join(', ');
                 if (genres.length > 0 && platforms.length > 0) {
                     query = 'where genres = ['+genresToString+'] & platforms = ['+platformsToString+`] & rating >= ${decimalRating} ${NOT_NULL_FIELDS_GAME_QUERY};`
-                } if (genres.length > 0 && platforms.length === 0) {
+                } else if (genres.length > 0 && platforms.length === 0) {
                     query = 'where genres = ['+genresToString+`] & rating >= ${decimalRating} ${NOT_NULL_FIELDS_GAME_QUERY};`
-                } if (genres.length === 0 && platforms.length > 0) {
+                } else if (genres.length === 0 && platforms.length > 0) {
                     query = 'where platforms = ['+platformsToString+`] & rating >= ${decimalRating} ${NOT_NULL_FIELDS_GAME_QUERY};`
-                } if (rating > 0)
+                } else if (rating > 0)
                     query = `where rating >= ${decimalRating} ${NOT_NULL_FIELDS_GAME_QUERY};`;
                 const maxGames = await IgdbApiDelivery.post(
                     "/games/count", query)
