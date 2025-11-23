@@ -1,6 +1,7 @@
 import * as React from 'react';
+import {widthPercentageToDP as wp} from "react-native-responsive-screen";
 import {
-    Animated, LayoutChangeEvent, PressableAndroidRippleConfig, StyleProp,
+    LayoutChangeEvent, PressableAndroidRippleConfig, StyleProp,
     View,
     ViewStyle,
     useWindowDimensions, Text, ImageBackground, Image, SafeAreaView, KeyboardAvoidingView
@@ -20,32 +21,53 @@ import {FavGamesScreen} from "./FavGamesScreen";
 import {PlayedGamesScreen} from "./PlayedGamesScreen";
 import styleFav from "./StyleFav";
 import stylesTabBar from "../auth/StylesTabBar";
-import {useEffect} from "react";
-import {favScreenViewModel} from "./ViewModel";
-import {UseUserLocalStorage} from "../../hooks/UseUserLocalStorage";
+import {useEffect, useState} from "react";
+import {useGameContext} from "../../provider/GameProvider";
+import Animated, {FadeInDown, FadeInLeft, FadeInUp} from 'react-native-reanimated';
+import AnimatedNumber from "react-native-animated-numbers";
+
 
 const renderScene = SceneMap({
     favgames: FavGamesScreen,
     playedgames: PlayedGamesScreen,
 });
 
-
-const renderTabBar = (props: any) => (
-    <View>
-        <View style={styleFav.header}>
-            <Text style={styleFav.title}>Game library</Text>
-            <TabBar
-                {...props}
-                indicatorStyle={{ backgroundColor: AppColors.white }}
-                style={stylesTabBar.favScreenTabLabels}
-            />
-        </View>
-    </View>
-);
-
 export default function TabViewFavScreen({}) {
     const layout = useWindowDimensions();
-    const [index, setIndex] = React.useState(0);
+    const [index, setIndex] = useState(0);
+    const {favListGames, playedListGames} = useGameContext()
+    const [favGamesLength, setFavGamesLenght] = useState(favListGames.length);
+    const [playedGamesLength, setPlayedGamesLenght] = useState(playedListGames.length);
+
+    useEffect(() => {
+        setFavGamesLenght(favListGames.length);
+    }, [favListGames.length]);
+
+    useEffect(() => {
+        setPlayedGamesLenght(playedListGames.length);
+    }, [playedListGames.length]);
+
+    const renderTabBar = (props: any) => (
+        <View style={styleFav.header}>
+            <Animated.View
+                entering={FadeInUp.duration(800)}>
+                <Text style={styleFav.title}>Game library</Text>
+                <View
+                    style={{alignItems:"center"}}>
+                    <View
+                        style={{flexDirection:"row", gap:wp("32%"), position:"absolute"}}>
+                        <AnimatedNumber fontStyle={stylesTabBar.textLabels} animateToNumber={favGamesLength}/>
+                        <AnimatedNumber fontStyle={stylesTabBar.textLabels} animateToNumber={playedGamesLength}/>
+                    </View>
+                    <TabBar
+                        {...props}
+                        indicatorStyle={{ backgroundColor: AppColors.white }}
+                        style={stylesTabBar.favScreenTabLabels}
+                    />
+                </View>
+            </Animated.View>
+        </View>
+    );
 
     const [routes] = React.useState([
         { key: 'favgames', title: 'I want them' },

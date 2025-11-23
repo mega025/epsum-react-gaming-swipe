@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen"; // Para usar % de la pantalla
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
+import {AppColors} from "../../theme/AppTheme"; // Para usar % de la pantalla
 
 const stylesTabBar = StyleSheet.create({
     container: {
@@ -32,6 +33,12 @@ const stylesTabBar = StyleSheet.create({
         marginTop: 4,
         fontFamily: 'zen_kaku_regular',
         elevation: 0,
+    },
+
+    textLabels: {
+        color: AppColors.green,
+        fontSize: wp("3%"),
+        fontWeight: "bold",
     },
 
     favScreenTabLabels: {

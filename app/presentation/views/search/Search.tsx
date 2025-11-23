@@ -29,8 +29,9 @@ import {GetSearchUserInterface} from "../../../domain/entities/User";
 import {API_BASE_URL} from "../../../data/sources/remote/api/ApiDelivery";
 import {FlashList} from "@shopify/flash-list";
 import {transformCoverUrl, transformSmallCoverUrl} from "../../utils/TransformCoverUrls";
-import show = Toast.show;
-import {stylesTabBarItems} from "../../navigation/UserNavigation";
+import Animated, {FadeInDown, FadeInLeft} from 'react-native-reanimated';
+import {ActivtyIndicatorCustom} from "../../components/ActivtyIndicatorCustom";
+
 
 export function Search({navigation = useNavigation()}: PropsStackNavigation) {
     const {
@@ -228,15 +229,15 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
                             {searchText !== "" ? (
                                 <Text style={styleSearch.resultText}>Results for "{searchText}"</Text>
                             ) : (
-                                <Text style={styleSearch.resultText}><Text style={{...styleSearch.resultText, fontFamily: "zen_kaku_medium", fontSize: wp("4.4")}}>TOP 15</Text>   Most anticipated games</Text>
+                                <Animated.Text
+                                    entering={FadeInLeft.duration(800)}
+                                    style={styleSearch.resultText}><Text style={{...styleSearch.resultText, fontFamily: "zen_kaku_medium", fontSize: wp("4.4")}}>TOP 15</Text>   Most anticipated games</Animated.Text>
                             )}
                         </View>
                         <View style={styleSearch.gameCardsContainer}>
                             {loading ? (
                                 <>
-                                    <View style={stylesHome.loadingIconContainer}>
-                                        <ActivityIndicator style={styleHome.loading} size="large" color="#ffffff" animating={loading} />
-                                    </View>
+                                    <ActivtyIndicatorCustom showLoading={loading}/>
                                 </>
                             ):(
                                 <>
@@ -278,9 +279,7 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
                         </View>
                         {loading ? (
                             <>
-                                <View style={stylesHome.loadingIconContainer}>
-                                    <ActivityIndicator style={styleHome.loading} size="large" color="#ffffff" animating={loading} />
-                                </View>
+                                <ActivtyIndicatorCustom showLoading={loading}/>
                             </>
                         ):(
                             <>

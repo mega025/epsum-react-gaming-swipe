@@ -35,6 +35,7 @@ import {NO_IMAGE_URL, transformCoverUrl} from "../../utils/TransformCoverUrls";
 import {generateNoGamesFoundCard, NO_GAMES_FOUND_LABEL} from "../../utils/NoGameFoundWithThisFilters";
 import {Image} from "expo-image"
 import {HorizontalFlashList} from "../../components/HorizontalFlashList";
+import {ActivtyIndicatorCustom} from "../../components/ActivtyIndicatorCustom";
 
 
 function FiltroComponent(props: {
@@ -158,9 +159,7 @@ export function Home({navigation = useNavigation()}: PropsStackNavigation) {
         <View style={{width: '100%', height: '100%', backgroundColor: AppColors.backgroundColor}}>
             {showLoading ? (
                 <>
-                    <View style={stylesHome.loadingIconContainer}>
-                        <ActivityIndicator style={styleHome.loading} size="large" color="#ffffff" animating={showLoading} />
-                    </View>
+                    <ActivtyIndicatorCustom showLoading={showLoading}/>
                 </>
             ):(
                 <>

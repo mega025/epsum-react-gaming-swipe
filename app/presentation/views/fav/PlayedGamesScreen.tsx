@@ -22,6 +22,7 @@ import Toast from "react-native-toast-message";
 import styleAccount from "../account/StyleAccount";
 import {PropsStackNavigation} from "../../interfaces/StackNav";
 import {stylesFavGameItem} from "./FavGamesScreen";
+import {ActivtyIndicatorCustom} from "../../components/ActivtyIndicatorCustom";
 
 
 export function PlayedGamesScreen({navigation = useNavigation()}: PropsStackNavigation) {
@@ -50,9 +51,9 @@ export function PlayedGamesScreen({navigation = useNavigation()}: PropsStackNavi
                         transition={500}
                         source={{ uri: item.image_url }} style={stylesFavGameItem.image} />
                 </TouchableOpacity>
-                <Text style={{ ...stylesHome.gameNameText, width: wp("53%"), fontSize: wp("3.5%"), color:"white"}}>{item.name}</Text>
+                <Text style={{ ...stylesHome.gameNameText, width: "50%", fontSize: wp("3.5%"), color:"white"}}>{item.name}</Text>
                 <TouchableOpacity
-                    style={{...stylesFavGameItem.deleteIcon, alignItems:"center", justifyContent:"center"}}
+                    style={{...stylesFavGameItem.deleteIcon, padding: wp("3%"), alignItems:"center", justifyContent:"center"}}
                     onPress={() => {
                         item.id
                             ? setSelectedGameId(item.id)
@@ -102,9 +103,7 @@ export function PlayedGamesScreen({navigation = useNavigation()}: PropsStackNavi
         <View style={{width: '100%', height: '100%', backgroundColor: AppColors.backgroundColor}}>
             {showLoading ? (
                 <>
-                    <View style={stylesHome.loadingIconContainer}>
-                        <ActivityIndicator style={styleHome.loading} size="large" color="#ffffff" animating={showLoading}/>
-                    </View>
+                    <ActivtyIndicatorCustom showLoading={showLoading}/>
                 </>
             ):(
                 <>

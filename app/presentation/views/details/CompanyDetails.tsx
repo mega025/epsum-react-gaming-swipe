@@ -22,6 +22,8 @@ import {FlashList} from "@shopify/flash-list";
 import {transformCoverUrl, transformLogoUrlCompany, transformSmallCoverUrl} from "../../utils/TransformCoverUrls";
 import {getCountryNameFromNumericCode} from "../../utils/GetCountryFromNumericCode";
 import {formatUnixDate} from "../../utils/FormatUnixDate";
+import Animated, {FadeInDown, FadeInLeft} from "react-native-reanimated";
+import {ActivtyIndicatorCustom} from "../../components/ActivtyIndicatorCustom";
 
 
 
@@ -124,12 +126,14 @@ export function CompanyDetails ({navigation = useNavigation()}: PropsStackNaviga
                 {!showLoading ? (
                     <>
                         <ScrollView style={{paddingBottom: hp("60%")}} showsVerticalScrollIndicator={false}>
-                            <View style={{...styleGameDetails.header, flexDirection: "column", paddingBottom: 0, alignItems:"center"}}>
+                            <View
+                                style={{...styleGameDetails.header, flexDirection: "column", paddingBottom: 0, alignItems:"center"}}>
                                 <TouchableOpacity onPress={navigation.goBack} style={{...styleGameDetails.goBackIconTouchable, bottom: hp("30%")}}>
                                     <Image source={require("../../../../assets/go-back-icon.png")}
                                            style={styleGameDetails.goBackIcon} />
                                 </TouchableOpacity>
-                                <View style={{width: wp("100%"), alignItems: "center"}}>
+                                <Animated.View
+                                    style={{width: wp("100%"), alignItems: "center"}}>
                                     <Image
                                         source={{
                                             uri: companyDetails?.logo
@@ -140,12 +144,16 @@ export function CompanyDetails ({navigation = useNavigation()}: PropsStackNaviga
                                         transition={500}
                                         style={{width: wp("40%"), height: hp("20%"), marginVertical: wp("1%")}}
                                     />
-                                </View>
-                                <View style={{flex: 1}}>
+                                </Animated.View>
+                                <Animated.View
+                                    entering={FadeInLeft.duration(800)}
+                                    style={{flex: 1}}>
                                     <Text style={{...styleGameDetails.name, height: "auto", lineHeight: 40, paddingBottom: hp("2%")}}>{companyDetails?.name}</Text>
-                                </View>
+                                </Animated.View>
                             </View>
-                            <View style={{paddingHorizontal: wp("4%")}}>
+                            <Animated.View
+                                entering={FadeInDown.duration(800)}
+                                style={{paddingHorizontal: wp("4%")}}>
                                 {companyDetails?.start_date && (
                                     <View>
                                         <Text style={styleGameDetails.infoTitles}>Founded</Text>
@@ -192,13 +200,11 @@ export function CompanyDetails ({navigation = useNavigation()}: PropsStackNaviga
                                         />
                                     </View>
                                 )}
-                            </View>
+                            </Animated.View>
                         </ScrollView>
                     </>
                 ) : (
-                    <View style={stylesHome.loadingIconContainer}>
-                        <ActivityIndicator style={styleHome.loading} size="large" color="#ffffff" animating={showLoading}/>
-                    </View>
+                    <ActivtyIndicatorCustom showLoading={showLoading}/>
                 )}
             </View>
     )

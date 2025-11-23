@@ -1,6 +1,7 @@
 import axios from "axios";
 import {removeUserUseCase} from "../../../../domain/usesCases/userLocal/RemoveUser";
 import {clearTokens, loadTokens, saveTokens} from "../../local/secure/TokenStorage";
+import {useEffect} from "react";
 
 export const API_BASE_URL = "http://192.168.1.91:8000/api";
 
@@ -10,6 +11,8 @@ const ApiDelivery = axios.create({
         "Content-Type": "application/json"
     }
 })
+
+ApiDelivery.defaults.timeout = 10000;
 
 ApiDelivery.interceptors.request.use(async (config) => {
     const creds = await loadTokens();
@@ -24,8 +27,11 @@ ApiDelivery.interceptors.response.use(
     successResponse => successResponse,
     async errorResponse => {
         const originalRequest = errorResponse.config;
-
-        if (errorResponse.response?.status === 401 && !originalRequest._retry) {
+        if (
+            errorResponse.response?.status === 401 &&
+            !originalRequest._retry &&
+            originalRequest.url !== "/users/token/refresh"
+        )  {
             originalRequest._retry = true;
 
             const tokens = await loadTokens();
@@ -39,7 +45,7 @@ ApiDelivery.interceptors.response.use(
                 const newAccessToken = response.data.access;
                 await saveTokens(response.data.access, response.data.refresh);
                 originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-                return axios(originalRequest);
+                return ApiDelivery(originalRequest);
             } catch (refreshError) {
                 await removeUserUseCase()
                 await clearTokens()

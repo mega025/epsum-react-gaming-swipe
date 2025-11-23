@@ -62,7 +62,7 @@ const styleAccount = StyleSheet.create({
     containerEditName: {
         flexDirection: "row",
     },
-    containerName: {
+    containerInfo: {
         marginTop: hp("30%"),
         width: "100%",
     },

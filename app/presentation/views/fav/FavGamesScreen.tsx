@@ -21,6 +21,9 @@ import {useFocusEffect, useNavigation} from "@react-navigation/native";
 import Toast from "react-native-toast-message";
 import styleAccount from "../account/StyleAccount";
 import {PropsStackNavigation} from "../../interfaces/StackNav";
+import Animated, {FadeInDown, FadeInLeft, FadeInUp} from 'react-native-reanimated';
+import {ActivtyIndicatorCustom} from "../../components/ActivtyIndicatorCustom";
+
 
 export function FavGamesScreen({navigation = useNavigation()}: PropsStackNavigation) {
     const {favListGames,
@@ -43,7 +46,8 @@ export function FavGamesScreen({navigation = useNavigation()}: PropsStackNavigat
     const [selectedPlayedGameId, setSelectedPlayedGameId] = useState<number | null>(null);
 
     const favGameRenderItem = useCallback(({ item }: { item: FavGame }) => (
-        <View style={stylesFavGameItem.card}>
+        <View
+            style={stylesFavGameItem.card}>
             <View style={stylesFavGameItem.container}>
                 <TouchableOpacity onPress={() => navigation.navigate("GameDetails", {gameId : item.id_api, likeButton: true})}>
                     <Image
@@ -51,9 +55,9 @@ export function FavGamesScreen({navigation = useNavigation()}: PropsStackNavigat
                         transition={500}
                         source={{ uri: item.image_url }} style={stylesFavGameItem.image} />
                 </TouchableOpacity>
-                <Text style={{ ...stylesHome.gameNameText, width: wp("46%")}}>{item.name}</Text>
+                <Text style={{ ...stylesHome.gameNameText, width: "43%"}}>{item.name}</Text>
                 <TouchableOpacity
-                    style={{...stylesFavGameItem.deleteIcon, alignItems:"center", justifyContent:"center"}}
+                    style={{...stylesFavGameItem.deleteIcon, padding: wp("3%"), alignItems:"center", justifyContent:"center"}}
                     onPress={() => {
                         item.id
                             ? setSelectedPlayedGameId(item.id)
@@ -62,7 +66,7 @@ export function FavGamesScreen({navigation = useNavigation()}: PropsStackNavigat
                     <Image source={require("../../../../assets/check-icon.png")} style={{...stylesFavGameItem.deleteIcon, tintColor: AppColors.green}} />
                 </TouchableOpacity>
                 <TouchableOpacity
-                    style={{...stylesFavGameItem.deleteIcon, alignItems:"center", justifyContent:"center"}}
+                    style={{...stylesFavGameItem.deleteIcon, padding: wp("3%"), alignItems:"center", justifyContent:"center"}}
                     onPress={() => {
                         item.id
                             ? setSelectedDeleteGameId(item.id)
@@ -146,13 +150,13 @@ export function FavGamesScreen({navigation = useNavigation()}: PropsStackNavigat
             <View style={{width: '100%', height: '100%', backgroundColor: AppColors.backgroundColor}}>
                 {showLoading ? (
                     <>
-                        <View style={stylesHome.loadingIconContainer}>
-                            <ActivityIndicator style={styleHome.loading} size="large" color="#ffffff" animating={showLoading}/>
-                        </View>
+                        <ActivtyIndicatorCustom showLoading={showLoading}/>
                     </>
                 ):(
                     <>
-                        <View style={{height:"100%"}}>
+                        <Animated.View
+                            entering={FadeInLeft.duration(800)}
+                            style={{height:"100%"}}>
                             <FlatList data={favListGames}
                                       removeClippedSubviews={true}
                                       renderItem={favGameRenderItem}
@@ -160,7 +164,7 @@ export function FavGamesScreen({navigation = useNavigation()}: PropsStackNavigat
                                       fadingEdgeLength={80}
                                       ListFooterComponent={<Text style={{...styleFav.footerFavGames, display: showLoading ? "none" : "flex"}}>Add more games!</Text>}
                             />
-                        </View>
+                        </Animated.View>
                     </>
                 )}
                 <Toast/>

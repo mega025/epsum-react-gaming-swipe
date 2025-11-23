@@ -29,6 +29,9 @@ import styles from "../auth/StylesAuthViews";
 import {removeUserUseCase} from "../../../domain/usesCases/userLocal/RemoveUser";
 import {API_BASE_URL} from "../../../data/sources/remote/api/ApiDelivery";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-native-responsive-screen";
+import Animated, {FadeInDown, FadeInLeft} from "react-native-reanimated";
+import stylesAuthViews from "../auth/StylesAuthViews";
+import {ActivtyIndicatorCustom} from "../../components/ActivtyIndicatorCustom";
 
 export function Account({navigation = useNavigation(), route}: PropsStackNavigation){
 
@@ -37,8 +40,6 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
     const [modalVisiblePassword, setModalVisibleLastPassword] = useState(false);
 
     const {user} = UseUserLocalStorage()
-    const [updatedLastName, setUpdateLastName] = useState("");
-    const [updatedFirstName, setUpdateFirstName] = useState("");
     const {
         deleteSession,
         userDB,
@@ -52,12 +53,15 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
         updateUserPassword
     } =viewModel.AccountViewModel();
 
+    const [updatedFirstName, setUpdateFirstName] = useState("");
+
     useFocusEffect(
         useCallback(() => {
             if(user?.slug != undefined){
                 getUserDB(user?.slug)
-                if (userDB != undefined)
-                    console.log(userDB)
+                if (userDB != undefined){
+                    setUpdateFirstName(userDB.username)
+                }
             }
         }, [user?.slug, JSON.stringify(userDB)])
     )
@@ -118,14 +122,17 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
             <View style={{width: '100%', height: '100%', backgroundColor: AppColors.backgroundColor}}>
                 {!showLoading ? (
                     <>
-                        <View>
+                    <View style={{paddingHorizontal:wp("10%")}}>
+                        <View style={{marginTop: hp("4%")}}>
                             <Text style={styleAccount.title}>
                                 Account details
                             </Text>
                         </View>
-                        <View style={styleAccount.containerEmail}>
+                        <Animated.View
+                            entering={FadeInLeft.duration(800)}
+                            style={styleAccount.containerEmail}>
                             <Text style={styleAccount.textEmail}>{userDB?.email}</Text>
-                        </View>
+                        </Animated.View>
                         <View style={styleAccount.containerPhoto}>
                             <View style={stylesProfilePicture.container}>
                                 <View style={stylesProfilePicture.containerPhoto}>
@@ -141,8 +148,9 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                                 </TouchableOpacity>
                             </View>
                         </View>
-                        <View style={{paddingHorizontal:wp("10%")}}>
-                        <View style={styleAccount.containerName}>
+                        <Animated.View
+                            entering={FadeInDown.duration(800)}
+                            style={styleAccount.containerInfo}>
                             <Text style={styleAccount.labelName}>Username</Text>
                             <View style={styleAccount.containerEditName}>
                                 <Text style={styleAccount.Name}>{userDB?.username}</Text>
@@ -158,15 +166,14 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                                     >
                                         <View style={styleAccount.centeredView}>
                                             <View style={styleAccount.modalView}>
-                                                <Text style={styleAccount.textPopUp}> Change your username </Text>
                                                 <CustomTextInput
-                                                    label={"Username"}
+                                                    label={"Username (Max. 20 characters)"}
                                                     keyboardType={"default"}
                                                     maxLenght={20}
+                                                    value={userDB?.username}
                                                     secureTextEntry={false}
                                                     onChangeText={(text) => setUpdateFirstName(text)}
                                                 />
-                                                <Text style={styleAccount.charactersCounter}>{updatedFirstName.length}/20</Text>
                                                 <View style={styleAccount.containerButton}>
                                                     <TouchableOpacity
                                                         style={styleAccount.modalCancelButton}
@@ -181,17 +188,18 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
                                                                 if (updatedFirstName === "") {
                                                                     setErrorMessage("Empty fields are not allowed")
                                                                     setModalVisibleFirst(!modalVisibleFirst)
+                                                                } else if (userDB.username === updatedFirstName) {
+                                                                    setModalVisibleFirst(!modalVisibleFirst)
                                                                 } else {
                                                                     const data: UpdateUserDTO = {
                                                                         username: updatedFirstName
                                                                     }
-                                                                    console.log(data)
                                                                     if (user?.slug != undefined)
                                                                         updateUserDetails(user?.slug, data)
 
                                                                     userDB.username = updatedFirstName
                                                                     setModalVisibleFirst(!modalVisibleFirst)
-                                                                    setUpdateFirstName("")
+                                                                    setUpdateFirstName(updatedFirstName)
                                                                 }
                                                             }}
                                                         }
@@ -209,23 +217,21 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
 
                                 </View>
                             </View>
-                        </View>
-                        </View>
-                        <View style={styleAccount.containerLogOut}>
-                            <Image source={require("../../../../assets/log-out-icon.png")}
-                                style={styleAccount.logOutIcon}
-                            />
-                            <Text style={styleAccount.LogOut} onPress={() => {
-                                deleteSession().then(r => navigation.replace("TabViewLoginRegister"))}
-                            }> Log out</Text>
-                        </View>
+                            <View style={styleAccount.containerLogOut}>
+                                <Image source={require("../../../../assets/log-out-icon.png")}
+                                       style={styleAccount.logOutIcon}
+                                />
+                                <Text style={styleAccount.LogOut} onPress={() => {
+                                    deleteSession().then(r => navigation.replace("TabViewLoginRegister"))}
+                                }> Log out</Text>
+                            </View>
+                        </Animated.View>
                         <Toast/>
+                        </View>
                     </>
                 ) : (
                     <>
-                        <View style={stylesHome.loadingIconContainer}>
-                            <ActivityIndicator style={styleHome.loading} size="large" color="#ffffff" animating={showLoading}/>
-                        </View>
+                        <ActivtyIndicatorCustom showLoading={showLoading}/>
                     </>
                 )}
             </View>

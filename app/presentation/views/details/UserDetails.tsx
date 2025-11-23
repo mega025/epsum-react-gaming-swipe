@@ -27,6 +27,8 @@ import {FavGame} from "../../../domain/entities/FavGame";
 import {styleSearch} from "../search/StyleSearch";
 import {API_BASE_URL, ApiDelivery} from "../../../data/sources/remote/api/ApiDelivery";
 import {FlashList} from "@shopify/flash-list";
+import Animated, {FadeInDown, FadeInLeft} from "react-native-reanimated";
+import {ActivtyIndicatorCustom} from "../../components/ActivtyIndicatorCustom";
 
 type GameDetailsRouteProp = RouteProp<RootStackParamsList, "UserDetails">;
 
@@ -81,11 +83,15 @@ export function UserDetails ({navigation = useNavigation()}: PropsStackNavigatio
                                         style={stylesProfilePicture.photo}
                                 />
                             </View>
-                            <View style={{flex: 1}}>
+                            <Animated.View
+                                entering={FadeInLeft.duration(800)}
+                                style={{flex: 1}}>
                                 <Text style={{...styleGameDetails.name, height: "auto", lineHeight: 40, paddingBottom: hp("2%")}}>{userSearch?.username}</Text>
-                            </View>
+                            </Animated.View>
                         </View>
-                        <View style={{paddingHorizontal: wp("3%")}}>
+                        <Animated.View
+                            entering={FadeInDown.duration(800)}
+                            style={{paddingHorizontal: wp("3%")}}>
                             {favGames.length > 0 && (
                                 <View>
                                     <Text style={{...styleGameDetails.infoTitles, textAlign: "center"}}>Favorites games</Text>
@@ -118,13 +124,11 @@ export function UserDetails ({navigation = useNavigation()}: PropsStackNavigatio
                                     <Text style={{...styleSearch.emptyFlatListText, fontSize: wp("3.8%"), textAlign: "center", margin: wp("4%")}}>Empty library</Text>
                                 </View>
                             )}
-                        </View>
+                        </Animated.View>
                     </ScrollView>
                 </>
             ) : (
-                <View style={stylesHome.loadingIconContainer}>
-                    <ActivityIndicator style={styleHome.loading} size="large" color="#ffffff" animating={showLoading}/>
-                </View>
+                <ActivtyIndicatorCustom showLoading={showLoading}/>
             )}
         </View>
     )

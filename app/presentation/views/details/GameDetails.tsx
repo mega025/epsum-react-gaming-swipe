@@ -1,5 +1,5 @@
 import {
-    ActivityIndicator, Animated,
+    ActivityIndicator, Animated as Ani,
     ImageBackground,
     SafeAreaView,
     ScrollView,
@@ -40,6 +40,8 @@ import PagerView from "react-native-pager-view";
 import stylesAuthViews from "../auth/StylesAuthViews";
 import {useGameDetails} from "../../hooks/UseGameDetails";
 import {ExpandingDot} from "react-native-animated-pagination-dots";
+import Animated, {FadeInDown, FadeInLeft, FadeInRight, FadeInUp, SlideInDown} from 'react-native-reanimated';
+import {ActivtyIndicatorCustom} from "../../components/ActivtyIndicatorCustom";
 
 type GameDetailsRouteProp = RouteProp<RootStackParamsList, "GameDetails">;
 
@@ -153,7 +155,7 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
         }
     }, [isLoading]);
 
-    const scrollX = React.useRef(new Animated.Value(0)).current;
+    const scrollX = React.useRef(new Ani.Value(0)).current;
 
 
     return(
@@ -181,19 +183,23 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
                                 }}
                                 contentFit="contain"
                                 priority={"high"}
-                                transition={150}
+                                transition={350}
                                 cachePolicy={"memory-disk"}
                                 style={styleGameDetails.image}
                             />
-                            <View style={{flex: 2}}>
+                            <Animated.View
+                                entering={FadeInRight.duration(800)}
+                                style={{flex: 2}}>
                                 <Text style={styleGameDetails.name}>{gameDetails?.name}</Text>
                                 <View style={{flexDirection: "row", gap: wp("11%")}}>
                                     <Text style={styleGameDetails.rating}>{gameDetails?.rating ? gameDetails?.rating.toFixed(1) : "No rate"}</Text>
                                     <Text style={styleGameDetails.rating}>{gameDetails?.release_dates ? (gameDetails?.release_dates[0].y ? gameDetails?.release_dates[0].y : "TBD") : "TBD"}</Text>
                                 </View>
-                            </View>
+                            </Animated.View>
                         </View>
-                        <View style={{paddingHorizontal:wp("4%"), backgroundColor: AppColors.backgroundColor}}>
+                        <Animated.View
+                            entering={FadeInDown.duration(800)}
+                            style={{paddingHorizontal:wp("4%"), backgroundColor: AppColors.backgroundColor}}>
                             <View style={{flexDirection: "row", gap:wp("36%")}}>
                                 <Text style={styleGameDetails.infoTitles}>Involved companies</Text>
                                 {likeButton && (
@@ -286,13 +292,13 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
                                                 <Image
                                                     style={{ width: wp("92%"), height: hp("25%"), marginHorizontal:wp("4%"), borderRadius:5}}
                                                     transition={250}
-                                                    priority="high"
+                                                    priority="normal"
                                                     cachePolicy="memory-disk"
                                                     source={{ uri: transformCoverUrl(item.url) }}
                                                 />
                                         )}
                                         scrollEventThrottle={16} // para que la animación sea más fluida
-                                        onScroll={Animated.event(
+                                        onScroll={Ani.event(
                                             [{ nativeEvent: { contentOffset: { x: scrollX } } }],
                                             {
                                                 useNativeDriver: false,
@@ -334,13 +340,11 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
                                                          renderItem={similarGameItem}/>
                                 </View>
                             )}
-                        </View>
+                        </Animated.View>
                     </ScrollView>
                     </>
                 ) : (
-                    <View style={stylesHome.loadingIconContainer}>
-                        <ActivityIndicator style={styleHome.loading} size="large" color="#ffffff" animating={showLoading}/>
-                    </View>
+                    <ActivtyIndicatorCustom showLoading={showLoading}/>
                 )}
             </View>
     )
