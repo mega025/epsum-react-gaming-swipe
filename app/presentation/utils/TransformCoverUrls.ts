@@ -1,4 +1,5 @@
 export const NO_IMAGE_URL = "https://www.igdb.com/assets/no_cover_show-ef1e36c00e101c2fb23d15bb80edd9667bbf604a12fc0267a66033afea320c65.png"
+export const NO_GAMES_IMAGE_URL = "https://media.tenor.com/GIbER2Fy3UUAAAAM/spiderman-sad-spiderman.gif"
 
 export const transformCoverUrl = (url: string) => {
     const cutUrlFirstPart = url.substring(0, 38);

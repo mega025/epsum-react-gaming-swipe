@@ -35,7 +35,6 @@ type GameDetailsRouteProp = RouteProp<RootStackParamsList, "UserDetails">;
 export function UserDetails ({navigation = useNavigation()}: PropsStackNavigation,) {
     const route = useRoute<GameDetailsRouteProp>()
     const {userSearch} = route.params
-    const {user} = UseUserLocalStorage()
 
     const {
         showLoading,

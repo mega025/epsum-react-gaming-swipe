@@ -31,7 +31,7 @@ import FilterButton from "../../components/FilterButton";
 import {RewindButton} from "../../components/RewindButton";
 import {Shadow} from "react-native-shadow-2";
 import {FlashList} from "@shopify/flash-list";
-import {NO_IMAGE_URL, transformCoverUrl} from "../../utils/TransformCoverUrls";
+import {NO_GAMES_IMAGE_URL, NO_IMAGE_URL, transformCoverUrl} from "../../utils/TransformCoverUrls";
 import {generateNoGamesFoundCard, NO_GAMES_FOUND_LABEL} from "../../utils/NoGameFoundWithThisFilters";
 import {Image} from "expo-image"
 import {HorizontalFlashList} from "../../components/HorizontalFlashList";
@@ -84,10 +84,10 @@ export function Home({navigation = useNavigation()}: PropsStackNavigation) {
                         source={{
                             uri: item.cover
                                 ? transformCoverUrl(item.cover.url)
-                                : NO_IMAGE_URL,
+                                : (item.name === NO_GAMES_FOUND_LABEL ? NO_GAMES_IMAGE_URL : NO_IMAGE_URL),
                         }}
                         priority={"high"}
-                        contentFit="contain"
+                        contentFit={item.name === NO_GAMES_FOUND_LABEL ? "cover" : "contain"}
                         transition={500}
                         style={styleHome.image}
                     />

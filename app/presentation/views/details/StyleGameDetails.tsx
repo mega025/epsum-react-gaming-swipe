@@ -35,7 +35,6 @@ const styleGameDetails = StyleSheet.create({
     goBackIcon: {
         width: wp("7%"),
         height: hp("3%"),
-        resizeMode:"contain",
         tintColor: "white"
     },
 

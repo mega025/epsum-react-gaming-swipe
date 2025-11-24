@@ -22,7 +22,7 @@ import {PlayedGamesScreen} from "./PlayedGamesScreen";
 import styleFav from "./StyleFav";
 import stylesTabBar from "../auth/StylesTabBar";
 import {useEffect, useState} from "react";
-import {useGameContext} from "../../provider/GameProvider";
+import {useUserGamesContext} from "../../provider/GameProvider";
 import Animated, {FadeInDown, FadeInLeft, FadeInUp} from 'react-native-reanimated';
 import AnimatedNumber from "react-native-animated-numbers";
 
@@ -35,7 +35,7 @@ const renderScene = SceneMap({
 export default function TabViewFavScreen({}) {
     const layout = useWindowDimensions();
     const [index, setIndex] = useState(0);
-    const {favListGames, playedListGames} = useGameContext()
+    const {favListGames, playedListGames} = useUserGamesContext()
     const [favGamesLength, setFavGamesLenght] = useState(favListGames.length);
     const [playedGamesLength, setPlayedGamesLenght] = useState(playedListGames.length);
 

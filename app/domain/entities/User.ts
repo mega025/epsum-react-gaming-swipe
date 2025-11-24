@@ -1,11 +1,3 @@
-import {Game} from "./Game";
-
-export interface UserInterface {
-    username: string
-    email: string;
-    favorite_games?: Game[]
-    password: string
-}
 
 export interface GetUserInterface {
     username: string

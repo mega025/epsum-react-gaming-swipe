@@ -31,6 +31,7 @@ import {FlashList} from "@shopify/flash-list";
 import {transformCoverUrl, transformSmallCoverUrl} from "../../utils/TransformCoverUrls";
 import Animated, {FadeInDown, FadeInLeft} from 'react-native-reanimated';
 import {ActivtyIndicatorCustom} from "../../components/ActivtyIndicatorCustom";
+import {useUserGamesContext} from "../../provider/GameProvider";
 
 
 export function Search({navigation = useNavigation()}: PropsStackNavigation) {
@@ -62,18 +63,9 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
         deleteGameFromFav,
         loadFavGames,
         loadPlayedGames,
-        playedListGames,
-        favListGames,
     } = viewModelFav.favScreenViewModel()
 
-    useFocusEffect(
-        useCallback(() => {
-            if(user?.slug != undefined) {
-                loadFavGames(user?.slug)
-                loadPlayedGames(user?.slug)
-            }
-        }, [user?.slug])
-    );
+    const {favListGames, playedListGames} = useUserGamesContext()
 
     const checkIfGameFromApiIsLiked = (gameId: number) => {
         return favListGames.some(game => game.id_api === gameId);

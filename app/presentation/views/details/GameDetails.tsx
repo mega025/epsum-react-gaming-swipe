@@ -13,7 +13,6 @@ import {RootStackParamsList} from "../../../../App";
 import styleHome from "../home/StyleHome";
 import React, {useCallback, useEffect, useRef, useState} from "react";
 import viewModelHome, {homeViewModel} from "../home/ViewModel"
-import {gameDetailsViewModel} from "./ViewModel";
 import stylesHome from "../home/StyleHome";
 import {styles} from "react-native-toast-message/lib/src/components/BaseToast.styles";
 import {PropsStackNavigation} from "../../interfaces/StackNav";
@@ -42,6 +41,7 @@ import {useGameDetails} from "../../hooks/UseGameDetails";
 import {ExpandingDot} from "react-native-animated-pagination-dots";
 import Animated, {FadeInDown, FadeInLeft, FadeInRight, FadeInUp, SlideInDown} from 'react-native-reanimated';
 import {ActivtyIndicatorCustom} from "../../components/ActivtyIndicatorCustom";
+import {useUserGamesContext} from "../../provider/GameProvider";
 
 type GameDetailsRouteProp = RouteProp<RootStackParamsList, "GameDetails">;
 
@@ -56,10 +56,6 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
     let [likeButtonImageSource, setLikeButtonImageSource] = useState<ImageSource>()
 
     const {
-        setGameDetails,
-    } = gameDetailsViewModel()
-
-    const {
         addGameToFav,
         transformGameIntoFavGameInterface,
     } = viewModelHome.homeViewModel()
@@ -67,20 +63,10 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
     const {
         deleteGameFromFav,
         loadFavGames,
-        favListGames,
         loadPlayedGames,
-        playedListGames,
     } = viewModelFav.favScreenViewModel()
 
-    // Loading fav and played games list to check game status
-    useFocusEffect(
-        useCallback(() => {
-            if(user?.slug != undefined) {
-                loadFavGames(user?.slug)
-                loadPlayedGames(user?.slug)
-            }
-        }, [user?.slug])
-    );
+    const {favListGames, playedListGames} = useUserGamesContext()
 
     const checkIfGameFromApiIsLiked = (gameId: number) => {
         return favListGames.some(game => game.id_api === gameId);
@@ -131,24 +117,12 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
         </View>
         ), [navigation])
 
-    const defaultDataWith6Colors: Cover[] = [
-        {
-            url: NO_IMAGE_URL,
-        },
-        {
-            url: NO_IMAGE_URL,
-        },
-        {
-            url:  NO_IMAGE_URL,
-        },
-    ]
 
     useEffect(() => {
         if (!isLoading) {
             const timeout = setTimeout(() => {
                 setShowLoading(false);
             }, 200);
-
             return () => clearTimeout(timeout);
         } else {
             setShowLoading(true);
@@ -173,6 +147,7 @@ export function GameDetails({navigation = useNavigation()}: PropsStackNavigation
                             <TouchableOpacity onPress={() => navigation.goBack()} style={styleGameDetails.goBackIconTouchable}>
                                 <Image source={require("../../../../assets/go-back-icon.png")}
                                        cachePolicy={"memory-disk"}
+                                       contentFit={"contain"}
                                        style={styleGameDetails.goBackIcon}/>
                             </TouchableOpacity>
                             <Image

@@ -11,11 +11,11 @@ import {addPlayedGameUseCase} from "../../../domain/usesCases/favGames/AddPlayed
 import {deletePlayedGameUseCase} from "../../../domain/usesCases/favGames/DeletePlayedGame";
 import {PropsStackNavigation} from "../../interfaces/StackNav";
 import {DeviceEventEmitter} from "react-native";
-import {useGameContext} from "../../provider/GameProvider";
+import {useUserGamesContext} from "../../provider/GameProvider";
 
 
 export const favScreenViewModel = () => {
-    const { playedListGames, setPlayedListGames, favListGames, setFavListGames } = useGameContext();
+    const { playedListGames, setPlayedListGames, favListGames, setFavListGames } = useUserGamesContext();
     let [showLoading, setShowLoading] = useState(true);
 
     const loadFavGames = async (slug: string) => {

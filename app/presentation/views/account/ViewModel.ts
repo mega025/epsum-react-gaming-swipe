@@ -37,23 +37,8 @@ export const accountViewModel =()=> {
     const updateUserDetails = async (slug: string, data: UpdateUserDTO | FormData | undefined) => {
         setShowLoading(true)
         const response = await updateUserUseCase(slug, data)
-        Toast.show({
-            type:"success",
-            text1: response.message,
-        })
         setShowLoading(false)
     }
-
-    const updateUserPassword = async (slug: string, passwordDTO: PasswordsDTO) => {
-        if (validateUpdatePasswordForm()) {
-            const response = await updatePasswordUseCase(slug, passwordDTO)
-            Toast.show({
-                type:"success",
-                text1: response.message,
-            })
-        }
-    }
-
 
     const validateUpdatePasswordForm = () => {
         if (updatePasswordDTO.oldPassword === "" || updatePasswordDTO.confirmPassword === "" || updatePasswordDTO.newPassword === "") {
@@ -79,7 +64,6 @@ export const accountViewModel =()=> {
         setUpdatePasswordDTO,
         errorMessage,
         setErrorMessage,
-        updateUserPassword
     };
 }
 

@@ -32,7 +32,6 @@ export function FavGamesScreen({navigation = useNavigation()}: PropsStackNavigat
         addPlayedGame,
         deleteGameFromFav} = favScreenViewModel();
     const {user} = UseUserLocalStorage()
-    const [modalVisibleDeleteGame, setModalVisibleDeleteGame] = useState(false);
 
     useFocusEffect(
         useCallback(() => {

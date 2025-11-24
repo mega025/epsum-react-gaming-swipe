@@ -36,8 +36,6 @@ import {ActivtyIndicatorCustom} from "../../components/ActivtyIndicatorCustom";
 export function Account({navigation = useNavigation(), route}: PropsStackNavigation){
 
     const [modalVisibleFirst, setModalVisibleFirst] = useState(false);
-    const [modalVisibleLast, setModalVisibleLast] = useState(false);
-    const [modalVisiblePassword, setModalVisibleLastPassword] = useState(false);
 
     const {user} = UseUserLocalStorage()
     const {
@@ -46,11 +44,8 @@ export function Account({navigation = useNavigation(), route}: PropsStackNavigat
         getUserDB,
         showLoading,
         updateUserDetails,
-        updatePasswordDTO,
-        setUpdatePasswordDTO,
         errorMessage,
         setErrorMessage,
-        updateUserPassword
     } =viewModel.AccountViewModel();
 
     const [updatedFirstName, setUpdateFirstName] = useState("");

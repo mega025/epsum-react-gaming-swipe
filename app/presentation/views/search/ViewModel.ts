@@ -7,6 +7,8 @@ import {searchCompanyByUserInputUseCase} from "../../../domain/usesCases/search/
 import {CompanyDetailsInterface} from "../../../domain/entities/Company";
 import {searchUsersUseCase} from "../../../domain/usesCases/search/SearchUsers";
 import {GetSearchUserInterface, UpdateUserDTO} from "../../../domain/entities/User";
+import {useAnticipatedGames} from "../../hooks/UseAnticipatedGames";
+import {useGameDetails} from "../../hooks/UseGameDetails";
 
 
 const searchViewModel = () => {
@@ -25,6 +27,8 @@ const searchViewModel = () => {
     const [filtersApplied, setFiltersApplied] = useState(false);
     const [debounceTimeout, setDebounceTimeout] = useState<NodeJS.Timeout | null>(null);
     const [debounceTimeoutUser, setDebounceTimeoutUser] = useState<NodeJS.Timeout | null>(null);
+
+    const {data, isLoading, error} = useAnticipatedGames();
 
     const searchUsers = async (userParameters: UpdateUserDTO) => {
         setLoading(true);
@@ -80,8 +84,9 @@ const searchViewModel = () => {
 
     const searchMostAnticipatedGames = async () => {
         setLoading(true);
-        const response = await searchMostAnticipatedGamesUseCase()
-        setGamesDisplayed(response);
+        if (data !== undefined) {
+            setGamesDisplayed(data);
+        }
         setLoading(false)
     };
 

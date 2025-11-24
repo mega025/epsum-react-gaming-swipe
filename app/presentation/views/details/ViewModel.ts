@@ -6,7 +6,7 @@ import {loadCompanyDetailsUseCase} from "../../../domain/usesCases/gameDetails/L
 import {CompanyDetailsInterface} from "../../../domain/entities/Company";
 import countries from "i18n-iso-countries";
 import enLocale from "i18n-iso-countries/langs/en.json";
-import {GetUserInterface, UserInterface} from "../../../domain/entities/User";
+import {GetUserInterface} from "../../../domain/entities/User";
 import {getUserDBUseCase} from "../../../domain/usesCases/account/GetUser";
 import {FavGame} from "../../../domain/entities/FavGame";
 import {loadPlayedGamesUseCase} from "../../../domain/usesCases/favGames/LoadPlayedGames";
@@ -38,22 +38,6 @@ export const userDetailsViewModel = () => {
 
 }
 
-export const gameDetailsViewModel = () => {
-    const [gameDetails, setGameDetails] = useState<GameDetailsInterface>();
-
-
-    const loadGameDetails = async (gameId: number) => {
-        const response = await loadGameDetailsUseCase(gameId);
-        setGameDetails(response[0]);
-    }
-
-    return {
-        loadGameDetails,
-        gameDetails,
-        setGameDetails
-    }
-}
-
 export const companyDetailsViewModel = () => {
     const [showLoading, setShowLoading] = useState(true);
     const [companyDetails, setCompanyDetails] = useState<CompanyDetailsInterface>();
@@ -76,4 +60,4 @@ export const companyDetailsViewModel = () => {
     }
 }
 
-export default {gameDetailsViewModel, companyDetailsViewModel}
+export default {companyDetailsViewModel}

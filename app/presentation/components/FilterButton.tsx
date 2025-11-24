@@ -15,6 +15,7 @@ import {useFocusEffect} from "@react-navigation/native";
 import {Platform} from "../../domain/entities/Game";
 import {popularPlatforms} from "../utils/PopularPlatformsArray";
 import Slider from "@react-native-community/slider";
+import {useGenres} from "../hooks/UseGenres";
 
 interface FilterModalProps {
     onApply: (filters: { genres: Platform []; platforms: Platform []; rating: number }) => void;
@@ -32,13 +33,14 @@ function FilterModal({ onApply, selectedGenre, selectedPlatform, selectedRating}
     const [selectedRatingInModal, setSelectedRatingInModal] = useState<number>(0);
     const [loading, setLoading] = useState(true);
 
+    const {data, isLoading, error} = useGenres()
+
     useFocusEffect(
         useCallback(() => {
         const fetchFilters = async () => {
             try {
                 setLoading(true);
-                const genreRes = await IgdbApiDelivery.post('genres', 'fields name, id; limit 30;');
-                setCategories(genreRes.data);
+                setCategories(data ? data : []);
                 setPlatforms(popularPlatforms);
                 setSelectedPlatformsInModal(selectedPlatform);
                 setSelectedGenresInModal(selectedGenre);

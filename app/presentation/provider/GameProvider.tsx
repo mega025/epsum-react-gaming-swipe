@@ -21,7 +21,7 @@ export const GameProvider: React.FC<{children: React.ReactNode}> = ({ children }
     );
 };
 
-export const useGameContext = () => {
+export const useUserGamesContext = () => {
     const context = useContext(GameContext);
     if (!context) throw new Error("useGameContext must be used inside GameProvider");
     return context;

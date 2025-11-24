@@ -24,24 +24,34 @@ import {getCountryNameFromNumericCode} from "../../utils/GetCountryFromNumericCo
 import {formatUnixDate} from "../../utils/FormatUnixDate";
 import Animated, {FadeInDown, FadeInLeft} from "react-native-reanimated";
 import {ActivtyIndicatorCustom} from "../../components/ActivtyIndicatorCustom";
+import {useCompanyDetails} from "../../hooks/UseCompanyDetails";
+import countries from "i18n-iso-countries";
+import enLocale from "i18n-iso-countries/langs/en.json";
 
 
 
 type CompanyDetailsRouteProp = RouteProp<RootStackParamsList, "CompanyDetails">;
 
 export function CompanyDetails ({navigation = useNavigation()}: PropsStackNavigation) {
+    countries.registerLocale(enLocale);
 
     const route = useRoute<CompanyDetailsRouteProp>()
     const {companyId} = route.params
-    const {
-        showLoading,
-        loadCompanyDetails,
-        companyDetails,
-    } = companyDetailsViewModel()
+    const [showLoading, setShowLoading] = useState(true);
+
+    const {data, isLoading, error} = useCompanyDetails(companyId);
+    const companyDetails = data ? data[0] : null;
 
     useEffect(() => {
-        loadCompanyDetails(companyId)
-    }, []);
+        if (!isLoading) {
+            const timeout = setTimeout(() => {
+                setShowLoading(false);
+            }, 200)
+            return () => clearTimeout(timeout);
+        } else {
+            setShowLoading(true);
+        }
+    }, [isLoading]);
 
     const ITEMS_PER_PAGE = 15;
 
