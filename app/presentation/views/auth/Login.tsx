@@ -9,7 +9,7 @@ import Toast from "react-native-toast-message";
 import {CustomTextInputPassword} from "../../components/CustomTextInputPassword";
 import stylesAuthViews from "./StylesAuthViews";
 import {useNavigation} from "@react-navigation/native";
-import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
+import * as Google from 'expo-auth-session/providers/google'
 
 export function LoginScreen({navigation = useNavigation(), route}: PropsStackNavigation){
 
@@ -21,6 +21,11 @@ export function LoginScreen({navigation = useNavigation(), route}: PropsStackNav
     } = viewModel.loginViewModel();
 
     const [showPassword, setShowPassword] = useState(true);
+
+    const [request, response, promptAsync] = Google.useAuthRequest({
+        androidClientId: '1072681319890-o9s9j4eg4kh7i70nttl802tme55rtdra.apps.googleusercontent.com',
+        iosClientId: '1072681319890-05jhf95bfa96b5vr3fiu2iveia415r1t.apps.googleusercontent.com',
+    });
 
     useEffect(() => {
         if(errorMessage !== "") {
@@ -58,6 +63,9 @@ export function LoginScreen({navigation = useNavigation(), route}: PropsStackNav
                         if(user){
                             navigation.replace("UserNavigation")
                         }
+                    }}/>
+                    <RoundedButton text="Sign in with Google" onPressFromInterface={async () =>{
+                        promptAsync().catch((e) => console.error("Error al iniciar sesion: ", e));
                     }}/>
                 </View>
                 <Toast/>

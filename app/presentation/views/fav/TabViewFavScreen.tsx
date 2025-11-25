@@ -56,8 +56,8 @@ export default function TabViewFavScreen({}) {
                     style={{alignItems:"center"}}>
                     <View
                         style={{flexDirection:"row", gap:wp("32%"), position:"absolute"}}>
-                        <AnimatedNumber fontStyle={stylesTabBar.textLabels} animateToNumber={favGamesLength}/>
-                        <AnimatedNumber fontStyle={stylesTabBar.textLabels} animateToNumber={playedGamesLength}/>
+                        <AnimatedNumber fontStyle={stylesTabBar.textLabels} animateToNumber={favGamesLength} animationDuration={400}/>
+                        <AnimatedNumber fontStyle={stylesTabBar.textLabels} animateToNumber={playedGamesLength} animationDuration={400}/>
                     </View>
                     <TabBar
                         {...props}

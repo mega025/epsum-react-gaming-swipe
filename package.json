@@ -29,6 +29,7 @@
     "babel-preset-expo": "~54.0.0",
     "expo": "~54.0.18",
     "expo-asset": "~12.0.9",
+    "expo-auth-session": "~7.0.9",
     "expo-file-system": "~19.0.17",
     "expo-font": "~14.0.9",
     "expo-image": "~3.0.10",
@@ -36,6 +37,7 @@
     "expo-linear-gradient": "^15.0.7",
     "expo-secure-store": "~15.0.7",
     "expo-splash-screen": "~31.0.10",
+    "expo-web-browser": "~15.0.9",
     "follow-redirects": "^1.15.9",
     "i18n-iso-countries": "^7.14.0",
     "lodash": "^4.17.21",
@@ -80,7 +82,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.28.5",
-    "@react-native-community/cli": "^20.0.2",
+    "@react-native-community/cli": "^16.0.3",
     "@types/react": "~19.1.10",
     "typescript": "^5.3.3"
   },

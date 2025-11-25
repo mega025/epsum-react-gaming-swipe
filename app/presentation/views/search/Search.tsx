@@ -9,7 +9,7 @@ import {Image} from "expo-image"
 import { CustomTextInputSearch } from "../../components/CustomTextInputSearch";
 import {styleSearch, styleSearchCompanyItem, styleSearchGameItem, styleSearchUserItem} from "./StyleSearch";
 import {Game} from "../../../domain/entities/Game";
-import viewModel from "./ViewModel";
+import viewModel, {searchViewModel} from "./ViewModel";
 import {AppColors} from "../../theme/AppTheme";
 import styleFav from "../fav/StyleFav";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
@@ -18,8 +18,8 @@ import FiltroComponent from "../../components/FilterButton";
 import {useFocusEffect, useNavigation} from "@react-navigation/native";
 import {PropsStackNavigation} from "../../interfaces/StackNav";
 import {UseUserLocalStorage} from "../../hooks/UseUserLocalStorage";
-import viewModelHome from "../home/ViewModel";
-import viewModelFav from "../fav/ViewModel";
+import viewModelHome, {homeViewModel} from "../home/ViewModel";
+import viewModelFav, {favScreenViewModel} from "../fav/ViewModel";
 import {PlatformItem} from "../../components/PlatformItem";
 import Toast from "react-native-toast-message";
 import {CompanyDetailsInterface} from "../../../domain/entities/Company";
@@ -32,6 +32,7 @@ import {transformCoverUrl, transformSmallCoverUrl} from "../../utils/TransformCo
 import Animated, {FadeInDown, FadeInLeft} from 'react-native-reanimated';
 import {ActivtyIndicatorCustom} from "../../components/ActivtyIndicatorCustom";
 import {useUserGamesContext} from "../../provider/GameProvider";
+import {useAnticipatedGames} from "../../hooks/UseAnticipatedGames";
 
 
 export function Search({navigation = useNavigation()}: PropsStackNavigation) {
@@ -43,27 +44,40 @@ export function Search({navigation = useNavigation()}: PropsStackNavigation) {
         searchText,
         searchUserText,
         onSearchUserTextChange,
+        setGamesDisplayed,
         searchMostAnticipatedGames,
         searchedUsers,
-    } = viewModel.searchViewModel()
+        setLoading,
+    } = searchViewModel()
     const [selectedTab, setSelectedTab] = useState<"games" | "developers" | "users">("games");
 
-    useEffect(() => {
-        searchMostAnticipatedGames()
-    }, []);
-
     const {user} = UseUserLocalStorage()
+    const {data, isLoading, error} = useAnticipatedGames();
+
+    useEffect(() => {
+        if (data) {
+            setLoading(true);
+            if(user?.slug != undefined) {
+                loadFavGames(user?.slug);
+                loadPlayedGames(user?.slug);
+            }
+            setTimeout(() => {
+                setGamesDisplayed(data)
+                setLoading(false);
+            }, 1000)
+        }
+    }, [data, user?.slug]);
 
     const {
         addGameToFav,
         transformGameIntoFavGameInterface,
-    } = viewModelHome.homeViewModel()
+    } = homeViewModel()
 
     const {
         deleteGameFromFav,
         loadFavGames,
         loadPlayedGames,
-    } = viewModelFav.favScreenViewModel()
+    } = favScreenViewModel()
 
     const {favListGames, playedListGames} = useUserGamesContext()
 

@@ -9,9 +9,10 @@ import {searchUsersUseCase} from "../../../domain/usesCases/search/SearchUsers";
 import {GetSearchUserInterface, UpdateUserDTO} from "../../../domain/entities/User";
 import {useAnticipatedGames} from "../../hooks/UseAnticipatedGames";
 import {useGameDetails} from "../../hooks/UseGameDetails";
+import {useTimeout} from "react-native-toast-message/lib/src/hooks";
 
 
-const searchViewModel = () => {
+export const searchViewModel = () => {
     const [searchText, setSearchText] = useState("");
     const [searchUserText, setSearchUserText] = useState("");
     const [gamesDisplayed, setGamesDisplayed] = useState<Game[]>([]);
@@ -27,8 +28,8 @@ const searchViewModel = () => {
     const [filtersApplied, setFiltersApplied] = useState(false);
     const [debounceTimeout, setDebounceTimeout] = useState<NodeJS.Timeout | null>(null);
     const [debounceTimeoutUser, setDebounceTimeoutUser] = useState<NodeJS.Timeout | null>(null);
-
     const {data, isLoading, error} = useAnticipatedGames();
+
 
     const searchUsers = async (userParameters: UpdateUserDTO) => {
         setLoading(true);
@@ -40,47 +41,6 @@ const searchViewModel = () => {
         }
         setLoading(false);
     }
-
-    const fetchFilteredGames = async (
-        category: string | null,
-        platform: string | null,
-        page: number = 0
-    ): Promise<Game[]> => {
-        try {
-            const filters: string[] = [];
-
-            if (category) {
-                filters.push(`genres.name ~ *"${category}"*`);
-            }
-
-            if (platform) {
-                filters.push(`platforms.name ~ *"${platform}"*`);
-            }
-
-            const whereClause = filters.length > 0 ? `where ${filters.join(" & ")};` : "";
-            const offset = `offset ${page * 15};`;
-
-            const query = `
-            fields name, 
-            rating, 
-            platforms.abbreviation,
-            genres.name, 
-            cover.url, 
-            release_dates.y;
-            ${whereClause}
-            sort popularity desc;
-            ${offset}
-            limit 15;
-        `;
-
-            const response = await IgdbApiDelivery.post("/games", query);
-
-            return response.data;
-        } catch (error) {
-            console.error("Error fetching filtered games:", error);
-            return [];
-        }
-    };
 
     const searchMostAnticipatedGames = async () => {
         setLoading(true);
@@ -132,11 +92,6 @@ const searchViewModel = () => {
                 const nextPage = prevPage + 1;
                 if (searchText !== "") {
                     searchGamesByUserInput(searchText, nextPage, false);
-                } else if (appliedFilters.category || appliedFilters.platform) {
-                    fetchFilteredGames(appliedFilters.category, appliedFilters.platform, nextPage)
-                        .then((moreGames) => {
-                            setGamesDisplayed((prevGames) => [...prevGames, ...moreGames]);
-                        });
                 }
 
                 return nextPage;
@@ -165,6 +120,7 @@ const searchViewModel = () => {
         searchUserText,
         selectedPlatform,
         selectedCategory,
+        setLoading,
         onSearchUserTextChange
     }
 }

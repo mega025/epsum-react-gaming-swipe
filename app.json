@@ -13,7 +13,8 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.rinndp.gamingswipe"
     },
     "android": {
       "adaptiveIcon": {
@@ -29,7 +30,8 @@
       "expo-font",
       "expo-asset",
       "expo-secure-store",
-      "expo-image-picker"
+      "expo-image-picker",
+      "expo-web-browser"
     ],
     "extra": {
       "eas": {

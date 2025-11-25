@@ -5,6 +5,13 @@ export interface GetUserInterface {
     image: string
 }
 
+export interface UserInterface {
+    username: string
+    email: string
+    password: string
+}
+
+
 export interface GetSearchUserInterface {
     username: string
     image: string
